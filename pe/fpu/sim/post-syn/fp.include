@@ -1,0 +1,7 @@
+/home/lab.apps/vlsiapps/kits/tsmc/N65RF/1.0c_cdb/digital/Front_End/verilog/tcbn65gplus_140b/tcbn65gplus.v
+fpu.v
+opmem.sv
+fpuStim.sv
+#tb_fpu.sv
+#tb_fp_mul.sv
+#tb_fp_div.sv
