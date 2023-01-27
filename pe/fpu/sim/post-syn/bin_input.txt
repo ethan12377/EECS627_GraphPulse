@@ -1,0 +1,1 @@
+../pre-syn/bin_input.txt
