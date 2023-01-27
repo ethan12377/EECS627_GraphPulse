@@ -12,8 +12,11 @@ class QS:
         #   io_port.newDelta
         #   io_port.newIdx
         #   io_port.newValid
+        #   io_port.searchValue
 
         # TODO: update *_n
         io_port.rowDelta_n = io_port.rowDelta
         io_port.binrowIdx_n = io_port.binrowIdx
         io_port.rowValid_n = io_port.rowValid
+        io_port.newReady_n = io_port.newReady
+        io_port.searchValue_n = io_port.searchValue

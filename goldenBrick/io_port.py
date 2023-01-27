@@ -14,6 +14,12 @@ def init():
     binrowIdx = 0
     rowValid = 0
 
+    # to coalescing unit
+    global newReady, newReady_n
+    global searchValue, searchValue_n
+    newReady = np.zeros(8)
+    searchValue = np.zeros(8, dtype=np.float16)
+
     #################################
     ### Output from output buffer ###
     #################################

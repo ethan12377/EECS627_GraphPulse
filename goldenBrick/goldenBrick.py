@@ -9,17 +9,23 @@ from scratchpad import SPM
 from edge_cache import EC
 
 def update():
+    # QS
     io_port.rowDelta = io_port.rowDelta_n
     io_port.binrowIdx = io_port.binrowIdx_n
     io_port.rowValid = io_port.rowValid_n
+    io_port.newReady = io_port.newReady_n
+    io_port.searchValue = io_port.searchValue_n
+    # OB
     io_port.rowReady = io_port.rowReady_n
     io_port.IssDelta = io_port.IssDelta_n
     io_port.IssIdx = io_port.IssIdx_n
     io_port.IssValid = io_port.IssValid_n
+    # Xbar_SchedToPE
     io_port.IssReady = io_port.IssReady_n
     io_port.PEDelta = io_port.PEDelta_n
     io_port.PEIdx = io_port.PEIdx_n
     io_port.PEValid = io_port.PEValid_n
+    # PE
     io_port.PEReady = io_port.PEReady_n
     io_port.proDelta = io_port.proDelta_n
     io_port.proIdx = io_port.proIdx_n
@@ -28,17 +34,21 @@ def update():
     io_port.edgeVertIdx = io_port.edgeVertIdx_n
     io_port.vertReq = io_port.vertReq_n
     io_port.vertIdx = io_port.vertIdx_n
+    # Xbar_PEToQ
     io_port.proReady = io_port.proReady_n
     io_port.CUDelta = io_port.CUDelta_n
     io_port.CUIdx = io_port.CUIdx_n
     io_port.CUValid = io_port.CUValid_n
+    # CU
     io_port.CUReady = io_port.CUReady_n
     io_port.searchIdx = io_port.searchIdx_n
     io_port.newDelta = io_port.newDelta_n
     io_port.newIdx = io_port.newIdx_n
     io_port.newValid = io_port.newValid_n
+    # SPM
     io_port.vertResp = io_port.vertResp_n
     io_port.vertValid = io_port.vertValid_n
+    # EC
     io_port.edgeResp = io_port.edgeResp_n
     io_port.edgeValid = io_port.edgeValid_n
     io_port.edgeEnd = io_port.edgeEnd_n
