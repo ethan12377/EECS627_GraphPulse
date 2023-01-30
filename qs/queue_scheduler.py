@@ -1,5 +1,6 @@
 import io_port
 import numpy as np
+from RoundRobinArbiter import RoundRobinArbiter
 
 class QS:
 
@@ -28,8 +29,10 @@ class QS:
     
     
     # read to output_buffer
-    def read_row(self, output_ready):
-        
+    # def read_row(self, output_ready):
+
+
+
     
     # search event for cu given each Idx:
     # if exist in buf, return false, stall cu search
@@ -47,4 +50,4 @@ class QS:
 
     # write event from cu
     # writing to the same row at the same time not allowed
-    def write_from_cu(row):
+    # def write_from_cu(row):
