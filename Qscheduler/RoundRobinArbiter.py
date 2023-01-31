@@ -21,7 +21,7 @@ class RoundRobinArbiter:
                 # print(f"update requester_id{requester_id}")
                 # print(f"update self.row_priority{self.row_priority}")
         if granded_prority == len(self.row_priority):
-            return False  
+            return len(self.row_priority)
         else:
             for j in range(len(self.row_priority)):
                 next_prority[j] = (self.row_priority[j] + len(self.row_priority) - granded_prority - 1) % len(self.row_priority)
@@ -30,30 +30,26 @@ class RoundRobinArbiter:
             print(f"row {granded_row} granted access")
             print(f"New priority {self.row_priority}")
             
-            return True
+            return granded_row
                  
 
 # test the Round Robin Arbiter
-row_priority = 4
-arbiter = RoundRobinArbiter(row_priority)
-print(arbiter.row_priority)
+# row_priority = 4
+# arbiter = RoundRobinArbiter(row_priority)
+# print(arbiter.row_priority)
 
-request0 = [1,0,0,0]
-request1 = [1,0,1,0]
-request2 = [0,1,0,0]
-request3 = [0,1,0,1]
-# print(len(request0))
-arbiter.request(request0)
-time.sleep(1)
-arbiter.request(request1)
-time.sleep(1)
-arbiter.request(request2)
-time.sleep(1)
-arbiter.request(request3)
-time.sleep(1)
-arbiter.request([0,0,0,0])
+# request0 = [1,0,0,0]
+# request1 = [1,0,1,0]
+# request2 = [0,1,0,0]
+# request3 = [0,1,0,1]
+# # print(len(request0))
+# arbiter.request(request0)
+# time.sleep(1)
+# arbiter.request(request1)
+# time.sleep(1)
+# arbiter.request(request2)
+# time.sleep(1)
+# arbiter.request(request3)
+# time.sleep(1)
+# arbiter.request([0,0,0,0])
 
-# while True:
-#     for i in range(row_priority):
-#         if arbiter.request(i):
-#             time.sleep(1)

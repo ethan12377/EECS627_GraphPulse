@@ -7,11 +7,11 @@ class Priority_Encoder:
         self.priority_bin = 0
         self.num_rowValid = np.zeros(8)
 
-    def priority(self, rowValid):
-        for i in range(rowValid.shape[0]):
+    def priority(self, rowValid_matrix):
+        for i in range(rowValid_matrix.shape[0]):
             self.temp = 0
-            for j in range(rowValid.shape[1]):
-                self.temp += rowValid[i][j]
+            for j in range(rowValid_matrix.shape[1]):
+                self.temp += rowValid_matrix[i][j]
             self.num_rowValid[i] = self.temp
 
         string = "num_rowValid "
