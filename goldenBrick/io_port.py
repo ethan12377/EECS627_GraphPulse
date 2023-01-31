@@ -68,17 +68,16 @@ def init():
     proIdx = np.zeros(8)
     proValid = np.zeros(8)
 
-    # to edge cache
-    global edgeReq, edgeReq_n
-    global edgeVertIdx, edgeVertIdx_n
-    edgeReq = np.zeros(4)
-    edgeVertIdx = np.zeros(4)
+    # to cache
+    global reqAddr, reqAddr_n
+    reqAddr = np.zeros(4)
+    reqAddr_n = np.zeros(4)
 
     # to scratchpad
-    global vertReq, vertReq_n
-    global vertIdx, vertIdx_n
-    vertReq = np.zeros(4)
-    vertIdx = np.zeros(4)
+    # global vertReq, vertReq_n
+    # global vertIdx, vertIdx_n
+    # vertReq = np.zeros(4)
+    # vertIdx = np.zeros(4)
 
     #############################
     ### Output from crossbar2 ###
@@ -119,22 +118,22 @@ def init():
     ##############################
 
     # to PE
-    global vertResp, vertResp_n
-    global vertValid, vertValid_n
-    vertResp = np.zeros(4)
-    vertValid = np.zeros(4)
+    # global vertResp, vertResp_n
+    # global vertValid, vertValid_n
+    # vertResp = np.zeros(4)
+    # vertValid = np.zeros(4)
 
     # TODO: memory I/O
 
-    ##############################
-    ### Output from edge cache ###
-    ##############################
+    #########################
+    ### Output from cache ###
+    #########################
     # to PE
-    global edgeResp, edgeResp_n
-    global edgeValid, edgeValid_n
-    global edgeEnd, edgeEnd_n
-    edgeResp = np.zeros(4)
-    edgeValid = np.zeros(4)
-    edgeEnd = np.zeros(4)
+    global cacheResp, cacheResp_n
+    global cacheValid, cacheValid_n
+    # global edgeEnd, edgeEnd_n
+    cacheResp = np.zeros(4)
+    cacheValid = np.zeros(4)
+    # edgeEnd = np.zeros(4)
 
     # TODO: memory I/O
