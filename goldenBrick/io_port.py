@@ -12,13 +12,18 @@ def init():
     global rowValid, rowValid_n
     rowDelta = np.zeros(8, dtype=np.float16)
     binrowIdx = 0
+    rowDelta_n = np.zeros(8, dtype=np.float16)
+    binrowIdx_n = 0
     rowValid = 0
+    rowValid_n = 0
 
     # to coalescing unit
     global newReady, newReady_n
     global searchValue, searchValue_n
     newReady = np.zeros(8)
+    newReady_n = np.zeros(8)
     searchValue = np.zeros(8, dtype=np.float16)
+    searchValue_n = np.zeros(8, dtype=np.float16)
 
     #################################
     ### Output from output buffer ###
