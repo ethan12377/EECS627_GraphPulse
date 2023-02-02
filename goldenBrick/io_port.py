@@ -59,14 +59,18 @@ def init():
     # to crossbar1
     global PEReady, PEReady_n
     PEReady = np.zeros(4)
+    PEReady_n = np.zeros(4)
 
     # to crossbar2
     global proDelta, proDelta_n
     global proIdx, proIdx_n
     global proValid, proValid_n
     proDelta = np.zeros(8, dtype=np.float16)
+    proDelta_n = np.zeros(8, dtype=np.float16)
     proIdx = np.zeros(8)
+    proIdx_n = np.zeros(8)
     proValid = np.zeros(8)
+    proValid_n = np.zeros(8)
 
     # to cache controller
     global pe_reqAddr, pe_reqAddr_n, pe_wrData, pe_wrData_n, pe_wrEn, pe_wrEn_n, pe_reqValid, pe_reqValid_n
@@ -75,7 +79,7 @@ def init():
     pe_wrData = np.ndarray(shape=(4,8), dtype=np.float16)
     pe_wrData_n = np.ndarray(shape=(4,8), dtype=np.float16)
     pe_wrEn = np.zeros(4)
-    pe_wrEn = np.zeros(4)
+    pe_wrEn_n = np.zeros(4)
     pe_reqValid = np.zeros(4)
     pe_reqValid_n = np.zeros(4)
 
