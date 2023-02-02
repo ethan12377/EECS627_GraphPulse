@@ -68,10 +68,16 @@ def init():
     proIdx = np.zeros(8)
     proValid = np.zeros(8)
 
-    # to cache
-    global reqAddr, reqAddr_n
-    reqAddr = np.zeros(4)
-    reqAddr_n = np.zeros(4)
+    # to cache controller
+    global pe_reqAddr, pe_reqAddr_n, pe_wrData, pe_wrData_n, pe_wrEn, pe_wrEn_n, pe_reqValid, pe_reqValid_n
+    pe_reqAddr = np.zeros(4)
+    pe_reqAddr_n = np.zeros(4)
+    pe_wrData = np.zeros(4)
+    pe_wrData_n = np.zeros(4)
+    pe_wrEn = np.zeros(4)
+    pe_wrEn = np.zeros(4)
+    pe_reqValid = np.zeros(4)
+    pe_reqValid_n = np.zeros(4)
 
     # to scratchpad
     # global vertReq, vertReq_n
@@ -128,12 +134,24 @@ def init():
     #########################
     ### Output from cache ###
     #########################
-    # to PE
-    global cacheResp, cacheResp_n
+    
+    global cache_rdData, cache_rdData_n
     global cacheValid, cacheValid_n
     # global edgeEnd, edgeEnd_n
-    cacheResp = np.zeros(4)
+    cache_rdData = np.zeros(4)
     cacheValid = np.zeros(4)
     # edgeEnd = np.zeros(4)
 
     # TODO: memory I/O
+
+    ####################################
+    ### Output from Cache controller ###
+    ####################################
+    global cc_reqAddr, cc_wrEn, cc_wrData
+    cc_reqAddr = 128 #invalid request addr
+    cc_wrEn = 0
+    cc_wrData = np.zeros(8, dtype=np.float16)
+
+    global cc_ready, cc_ready_n
+    cc_ready = np.zeros(4)
+    cc_ready_n = np.zeros(4)
