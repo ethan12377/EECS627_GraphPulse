@@ -35,19 +35,20 @@ class EC:
 
     def one_clock(self):
         if io_port.cc_reqAddr == 128: # invalid addr
-            io_port.cache_rdData_n = 0
+            io_port.cache_rdData_n = [0, 0, 0, 0, 0, 0, 0, 0]
             io_port.cacheValid_n = 0
-        elif io_port.cc_wrEn: # write
+        elif io_port.cc_wrEn == 1: # write
             if io_port.cc_reqAddr < 64:
                 self.vertexValues[io_port.cc_reqAddr*4 : (io_port.cc_reqAddr+1)*4] = io_port.cc_wrData[0:4]
             elif io_port.cc_reqAddr < 96:
-                self.colIndex[(io_port.cc_reqAddr-64)*8 : (io_port.cc_reqAddr-63)*8] = io_port.cc_wrData
+                self.rowIndex[(io_port.cc_reqAddr-64)*8 : (io_port.cc_reqAddr-63)*8] = io_port.cc_wrData
             else:
-                self.rowIndex[(io_port.cc_reqAddr-96)*8 : (io_port.cc_reqAddr-95)*8] = io_port.cc_wrData
+                self.colIndex[(io_port.cc_reqAddr-96)*8 : (io_port.cc_reqAddr-95)*8] = io_port.cc_wrData
         else:
             io_port.cacheValid_n = 1
             if io_port.cc_reqAddr < 64: # return 4 values at once
-                io_port.cache_rdData_n = self.vertexValues[io_port.cc_reqAddr*4 : (io_port.cc_reqAddr+1)*4]
+                io_port.cache_rdData_n[0:4] = self.vertexValues[io_port.cc_reqAddr*4 : (io_port.cc_reqAddr+1)*4]
+                io_port.cache_rdData_n[4:8] = [0, 0, 0, 0]
             elif io_port.cc_reqAddr < 96: # return 8 values at once
                 io_port.cache_rdData_n = self.rowIndex[(io_port.cc_reqAddr-64)*8 : (io_port.cc_reqAddr-63)*8]
             else:

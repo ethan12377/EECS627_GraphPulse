@@ -72,8 +72,8 @@ def init():
     global pe_reqAddr, pe_reqAddr_n, pe_wrData, pe_wrData_n, pe_wrEn, pe_wrEn_n, pe_reqValid, pe_reqValid_n
     pe_reqAddr = np.zeros(4)
     pe_reqAddr_n = np.zeros(4)
-    pe_wrData = np.zeros(4)
-    pe_wrData_n = np.zeros(4)
+    pe_wrData = np.ndarray(shape=(4,8), dtype=np.float16)
+    pe_wrData_n = np.ndarray(shape=(4,8), dtype=np.float16)
     pe_wrEn = np.zeros(4)
     pe_wrEn = np.zeros(4)
     pe_reqValid = np.zeros(4)
@@ -138,8 +138,10 @@ def init():
     global cache_rdData, cache_rdData_n
     global cacheValid, cacheValid_n
     # global edgeEnd, edgeEnd_n
-    cache_rdData = np.zeros(4)
+    cache_rdData = np.zeros(8, dtype=np.float16)
+    cache_rdData_n = np.zeros(8, dtype=np.float16)
     cacheValid = np.zeros(4)
+    cacheValid_n = np.zeros(4)
     # edgeEnd = np.zeros(4)
 
     # TODO: memory I/O
