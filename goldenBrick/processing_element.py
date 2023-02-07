@@ -23,12 +23,12 @@ class PE:
         # FSM
         self.states = Enum('states',['IDLE',
                                      'WAIT_ON_MEM_DATA',
-                                     'WAIT_ON_FPU_DATA',
                                      'WAIT_ON_FPU_DATA_ONLY'
-                                     'WAIT_ON_FPU_PRODELTA',
+                                     'WAIT_ON_FPU_PRODELTA_AND_MEM_WRITE',
                                      'WAIT_ON_MEM_WRITE',
                                      'WAIT_ON_FPU_AND_MEM_IDX',
                                      'EVGEN',
+                                     'WAIT_ON_EVGEN_MEM_DATA',
                                      'EVGEN_PAUSE'])
         self.curr_state = self.states.IDLE
         self.next_state = self.states.IDLE
@@ -42,13 +42,28 @@ class PE:
         # parameters for propagate event generation
         self.curr_evgen_idx = 0
         self.curr_propagate_delta = 0
+        self.curr_prodelta_ready = 0
+        self.curr_idx_update_complete = 0
+        self.curr_col_idx_word = [0, 0, 0, 0, 0, 0, 0, 0]
+        self.curr_col_idx_word_valid = 0
     
     def hold_curr_mem_req():
         io_port.pe_reqAddr_n[self.pe_id] = io_port.pe_reqAddr[self.pe_id]
         io_port.pe_reqValid_n[self.pe_id] = io_port.pe_reqValid[self.pe_id]
         io_port.pe_wrEn_n[self.pe_id] = io_port.pe_wrEn[self.pe_id]
         io_port.pe_wrData_n[self.pe_id] = io_port.pe_wrData[self.pe_id]
-
+    
+    def hold_propagate_events():
+        io_port.proDelta_n[self.pe_id*2 : self.pe_id*2+1] = io_port.proDelta[self.pe_id*2 : self.pe_id*2+1]
+        io_port.proIdx_n[self.pe_id*2 : self.pe_id*2+1] = io_port.proIdx[self.pe_id*2 : self.pe_id*2+1]
+        io_port.proValid_n[self.pe_id*2 : self.pe_id*2+1] = io_port.proValid[self.pe_id*2 : self.pe_id*2+1]
+    
+    def clear_status_regs():
+        self.start_ready = 0
+        self.end_ready = 0
+        self.curr_vertex_value_word_ready = 0
+        self.curr_prodelta_ready = 0
+        self.curr_idx_update_complete = 0
 
     def one_clock(self):
         self.curr_state = self.next_state
@@ -58,12 +73,11 @@ class PE:
             self.fpu_value_pipe[i+1] = self.fpu_value_pipe[i]
             self.fpu_valid_pipe[i+1] = self.fpu_valid_pipe[i]
         
-        # default relevant outputs to zero, overwrite if necessary
-        # TODO: implement hold while waiting
+        # default relevant outputs to zero, overwrite when necessary
         io_port.pe_reqValid_n[self.pe_id] = 0
         io_port.pe_wrEn_n[self.pe_id] = 0
         self.fpu_valid_pipe[0] = 0
-        io_port.proValid_n = 0
+        io_port.proValid_n[self.pe_id*2 : self.pe_id*2+1] = 0
 
         #############################
         ### FSM STATES DEFINITION ###
@@ -83,7 +97,13 @@ class PE:
                 io_port.pe_reqValid_n[self.pe_id] = 1
                 self.next_state = self.states.WAIT_ON_MEM_DATA
             else:
+                # clear all status registers
                 io_port.PEReady_n[self.pe_id] = 1
+                io_port.pe_reqValid_n[self.pe_id] = 0
+                io_port.pe_wrEn_n[self.pe_id] = 0
+                self.fpu_valid_pipe[0] = 0
+                io_port.proValid_n = 0
+                clear_status_regs()
                 self.next_state = self.states.IDLE
         
         # WAIT_ON_MEM_DATA state
@@ -153,10 +173,10 @@ class PE:
                     io_port.pe_wrData_n = self.curr_vertex_value_word
                     # check if adjacency list contains anything
                     if self.end - self.start != 0:
-                        # start FPU index calculation
+                        # start FPU propagation delta calculation
                         self.fpu_valid_pipe[0] = 1
-                        self.fpu_value_pipe[0] = self.fpu_value_pipe[self.fpu_pipe_depth] / (self.end - self.start)
-                        self.next_state = self.states.WAIT_ON_FPU_PRODELTA
+                        self.fpu_value_pipe[0] = self.curr_vertex_value_word[self.curr_idx % 4] / (self.end - self.start)
+                        self.next_state = self.states.WAIT_ON_FPU_PRODELTA_AND_MEM_WRITE
                     else: # no adjacency. go to wait for mem write
                         self.next_state = WAIT_ON_MEM_WRITE
                 # hold current memory request if waiting for index mem request
@@ -166,87 +186,99 @@ class PE:
                 hold_curr_mem_req()
                 self.next_state = self.states.WAIT_ON_FPU_AND_MEM_IDX
         
-        # WAIT_ON_FPU_PRODELTA state
-        # TODO: need to figure out how to hold mem write request
-        if self.curr_state = WAIT_ON_FPU_PRODELTA:
+        # WAIT_ON_FPU_PRODELTA_AND_MEM_WRITE state
+        if self.curr_state = self.states.WAIT_ON_FPU_PRODELTA_AND_MEM_WRITE:
+            # check if mem write has been fulfilled
+            if io_port.cc_ready[self.pe_id] != 1:
+                hold_curr_mem_req()
+                self.curr_idx_update_complete = 0
+            else:
+                # indicate that mem write has been completed
+                self.curr_idx_update_complete = 1
+            # check if FPU calculation of propagation delta has been completed
             if self.fpu_valid_pipe[self.fpu_pipe_depth] == 1:
                 self.curr_propagate_delta = self.fpu_value_pipe[self.fpu_pipe_depth]
+                self.curr_prodelta_ready = 1
+            else:
+                self.curr_prodelta_ready = 0
+            # state transition
+            if self.curr_idx_update_complete == 1 and self.curr_prodelta_ready == 1:
+                self.curr_evgen_idx = self.start
                 self.next_state = self.states.EVGEN
             else:
-                self.next_state = WAIT_ON_FPU_PRODELTA
+                self.next_state = self.states.WAIT_ON_FPU_PRODELTA_AND_MEM_WRITE
         
         # WAIT_ON_MEM_WRITE state
         if self.curr_state == self.states.WAIT_ON_MEM_WRITE:
-            if io_port.cc_ready[self.pe_id]:
+            if io_port.cc_ready[self.pe_id] or io_port.cc_ready[self.pe_id]:
                 self.next_state = self.states.IDLE
                 io_port.PEReady_n[self.pe_id] = 1
             else:
                 hold_curr_mem_req()
                 self.next_state = self.states.WAIT_ON_MEM_WRITE
         
-
         # EVGEN state
         # TODO: evgen should issue mem accesses to read contents off of adjacency list
         # TODO: two additional states: evgen pause, wait for mem access for evgen
         if self.curr_state == self.states.EVGEN:
-            if io_port.CUReady == [0, 0, 0, 0, 0, 0, 0, 0]:
-                self.next_state = self.states.EVGEN_PAUSE
-            elif self.curr_evgen_idx == self.start: # first event gen cycle
-                # TODO: generate two events per cycle per processor?
-                # generate a "clear" event
-                io_port.proDelta_n[2*self.pe_id] = 0 - self.fpu_value_pipe[self.fpu_pipe_depth]
-                io_port.proIdx_n[2*self.pe_id] = self.curr_idx
-                io_port.proValid_n[2*self.pe_id] = 1
-                # generate a "propagate" event
-                io_port.proDelta_n[2*self.pe_id+1] = self.curr_propagate_delta
-                io_port.proIdx_n[2*self.pe_id+1] = self.curr_evgen_idx
-                io_port.proValid_n[2*self.pe_id+1] = 1
-                # increment
-                self.curr_evgen_idx += 2
-                self.next_state = self.states.EVGEN
-            elif self.curr_evgen_idx < self.end:
-                # generate a "propagate" event
-                io_port.proDelta_n[2*self.pe_id] = self.curr_propagate_delta
-                io_port.proIdx_n[2*self.pe_id] = self.curr_evgen_idx
-                io_port.proValid_n[2*self.pe_id] = 1
-                self.curr_evgen_idx += 1
-                if self.curr_evgen_idx < self.end:
-                    # generate a "propagate" event
-                    io_port.proDelta_n[2*self.pe_id+1] = self.curr_propagate_delta
-                    io_port.proIdx_n[2*self.pe_id+1] = self.curr_evgen_idx
-                    io_port.proValid_n[2*self.pe_id+1] = 1
+            # invalidate current column index word if current row index is out of bound
+            if self.curr_evgen_idx != self.start and self.curr_evgen_idx % 8 == 0:
+                self.curr_col_idx_word_valid = 0
+            # check if col index word is valid
+            if self.curr_col_idx_word_valid != 1:
+                # request a row word from the memory
+                io_port.pe_reqAddr_n = self.curr_evgen_idx / 8 + 96
+                io_port.pe_wrEn_n[self.pe_id] = 0
+                io_port.pe_reqValid_n[self.pe_id] = 1
+                self.next_state = self.states.WAIT_ON_EVGEN_MEM_DATA
+            else:
+                # TODO: "clear" event generation
+                # TODO: end detection
+                # check how many new events the downstream modules are ready to receive
+                if io_port.proReady[2*self.pe_id] == 0 and io_port.proReady[2*self.pe_id + 1] == 0: # 0
+                    hold_propagate_events()
+                    self.next_state = self.states.EVGEN_PAUSE
+                elif io_port.proReady[2*self.pe_id] == 1 and io_port.proReady[2*self.pe_id + 1] == 1: # 2
+                    io_port.proDelta_n[2*self.pe_id] = self.curr_propagate_delta
+                    io_port.proIdx_n[2*self.pe_id] = self.curr_col_idx_word[self.curr_evgen_idx % 8]
+                    io_port.proValid_n[2*self.pe_id] = 1
+                    # check how many valid indices are in the current column index word
+                    if self.curr_evgen_idx % 8 != 7: 
+                        io_port.proDelta_n[2*self.pe_id + 1] = self.curr_propagate_delta
+                        io_port.proIdx_n[2*self.pe_id + 1] = self.curr_col_idx_word[self.curr_evgen_idx % 8 + 1]
+                        io_port.proValid_n[2*self.pe_id + 1] = 1
+                        self.curr_evgen_idx += 2
+                    else:
+                        io_port.proValid_n[2*self.pe_id + 1] = 0
+                        self.curr_evgen_idx += 1
+                elif io_port.proReady[2*self.pe_id] == 1: # 1, at first port
+                    io_port.proDelta_n[2*self.pe_id] = self.curr_propagate_delta
+                    io_port.proIdx_n[2*self.pe_id] = self.curr_col_idx_word[self.curr_evgen_idx % 8]
+                    io_port.proValid_n[2*self.pe_id] = 1
+                    io_port.proValid_n[2*self.pe_id + 1] = 0
                     self.curr_evgen_idx += 1
-                else:
-                    io_port.proDelta_n[2*self.pe_id+1] = 0
-                    io_port.proIdx_n[2*self.pe_id+1] = 0
-                    io_port.proValid_n[2*self.pe_id+1] = 0
-            else: # reached the end of evgen
-                self.next_state = self.states.IDLE
+                else: # 1, at second port
+                    io_port.proDelta_n[2*self.pe_id + 1] = self.curr_propagate_delta
+                    io_port.proIdx_n[2*self.pe_id + 1] = self.curr_col_idx_word[self.curr_evgen_idx % 8]
+                    io_port.proValid_n[2*self.pe_id + 1] = 1
+                    io_port.proValid_n[2*self.pe_id] = 0
+                    self.curr_evgen_idx += 1
         
-        # EVGEN_PAUSE state
-        # TODO: determine the upstream ready signal
-        if self.curr_state == self.states.EVGEN_PAUSE:
-            if io_port.CUReady != [0, 0, 0, 0, 0, 0, 0, 0]:
+        # WAIT_ON_EVGEN_MEM_DATA state
+        if self.curr_state == self.states.WAIT_ON_EVGEN_MEM_DATA:
+            if io_port.cc_ready[self.pe_id]:
+                # store the acquired row index word
+                self.curr_col_idx_word = io_port.cache_rdData
+                self.curr_col_idx_word_valid = 1
                 self.next_state = self.states.EVGEN
             else:
-                self.next_state = self.states.EVGEN_PAUSE
+                hold_curr_mem_req()
+                self.next_state = self.states.WAIT_ON_EVGEN_MEM_DATA
         
-        # TODO: EVGEN_WAIT_FOR_MEM state
-
-        # input:
-        #   io_port.PEDelta
-        #   io_port.PEIdx
-        #   io_port.PEValid
-        #   io_port.proReady
-        #   io_port.edgeResp
-        #   io_port.edgeValid
-        #   io_port.edgeEnd
-        #   io_port.vertResp
-        #   io_port.vertValid
-
-        # TODO: update *_n
-        io_port.proDelta_n = self.fpu_value_pipe[self.fpu_pipe_depth]
-        io_port.proIdx_n = io_port.proIdx
-        io_port.proValid_n = self.fpu_valid_pipe[self.fpu_pipe_depth]
-        io_port.reqType_n = io_port.reqType # TODO: combinational output to mem?
-        io_port.reqAddr_n = io_port.reqAddr
+        # EVGEN_PAUSE state
+        if self.curr_state == self.states.EVGEN_PAUSE:
+            if io_port.proReady[2*self.pe_id] == 0 and io_port.proReady[2*self.pe_id + 1] == 0:
+                hold_propagate_events()
+                self.next_state = self.states.EVGEN_PAUSE
+            else:
+                self.next_state = self.states.EVGEN
