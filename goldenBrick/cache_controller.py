@@ -11,7 +11,7 @@ class CC:
     def one_clock(self):
         # rotating priority, valid-inspecting selector
         io_port.cc_ready_n = [0, 0, 0, 0]
-        if io_port.pe_reqValid != [0, 0, 0, 0]:
+        if (io_port.pe_reqValid != 0).all():
             if io_port.pe_reqValid[(self.latest_gnt + 1) % 4] == 1:
                 io_port.cc_ready_n[(self.latest_gnt + 1) % 4] = 1
                 self.latest_gnt = (self.latest_gnt + 1) % 4

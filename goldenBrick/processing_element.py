@@ -9,9 +9,12 @@ class PE:
         self.pe_id = pe_id # use id to differentiate the four pes
         self.threshold = 0.1 # TODO: should set a global variable for this?
 
+        # status
+        self.ready = 1
+
         # FPU parameters
         self.fpu_pipe_depth = fpu_pipe_depth
-        self.fpu_value_pipe = np.zeros(fpu_pipe_depth + 1, dtype=np.float16) # TODO: this should be parametrized to match the verilog
+        self.fpu_value_pipe = np.zeros(fpu_pipe_depth + 1, dtype=np.float16)
         self.fpu_valid_pipe = np.zeros(fpu_pipe_depth + 1)
 
         # storing values that are being worked on for the current operation
@@ -23,13 +26,13 @@ class PE:
         # FSM
         self.states = Enum('states',['IDLE',
                                      'WAIT_ON_MEM_DATA',
-                                     'WAIT_ON_FPU_DATA_ONLY'
+                                     'WAIT_ON_FPU_DATA_ONLY',
                                      'WAIT_ON_FPU_PRODELTA_AND_MEM_WRITE',
                                      'WAIT_ON_MEM_WRITE',
                                      'WAIT_ON_FPU_AND_MEM_IDX',
                                      'EVGEN',
                                      'WAIT_ON_EVGEN_MEM_DATA',
-                                     'EVGEN_PAUSE'])
+                                     'WAIT_ON_LAST_FULFILL'])
         self.curr_state = self.states.IDLE
         self.next_state = self.states.IDLE
 
@@ -47,18 +50,18 @@ class PE:
         self.curr_col_idx_word = [0, 0, 0, 0, 0, 0, 0, 0]
         self.curr_col_idx_word_valid = 0
     
-    def hold_curr_mem_req():
+    def hold_curr_mem_req(self):
         io_port.pe_reqAddr_n[self.pe_id] = io_port.pe_reqAddr[self.pe_id]
         io_port.pe_reqValid_n[self.pe_id] = io_port.pe_reqValid[self.pe_id]
         io_port.pe_wrEn_n[self.pe_id] = io_port.pe_wrEn[self.pe_id]
         io_port.pe_wrData_n[self.pe_id] = io_port.pe_wrData[self.pe_id]
     
-    def hold_propagate_events():
-        io_port.proDelta_n[self.pe_id*2 : self.pe_id*2+1] = io_port.proDelta[self.pe_id*2 : self.pe_id*2+1]
-        io_port.proIdx_n[self.pe_id*2 : self.pe_id*2+1] = io_port.proIdx[self.pe_id*2 : self.pe_id*2+1]
-        io_port.proValid_n[self.pe_id*2 : self.pe_id*2+1] = io_port.proValid[self.pe_id*2 : self.pe_id*2+1]
+    def hold_propagate_events(self, port): # port is either 0 or 1
+        io_port.proDelta_n[self.pe_id*2 + port] = io_port.proDelta[self.pe_id*2 + port]
+        io_port.proIdx_n[self.pe_id*2 + port] = io_port.proIdx[self.pe_id*2 + port]
+        io_port.proValid_n[self.pe_id*2 + port] = io_port.proValid[self.pe_id*2 + port]
     
-    def clear_status_regs():
+    def clear_status_regs(self):
         self.start_ready = 0
         self.end_ready = 0
         self.curr_vertex_value_word_ready = 0
@@ -77,7 +80,8 @@ class PE:
         io_port.pe_reqValid_n[self.pe_id] = 0
         io_port.pe_wrEn_n[self.pe_id] = 0
         self.fpu_valid_pipe[0] = 0
-        io_port.proValid_n[self.pe_id*2 : self.pe_id*2+1] = 0
+        io_port.proValid_n[self.pe_id*2] = 0
+        io_port.proValid_n[self.pe_id*2+1] = 0
 
         #############################
         ### FSM STATES DEFINITION ###
@@ -87,7 +91,7 @@ class PE:
         if self.curr_state == self.states.IDLE:
             if io_port.PEValid[self.pe_id] != 0: # incoming valid event
                 # set status to busy
-                io_port.PEReady_n[self.pe_id] = 0
+                self.ready = 0
                 # store current event
                 self.curr_delta = io_port.PEDelta[self.pe_id]
                 self.curr_idx = io_port.PEIdx[self.pe_id]
@@ -98,12 +102,13 @@ class PE:
                 self.next_state = self.states.WAIT_ON_MEM_DATA
             else:
                 # clear all status registers
-                io_port.PEReady_n[self.pe_id] = 1
+                self.ready = 1
                 io_port.pe_reqValid_n[self.pe_id] = 0
                 io_port.pe_wrEn_n[self.pe_id] = 0
                 self.fpu_valid_pipe[0] = 0
-                io_port.proValid_n = 0
-                clear_status_regs()
+                io_port.proValid_n[self.pe_id*2] = 0
+                io_port.proValid_n[self.pe_id*2+1] = 0
+                self.clear_status_regs()
                 self.next_state = self.states.IDLE
         
         # WAIT_ON_MEM_DATA state
@@ -124,12 +129,12 @@ class PE:
                     io_port.pe_reqValid_n[self.pe_id] = 1
                     self.next_state = self.states.WAIT_ON_FPU_AND_MEM_IDX
             else:
-                hold_curr_mem_req()
+                self.hold_curr_mem_req()
                 self.next_state = self.states.WAIT_ON_MEM_DATA
         
         # WAIT_ON_FPU_DATA_ONLY state
         # This state is for when no propagation occurs and we only need to read-update-write
-        if self.curr_state = self.states.WAIT_ON_FPU_DATA_ONLY:
+        if self.curr_state == self.states.WAIT_ON_FPU_DATA_ONLY:
             if self.fpu_valid_pipe[self.fpu_pipe_depth] == 1:
                 # create update request to write to mem
                 self.curr_vertex_value_word[self.curr_idx % 4] = self.fpu_value_pipe[self.fpu_pipe_depth]
@@ -172,7 +177,7 @@ class PE:
                     io_port.pe_reqValid_n[self.pe_id] = 1
                     io_port.pe_wrData_n = self.curr_vertex_value_word
                     # check if adjacency list contains anything
-                    if self.end - self.start != 0:
+                    if self.end != self.start:
                         # start FPU propagation delta calculation
                         self.fpu_valid_pipe[0] = 1
                         self.fpu_value_pipe[0] = self.curr_vertex_value_word[self.curr_idx % 4] / (self.end - self.start)
@@ -180,17 +185,17 @@ class PE:
                     else: # no adjacency. go to wait for mem write
                         self.next_state = WAIT_ON_MEM_WRITE
                 # hold current memory request if waiting for index mem request
-                else if elf.start_ready != 1 or self.end_ready != 1:
-                    hold_curr_mem_req()
+                elif self.start_ready != 1 or self.end_ready != 1:
+                    self.hold_curr_mem_req()
             else:
-                hold_curr_mem_req()
+                self.hold_curr_mem_req()
                 self.next_state = self.states.WAIT_ON_FPU_AND_MEM_IDX
         
         # WAIT_ON_FPU_PRODELTA_AND_MEM_WRITE state
-        if self.curr_state = self.states.WAIT_ON_FPU_PRODELTA_AND_MEM_WRITE:
+        if self.curr_state == self.states.WAIT_ON_FPU_PRODELTA_AND_MEM_WRITE:
             # check if mem write has been fulfilled
             if io_port.cc_ready[self.pe_id] != 1:
-                hold_curr_mem_req()
+                self.hold_curr_mem_req()
                 self.curr_idx_update_complete = 0
             else:
                 # indicate that mem write has been completed
@@ -210,16 +215,14 @@ class PE:
         
         # WAIT_ON_MEM_WRITE state
         if self.curr_state == self.states.WAIT_ON_MEM_WRITE:
-            if io_port.cc_ready[self.pe_id] or io_port.cc_ready[self.pe_id]:
+            if io_port.cc_ready[self.pe_id]:
                 self.next_state = self.states.IDLE
-                io_port.PEReady_n[self.pe_id] = 1
+                self.ready = 1
             else:
-                hold_curr_mem_req()
+                self.hold_curr_mem_req()
                 self.next_state = self.states.WAIT_ON_MEM_WRITE
         
         # EVGEN state
-        # TODO: evgen should issue mem accesses to read contents off of adjacency list
-        # TODO: two additional states: evgen pause, wait for mem access for evgen
         if self.curr_state == self.states.EVGEN:
             # invalidate current column index word if current row index is out of bound
             if self.curr_evgen_idx != self.start and self.curr_evgen_idx % 8 == 0:
@@ -232,37 +235,56 @@ class PE:
                 io_port.pe_reqValid_n[self.pe_id] = 1
                 self.next_state = self.states.WAIT_ON_EVGEN_MEM_DATA
             else:
-                # TODO: "clear" event generation
-                # TODO: end detection
                 # check how many new events the downstream modules are ready to receive
                 if io_port.proReady[2*self.pe_id] == 0 and io_port.proReady[2*self.pe_id + 1] == 0: # 0
-                    hold_propagate_events()
-                    self.next_state = self.states.EVGEN_PAUSE
-                elif io_port.proReady[2*self.pe_id] == 1 and io_port.proReady[2*self.pe_id + 1] == 1: # 2
-                    io_port.proDelta_n[2*self.pe_id] = self.curr_propagate_delta
-                    io_port.proIdx_n[2*self.pe_id] = self.curr_col_idx_word[self.curr_evgen_idx % 8]
-                    io_port.proValid_n[2*self.pe_id] = 1
-                    # check how many valid indices are in the current column index word
-                    if self.curr_evgen_idx % 8 != 7: 
-                        io_port.proDelta_n[2*self.pe_id + 1] = self.curr_propagate_delta
-                        io_port.proIdx_n[2*self.pe_id + 1] = self.curr_col_idx_word[self.curr_evgen_idx % 8 + 1]
-                        io_port.proValid_n[2*self.pe_id + 1] = 1
-                        self.curr_evgen_idx += 2
-                    else:
-                        io_port.proValid_n[2*self.pe_id + 1] = 0
+                    self.hold_propagate_events(0)
+                    self.hold_propagate_events(1)
+                    self.next_state = self.states.EVGEN
+                # check if curr evgen index within range
+                elif self.curr_evgen_idx < self.end: # curr evgen index is within range and valid
+                    if io_port.proReady[2*self.pe_id] == 1 and io_port.proReady[2*self.pe_id + 1] == 1: # 2
+                        io_port.proDelta_n[2*self.pe_id] = self.curr_propagate_delta
+                        io_port.proIdx_n[2*self.pe_id] = self.curr_col_idx_word[self.curr_evgen_idx % 8]
+                        io_port.proValid_n[2*self.pe_id] = 1
+                        # check how many valid indices are in the current column index word and if current evgen index + 1 is within range
+                        if self.curr_evgen_idx % 8 != 7 and self.curr_evgen_idx + 1 < self.end: 
+                            io_port.proDelta_n[2*self.pe_id + 1] = self.curr_propagate_delta
+                            io_port.proIdx_n[2*self.pe_id + 1] = self.curr_col_idx_word[self.curr_evgen_idx % 8 + 1]
+                            io_port.proValid_n[2*self.pe_id + 1] = 1
+                            self.curr_evgen_idx += 2
+                        else:
+                            io_port.proValid_n[2*self.pe_id + 1] = 0
+                            self.curr_evgen_idx += 1
+                    elif io_port.proReady[2*self.pe_id] == 1: # 1, at first port
+                        io_port.proDelta_n[2*self.pe_id] = self.curr_propagate_delta
+                        io_port.proIdx_n[2*self.pe_id] = self.curr_col_idx_word[self.curr_evgen_idx % 8]
+                        io_port.proValid_n[2*self.pe_id] = 1
+                        self.hold_propagate_events(1)
                         self.curr_evgen_idx += 1
-                elif io_port.proReady[2*self.pe_id] == 1: # 1, at first port
-                    io_port.proDelta_n[2*self.pe_id] = self.curr_propagate_delta
-                    io_port.proIdx_n[2*self.pe_id] = self.curr_col_idx_word[self.curr_evgen_idx % 8]
-                    io_port.proValid_n[2*self.pe_id] = 1
-                    io_port.proValid_n[2*self.pe_id + 1] = 0
-                    self.curr_evgen_idx += 1
-                else: # 1, at second port
-                    io_port.proDelta_n[2*self.pe_id + 1] = self.curr_propagate_delta
-                    io_port.proIdx_n[2*self.pe_id + 1] = self.curr_col_idx_word[self.curr_evgen_idx % 8]
-                    io_port.proValid_n[2*self.pe_id + 1] = 1
-                    io_port.proValid_n[2*self.pe_id] = 0
-                    self.curr_evgen_idx += 1
+                    else: # 1, at second port
+                        io_port.proDelta_n[2*self.pe_id + 1] = self.curr_propagate_delta
+                        io_port.proIdx_n[2*self.pe_id + 1] = self.curr_col_idx_word[self.curr_evgen_idx % 8]
+                        io_port.proValid_n[2*self.pe_id + 1] = 1
+                        self.hold_propagate_events(0)
+                        self.curr_evgen_idx += 1
+                    self.next_state = self.states.EVGEN
+                else: # all events have been issued
+                    # default to holding
+                    self.hold_propagate_events(0)
+                    self.hold_propagate_events(1)
+                    if io_port.proReady[2*self.pe_id] == 1:
+                        io_port.proValid_n[2*self.pe_id] = 0
+                    if io_port.proReady[2*self.pe_id+1] == 1:
+                        io_port.proValid_n[2*self.pe_id+1] = 0
+                    if io_port.proValid_n[2*self.pe_id] == 0 and io_port.proValid_n[2*self.pe_id+1] == 0:
+                        # generate the final 'clear' event
+                        io_port.proDelta_n[2*self.pe_id] = 0 - self.curr_vertex_value_word[self.curr_idx % 4]
+                        io_port.proIdx_n[2*self.pe_id] = self.curr_idx
+                        io_port.proValid_n[2*self.pe_id] = 1
+                        self.next_state = self.states.WAIT_ON_LAST_FULFILL
+                    else:
+                        self.next_state = self.states.EVGEN
+
         
         # WAIT_ON_EVGEN_MEM_DATA state
         if self.curr_state == self.states.WAIT_ON_EVGEN_MEM_DATA:
@@ -275,10 +297,13 @@ class PE:
                 hold_curr_mem_req()
                 self.next_state = self.states.WAIT_ON_EVGEN_MEM_DATA
         
-        # EVGEN_PAUSE state
-        if self.curr_state == self.states.EVGEN_PAUSE:
-            if io_port.proReady[2*self.pe_id] == 0 and io_port.proReady[2*self.pe_id + 1] == 0:
-                hold_propagate_events()
-                self.next_state = self.states.EVGEN_PAUSE
+        # WAIT_ON_LAST_FULFILL
+        if self.curr_state == self.states.WAIT_ON_LAST_FULFILL:
+            if io_port.proReady[2*self.pe_id] == 1:
+                self.ready = 1
+                self.next_state = self.states.IDLE
             else:
-                self.next_state = self.states.EVGEN
+                self.next_state = self.states.WAIT_ON_LAST_FULFILL
+    
+        # output status
+        io_port.PEReady_n[self.pe_id] = self.ready
