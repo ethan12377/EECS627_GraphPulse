@@ -13,12 +13,17 @@ def init():
     rowDelta = np.zeros(8, dtype=np.float16)
     binrowIdx = 0
     rowValid = 0
+    rowDelta_n = np.zeros(8, dtype=np.float16)
+    binrowIdx_n = 0
+    rowValid_n = 0
 
     # to coalescing unit
     global newReady, newReady_n
     global searchValue, searchValue_n
     newReady = np.zeros(8)
     searchValue = np.zeros(8, dtype=np.float16)
+    newReady_n = np.zeros(8)
+    searchValue_n = np.zeros(8, dtype=np.float16)
 
     #################################
     ### Output from output buffer ###
@@ -27,6 +32,7 @@ def init():
     # to scheduler
     global rowReady, rowReady_n
     rowReady = False
+    rowReady_n = False
 
     # to crossbar1
     global IssDelta, IssDelta_n
@@ -35,6 +41,9 @@ def init():
     IssDelta = np.zeros(4, dtype=np.float16)
     IssIdx = np.zeros(4)
     IssValid = np.zeros(4)
+    IssDelta_n = np.zeros(4, dtype=np.float16)
+    IssIdx_n = np.zeros(4)
+    IssValid_n = np.zeros(4)
 
     #############################
     ### Output from crossbar1 ###
@@ -43,6 +52,7 @@ def init():
     # to output buffer
     global IssReady, IssReady_n
     IssReady = np.zeros(4)
+    IssReady_n = np.zeros(4)
 
     # to PE
     global PEDelta, PEDelta_n
@@ -51,6 +61,9 @@ def init():
     PEDelta = np.zeros(4, dtype=np.float16)
     PEIdx = np.zeros(4)
     PEValid = np.zeros(4)
+    PEDelta_n = np.zeros(4, dtype=np.float16)
+    PEIdx_n = np.zeros(4)
+    PEValid_n = np.zeros(4)
 
     ###########################
     ### Output from PE (x4) ###
@@ -59,6 +72,7 @@ def init():
     # to crossbar1
     global PEReady, PEReady_n
     PEReady = np.zeros(4)
+    PEReady_n = np.zeros(4)
 
     # to crossbar2
     global proDelta, proDelta_n
@@ -67,18 +81,25 @@ def init():
     proDelta = np.zeros(8, dtype=np.float16)
     proIdx = np.zeros(8)
     proValid = np.zeros(8)
+    proDelta_n = np.zeros(8, dtype=np.float16)
+    proIdx_n = np.zeros(8)
+    proValid_n = np.zeros(8)
 
     # to edge cache
     global edgeReq, edgeReq_n
     global edgeVertIdx, edgeVertIdx_n
     edgeReq = np.zeros(4)
     edgeVertIdx = np.zeros(4)
+    edgeReq_n = np.zeros(4)
+    edgeVertIdx_n = np.zeros(4)
 
     # to scratchpad
     global vertReq, vertReq_n
     global vertIdx, vertIdx_n
     vertReq = np.zeros(4)
     vertIdx = np.zeros(4)
+    vertReq_n = np.zeros(4)
+    vertIdx_n = np.zeros(4)
 
     #############################
     ### Output from crossbar2 ###
@@ -87,6 +108,7 @@ def init():
     # to PE
     global proReady, proReady_n
     proReady = np.zeros(8)
+    proReady_n = np.zeros(8)
 
     # to CU
     global CUDelta, CUDelta_n
@@ -95,6 +117,9 @@ def init():
     CUDelta = np.zeros(8, dtype=np.float16)
     CUIdx = np.zeros(8)
     CUValid = np.zeros(8)
+    CUDelta_n = np.zeros(8, dtype=np.float16)
+    CUIdx_n = np.zeros(8)
+    CUValid_n = np.zeros(8)
 
     ###################################
     ### Output from coalescing unit ###
@@ -103,6 +128,7 @@ def init():
     # to crossbar2
     global CUReady, CUReady_n
     CUReady = np.zeros(8)
+    CUReady_n = np.zeros(8)
 
     # to queue
     global searchIdx, searchIdx_n
@@ -113,6 +139,10 @@ def init():
     newDelta = np.zeros(8, dtype=np.float16)
     newIdx = np.zeros(8)
     newValid = np.zeros(8)
+    searchIdx_n = np.zeros(8)
+    newDelta_n = np.zeros(8, dtype=np.float16)
+    newIdx_n = np.zeros(8)
+    newValid_n = np.zeros(8)
 
     ##############################
     ### Output from scratchpad ###
@@ -123,6 +153,8 @@ def init():
     global vertValid, vertValid_n
     vertResp = np.zeros(4)
     vertValid = np.zeros(4)
+    vertResp_n = np.zeros(4)
+    vertValid_n = np.zeros(4)
 
     # TODO: memory I/O
 
@@ -136,5 +168,8 @@ def init():
     edgeResp = np.zeros(4)
     edgeValid = np.zeros(4)
     edgeEnd = np.zeros(4)
+    edgeResp_n = np.zeros(4)
+    edgeValid_n = np.zeros(4)
+    edgeEnd_n = np.zeros(4)
 
     # TODO: memory I/O
