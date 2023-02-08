@@ -8,8 +8,8 @@ class Xbar_SchedToPE:
         self.num_input = num_input
         self.num_output = num_output
         self.freelist = Queue(maxsize=num_output)
-        # for pe_idx in range(num_output):
-        #     self.freelist.put_nowait(pe_idx)
+        for pe_idx in range(num_output):
+            self.freelist.put_nowait(pe_idx)
         self.PEReady_shifter = [np.zeros(num_output) for _ in range(2)]
         self.PEReady_posedge = np.zeros(num_output)
         # self.PE_alloc = np.zeros(num_output)
