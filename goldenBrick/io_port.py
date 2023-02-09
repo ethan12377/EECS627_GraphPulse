@@ -73,15 +73,24 @@ def init():
     proValid_n = np.zeros(8)
 
     # to cache controller
-    global pe_reqAddr, pe_reqAddr_n, pe_wrData, pe_wrData_n, pe_wrEn, pe_wrEn_n, pe_reqValid, pe_reqValid_n
-    pe_reqAddr = np.zeros(4)
-    pe_reqAddr_n = np.zeros(4)
-    pe_wrData = np.ndarray(shape=(4,8), dtype=np.float16)
-    pe_wrData_n = np.ndarray(shape=(4,8), dtype=np.float16)
+    global pe_vc_reqAddr, pe_vc_reqAddr_n
+    global pe_ec_reqAddr, pe_ec_reqAddr_n
+    global pe_wrData, pe_wrData_n
+    global pe_wrEn, pe_wrEn_n
+    global pe_vc_reqValid, pe_vc_reqValid_n
+    global pe_ec_reqValid, pe_ec_reqValid_n
+    pe_vc_reqAddr = np.zeros(4)
+    pe_vc_reqAddr_n = np.zeros(4)
+    pe_ec_reqAddr = np.zeros(4)
+    pe_ec_reqAddr_n = np.zeros(4)
+    pe_wrData = np.zeros(4, dtype=np.float16)
+    pe_wrData_n = np.zeros(4, dtype=np.float16)
     pe_wrEn = np.zeros(4)
     pe_wrEn_n = np.zeros(4)
-    pe_reqValid = np.zeros(4)
-    pe_reqValid_n = np.zeros(4)
+    pe_vc_reqValid = np.zeros(4)
+    pe_vc_reqValid_n = np.zeros(4)
+    pe_ec_reqValid = np.zeros(4)
+    pe_ec_reqValid_n = np.zeros(4)
 
     # to scratchpad
     # global vertReq, vertReq_n
@@ -128,7 +137,7 @@ def init():
     ##############################
 
     # to PE
-    # global vertResp, vertResp_n
+    global vc_rdData, vc_rdData_n
     # global vertValid, vertValid_n
     # vertResp = np.zeros(4)
     # vertValid = np.zeros(4)
@@ -139,13 +148,13 @@ def init():
     ### Output from cache ###
     #########################
     
-    global cache_rdData, cache_rdData_n
-    global cacheValid, cacheValid_n
+    global vc_rdData, vc_rdData_n, ec_rdData, ec_rdData_n
     # global edgeEnd, edgeEnd_n
-    cache_rdData = np.zeros(8, dtype=np.float16)
-    cache_rdData_n = np.zeros(8, dtype=np.float16)
-    cacheValid = np.zeros(4)
-    cacheValid_n = np.zeros(4)
+    vc_rdData = np.float16(0.0)
+    vc_rdData_n = np.float16(0.0)
+    ec_rdData = np.zeros(8)
+    ec_rdData_n = np.zeros(8)
+
     # edgeEnd = np.zeros(4)
 
     # TODO: memory I/O
@@ -153,11 +162,19 @@ def init():
     ####################################
     ### Output from Cache controller ###
     ####################################
-    global cc_reqAddr, cc_wrEn, cc_wrData
-    cc_reqAddr = 128 #invalid request addr
-    cc_wrEn = 0
-    cc_wrData = np.zeros(8, dtype=np.float16)
+    # to vertex cache
+    global cc_vertexAddr, cc_vc_wrEn, cc_vc_wrData
+    cc_vc_vertexAddr = 0
+    cc_vc_wrEn = 0
+    cc_vc_wrData = np.float16(0.0)
 
-    global cc_ready, cc_ready_n
-    cc_ready = np.zeros(4)
-    cc_ready_n = np.zeros(4)
+    # to edge cache
+    global cc_ec_edgeAddr
+    cc_ec_edgeAddr = 0
+
+    # to PE
+    global cc_ec_ready, cc_ec_ready_n, cc_vc_ready, cc_vc_ready_n
+    cc_ec_ready = np.zeros(4)
+    cc_ec_ready_n = np.zeros(4)
+    cc_vc_ready = np.zeros(4)
+    cc_vc_ready_n = np.zeros(4)

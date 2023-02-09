@@ -20,6 +20,7 @@ class PE:
         # storing values that are being worked on for the current operation
         self.curr_delta = 0
         self.curr_idx = 0
+        # TODO: need to fix this mem operation
         self.curr_vertex_value_word = np.zeros(4, dtype=np.float16)
         self.curr_vertex_value_word_ready = 0
 

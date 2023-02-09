@@ -5,26 +5,50 @@ import numpy as np
 
 class CC:
 
-    def __init__(self):
+    def __init__(self, cache_name):
         self.latest_gnt = 3
+        self.cache_name = cache_name
 
     def one_clock(self):
         # rotating priority, valid-inspecting selector
-        io_port.cc_ready_n = [0, 0, 0, 0]
-        if (io_port.pe_reqValid != 0).all():
-            if io_port.pe_reqValid[(self.latest_gnt + 1) % 4] == 1:
-                io_port.cc_ready_n[(self.latest_gnt + 1) % 4] = 1
-                self.latest_gnt = (self.latest_gnt + 1) % 4
-            elif io_port.pe_reqValid[(self.latest_gnt + 2) % 4] == 1:
-                io_port.cc_ready_n[(self.latest_gnt + 2) % 4] = 1
-                self.latest_gnt = (self.latest_gnt + 2) % 4
-            elif io_port.pe_reqValid[(self.latest_gnt + 3) % 4] == 1:
-                io_port.cc_ready_n[(self.latest_gnt + 3) % 4] = 1
-                self.latest_gnt = (self.latest_gnt + 3) % 4
-            else: # io_port.pe_reqValid[self.latest_gnt] == 1:
-                io_port.cc_ready_n[self.latest_gnt] = 1
+        if self.cache_name == 'ec':
+            io_port.cc_ec_ready_n = [0, 0, 0, 0]
+            if not all(v == 0 for v in io_port.pe_ec_reqValid):
+                if io_port.pe_ec_reqValid[(self.latest_gnt + 1) % 4] == 1:
+                    io_port.cc_ec_ready_n[(self.latest_gnt + 1) % 4] = 1
+                    self.latest_gnt = (self.latest_gnt + 1) % 4
+                elif io_port.pe_ec_reqValid[(self.latest_gnt + 2) % 4] == 1:
+                    io_port.cc_ec_ready_n[(self.latest_gnt + 2) % 4] = 1
+                    self.latest_gnt = (self.latest_gnt + 2) % 4
+                elif io_port.pe_ec_reqValid[(self.latest_gnt + 3) % 4] == 1:
+                    io_port.cc_ec_ready_n[(self.latest_gnt + 3) % 4] = 1
+                    self.latest_gnt = (self.latest_gnt + 3) % 4
+                else: # io_port.pe_reqValid[self.latest_gnt] == 1:
+                    io_port.cc_ec_ready_n[self.latest_gnt] = 1
         
             # mux
-            io_port.cc_reqAddr = io_port.pe_reqAddr[self.latest_gnt]
-            io_port.cc_wrEn = io_port.pe_wrEn[self.latest_gnt]
-            io_port.cc_wrData = io_port.pe_wrData[self.latest_gnt]
+            io_port.cc_ec_edgeAddr = io_port.pe_ec_reqAddr[self.latest_gnt]
+
+        elif self.cache_name == 'vc':
+            io_port.cc_vc_ready_n = [0, 0, 0, 0]
+            if not all(v == 0 for v in io_port.pe_vc_reqValid):
+                if io_port.pe_vc_reqValid[(self.latest_gnt + 1) % 4] == 1:
+                    io_port.cc_vc_ready_n[(self.latest_gnt + 1) % 4] = 1
+                    self.latest_gnt = (self.latest_gnt + 1) % 4
+                elif io_port.pe_vc_reqValid[(self.latest_gnt + 2) % 4] == 1:
+                    io_port.cc_vc_ready_n[(self.latest_gnt + 2) % 4] = 1
+                    self.latest_gnt = (self.latest_gnt + 2) % 4
+                elif io_port.pe_vc_reqValid[(self.latest_gnt + 3) % 4] == 1:
+                    io_port.cc_vc_ready_n[(self.latest_gnt + 3) % 4] = 1
+                    self.latest_gnt = (self.latest_gnt + 3) % 4
+                else: # io_port.pe_reqValid[self.latest_gnt] == 1:
+                    io_port.cc_vc_ready_n[self.latest_gnt] = 1
+        
+            # mux
+            io_port.cc_vc_vertexAddr = io_port.pe_vc_reqAddr[self.latest_gnt]
+            io_port.cc_vc_wrEn = io_port.pe_wrEn[self.latest_gnt]
+            io_port.cc_vc_wrData = io_port.pe_wrData[self.latest_gnt]
+        
+        else: # should never get here
+            io_port.cc_ec_ready_n = [0, 0, 0, 0]
+            io_port.cc_vc_ready_n = [0, 0, 0, 0]
