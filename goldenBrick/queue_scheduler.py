@@ -9,20 +9,22 @@ class QS:
     def __init__(self):
         self.queue = np.zeros((8, 8, 4), dtype=np.float16)
         self.rowValid_matrix = np.zeros((8, 4))
-        # init row arbiter???
-        self.RRArbiter = RoundRobinArbiter()
+
+        # init bin arbiter
+        self.RRArbiter = RoundRobinArbiter(8)
         # init priority encoder
         self.prior_encoder = Priority_Encoder()
+
         self.reading_bin_n = 0
         self.reading_row_n = 0
         # ???
         self.reading_bin = 0
-        # search_buf???
-        self.searchIdx_buf = []
+
         # 0 for output buffer
         # 1 for CU
-        self.state = 0
-        self.state_n = 0
+        # 2 for chosen as next reading_bin but waiting for CU clean
+        self.state = np.zeros((8))
+        self.state_n = np.zeros((8))
 
     def one_clock(self):
         # input:
@@ -38,85 +40,99 @@ class QS:
         # io_port.rowValid_n = io_port.rowValid
         # io_port.newReady_n = io_port.newReady
         # io_port.searchValue_n = io_port.searchValue
-        self.state =  self.state_n
-        if(self.state):
-            self.search_for_cu()
-            self.write_from_cu()
-        else:    
-            self.read_row()
+        
+        self.state = self.state_n
+        for i  in range(len(self.state)):
+
+            if(self.state[i] == 1):
+                self.search_for_event(io_port.searchIdx[i])
+                self.write_from_cu(i)
+
+            elif((self.state[i] == 0)):
+                self.read_row(i, io_port.cuclean[i])
+                # if the bin is empty now, change to another bin
+                binValid = self.bin_valid_cal(self.rowValid_matrix)
+                if binValid[i] == 0:
+                    (self.reading_bin_n, reading_bin_n_valid) = self.RRArbiter.request(binValid)
+                    if reading_bin_n_valid:
+                        self.state_n[i] = 1
+                        if io_port.cuclean[[self.reading_bin_n]]:
+                            #if cu is already clean for this bin, enter read_row
+                            #otherwise, wait until cuclean
+                            self.state_n[self.reading_bin_n] = 0
+                        else:
+                            self.state_n[self.reading_bin_n] = 2
+                    else:
+                        print(f"all bin clean, finish!!")
+
+            elif((self.state[i] == 2)):
+                #need to deal with the situation that cu is not 
+                self.search_for_event(io_port.searchIdx[i])
+                self.write_from_cu(i)
+                # Once the cu is clean, change to read_row state
+                if io_port.cuclean[[i]]:
+                    self.state_n[self.reading_bin_n] = 0
+            else:
+                print(f"undefined state!!")
+
 
 
     # read to output_buffer
-    def read_row(self):
-        self.reading_bin_n = 8 #init reading_bin???
-        for i in range(self.rowValid_matrix.shape[0]):
-            for j in range(self.rowValid_matrix.shape[1]):
-                io_port.rowValid_n += self.rowValid_matrix[i][j]
-        if(io_port.rowReady):
-            # select bin???
-            self.reading_bin_n = self.RRArbiter
+    def read_row(self, bin_idx,cuclean):
+        if cuclean:
+           if(io_port.rowReady): 
             # select row
-            read_rowidx_n = self.prior_encoder.priority(self.rowValid_matrix[self.reading_bin_n][:])
-            # if (self.rowValid_matrix[read_binidx_n, read_rowidx_n]):
-            io_port.rowDelta_n = self.queue[:][self.reading_bin_n][read_rowidx_n]
-            io_port.binrowIdx_n = self.reading_bin_n * 4 + read_rowidx_n
-            # remove after read
-            self.rowValid_matrix[self.reading_bin_n, read_rowidx_n] = 0
-            self.queue[:][self.reading_bin_n][read_rowidx_n] = np.zeros(8, dtype=np.float16)
-
-    # search/read event for cu given each Idx:
-    # if exist in buf, return false, stall cu search
-    # need to consider whether the bin is read by read_row at the same cycle
-    def search_for_event(self, eventIdx):
-        if eventIdx in self.searchIdx_buf:
-            return False
+            read_rowidx_n = self.prior_encoder.priority(self.rowValid_matrix[bin_idx][:])
+            io_port.binrowIdx_n = bin_idx * 4 + read_rowidx_n
+            io_port.rowDelta_n = self.queue[:][bin_idx][read_rowidx_n]
+             # remove after read
+            self.rowValid_matrix[bin_idx, read_rowidx_n] = 0
+            self.queue[:][bin_idx][read_rowidx_n] = np.zeros(8, dtype=np.float16)
         else:
-            self.searchIdx_buf.append(eventIdx)
-            search_col = int(eventIdx //32)
-            search_bin = int((eventIdx - search_col*32) // 4)
-            search_row = int(eventIdx - search_col*32 - search_bin *4)
-            if search_bin == self.reading_bin_n:
-                return False
-            else:
-                return self.queue[search_col][search_bin][search_row]
+            # cu is not clean yet
+            print(f"wrong state!! cu not clean yet!! cannot read_row")
 
-    def search_for_cu(self):
-        for idx in io_port.searchIdx:
-            event = self.search_for_event(idx)
-            if event: 
-                io_port.searchValue_n = event
-            else:
-                #how to stall if event is false???
-                #one more valid, ready pair
-                io_port.searchValue_n = False
 
-    # write event from cu
-    # writing to the same row at the same time not allowed
-    def write_from_cu(self):
-        new_write_Idx = np.zeros((8,3),dtype=int)
-        searchIdx_bin = np.zeros(8,dtype=int)
-        # ???
-        # writing_bin_buf = np.zeros((8),dtype=int)
-        for i in range(8):
-            print("i = ", i)
-            new_write_Idx[i][0] = int(io_port.newIdx[i] // 32)
-            print("column = ",new_write_Idx[i][0])
-            new_write_Idx[i][1] = int((io_port.newIdx[i] - new_write_Idx[i][0]*32) // 4)
-            print("bin = ",new_write_Idx[i][1])
-            new_write_Idx[i][2] = int(io_port.newIdx[i] - new_write_Idx[i][0]*32 - new_write_Idx[i][1] *4)
-            print("row = ",new_write_Idx[i][2])
-            # find bin of searchIdx
-            temp = int(io_port.searchIdx[i] // 32)
-            searchIdx_bin[i] = int((io_port.searchIdx[i] - temp*32) // 4)
-        for i in range(8):
-            # if the bin is read by outputbuf or cu, write need to stall
-            self.reading_bin = int(io_port.binrowIdx // 4)
-            if new_write_Idx[i][1] == self.reading_bin or new_write_Idx[i][1] in searchIdx_bin[:]:
-                io_port.newReady_n[i] == 0
-            # if the bin is not being read, write to array
-            else:
-                io_port.newReady_n[i] == 1
-                if io_port.newValid[i]:
-                    self.queue[new_write_Idx[i]] = io_port.newDelta[i]
-                    if io_port.newIdx[i] in self.searchIdx_buf:
-                        self.searchIdx_buf.remove(io_port.newIdx[i]) 
+
+    
+    
+    # search/read event for each cu given Idx:
+    def search_for_event(self, eventIdx):
+        [search_col, search_bin, search_row] = self.idx_trans(eventIdx)
+        io_port.searchValue_n[search_bin] = self.queue[search_col][search_bin][search_row]
+
+
+    # write event from each cu
+    # do we need new_ready anymore???
+    def write_from_cu(self,bin_idx):
+        [write_col, write_bin, write_row] = self.idx_trans(io_port.newIdx[bin_idx])
+        io_port.newReady_n[bin_idx] == 1
+        if io_port.newValid[bin_idx]:
+            self.queue[write_col][write_bin][write_row] = io_port.newDelta[bin_idx]
+
+                
+    def idx_trans(self, idx):
+        col = int(idx //32)
+        bin = int((idx - col*32) // 4)
+        row = int(idx - col*32 - bin *4)
+        return [col, bin, row]
+    
+    def bin_valid_cal(self, rowValid_matrix:np.ndarray):
+        rowValid = np.zeros((4))
+        binValid = np.zeros((8))
+        for i in range(rowValid_matrix.shape[0]):
+            rowValid = rowValid_matrix[i][:]
+            for eachrow in rowValid:
+                if eachrow:
+                    binValid[i] = 1
+        return binValid
+
+
+    # print function
+    # print("i = ", i)
+    # new_write_Idx[i][0] = int(io_port.newIdx[i] // 32)
+    # print("column = ",new_write_Idx[i][0])
+    # new_write_Idx[i][1] = int((io_port.newIdx[i] - new_write_Idx[i][0]*32) // 4)
+    # print("bin = ",new_write_Idx[i][1])
+    # new_write_Idx[i][2] = int(io_port.newIdx[i] - new_write_Idx[i][0]*32 - new_write_Idx[i][1] *4)
+    # print("row = ",new_write_Idx[i][2])

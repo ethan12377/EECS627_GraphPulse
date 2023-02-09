@@ -16,8 +16,7 @@ class RoundRobinArbiter:
         granded_prority = len(self.bin_priority)
         next_prority = self.bin_priority
         self.granded_bin_valid = 0
-        no_valid_request = [0]*len(self.bin_priority)
-        if requester_id != no_valid_request:
+        if requester_id.any():
             self.granded_bin_valid = 1 
             for i in range(len(requester_id)):
                 if requester_id[i]:

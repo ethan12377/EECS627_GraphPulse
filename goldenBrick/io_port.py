@@ -114,10 +114,12 @@ def init():
     global newDelta, newDelta_n
     global newIdx, newIdx_n
     global newValid, newValid_n
+    global cuclean
     searchIdx = np.zeros(8)
     newDelta = np.zeros(8, dtype=np.float16)
     newIdx = np.zeros(8)
     newValid = np.zeros(8)
+    cuclean = np.zeros(8)
 
     ##############################
     ### Output from scratchpad ###
