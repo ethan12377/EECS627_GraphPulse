@@ -121,10 +121,9 @@ class QS:
         rowValid = np.zeros((4))
         binValid = np.zeros((8))
         for i in range(rowValid_matrix.shape[0]):
-            rowValid = rowValid_matrix[i][:]
-            for eachrow in rowValid:
-                if eachrow:
-                    binValid[i] = 1
+            rowValid = rowValid_matrix[i][:] 
+            if rowValid.any():
+                binValid[i] = 1
         return binValid
 
 
