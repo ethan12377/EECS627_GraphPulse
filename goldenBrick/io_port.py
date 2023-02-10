@@ -163,7 +163,7 @@ def init():
     ### Output from Cache controller ###
     ####################################
     # to vertex cache
-    global cc_vertexAddr, cc_vc_wrEn, cc_vc_wrData
+    global cc_vc_vertexAddr, cc_vc_wrEn, cc_vc_wrData
     cc_vc_vertexAddr = 0
     cc_vc_wrEn = 0
     cc_vc_wrData = np.float16(0.0)

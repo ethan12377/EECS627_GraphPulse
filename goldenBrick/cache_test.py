@@ -60,9 +60,11 @@ if __name__ == "__main__":
 
     # read edge data
     io_port.pe_ec_reqValid = [1, 1, 1, 1]
-    io_port.pe_ec_reqAddr = [0, 32, 0, 32]
+    io_port.pe_ec_reqAddr = [0, 8192, 0, 8192]
     io_port.pe_vc_reqValid = [0, 0, 0, 0]
 
+    # print(EC0.colIndex[0:16])
+    # print(EC0.rowIndex[0:16])
     for i in range(8,12):
         CC_VC.one_clock()
         CC_EC.one_clock()
