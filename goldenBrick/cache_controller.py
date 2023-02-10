@@ -26,8 +26,8 @@ class CC:
                 else: # io_port.pe_reqValid[self.latest_gnt] == 1:
                     io_port.cc_ec_ready_n[self.latest_gnt] = 1
         
-            # mux
-            io_port.cc_ec_edgeAddr = io_port.pe_ec_reqAddr[self.latest_gnt]
+            # mux, typecast to avoid compiler error
+            io_port.cc_ec_edgeAddr = int(io_port.pe_ec_reqAddr[self.latest_gnt])
 
         elif self.cache_name == 'vc':
             io_port.cc_vc_ready_n = [0, 0, 0, 0]
@@ -44,8 +44,8 @@ class CC:
                 else: # io_port.pe_reqValid[self.latest_gnt] == 1:
                     io_port.cc_vc_ready_n[self.latest_gnt] = 1
         
-            # mux
-            io_port.cc_vc_vertexAddr = io_port.pe_vc_reqAddr[self.latest_gnt]
+            # mux, typecasted to avoid compiler error
+            io_port.cc_vc_vertexAddr = int(io_port.pe_vc_reqAddr[self.latest_gnt])
             io_port.cc_vc_wrEn = io_port.pe_wrEn[self.latest_gnt]
             io_port.cc_vc_wrData = io_port.pe_wrData[self.latest_gnt]
         
