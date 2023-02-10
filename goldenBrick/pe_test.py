@@ -24,6 +24,39 @@ def update():
     io_port.pe_vc_reqValid = io_port.pe_vc_reqValid_n
     io_port.pe_ec_reqValid = io_port.pe_ec_reqValid_n
 
+def print_pe_status():
+    print('##### PE #####')
+    print('state = ' + str(PE0.curr_state))
+    print()
+
+def print_cc_status():
+    print('##### CC #####')
+    print('CC_VC:')
+    print('vc_addr = ' + str(io_port.cc_vc_vertexAddr))
+    print('vc_rddata = ' + str(io_port.vc_rdData))
+    print('vc_wren = ' + str(io_port.cc_vc_wrEn))
+    print('vc_wrdata = ' + str(io_port.cc_vc_wrData))
+    print('cc_vc_ready = ' + str(io_port.cc_vc_ready))
+    print('CC_EC:')
+    print('ec_addr = ' + str(io_port.cc_ec_edgeAddr))
+    print('ec_rddata = ' + str(io_port.ec_rdData))
+    print('cc_ec_ready = ' + str(io_port.cc_ec_ready))
+    print()
+
+def print_system_status(cycle):
+    print('###################')
+    print('##### CYCLE ' + str(cycle) + ' #####')
+    print('###################')
+    print()
+    print_pe_status()
+    print_cc_status()
+    print()
+
+def send_event(pe_id, vertex_idx, delta):
+    io_port.PEValid[pe_id] = 1
+    io_port.PEDelta[pe_id] = delta
+    io_port.PEIdx[pe_id] = vertex_idx
+
 if __name__ == "__main__":
 
     io_port.init()
@@ -36,11 +69,17 @@ if __name__ == "__main__":
 
     # TODO: create a simple graph to test on
     # TODO: send in a stimulus to start the FSM in PE
+    # TODO: create a function to print out system status
 
-    for i in range(0,4):
+    for i in range(0,2):
+        # default to no valid input into the PEs
+        io_port.PEValid = np.zeros(4)
+        # insert event here
+        # send_event(pe_id=0, vertex_idx=0, delta=np.float16(1.0))
         PE0.one_clock()
         CC_VC.one_clock()
         CC_EC.one_clock()
         EC0.one_clock()
         VC0.one_clock()
         update()
+        print_system_status(i)

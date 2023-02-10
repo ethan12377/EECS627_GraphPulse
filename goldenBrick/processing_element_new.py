@@ -12,7 +12,6 @@ class PE:
         # status
         self.ready = 1
         self.ruw_complete = 0
-        self.evgen_complete = 0
 
         # FPU parameters
         self.fpu_pipe_depth = fpu_pipe_depth
@@ -262,7 +261,7 @@ class PE:
                         self.ec_req_status = 3
                 else: # not ready to receive new event, hold current event
                     self.hold_propagate_events(0)
-            elif self.curr_evgen_idx == self.end: # reach the end of evgen, wait for fulfill
+            elif self.curr_evgen_idx == self.end and self.proport0_done == 0: # reach the end of evgen, wait for fulfill
                 if io_port.proReady[2*self.pe_id] == 1:
                     self.proport0_done = 1
                 else:
@@ -284,14 +283,14 @@ class PE:
                         self.ec_req_status = 3
                 else: # not ready to receive new event, hold current event
                     self.hold_propagate_events(1)
-            elif self.curr_evgen_idx == self.end: # reach the end of evgen, wait for fulfill
+            elif self.curr_evgen_idx == self.end and self.proport1_done == 0: # reach the end of evgen, wait for fulfill
                 if io_port.proReady[2*self.pe_id+1] == 1:
                     self.proport1_done = 1
                 else:
                     self.hold_propagate_events(1)
 
             # next state
-            if self.proport0_done == 1 and self.proport1_done == 1: # finished fulfilling last event
+            if self.proport0_done == 1 and self.proport1_done == 1 and self.ruw_complete == 1: # finished fulfilling last event
                 self.next_state = self.states.IDLE
             else:
                 self.next_state = self.states.EVGEN
