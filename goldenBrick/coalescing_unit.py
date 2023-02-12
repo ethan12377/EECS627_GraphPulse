@@ -1,5 +1,6 @@
 import io_port
 import numpy as np
+import copy
 
 class CU:
 
@@ -14,8 +15,8 @@ class CU:
         #   io_port.searchIdx
 
         # TODO: update *_n
-        io_port.CUReady_n = io_port.CUReady
-        io_port.searchIdx_n = io_port.searchIdx
-        io_port.newDelta_n = io_port.newDelta
-        io_port.newIdx_n = io_port.newIdx
-        io_port.newValid_n = io_port.newValid
+        io_port.CUReady_n = copy.deepcopy(io_port.CUReady)
+        io_port.searchIdx_n = copy.deepcopy(io_port.searchIdx)
+        io_port.newDelta_n = copy.deepcopy(io_port.newDelta)
+        io_port.newIdx_n = copy.deepcopy(io_port.newIdx)
+        io_port.newValid_n = copy.deepcopy(io_port.newValid)

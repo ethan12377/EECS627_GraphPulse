@@ -1,5 +1,6 @@
 import io_port
 import numpy as np
+import copy
 
 class EC:
 
@@ -12,6 +13,6 @@ class EC:
         #   io_port.edgeVertIdx
 
         # TODO: update *_n
-        io_port.edgeResp_n = io_port.edgeResp
-        io_port.edgeValid_n = io_port.edgeValid
-        io_port.edgeEnd_n = io_port.edgeEnd
+        io_port.edgeResp_n = copy.deepcopy(io_port.edgeResp)
+        io_port.edgeValid_n = copy.deepcopy(io_port.edgeValid)
+        io_port.edgeEnd_n = copy.deepcopy(io_port.edgeEnd)

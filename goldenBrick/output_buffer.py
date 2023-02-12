@@ -1,5 +1,6 @@
 import io_port
 import numpy as np
+import copy
 
 class OB:
 
@@ -14,7 +15,7 @@ class OB:
         #   io_port.IssReady
 
         # TODO: update *_n
-        io_port.rowReady_n = io_port.rowReady
-        io_port.IssDelta_n = io_port.IssDelta
-        io_port.IssIdx_n = io_port.IssIdx
-        io_port.IssValid_n = io_port.IssValid
+        io_port.rowReady_n = copy.deepcopy(io_port.rowReady)
+        io_port.IssDelta_n = copy.deepcopy(io_port.IssDelta)
+        io_port.IssIdx_n = copy.deepcopy(io_port.IssIdx)
+        io_port.IssValid_n = copy.deepcopy(io_port.IssValid)

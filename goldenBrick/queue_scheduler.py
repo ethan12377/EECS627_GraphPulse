@@ -1,5 +1,6 @@
 import io_port
 import numpy as np
+import copy
 
 class QS:
 
@@ -15,8 +16,8 @@ class QS:
         #   io_port.searchValue
 
         # TODO: update *_n
-        io_port.rowDelta_n = io_port.rowDelta
-        io_port.binrowIdx_n = io_port.binrowIdx
-        io_port.rowValid_n = io_port.rowValid
-        io_port.newReady_n = io_port.newReady
-        io_port.searchValue_n = io_port.searchValue
+        io_port.rowDelta_n = copy.deepcopy(io_port.rowDelta)
+        io_port.binrowIdx_n = copy.deepcopy(io_port.binrowIdx)
+        io_port.rowValid_n = copy.deepcopy(io_port.rowValid)
+        io_port.newReady_n = copy.deepcopy(io_port.newReady)
+        io_port.searchValue_n = copy.deepcopy(io_port.searchValue)
