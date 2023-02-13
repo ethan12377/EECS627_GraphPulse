@@ -2,11 +2,11 @@ import io_port
 import numpy as np
 
 # 8 bit address, 16-bit value
-# 0, 2 share port, 1, 3 share port
 
 class VC:
 
     def __init__(self):
+        # initialize all vertex values to zero
         self.vertexValues = np.zeros(256, dtype=np.float16)
 
     def one_clock(self):
