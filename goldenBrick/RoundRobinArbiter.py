@@ -41,12 +41,12 @@ class RoundRobinArbiter:
 # # test the Round Robin Arbiter
 # bin_priority = 8
 # arbiter = RoundRobinArbiter(bin_priority)
-# # print(arbiter.bin_priority)
+# print(arbiter.bin_priority)
 
-# request0 = [0,1,0,0,0,0,0,0]
-# request1 = [1,0,1,0,0,0,0,1]
-# request2 = [0,1,0,0,0,0,0,0]
-# request3 = [0,1,0,1,0,0,0,0]
+# request0 = np.array([0,1,0,0,0,0,0,0])
+# request1 = np.array([1,0,1,0,0,0,0,1])
+# request2 = np.array([0,1,0,0,0,0,0,0])
+# request3 = np.array([0,1,0,1,0,0,0,0])
 # arbiter.request(request0)
 # time.sleep(1)
 # arbiter.request(request1)
@@ -55,5 +55,5 @@ class RoundRobinArbiter:
 # time.sleep(1)
 # arbiter.request(request3)
 # time.sleep(1)
-# arbiter.request([0,0,0,0,0,0,0,0])
+# arbiter.request(np.array([0,0,0,0,0,0,0,0]))
 

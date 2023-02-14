@@ -25,6 +25,11 @@ def init():
     searchValue = np.zeros(8, dtype=np.float16)
     searchValue_n = np.zeros(8, dtype=np.float16)
 
+    # state
+    global state, state_n
+    state = np.zeros(8)
+    state_n = np.zeros(8)
+
     #################################
     ### Output from output buffer ###
     #################################
@@ -85,6 +90,10 @@ def init():
     vertReq = np.zeros(4)
     vertIdx = np.zeros(4)
 
+    # to scheduler
+    global initialFinish
+    initialFinish = 0
+
     #############################
     ### Output from crossbar2 ###
     #############################
@@ -114,12 +123,14 @@ def init():
     global newDelta, newDelta_n
     global newIdx, newIdx_n
     global newValid, newValid_n
-    global cuclean
+    global cuclean, cuclean_n
+    global searchValid, searchValid_n
     searchIdx = np.zeros(8)
     newDelta = np.zeros(8, dtype=np.float16)
     newIdx = np.zeros(8)
     newValid = np.zeros(8)
     cuclean = np.zeros(8)
+    searchValid = np.zeros(8)
 
     ##############################
     ### Output from scratchpad ###
