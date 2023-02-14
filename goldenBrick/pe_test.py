@@ -4,6 +4,7 @@ from cache_controller import CC
 from edge_cache import EC
 from vertex_cache import VC
 from processing_element_new import PE
+from evqueue_software_model import EVQ
 import copy
 
 def update():
@@ -23,15 +24,21 @@ def update():
     io_port.pe_wrData = copy.deepcopy(io_port.pe_wrData_n)
     io_port.pe_wrEn = copy.deepcopy(io_port.pe_wrEn_n)
     io_port.pe_vc_reqValid = copy.deepcopy(io_port.pe_vc_reqValid_n)
-    # print(str(io_port.pe_vc_reqValid))
     io_port.pe_ec_reqValid = copy.deepcopy(io_port.pe_ec_reqValid_n)
-    # print(str(io_port.pe_ec_reqValid))
+    # evque software ideal model
+    io_port.PEIdx = copy.deepcopy(io_port.PEIdx_n)
+    io_port.PEValid = copy.deepcopy(io_port.PEValid_n)
+    io_port.PEDelta = copy.deepcopy(io_port.PEDelta_n)
+    io_port.proReady = copy.deepcopy(io_port.proReady_n)
+
 
 def print_pe_status():
     print('##### PE #####')
     print('state = \t' + str(PE0.curr_state))
     print('ready = \t' + str(io_port.PEReady[0]))
     print('initializing = \t' + str(PE0.initializing))
+    print('curr index = \t' + str(PE0.curr_idx))
+    print('curr_delta = \t' + str(PE0.curr_delta))
     print('### FPU ###')
     print('fpu value pipe = \t' + str(PE0.fpu_value_pipe))
     print('fpu status pipe = \t' + str(PE0.fpu_status_pipe))
@@ -68,6 +75,12 @@ def print_cc_status():
     print('cc_ec_ready = \t' + str(io_port.cc_ec_ready))
     print()
 
+def print_queue_status():
+    print('##### QUEUE #####')
+    print('pe valid = \t' + str(io_port.PEValid))
+    print('pe idx = \t' + str(io_port.PEIdx))
+    print('pe delta = \t' + str(io_port.PEDelta))
+
 def print_system_status(cycle):
     print('###################')
     print('##### CYCLE ' + str(cycle) + ' #####')
@@ -75,6 +88,7 @@ def print_system_status(cycle):
     print()
     print_pe_status()
     # print_cc_status()
+    print_queue_status()
     print()
 
 def send_event(pe_id, vertex_idx, delta):
@@ -90,55 +104,24 @@ if __name__ == "__main__":
     CC_EC = CC(cache_name='ec')
     EC0 = EC(csr_filename='csr.txt')
     VC0 = VC()
+    EVQ0 = EVQ(queue_size=256)
     # for now, just test single processor
     PE0 = PE(pe_id=0, fpu_pipe_depth=3, threshold=0.001, damping_factor=0.85, num_of_vertices=2)
 
-    # TODO: create a simple graph to test on
-    # TODO: send in a stimulus to start the FSM in PE
-    # TODO: create a function to print out system status
-
     curr_cycle = 0
-    print_range = [0, 20]
+    print_range = [0, 25]
 
-    # send_event(pe_id=0, vertex_idx=0, delta=np.float16(0.25))
-    PE0.one_clock()
-    CC_VC.one_clock()
-    CC_EC.one_clock()
-    EC0.one_clock()
-    VC0.one_clock()
-    update()
-    if curr_cycle >= print_range[0] and curr_cycle <= print_range[1]:
-        print_system_status(curr_cycle)
-    curr_cycle += 1
-
-    for i in range(curr_cycle, curr_cycle + 10):
-        # default to no valid input into the PEs
-        io_port.PEValid = np.zeros(4)
+    for i in range(curr_cycle, curr_cycle + 50):
         # insert event here
-        print(str(io_port.proValid))
         PE0.one_clock()
         CC_VC.one_clock()
         CC_EC.one_clock()
         EC0.one_clock()
         VC0.one_clock()
+        EVQ0.one_clock()
         update()
         if i >= print_range[0] and i <= print_range[1]:
             print_system_status(i)
         curr_cycle += 1
     
-    io_port.proReady[0] = 1
-    io_port.proReady[1] = 1
-
-    for i in range(curr_cycle, curr_cycle + 10):
-        # default to no valid input into the PEs
-        io_port.PEValid = np.zeros(4)
-        # insert event here
-        PE0.one_clock()
-        CC_VC.one_clock()
-        CC_EC.one_clock()
-        EC0.one_clock()
-        VC0.one_clock()
-        update()
-        if i >= print_range[0] and i <= print_range[1]:
-            print_system_status(i)
-        curr_cycle += 1
+    print(str(VC0.vertexValues[0:8]))

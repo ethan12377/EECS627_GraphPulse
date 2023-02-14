@@ -49,8 +49,11 @@ def init():
     global PEIdx, PEIdx_n
     global PEValid, PEValid_n
     PEDelta = np.zeros(4, dtype=np.float16)
-    PEIdx = np.zeros(4)
-    PEValid = np.zeros(4)
+    PEDelta_n = np.zeros(4, dtype=np.float16)
+    PEIdx = np.zeros(4, dtype=int)
+    PEIdx_n = np.zeros(4, dtype=int)
+    PEValid = np.zeros(4, dtype=int)
+    PEValid_n = np.zeros(4, dtype=int)
 
     ###########################
     ### Output from PE (x4) ###
@@ -67,10 +70,10 @@ def init():
     global proValid, proValid_n
     proDelta = np.zeros(8, dtype=np.float16)
     proDelta_n = np.zeros(8, dtype=np.float16)
-    proIdx = np.zeros(8)
-    proIdx_n = np.zeros(8)
-    proValid = np.zeros(8)
-    proValid_n = np.zeros(8)
+    proIdx = np.zeros(8, dtype=int)
+    proIdx_n = np.zeros(8, dtype=int)
+    proValid = np.zeros(8, dtype=int)
+    proValid_n = np.zeros(8, dtype=int)
 
     # to cache controller
     global pe_vc_reqAddr, pe_vc_reqAddr_n
@@ -79,18 +82,18 @@ def init():
     global pe_wrEn, pe_wrEn_n
     global pe_vc_reqValid, pe_vc_reqValid_n
     global pe_ec_reqValid, pe_ec_reqValid_n
-    pe_vc_reqAddr = np.zeros(4)
-    pe_vc_reqAddr_n = np.zeros(4)
-    pe_ec_reqAddr = np.zeros(4)
-    pe_ec_reqAddr_n = np.zeros(4)
+    pe_vc_reqAddr = np.zeros(4, dtype=int)
+    pe_vc_reqAddr_n = np.zeros(4, dtype=int)
+    pe_ec_reqAddr = np.zeros(4, dtype=int)
+    pe_ec_reqAddr_n = np.zeros(4, dtype=int)
     pe_wrData = np.zeros(4, dtype=np.float16)
     pe_wrData_n = np.zeros(4, dtype=np.float16)
-    pe_wrEn = np.zeros(4)
-    pe_wrEn_n = np.zeros(4)
-    pe_vc_reqValid = np.zeros(4)
-    pe_vc_reqValid_n = np.zeros(4)
-    pe_ec_reqValid = np.zeros(4)
-    pe_ec_reqValid_n = np.zeros(4)
+    pe_wrEn = np.zeros(4, dtype=int)
+    pe_wrEn_n = np.zeros(4, dtype=int)
+    pe_vc_reqValid = np.zeros(4, dtype=int)
+    pe_vc_reqValid_n = np.zeros(4, dtype=int)
+    pe_ec_reqValid = np.zeros(4, dtype=int)
+    pe_ec_reqValid_n = np.zeros(4, dtype=int)
 
     # to scratchpad
     # global vertReq, vertReq_n
@@ -152,8 +155,8 @@ def init():
     # global edgeEnd, edgeEnd_n
     vc_rdData = np.float16(0.0)
     vc_rdData_n = np.float16(0.0)
-    ec_rdData = np.zeros(8)
-    ec_rdData_n = np.zeros(8)
+    ec_rdData = np.zeros(8, dtype=int)
+    ec_rdData_n = np.zeros(8, dtype=int)
 
     # edgeEnd = np.zeros(4)
 

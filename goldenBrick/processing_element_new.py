@@ -1,7 +1,6 @@
 import io_port
 import numpy as np
 from enum import Enum
-import copy
 
 # reduce function:      fpu add
 
@@ -12,30 +11,30 @@ import copy
 class PE:
 
     def __init__(self, pe_id, threshold, fpu_pipe_depth, damping_factor, num_of_vertices):
-        self.pe_id = pe_id # use id to differentiate the four pes
+        self.pe_id = int(pe_id) # use id to differentiate the four pes
         self.threshold = threshold
         self.damping_factor = damping_factor
-        self.num_of_vertices = num_of_vertices
+        self.num_of_vertices = int(num_of_vertices)
 
         # status
-        self.ready = 0
-        self.ruw_complete = 0
-        self.initializing = 1
+        self.ready = int(0)
+        self.ruw_complete = int(0)
+        self.initializing = int(1)
 
         # initialization parameters
         self.init_value = np.float16(0.0)
         self.init_value_denom = np.float16(0.0)
-        self.init_value_ready = 0
-        self.init_value_denom_ready = 0
+        self.init_value_ready = int(0)
+        self.init_value_denom_ready = int(0)
 
         # FPU parameters
         self.fpu_pipe_depth = fpu_pipe_depth
         self.fpu_value_pipe = np.zeros(fpu_pipe_depth + 1, dtype=np.float16)
-        self.fpu_status_pipe = np.zeros(fpu_pipe_depth + 1) # 0: invalid; 1: ruw; 2: prodelta, init value (INIT); 3: d * delta, init value denom (INIT)
+        self.fpu_status_pipe = np.zeros(fpu_pipe_depth + 1, dtype=int) # 0: invalid; 1: ruw; 2: prodelta, init value (INIT); 3: d * delta, init value denom (INIT)
 
         # storing values that are being worked on for the current operation
         self.curr_delta = np.float16(0.0)
-        self.curr_idx = 0
+        self.curr_idx = int(0)
         # self.curr_vertex_value = np.float16(0.0)
         # self.curr_vertex_value_ready = 0
 
@@ -45,27 +44,27 @@ class PE:
         self.next_state = self.states.INIT
 
         # start and end for extracting adjacency list
-        self.start = 0
-        self.end = 0
-        self.start_ready = 0
-        self.end_ready = 0
+        self.start = int(0)
+        self.end = int(0)
+        self.start_ready = int(0)
+        self.end_ready = int(0)
         
         # status for cache requests
-        self.vc_req_status = 0 # 0: idle, 1: waiting for read, 2: waiting for write
-        self.ec_req_status = 0 # 0: idle, 1: start, 2: end, 3: col_index_word
+        self.vc_req_status = int(0) # 0: idle, 1: waiting for read, 2: waiting for write
+        self.ec_req_status = int(0) # 0: idle, 1: start, 2: end, 3: col_index_word
 
         # parameters for propagate event generation
-        self.curr_evgen_idx = 0
+        self.curr_evgen_idx = int(0)
         self.curr_prodelta_numerator = np.float16(0.0)
-        self.curr_prodelta_numerator_ready = 0
+        self.curr_prodelta_numerator_ready = int(0)
         self.curr_prodelta_denom = np.float16(0.0)
         self.curr_prodelta_denom_ready = 0
         self.curr_prodelta = np.float16(0.0)
-        self.curr_prodelta_ready = 0
+        self.curr_prodelta_ready = int(0)
 
         self.curr_col_idx_word = [0, 0, 0, 0, 0, 0, 0, 0]
-        self.curr_col_idx_word_tag = 0
-        self.curr_col_idx_word_valid = 0
+        self.curr_col_idx_word_tag = int(0)
+        self.curr_col_idx_word_valid = int(0)
 
         self.proport_done = [0, 0]
     
@@ -106,9 +105,9 @@ class PE:
                     io_port.proIdx_n[2*self.pe_id + port] = self.curr_evgen_idx
                     io_port.proValid_n[2*self.pe_id + port] = 1
                     self.curr_evgen_idx += 1
-                elif self.curr_col_idx_word_valid == 1 and self.curr_col_idx_word_tag == self.curr_col_idx_word: # curr idx is in curr word
+                elif self.curr_col_idx_word_valid == 1 and self.curr_col_idx_word_tag == self.curr_evgen_idx // 8: # curr idx is in curr word
                     io_port.proDelta_n[2*self.pe_id + port] = self.curr_prodelta
-                    io_port.proIdx_n[2*self.pe_id + port] = self.curr_col_idx_word[self.curr_evgen_idx % 8]
+                    io_port.proIdx_n[2*self.pe_id + port] = self.curr_col_idx_word[int(self.curr_evgen_idx % 8)]
                     io_port.proValid_n[2*self.pe_id + port] = 1
                     self.curr_evgen_idx += 1
                 else: # curr idx is not in curr word. Invalidate curr word and request ec for new word
@@ -120,7 +119,8 @@ class PE:
             else: # not ready to receive new event, hold current event
                 self.hold_propagate_events(port)
         elif self.curr_evgen_idx == self.end and self.proport_done[port] == 0: # reach the end of evgen, wait for fulfill
-            if io_port.proReady[2*self.pe_id + port] == 1:
+            # if only generated 1 event, then port 1 is automatically done
+            if (port == 1 and self.end - self.start == 1) or io_port.proReady[2*self.pe_id + port] == 1:
                 self.proport_done[port] = 1
             else:
                 self.hold_propagate_events(port)
@@ -169,9 +169,9 @@ class PE:
             
             # start ev gen when init value ready
             if self.init_value_ready == 1:
-                self.start = 0
+                self.start = int(0)
                 self.end = self.num_of_vertices
-                self.curr_evgen_idx = 0
+                self.curr_evgen_idx = int(0)
                 self.next_state = self.states.EVGEN
             else:
                 self.next_state = self.states.INIT
@@ -182,7 +182,8 @@ class PE:
             # default to clear all status registers
             self.ready = 1
             self.clear_status_regs()
-            if io_port.PEValid[self.pe_id] != 0: # incoming valid event
+            self.fpu_status_pipe = np.zeros(self.fpu_pipe_depth + 1, dtype=int) # clear potential leftover calculations
+            if io_port.PEValid[self.pe_id] == 1: # incoming valid event
                 # set status to busy
                 self.ready = 0
                 # store current event
@@ -200,8 +201,8 @@ class PE:
                     io_port.pe_ec_reqValid_n[self.pe_id] = 1
                     self.ec_req_status = 1
                     # calculate d * delta to prepare for propagate calculation
-                    fpu_value_pipe[0] = self.damping_factor * self.curr_delta
-                    fpu_status_pipe[0] = 3
+                    self.fpu_value_pipe[0] = self.damping_factor * self.curr_delta
+                    self.fpu_status_pipe[0] = 3
                 # go to RUW
                 self.next_state = self.states.RUW
             else:
