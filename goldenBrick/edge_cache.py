@@ -31,6 +31,8 @@ class EC:
         with open(csr_filename, 'r') as f:
             colIndexVals = [eval(v) for v in f.readline().split(',')]
             rowIndexVals = [eval(v) for v in f.readline().split(',')]
+        # store num of vertices to be used in PE initialization
+        self.num_of_vertices = len(rowIndexVals) - 1
         # write results from file read
         for i in range(0, len(colIndexVals)):
             self.colIndex[i] = colIndexVals[i]

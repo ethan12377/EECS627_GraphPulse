@@ -190,7 +190,7 @@ class PE:
                 self.curr_delta = io_port.PEDelta[self.pe_id]
                 self.curr_idx = io_port.PEIdx[self.pe_id]
                 # send read vertex value request to cc_vc
-                io_port.pe_vc_reqAddr_n[self.pe_id] = self.curr_idx // 4
+                io_port.pe_vc_reqAddr_n[self.pe_id] = self.curr_idx
                 io_port.pe_wrEn_n[self.pe_id] = 0
                 io_port.pe_vc_reqValid_n[self.pe_id] = 1
                 self.vc_req_status = 1
@@ -206,6 +206,7 @@ class PE:
                 # go to RUW
                 self.next_state = self.states.RUW
             else:
+                self.ready = 1
                 self.next_state = self.states.IDLE
         
         ##### RUW state #####
@@ -270,7 +271,7 @@ class PE:
             if self.fpu_status_pipe[self.fpu_pipe_depth] != 0:
                 if self.fpu_status_pipe[self.fpu_pipe_depth] == 1: # ruw result obtained
                     # write result to vc
-                    io_port.pe_vc_reqAddr_n[self.pe_id] = self.curr_idx // 4
+                    io_port.pe_vc_reqAddr_n[self.pe_id] = self.curr_idx
                     io_port.pe_wrEn_n[self.pe_id] = 1
                     io_port.pe_vc_reqValid_n[self.pe_id] = 1
                     io_port.pe_wrData_n[self.pe_id] = self.fpu_value_pipe[self.fpu_pipe_depth]
@@ -286,8 +287,8 @@ class PE:
             if self.start_ready == 1 and self.end_ready == 1 and self.curr_prodelta_denom_ready == 0:
                 if self.start == self.end: # sink detected, distribute pagerank among all other vertices
                     self.start = 0
-                    self.end = self.num_of_vertices - 1
-                    self.curr_prodelta_denom = self.num_of_vertices - 1
+                    self.end = self.num_of_vertices
+                    self.curr_prodelta_denom = self.num_of_vertices
                 else: # regular vertex with adjacencies
                     self.curr_prodelta_denom = self.end - self.start
                 self.curr_prodelta_denom_ready = 1
@@ -300,8 +301,10 @@ class PE:
             ### determine next state ###
             if self.ruw_complete == 1:
                 if self.curr_delta < self.threshold: # no propagation because delta below threshold
+                    self.ready = 1
                     self.next_state = self.states.IDLE
                 elif (self.start_ready == 1 and self.end_ready == 1 and self.start == self.end): # no propagation because no adjacency
+                    self.ready = 1
                     self.next_state = self.states.IDLE
                 else: # still waiting on necessary calculations to be completed
                     self.next_state = self.states.RUW
@@ -340,6 +343,7 @@ class PE:
             if self.proport_done == [1, 1] and (self.initializing == 1 or self.ruw_complete == 1): # finished fulfilling last event
                 # clear initializing status
                 self.initializing = 0
+                self.ready = 1
                 self.next_state = self.states.IDLE
             else:
                 self.next_state = self.states.EVGEN

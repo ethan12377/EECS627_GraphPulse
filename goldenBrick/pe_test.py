@@ -56,6 +56,7 @@ def print_pe_status():
     print('start = \t' + str(PE0.start))
     print('end = \t' + str(PE0.end))
     print('curr_evgen_idx = \t' + str(PE0.curr_evgen_idx))
+    print('curr_col_idx_word = \t' + str(PE0.curr_col_idx_word))
     print('proIdx = \t' + str(io_port.proIdx))
     print('proValid = \t' + str(io_port.proValid))
     print('proDelta = \t' + str(io_port.proDelta))
@@ -81,6 +82,10 @@ def print_queue_status():
     print('pe idx = \t' + str(io_port.PEIdx))
     print('pe delta = \t' + str(io_port.PEDelta))
 
+def print_vc_content(addr):
+    print('##### VC #####')
+    print('addr ' + str(addr) + ' = \t' + str(VC0.vertexValues[addr:addr+8]))
+
 def print_system_status(cycle):
     print('###################')
     print('##### CYCLE ' + str(cycle) + ' #####')
@@ -89,6 +94,7 @@ def print_system_status(cycle):
     print_pe_status()
     # print_cc_status()
     print_queue_status()
+    print_vc_content(0)
     print()
 
 def send_event(pe_id, vertex_idx, delta):
@@ -106,12 +112,14 @@ if __name__ == "__main__":
     VC0 = VC()
     EVQ0 = EVQ(queue_size=256)
     # for now, just test single processor
-    PE0 = PE(pe_id=0, fpu_pipe_depth=3, threshold=0.001, damping_factor=0.85, num_of_vertices=2)
+    PE0 = PE(pe_id=0, fpu_pipe_depth=3, threshold=1e-6, damping_factor=0.85, num_of_vertices=EC0.num_of_vertices)
 
     curr_cycle = 0
-    print_range = [0, 25]
+    ending_cycle = 5000
+    print_range = [ending_cycle-10, 5000]
+    # print_range = [995, 1000]
 
-    for i in range(curr_cycle, curr_cycle + 50):
+    for i in range(curr_cycle, curr_cycle + ending_cycle):
         # insert event here
         PE0.one_clock()
         CC_VC.one_clock()
@@ -123,5 +131,3 @@ if __name__ == "__main__":
         if i >= print_range[0] and i <= print_range[1]:
             print_system_status(i)
         curr_cycle += 1
-    
-    print(str(VC0.vertexValues[0:8]))

@@ -76,6 +76,9 @@ if __name__ == '__main__':
                            [0, 0, 1, 0, 0]])
     adj_matrix = np.array([[0, 1],
                            [0, 0]])
+    adj_matrix = np.array([[0, 1, 0],
+                           [0, 0, 1],
+                           [1, 0, 0]])
     matrix_to_csr(adj_matrix, 'csr.txt')
     M = csr_to_matrix('csr.txt')
     v = pagerank(M, 100, 0.85)
