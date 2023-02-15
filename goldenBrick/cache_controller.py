@@ -23,7 +23,8 @@ class CC:
                 elif io_port.pe_ec_reqValid[(self.latest_gnt + 3) % 4] == 1:
                     io_port.cc_ec_ready_n[(self.latest_gnt + 3) % 4] = 1
                     self.latest_gnt = (self.latest_gnt + 3) % 4
-                else: # io_port.pe_reqValid[self.latest_gnt] == 1:
+                elif io_port.cc_ec_ready[self.latest_gnt] != 1: # and io_port.pe_reqValid[self.latest_gnt] == 1:
+                    # should never be ready for two cycles in a row for the same pe
                     io_port.cc_ec_ready_n[self.latest_gnt] = 1
         
             # mux, typecast to avoid compiler error
@@ -41,7 +42,7 @@ class CC:
                 elif io_port.pe_vc_reqValid[(self.latest_gnt + 3) % 4] == 1:
                     io_port.cc_vc_ready_n[(self.latest_gnt + 3) % 4] = 1
                     self.latest_gnt = (self.latest_gnt + 3) % 4
-                else: # io_port.pe_reqValid[self.latest_gnt] == 1:
+                elif io_port.cc_vc_ready[self.latest_gnt] != 1: # and io_port.pe_reqValid[self.latest_gnt] == 1:
                     io_port.cc_vc_ready_n[self.latest_gnt] = 1
         
             # mux, typecasted to avoid compiler error
