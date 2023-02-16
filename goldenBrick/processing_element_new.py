@@ -280,7 +280,7 @@ class PE:
                 elif self.fpu_status_pipe[self.fpu_pipe_depth] == 2: # prodelta obtained
                     self.curr_prodelta = self.fpu_value_pipe[self.fpu_pipe_depth]
                     self.curr_prodelta_ready = 1
-                elif self.fpu_status_pipe[self.fpu_pipe_depth] == 3: # prodelta denominator obtained
+                elif self.fpu_status_pipe[self.fpu_pipe_depth] == 3: # prodelta numerator obtained
                     self.curr_prodelta_numerator = self.fpu_value_pipe[self.fpu_pipe_depth]
                     self.curr_prodelta_numerator_ready = 1
             
@@ -295,7 +295,8 @@ class PE:
                 self.curr_prodelta_denom_ready = 1
 
             ### check if ready to calculate prodelta ###
-            if self.curr_prodelta_numerator_ready == 1 and self.curr_prodelta_denom_ready == 1:
+            # need to make sure that the prodelta calculation does not overwrite previous calculations
+            if self.curr_prodelta_numerator_ready == 1 and self.curr_prodelta_denom_ready == 1 and self.fpu_status_pipe[0] == 0:
                 self.fpu_value_pipe[0] = self.curr_prodelta_numerator / self.curr_prodelta_denom
                 self.fpu_status_pipe[0] = 2
             
@@ -317,13 +318,20 @@ class PE:
 
         ##### EVGEN state #####
         if self.curr_state == self.states.EVGEN:
-            # hold vc write request from ruw if incomplete
+            # since entering EVGEN does not require ruw to complete, do these while ruw incomplete
             if self.ruw_complete == 0:
                 if io_port.cc_vc_ready[self.pe_id] == 1:
                     self.vc_req_status = 0
                     self.ruw_complete = 1
-                elif self.vc_req_status != 0:
+                elif self.vc_req_status == 2:
                     self.hold_vc_req()
+                elif self.fpu_status_pipe[self.fpu_pipe_depth] == 1: # ruw result obtained
+                    # write result to vc
+                    io_port.pe_vc_reqAddr_n[self.pe_id] = self.curr_idx
+                    io_port.pe_wrEn_n[self.pe_id] = 1
+                    io_port.pe_vc_reqValid_n[self.pe_id] = 1
+                    io_port.pe_wrData_n[self.pe_id] = self.fpu_value_pipe[self.fpu_pipe_depth]
+                    self.vc_req_status = 2
             
             # check ec request
             if io_port.cc_ec_ready[self.pe_id] == 1:
@@ -351,8 +359,3 @@ class PE:
         
         # update processor status to io
         io_port.PEReady_n[self.pe_id] = self.ready
-
-
-
-           
-            

@@ -32,34 +32,35 @@ def update():
     io_port.proReady = copy.deepcopy(io_port.proReady_n)
 
 
-def print_pe_status():
-    print('##### PE #####')
-    print('state = \t' + str(PE0.curr_state))
-    print('ready = \t' + str(io_port.PEReady[0]))
-    print('initializing = \t' + str(PE0.initializing))
-    print('curr index = \t' + str(PE0.curr_idx))
-    print('curr_delta = \t' + str(PE0.curr_delta))
+def print_pe_status(pe_id):
+    print('##### PE ' + str(pe_id) + ' #####')
+    print('state = \t' + str(PE_cores[pe_id].curr_state))
+    print('ready = \t' + str(io_port.PEReady[pe_id]))
+    print('initializing = \t' + str(PE_cores[pe_id].initializing))
+    print('curr index = \t' + str(PE_cores[pe_id].curr_idx))
+    print('curr_delta = \t' + str(PE_cores[pe_id].curr_delta))
+    print('ruw complete = \t' + str(PE_cores[pe_id].ruw_complete))
     print('### FPU ###')
-    print('fpu value pipe = \t' + str(PE0.fpu_value_pipe))
-    print('fpu status pipe = \t' + str(PE0.fpu_status_pipe))
+    print('fpu value pipe = \t' + str(PE_cores[pe_id].fpu_value_pipe))
+    print('fpu status pipe = \t' + str(PE_cores[pe_id].fpu_status_pipe))
     print('### INPUTS ###')
-    print('event valid = \t' +str(io_port.PEValid))
-    print('event delta = \t' +str(io_port.PEDelta))
-    print('event index = \t' +str(io_port.PEIdx))
+    print('event valid = \t' +str(io_port.PEValid[pe_id]))
+    print('event delta = \t' +str(io_port.PEDelta[pe_id]))
+    print('event index = \t' +str(io_port.PEIdx[pe_id]))
     print('### MEM OUTPUTS ###')
-    print('vc req addr = \t' + str(io_port.pe_vc_reqAddr))
-    print('vc req valid = \t' + str(io_port.pe_vc_reqValid))
-    print('vc req wren = \t' + str(io_port.pe_wrEn))
-    print('ec req addr = \t' + str(io_port.pe_ec_reqAddr))
-    print('ec req valid = \t' + str(io_port.pe_ec_reqValid))
+    print('vc req addr = \t' + str(io_port.pe_vc_reqAddr[pe_id]))
+    print('vc req valid = \t' + str(io_port.pe_vc_reqValid[pe_id]))
+    print('vc req wren = \t' + str(io_port.pe_wrEn[pe_id]))
+    print('ec req addr = \t' + str(io_port.pe_ec_reqAddr[pe_id]))
+    print('ec req valid = \t' + str(io_port.pe_ec_reqValid[pe_id]))
     print('### EVGEN OUTPUTS ###')
-    print('start = \t' + str(PE0.start))
-    print('end = \t' + str(PE0.end))
-    print('curr_evgen_idx = \t' + str(PE0.curr_evgen_idx))
-    print('curr_col_idx_word = \t' + str(PE0.curr_col_idx_word))
-    print('proIdx = \t' + str(io_port.proIdx))
-    print('proValid = \t' + str(io_port.proValid))
-    print('proDelta = \t' + str(io_port.proDelta))
+    print('start = \t' + str(PE_cores[pe_id].start))
+    print('end = \t' + str(PE_cores[pe_id].end))
+    print('curr_evgen_idx = \t' + str(PE_cores[pe_id].curr_evgen_idx))
+    print('curr_col_idx_word = \t' + str(PE_cores[pe_id].curr_col_idx_word))
+    print('proIdx = \t' + str(io_port.proIdx[2*pe_id : 2*pe_id+1]))
+    print('proValid = \t' + str(io_port.proValid[2*pe_id : 2*pe_id+1]))
+    print('proDelta = \t' + str(io_port.proDelta[2*pe_id : 2*pe_id+1]))
     print()
 
 def print_cc_status():
@@ -78,6 +79,7 @@ def print_cc_status():
 
 def print_queue_status():
     print('##### QUEUE #####')
+    print('waiting for pe = \t' + str(EVQ0.waiting_for_pe))
     print('pe valid = \t' + str(io_port.PEValid))
     print('pe idx = \t' + str(io_port.PEIdx))
     print('pe delta = \t' + str(io_port.PEDelta))
@@ -91,9 +93,12 @@ def print_system_status(cycle):
     print('##### CYCLE ' + str(cycle) + ' #####')
     print('###################')
     print()
-    print_pe_status()
+    print_pe_status(0)
+    # print_pe_status(1)
+    # print_pe_status(2)
+    # print_pe_status(3)
     # print_cc_status()
-    print_queue_status()
+    # print_queue_status()
     print_vc_content(0)
     print_vc_content(1)
     print()
@@ -111,19 +116,26 @@ if __name__ == "__main__":
     CC_EC = CC(cache_name='ec')
     EC0 = EC(csr_filename='csr.txt')
     VC0 = VC()
-    # for now, just test single processor
-    curr_num_of_cores = 1
+    # test all four cores at the same time
+    curr_num_of_cores = 4
     EVQ0 = EVQ(num_of_cores=curr_num_of_cores)
     PE0 = PE(pe_id=0, fpu_pipe_depth=3, threshold=1e-6, damping_factor=0.85, num_of_vertices=EC0.num_of_vertices, num_of_cores=curr_num_of_cores)
+    PE1 = PE(pe_id=1, fpu_pipe_depth=3, threshold=1e-6, damping_factor=0.85, num_of_vertices=EC0.num_of_vertices, num_of_cores=curr_num_of_cores)
+    PE2 = PE(pe_id=2, fpu_pipe_depth=3, threshold=1e-6, damping_factor=0.85, num_of_vertices=EC0.num_of_vertices, num_of_cores=curr_num_of_cores)
+    PE3 = PE(pe_id=3, fpu_pipe_depth=3, threshold=1e-6, damping_factor=0.85, num_of_vertices=EC0.num_of_vertices, num_of_cores=curr_num_of_cores)
+    PE_cores = [PE0, PE1, PE2, PE3]
 
     curr_cycle = 0
-    ending_cycle = 2000
-    print_range = [1995, 2000]
-    # print_range = [995, 1000]
+    ending_cycle = 5000
+    # print_range = [0, 50]
+    print_range = [4995, 5000]
 
     for i in range(curr_cycle, curr_cycle + ending_cycle):
         # insert event here
         PE0.one_clock()
+        PE1.one_clock()
+        PE2.one_clock()
+        PE3.one_clock()
         CC_VC.one_clock()
         CC_EC.one_clock()
         EC0.one_clock()
