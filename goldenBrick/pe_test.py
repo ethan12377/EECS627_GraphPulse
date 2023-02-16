@@ -110,7 +110,7 @@ if __name__ == "__main__":
     CC_EC = CC(cache_name='ec')
     EC0 = EC(csr_filename='csr.txt')
     VC0 = VC()
-    EVQ0 = EVQ(queue_size=256)
+    EVQ0 = EVQ()
     # for now, just test single processor
     PE0 = PE(pe_id=0, fpu_pipe_depth=3, threshold=1e-6, damping_factor=0.85, num_of_vertices=EC0.num_of_vertices)
 

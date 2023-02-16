@@ -10,10 +10,9 @@ import numpy as np
 #       round-based scanning to make sure that only one event per vertex is ever in flight
 
 class EVQ:
-    def __init__(self, queue_size):
-        self.size = queue_size
-        self.valid_queue = np.zeros(queue_size, dtype=int)
-        self.delta_queue = np.zeros(queue_size, dtype=np.float16)
+    def __init__(self):
+        self.valid_queue = np.zeros(256, dtype=int)
+        self.delta_queue = np.zeros(256, dtype=np.float16)
         self.scan_idx = 0
     
     def insert_event(self, idx, delta):
