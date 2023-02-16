@@ -4,7 +4,7 @@ from cache_controller import CC
 from edge_cache import EC
 from vertex_cache import VC
 from processing_element_new import PE
-from evqueue_software_model import EVQ
+from evqueue_multicore import EVQ
 import copy
 
 def update():
@@ -84,7 +84,7 @@ def print_queue_status():
 
 def print_vc_content(addr):
     print('##### VC #####')
-    print('addr ' + str(addr) + ' = \t' + str(VC0.vertexValues[addr:addr+8]))
+    print('addr ' + str(addr) + ' = \t' + str(VC0.vertexValues[addr*8:addr*8+8]))
 
 def print_system_status(cycle):
     print('###################')
@@ -95,6 +95,7 @@ def print_system_status(cycle):
     # print_cc_status()
     print_queue_status()
     print_vc_content(0)
+    print_vc_content(1)
     print()
 
 def send_event(pe_id, vertex_idx, delta):
@@ -112,11 +113,11 @@ if __name__ == "__main__":
     VC0 = VC()
     EVQ0 = EVQ()
     # for now, just test single processor
-    PE0 = PE(pe_id=0, fpu_pipe_depth=3, threshold=1e-6, damping_factor=0.85, num_of_vertices=EC0.num_of_vertices)
+    PE0 = PE(pe_id=0, fpu_pipe_depth=3, threshold=1e-6, damping_factor=0.85, num_of_vertices=EC0.num_of_vertices, num_of_cores=1)
 
     curr_cycle = 0
-    ending_cycle = 5000
-    print_range = [ending_cycle-10, 5000]
+    ending_cycle = 2000
+    print_range = [1995, 2000]
     # print_range = [995, 1000]
 
     for i in range(curr_cycle, curr_cycle + ending_cycle):

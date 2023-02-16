@@ -10,11 +10,12 @@ from enum import Enum
 
 class PE:
 
-    def __init__(self, pe_id, threshold, fpu_pipe_depth, damping_factor, num_of_vertices):
+    def __init__(self, pe_id, threshold, fpu_pipe_depth, damping_factor, num_of_vertices, num_of_cores):
         self.pe_id = int(pe_id) # use id to differentiate the four pes
         self.threshold = threshold
         self.damping_factor = damping_factor
         self.num_of_vertices = int(num_of_vertices)
+        self.num_of_cores = int(num_of_cores)
 
         # status
         self.ready = int(0)
@@ -104,7 +105,7 @@ class PE:
                     io_port.proDelta_n[2*self.pe_id + port] = self.init_value
                     io_port.proIdx_n[2*self.pe_id + port] = self.curr_evgen_idx
                     io_port.proValid_n[2*self.pe_id + port] = 1
-                    self.curr_evgen_idx += 1
+                    self.curr_evgen_idx += self.num_of_cores
                 elif self.curr_col_idx_word_valid == 1 and self.curr_col_idx_word_tag == self.curr_evgen_idx // 8: # curr idx is in curr word
                     io_port.proDelta_n[2*self.pe_id + port] = self.curr_prodelta
                     io_port.proIdx_n[2*self.pe_id + port] = self.curr_col_idx_word[int(self.curr_evgen_idx % 8)]
@@ -118,7 +119,7 @@ class PE:
                     self.ec_req_status = 3
             else: # not ready to receive new event, hold current event
                 self.hold_propagate_events(port)
-        elif self.curr_evgen_idx == self.end and self.proport_done[port] == 0: # reach the end of evgen, wait for fulfill
+        elif self.proport_done[port] == 0: # reach the end of evgen, wait for fulfill
             # if only generated 1 event, then port 1 is automatically done
             if (port == 1 and self.end - self.start == 1) or io_port.proReady[2*self.pe_id + port] == 1:
                 self.proport_done[port] = 1
@@ -169,9 +170,9 @@ class PE:
             
             # start ev gen when init value ready
             if self.init_value_ready == 1:
-                self.start = int(0)
+                self.start = self.pe_id
                 self.end = self.num_of_vertices
-                self.curr_evgen_idx = int(0)
+                self.curr_evgen_idx = self.pe_id
                 self.next_state = self.states.EVGEN
             else:
                 self.next_state = self.states.INIT
@@ -299,7 +300,10 @@ class PE:
                 self.fpu_status_pipe[0] = 2
             
             ### determine next state ###
-            if self.ruw_complete == 1:
+            if self.curr_prodelta_ready == 1 and self.curr_col_idx_word_valid == 1: # data ready for evgen
+                self.curr_evgen_idx = self.start
+                self.next_state = self.states.EVGEN
+            elif self.ruw_complete == 1:
                 if self.curr_delta < self.threshold: # no propagation because delta below threshold
                     self.ready = 1
                     self.next_state = self.states.IDLE
@@ -308,9 +312,6 @@ class PE:
                     self.next_state = self.states.IDLE
                 else: # still waiting on necessary calculations to be completed
                     self.next_state = self.states.RUW
-            elif self.curr_prodelta_ready == 1 and self.curr_col_idx_word_valid == 1: # data ready for evgen
-                self.curr_evgen_idx = self.start
-                self.next_state = self.states.EVGEN
             else:
                 self.next_state = self.states.RUW
 
