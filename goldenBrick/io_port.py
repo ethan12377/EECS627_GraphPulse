@@ -117,6 +117,7 @@ def init():
     # to crossbar2
     global CUReady, CUReady_n
     CUReady = np.zeros(8)
+    CUReady_n = np.zeros(8)
 
     # to queue
     global searchIdx, searchIdx_n
@@ -125,12 +126,24 @@ def init():
     global newValid, newValid_n
     global cuclean, cuclean_n
     global searchValid, searchValid_n
+    #???
+    global searchReady, searchReady_n
+    global searchReadyIdx, searchReadyIdx_n
+    #???
     searchIdx = np.zeros(8)
+    searchIdx_n = np.zeros(8)
     newDelta = np.zeros(8, dtype=np.float16)
+    newDelta_n = np.zeros(8, dtype=np.float16)
     newIdx = np.zeros(8)
+    newIdx_n = np.zeros(8)
     newValid = np.zeros(8)
+    newValid_n = np.zeros(8)
     cuclean = np.zeros(8)
+    cuclean_n = np.zeros(8)
     searchValid = np.zeros(8)
+    searchValid_n = np.zeros(8)
+    searchReady = np.zeros(8)
+    searchReadyIdx = np.zeros(8)
 
     ##############################
     ### Output from scratchpad ###

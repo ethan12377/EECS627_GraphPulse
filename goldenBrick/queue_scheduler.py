@@ -44,7 +44,6 @@ class QS:
                 if(io_port.initialFinish):
                     if(i == 0):
                         io_port.state_n[i] = 3
-                        self.RRArbiter.request(np.ones((8), dtype=np.int8))
                     else:
                         io_port.state_n[i] = 1
                 else:
@@ -88,22 +87,21 @@ class QS:
     # read to output_buffer
     def read_row(self, bin_idx):
         if io_port.cuclean[bin_idx]:
+           if(io_port.rowReady): 
+            # select row
+            read_rowidx_n = self.prior_encoder.priority(self.rowValid_matrix[bin_idx][:])
+            io_port.binrowIdx_n = bin_idx * 4 + read_rowidx_n
+            # io_port.rowDelta_n = self.queue[bin_idx][read_rowidx_n][:]
+            temp = self.queue[bin_idx][read_rowidx_n][:]
+            io_port.rowDelta_n = np.copy(temp)
+            # io_port.rowDelta_n = temp
             # rowValid_n
-            if self.rowValid_matrix[bin_idx].any():
-                io_port.rowValid_n = 1
-            else:
-                print(f"bin empty!! read invalid!!")
-            if(io_port.rowReady): 
-                # select row
-                read_rowidx_n = self.prior_encoder.priority(self.rowValid_matrix[bin_idx][:])
-
-                io_port.binrowIdx_n = bin_idx * 4 + read_rowidx_n
-                # io_port.rowDelta_n = temp
-                temp = self.queue[bin_idx][read_rowidx_n][:]
-                io_port.rowDelta_n = np.copy(temp)
-                # remove after read
-                self.rowValid_matrix[bin_idx, read_rowidx_n] = 0
-                self.queue[bin_idx, read_rowidx_n, :] = np.zeros(8, dtype=np.float16)
+            io_port.rowValid_n = self.rowValid_matrix[bin_idx][read_rowidx_n]
+            if(io_port.rowValid_n == 0):
+                print(f"read invalid row!!")
+            # remove after read
+            self.rowValid_matrix[bin_idx, read_rowidx_n] = 0
+            self.queue[bin_idx, read_rowidx_n, :] = np.zeros(8, dtype=np.float16)
         else:
             # cu is not clean yet
             print(f"wrong state!! cu not clean yet!! cannot read_row")
