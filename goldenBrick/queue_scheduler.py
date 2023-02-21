@@ -39,6 +39,7 @@ class QS:
         # init first reading_bin:
         io_port.rowValid_n = 0
         for i in range(len(io_port.state)):
+            io_port.searchValueValid_n[i] = 0
             if(io_port.state[i] == 0):
                 self.write_from_cu(i)
                 if(io_port.initialFinish):
@@ -129,6 +130,7 @@ class QS:
         if(io_port.searchValid[bin_idx]):
             if(bin_idx == search_bin):
                 io_port.searchValue_n[bin_idx] = self.queue[search_bin][search_row][search_col]
+                io_port.searchValueValid_n[bin_idx] = 1
             else:
                 print(f"search other bins!!")
 

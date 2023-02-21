@@ -20,10 +20,13 @@ def init():
     # to coalescing unit
     global newReady, newReady_n
     global searchValue, searchValue_n
+    global searchValueValid,searchValueValid_n
     newReady = np.zeros(8)
     newReady_n = np.zeros(8)
     searchValue = np.zeros(8, dtype=np.float16)
     searchValue_n = np.zeros(8, dtype=np.float16)
+    searchValueValid = np.zeros(8)
+    searchValueValid_n = np.zeros(8)
 
     # state
     global state, state_n
