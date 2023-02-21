@@ -1,20 +1,6 @@
 import io_port
 import numpy as np
 
-# TODO: define cache organization
-#   - Width of each word
-#   - organization of address space
-#   - initialization
-#   - marking unused address space
-
-# word width: 64
-# total bits: 256*16 (vertex data) + 256*8 (colIndex) + 256*8 (rowIndex) = 8,192 bits
-# number of bits needed for addr: 8,192/64 = 7 bits
-# TODO: use PE to generate 7 bit addresses 
-# Addr[6:5] == 2'b0x: data req
-# Addr[6:5] == 2'b10: col index req
-# Addr[6:5] == 2'b11: row index req
-
 # 64-bit word. 6 bit addr (64 addresses)
 # col index= 256*256*8 = 65536, 8 bit number
 # row index = 256 if omit starting zero, 16-bit number (up to 65536)

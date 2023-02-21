@@ -3,7 +3,7 @@ import io_port
 from cache_controller import CC
 from edge_cache import EC
 from vertex_cache import VC
-from processing_element_new import PE
+from processing_element import PE
 from evqueue_multicore import EVQ
 import copy
 

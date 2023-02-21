@@ -1,6 +1,9 @@
 import io_port
 import numpy as np
 
+# Ideal software model for the event queue + coalescing unit used for PE testing
+# Always ready to insert new events, always coalesce without latency upon insertion, always output valid events when possible
+
 class EVQ:
     def __init__(self, num_of_cores):
         self.valid_queue = np.zeros(256, dtype=int)
