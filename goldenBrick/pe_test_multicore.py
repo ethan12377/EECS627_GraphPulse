@@ -84,9 +84,10 @@ def print_queue_status():
     print('pe idx = \t' + str(io_port.PEIdx))
     print('pe delta = \t' + str(io_port.PEDelta))
 
-def print_vc_content(addr):
+def print_vc_content(addr_start, addr_end):
     print('##### VC #####')
-    print('addr ' + str(addr) + ' = \t' + str(VC0.vertexValues[addr*8:addr*8+8]))
+    for addr in range(addr_start, addr_end):
+        print('vc addr ' + str(addr) + ' = \t' + str(VC0.vertexValues[addr]))
 
 def print_system_status(cycle):
     print('###################')
@@ -94,13 +95,12 @@ def print_system_status(cycle):
     print('###################')
     print()
     print_pe_status(0)
-    # print_pe_status(1)
-    # print_pe_status(2)
-    # print_pe_status(3)
+    print_pe_status(1)
+    print_pe_status(2)
+    print_pe_status(3)
     # print_cc_status()
-    # print_queue_status()
-    print_vc_content(0)
-    print_vc_content(1)
+    print_queue_status()
+    print_vc_content(0, EC0.num_of_vertices)
     print()
 
 def send_event(pe_id, vertex_idx, delta):
@@ -126,12 +126,14 @@ if __name__ == "__main__":
     PE_cores = [PE0, PE1, PE2, PE3]
 
     curr_cycle = 0
-    ending_cycle = 5000
+    timeout_cycle_num = 5000
     # print_range = [0, 50]
     print_range = [4995, 5000]
 
-    for i in range(curr_cycle, curr_cycle + ending_cycle):
-        # insert event here
+    # run until convergence
+    while EVQ0.empty != 1 or not all(v == 1 for v in io_port.PEReady):
+        if curr_cycle >= timeout_cycle_num:
+            break
         PE0.one_clock()
         PE1.one_clock()
         PE2.one_clock()
@@ -142,6 +144,15 @@ if __name__ == "__main__":
         VC0.one_clock()
         EVQ0.one_clock()
         update()
-        if i >= print_range[0] and i <= print_range[1]:
-            print_system_status(i)
+        if curr_cycle >= print_range[0] and curr_cycle <= print_range[1]:
+            print_system_status(curr_cycle)
         curr_cycle += 1
+    
+    print()
+    if curr_cycle <= timeout_cycle_num:
+        print(' ### Convergence reached at cycle ' + str(curr_cycle) + ' ###')
+    else: # timeout
+        print(' ### TIMEOUT AT CYCLE ' + str(curr_cycle) + ' ###')
+    print()
+    print_vc_content(0, EC0.num_of_vertices)
+    print()

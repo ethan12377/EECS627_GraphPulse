@@ -1,18 +1,11 @@
 import io_port
 import numpy as np
 
-# behavior:
-# 1. scan for nearest valid from scan_idx
-# 2. give that to the output
-# 3. update scan_idx to the latest index scanned
-
-# TODO: this queue can only be used with one processor. To use with multiprocessor, need to implement
-#       round-based scanning to make sure that only one event per vertex is ever in flight
-
 class EVQ:
     def __init__(self, num_of_cores):
         self.valid_queue = np.zeros(256, dtype=int)
         self.delta_queue = np.zeros(256, dtype=np.float16)
+        self.empty = 1
         self.scan_idx = 0
         self.waiting_for_pe = 1 # at startup, wait for all pe to be ready (complete initialization)
         self.num_of_cores = num_of_cores
@@ -75,5 +68,11 @@ class EVQ:
                     io_port.PEIdx_n[curr_pe_id] = 0
             else:
                 self.hold_curr_event(curr_pe_id)
+        
+        # update empty
+        if all(v == 0 for v in self.valid_queue):
+            self.empty = 1
+        else: 
+            self.empty = 0
                 
                         
