@@ -12,6 +12,8 @@ def init():
     global rowValid, rowValid_n
     rowDelta = np.zeros(8, dtype=np.float16)
     binrowIdx = 0
+    rowDelta_n = np.zeros(8, dtype=np.float16)
+    binrowIdx_n = 0
     rowValid = 0
     rowDelta_n = np.zeros(8, dtype=np.float16)
     binrowIdx_n = 0
@@ -20,8 +22,18 @@ def init():
     # to coalescing unit
     global newReady, newReady_n
     global searchValue, searchValue_n
+    global searchValueValid,searchValueValid_n
     newReady = np.zeros(8)
+    newReady_n = np.zeros(8)
     searchValue = np.zeros(8, dtype=np.float16)
+    searchValue_n = np.zeros(8, dtype=np.float16)
+    searchValueValid = np.zeros(8)
+    searchValueValid_n = np.zeros(8)
+
+    # state
+    global state, state_n
+    state = np.zeros(8)
+    state_n = np.zeros(8)
 
     #################################
     ### Output from output buffer ###
@@ -115,6 +127,10 @@ def init():
     # vertReq = np.zeros(4)
     # vertIdx = np.zeros(4)
 
+    # to scheduler
+    global initialFinish
+    initialFinish = 0
+
     #############################
     ### Output from crossbar2 ###
     #############################
@@ -149,10 +165,26 @@ def init():
     global newDelta, newDelta_n
     global newIdx, newIdx_n
     global newValid, newValid_n
+    global cuclean, cuclean_n
+    global searchValid, searchValid_n
+    #???
+    global searchReady, searchReady_n
+    global searchReadyIdx, searchReadyIdx_n
+    #???
     searchIdx = np.zeros(8)
+    searchIdx_n = np.zeros(8)
     newDelta = np.zeros(8, dtype=np.float16)
+    newDelta_n = np.zeros(8, dtype=np.float16)
     newIdx = np.zeros(8)
+    newIdx_n = np.zeros(8)
     newValid = np.zeros(8)
+    newValid_n = np.zeros(8)
+    cuclean = np.zeros(8)
+    cuclean_n = np.zeros(8)
+    searchValid = np.zeros(8)
+    searchValid_n = np.zeros(8)
+    searchReady = np.zeros(8)
+    searchReadyIdx = np.zeros(8)
 
     ##############################
     ### Output from scratchpad ###

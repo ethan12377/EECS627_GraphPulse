@@ -15,6 +15,7 @@ def update():
     io_port.rowValid = io_port.rowValid_n
     io_port.newReady = io_port.newReady_n
     io_port.searchValue = io_port.searchValue_n
+    io_port.state = io_port.state_n
     # OB
     io_port.rowReady = io_port.rowReady_n
     io_port.IssDelta = io_port.IssDelta_n
