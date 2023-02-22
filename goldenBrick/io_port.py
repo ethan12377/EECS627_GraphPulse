@@ -13,6 +13,9 @@ def init():
     rowDelta = np.zeros(8, dtype=np.float16)
     binrowIdx = 0
     rowValid = 0
+    rowDelta_n = np.zeros(8, dtype=np.float16)
+    binrowIdx_n = 0
+    rowValid_n = 0
 
     # to coalescing unit
     global newReady, newReady_n
@@ -26,15 +29,22 @@ def init():
 
     # to scheduler
     global rowReady, rowReady_n
-    rowReady = False
+    rowReady = np.uint8(0)
+    rowReady_n = np.uint8(0)
 
     # to crossbar1
-    global IssDelta, IssDelta_n
-    global IssIdx, IssIdx_n
-    global IssValid, IssValid_n
+    global IssDelta
+    global IssDelta_n
+    global IssIdx
+    global IssIdx_n
+    global IssValid
+    global IssValid_n
     IssDelta = np.zeros(4, dtype=np.float16)
-    IssIdx = np.zeros(4)
-    IssValid = np.zeros(4)
+    IssIdx = np.zeros(4, dtype=np.uint8)
+    IssValid = np.zeros(4, dtype=np.uint8)
+    IssDelta_n = np.zeros(4, dtype=np.float16)
+    IssIdx_n = np.zeros(4, dtype=np.uint8)
+    IssValid_n = np.zeros(4, dtype=np.uint8)
 
     #############################
     ### Output from crossbar1 ###
@@ -42,18 +52,22 @@ def init():
 
     # to output buffer
     global IssReady, IssReady_n
-    IssReady = np.zeros(4)
+    IssReady = np.zeros(4, dtype=np.uint8)
+    IssReady_n = np.zeros(4, dtype=np.uint8)
 
     # to PE
-    global PEDelta, PEDelta_n
-    global PEIdx, PEIdx_n
-    global PEValid, PEValid_n
+    global PEDelta
+    global PEDelta_n
+    global PEIdx
+    global PEIdx_n
+    global PEValid
+    global PEValid_n
     PEDelta = np.zeros(4, dtype=np.float16)
+    PEIdx = np.zeros(4, dtype=np.uint8)
+    PEValid = np.zeros(4, dtype=np.uint8)
     PEDelta_n = np.zeros(4, dtype=np.float16)
-    PEIdx = np.zeros(4, dtype=int)
-    PEIdx_n = np.zeros(4, dtype=int)
-    PEValid = np.zeros(4, dtype=int)
-    PEValid_n = np.zeros(4, dtype=int)
+    PEIdx_n = np.zeros(4, dtype=np.uint8)
+    PEValid_n = np.zeros(4, dtype=np.uint8)
 
     ###########################
     ### Output from PE (x4) ###
@@ -61,19 +75,19 @@ def init():
 
     # to crossbar1
     global PEReady, PEReady_n
-    PEReady = np.zeros(4)
-    PEReady_n = np.zeros(4)
+    PEReady = np.zeros(4, dtype=np.uint8)
+    PEReady_n = np.zeros(4, dtype=np.uint8)
 
     # to crossbar2
     global proDelta, proDelta_n
     global proIdx, proIdx_n
     global proValid, proValid_n
     proDelta = np.zeros(8, dtype=np.float16)
+    proIdx = np.zeros(8, dtype=np.uint8)
+    proValid = np.zeros(8, dtype=np.uint8)
     proDelta_n = np.zeros(8, dtype=np.float16)
-    proIdx = np.zeros(8, dtype=int)
-    proIdx_n = np.zeros(8, dtype=int)
-    proValid = np.zeros(8, dtype=int)
-    proValid_n = np.zeros(8, dtype=int)
+    proIdx_n = np.zeros(8, dtype=np.uint8)
+    proValid_n = np.zeros(8, dtype=np.uint8)
 
     # to cache controller
     global pe_vc_reqAddr, pe_vc_reqAddr_n
@@ -107,15 +121,19 @@ def init():
 
     # to PE
     global proReady, proReady_n
-    proReady = np.zeros(8)
+    proReady = np.zeros(8, dtype=np.uint8)
+    proReady_n = np.zeros(8, dtype=np.uint8)
 
     # to CU
     global CUDelta, CUDelta_n
     global CUIdx, CUIdx_n
     global CUValid, CUValid_n
     CUDelta = np.zeros(8, dtype=np.float16)
-    CUIdx = np.zeros(8)
-    CUValid = np.zeros(8)
+    CUIdx = np.zeros(8, dtype=np.uint8)
+    CUValid = np.zeros(8, dtype=np.uint8)
+    CUDelta_n = np.zeros(8, dtype=np.float16)
+    CUIdx_n = np.zeros(8, dtype=np.uint8)
+    CUValid_n = np.zeros(8, dtype=np.uint8)
 
     ###################################
     ### Output from coalescing unit ###
@@ -123,7 +141,8 @@ def init():
 
     # to crossbar2
     global CUReady, CUReady_n
-    CUReady = np.zeros(8)
+    CUReady = np.zeros(8, dtype=np.uint8)
+    CUReady_n = np.zeros(8, dtype=np.uint8)
 
     # to queue
     global searchIdx, searchIdx_n
