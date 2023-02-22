@@ -9,20 +9,19 @@ QS0 = QS()
 
 def print_CU():     
     
-    print(f"CUreg[0]: CUregValid |CUIdxreg |CUDeltareg |CUregtag       ")
-    print(f"|         {CU0.CUregValid[0][0]}  |{CU0.CUIdxreg[0][0]}   |{CU0.CUDeltareg[0][0]} |{CU0.CUregtag[0][0]}")
-    print(f"CUreg[1]: CUregValid |CUIdxreg |CUDeltareg |CUregtag       ")
-    print(f"|         {CU0.CUregValid[0][1]}  |{CU0.CUIdxreg[0][1]}   |{CU0.CUDeltareg[0][1]} |{CU0.CUregtag[0][1]}")
-    print(f"CUreg[2]: CUregValid |CUIdxreg |CUDeltareg |CUregtag       ")
-    print(f"|         {CU0.CUregValid[0][2]}  |{CU0.CUIdxreg[0][2]}   |{CU0.CUDeltareg[0][2]} |{CU0.CUregtag[0][2]}")
+    print(f"CUreg[0]: CUregValid |CUDeltareg ")
+    print(f"|         {CU0.CUregValid[0][0]}  |{CU0.CUDeltareg[0][0]} ")
+    print(f"CUreg[1]: CUregValid |CUDeltareg ")
+    print(f"|         {CU0.CUregValid[0][1]}  |{CU0.CUDeltareg[0][1]} ")
+    print(f"CUreg[2]: CUregValid |CUDeltareg ")
+    print(f"|         {CU0.CUregValid[0][2]}  |{CU0.CUDeltareg[0][2]} ")
         
     
 
     print('\n')
     print("CU_in_buf: delta, idx, valid")
     print(CU0.CU_in_buf[0])
-    print("CU_out_buf: delta, idx, valid")
-    print(CU0.CU_out_buf[0])
+
     print('\n')
     
     print(f'input:')

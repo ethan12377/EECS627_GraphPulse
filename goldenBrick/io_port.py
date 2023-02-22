@@ -21,17 +21,20 @@ def init():
     global newReady, newReady_n
     global searchValue, searchValue_n
     global searchValueValid,searchValueValid_n
-    newReady = np.zeros(8)
-    newReady_n = np.zeros(8)
+    newReady = np.zeros(8,dtype=np.uint8)
+    newReady_n = np.zeros(8,dtype=np.uint8)
     searchValue = np.zeros(8, dtype=np.float16)
     searchValue_n = np.zeros(8, dtype=np.float16)
-    searchValueValid = np.zeros(8)
-    searchValueValid_n = np.zeros(8)
+    searchValueValid = np.zeros(8,dtype=np.uint8)
+    searchValueValid_n = np.zeros(8,dtype=np.uint8)
 
     # state
     global state, state_n
-    state = np.zeros(8)
-    state_n = np.zeros(8)
+    global queue_empty, queue_empty_n
+    state = np.zeros(8,dtype=np.uint8)
+    state_n = np.zeros(8,dtype=np.uint8)
+    queue_empty = 0
+    queue_empty_n = 0
 
     #################################
     ### Output from output buffer ###
@@ -129,24 +132,25 @@ def init():
     global newValid, newValid_n
     global cuclean, cuclean_n
     global searchValid, searchValid_n
-    #???
-    global searchReady, searchReady_n
-    global searchReadyIdx, searchReadyIdx_n
-    #???
-    searchIdx = np.zeros(8)
-    searchIdx_n = np.zeros(8)
+   
+    searchIdx = np.zeros(8, dtype=np.float16)
+    searchIdx_n = np.zeros(8, dtype=np.float16)
     newDelta = np.zeros(8, dtype=np.float16)
     newDelta_n = np.zeros(8, dtype=np.float16)
-    newIdx = np.zeros(8)
-    newIdx_n = np.zeros(8)
-    newValid = np.zeros(8)
-    newValid_n = np.zeros(8)
-    cuclean = np.zeros(8)
-    cuclean_n = np.zeros(8)
-    searchValid = np.zeros(8)
-    searchValid_n = np.zeros(8)
-    searchReady = np.zeros(8)
-    searchReadyIdx = np.zeros(8)
+    newIdx = np.zeros(8, dtype=np.float16)
+    newIdx_n = np.zeros(8, dtype=np.float16)
+    newValid = np.zeros(8,dtype=np.uint8)
+    newValid_n = np.zeros(8,dtype=np.uint8)
+    cuclean = np.zeros(8,dtype=np.uint8)
+    cuclean_n = np.zeros(8,dtype=np.uint8)
+    searchValid = np.zeros(8,dtype=np.uint8)
+    searchValid_n = np.zeros(8,dtype=np.uint8)
+
+
+    global cu_empty, cu_empty_n
+    cu_empty = 0
+    cu_empty_n = np.zeros(8,dtype=np.uint8)
+
 
     ##############################
     ### Output from scratchpad ###
