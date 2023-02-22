@@ -113,10 +113,10 @@ class CU:
                 io_port.CUReady_n[bin_idx] = 0
 
             # output: io_port.cu_empty_n
-            if(io_port.cuclean[bin_idx] == 0) and (np.all(self.CU_in_buf_n[bin_idx][:][2])):
+            if(io_port.cuclean[bin_idx] == 0) and (np.all(self.CU_in_buf_n[bin_idx][:][2])) and (io_port.CUValid[bin_idx] == 0) and (io_port.newValid ==0):
                 io_port.cu_empty_n[bin_idx] = 1
             else:
-                io_port.cu_empty_n[bin_idx] = 1
+                io_port.cu_empty_n[bin_idx] = 0
 
 
             
