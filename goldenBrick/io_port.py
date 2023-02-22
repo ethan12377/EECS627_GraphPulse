@@ -13,6 +13,9 @@ def init():
     rowDelta = np.zeros(8, dtype=np.float16)
     binrowIdx = 0
     rowValid = 0
+    rowDelta_n = np.zeros(8, dtype=np.float16)
+    binrowIdx_n = 0
+    rowValid_n = 0
 
     # to coalescing unit
     global newReady, newReady_n
@@ -26,7 +29,8 @@ def init():
 
     # to scheduler
     global rowReady, rowReady_n
-    rowReady = False
+    rowReady = np.uint8(0)
+    rowReady_n = np.uint8(0)
 
     # to crossbar1
     global IssDelta

@@ -18,6 +18,10 @@ class Xbar_SchedToPE:
         self.freelist = Queue(maxsize=self.num_output)
         for output_idx in range(self.num_output):
             self.freelist.put_nowait(output_idx)
+        
+        # PE allocation
+        self.PE_alloc = np.zeros(self.num_input, dtype=np.uint8)
+        self.PE_alloc_n = np.zeros(self.num_input, dtype=np.uint8)
             
         # Locks to prevent PEs to be inserted to freelist wrongly
         self.PELock = np.ones(self.num_output, dtype=np.uint8)
@@ -59,18 +63,25 @@ class Xbar_SchedToPE:
             io_port.IssReady_n[input_idx] = np.uint8(0)
                 
         # Allocate target PE for each valid input and remove one entry from freelist
-        if self.freelist.empty() == 0:
-            for input_idx in range(self.num_input):
-                if self.freelist.empty() == 0:
-                    if io_port.IssValid[input_idx] == 1 and io_port.IssReady[input_idx] == 0:
-                        # Handshake
-                        io_port.IssReady_n[input_idx] = np.uint8(1)
-                        # Pop a entry from freelist
-                        output_idx = self.freelist.get_nowait()
-                        # Route the input to allocated output
-                        PEDelta_tmp[output_idx] = io_port.IssDelta[input_idx]
-                        PEIdx_tmp[output_idx] = io_port.IssIdx[input_idx]
-                        PEValid_tmp[output_idx] = io_port.IssValid[input_idx]
+        self.PE_alloc_n= np.zeros(self.num_input, dtype=np.uint8)
+        for input_idx in range(self.num_input):
+            if self.freelist.empty() == 0:
+                if io_port.IssValid[input_idx] == 1 and io_port.IssReady[input_idx] == 0:
+                    # Handshake
+                    io_port.IssReady_n[input_idx] = np.uint8(1)
+                    # Pop an entry from freelist
+                    self.PE_alloc_n[input_idx] = self.freelist.get_nowait()
+                else:
+                    break
+            else:
+                break
+                
+        # Route the input to allocated output
+        for input_idx in range(self.num_input):
+            if io_port.IssValid[input_idx] == 1 and io_port.IssReady[input_idx] == 1:
+                PEDelta_tmp[self.PE_alloc[input_idx]] = io_port.IssDelta[input_idx]
+                PEIdx_tmp[self.PE_alloc[input_idx]] = io_port.IssIdx[input_idx]
+                PEValid_tmp[self.PE_alloc[input_idx]] = io_port.IssValid[input_idx]
                         
         self.PEDelta_stages.put_nowait(PEDelta_tmp)
         self.PEIdx_stages.put_nowait(PEIdx_tmp)
@@ -99,21 +110,22 @@ class Xbar_SchedToPE:
             if io_port.PEValid[output_idx] == 1 and io_port.PEReady[output_idx] == 1:
                 self.PELock_n[output_idx] = np.uint8(0)
             
-        print('Freelist = ', list(self.freelist.queue))
-        print('PELock = ', list(self.PELock))
+        # print('Freelist = ', list(self.freelist.queue))
+        # print('PELock = ', list(self.PELock))
             
         self.print_signals()
     
                 
     def print_signals(self):
         for i in range(self.num_input):
-            print('IssDelta[',i,'] = ', np.around(io_port.IssDelta[i], 3),'\tIssIdx[', i, '] = ', io_port.IssIdx[i], '\tIssValid[', i, '] = ', io_port.IssValid[i], '\tIssReady[', i, '] = ', io_port.IssReady[i])
+            print('IssDelta[',i,'] = ', np.around(io_port.IssDelta[i], 3),'\tIssIdx[', i, '] = ', io_port.IssIdx[i], '\tIssValid[', i, '] = ', io_port.IssValid[i], '\tIssReady[', i, '] = ', io_port.IssReady[i], '\tPE_alloc[', i, '] = ', self.PE_alloc[i])
         # print('PEDelta_stages = ', list(self.PEDelta_stages.queue))
         # print('PEIdx_stages = ', list(self.PEIdx_stages.queue))
         # print('PEValid_stages = ', list(self.PEValid_stages.queue))
         
     def update(self):
         self.PELock = copy.deepcopy(self.PELock_n)
+        self.PE_alloc = copy.deepcopy(self.PE_alloc_n)
         
 
 class Xbar_PEToQ:
