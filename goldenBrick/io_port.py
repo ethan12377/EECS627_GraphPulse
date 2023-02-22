@@ -128,8 +128,10 @@ def init():
     # vertIdx = np.zeros(4)
 
     # to scheduler
-    global initialFinish
-    initialFinish = 0
+    global initialFinish, initialFinish_n, initialFinish_0
+    initialFinish = np.uint8(0)
+    initialFinish_0 = np.uint8(0)
+    initialFinish_n = np.zeros(4, dtype=np.uint8)
 
     #############################
     ### Output from crossbar2 ###

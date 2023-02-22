@@ -110,7 +110,8 @@ class CU:
     def take_event(self, bin_idx):
         # take new event from crossbar if valid and has space in buf
         # if (self.CU_in_buf[bin_idx][:][2].any(0)):
-        if (self.CU_in_buf[bin_idx][3][2] == 0):
+        # if (self.CU_in_buf[bin_idx][3][2] == 0):
+        if (io_port.CUReady[bin_idx]):
             if io_port.CUValid[bin_idx]:
                 self.CU_in_buf_n[bin_idx][0][0] = io_port.CUDelta[bin_idx]
                 self.CU_in_buf_n[bin_idx][0][1] = io_port.CUIdx[bin_idx]

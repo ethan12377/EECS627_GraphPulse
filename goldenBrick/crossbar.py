@@ -133,7 +133,7 @@ class Xbar_SchedToPE:
 
 class Xbar_PEToQ:
     
-    def __init__(self, num_input = 8, num_output = 8, num_stages = 1, bin_lsb = 3, bin_w = 3):
+    def __init__(self, num_input = 8, num_output = 8, num_stages = 1, bin_lsb = 2, bin_w = 3):
         # Reconfigurable parameters
         self.num_input = num_input
         self.num_output = num_output
@@ -288,7 +288,8 @@ class Xbar_PEToQ:
 
         # for i in range(self.num_output):
         #     print('arb_grant_n[', i, '] = ', np.binary_repr(self.arb_grant_n[i]), '\tarb_mask_n[', i, '] = ', np.binary_repr(self.arb_mask_n[i]))
-
+        for i in range(self.num_input):
+            print('CUDelta[',i,'] = ', np.around(io_port.CUDelta[i], 3),'\tCUIdx[', i, '] = ', io_port.CUIdx[i], '\tCUValid[', i, '] = ', io_port.CUValid[i], '\tCUReady[', i, '] = ', io_port.CUReady[i])
 
             
     def update(self):

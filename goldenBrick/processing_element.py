@@ -100,7 +100,7 @@ class PE:
     
     def propagate_evgen(self, port): # port is either 0 or 1
         if self.curr_evgen_idx < self.end: # ongoing event generation
-            if io_port.proValid[self.pe_id + port] == 0 or io_port.proReady[2*self.pe_id + port] == 1: # ready to gnerate or receive new event
+            if io_port.proValid[2*self.pe_id + port] == 0 or io_port.proReady[2*self.pe_id + port] == 1: # ready to gnerate or receive new event
                 if self.initializing == 1: # initializing events, use initialization value
                     io_port.proDelta_n[2*self.pe_id + port] = self.init_value
                     io_port.proIdx_n[2*self.pe_id + port] = self.curr_evgen_idx
@@ -354,6 +354,7 @@ class PE:
                 self.initializing = 0
                 self.ready = 1
                 self.next_state = self.states.IDLE
+                io_port.initialFinish_n[self.pe_id] = np.uint8(1)
             else:
                 self.next_state = self.states.EVGEN
         

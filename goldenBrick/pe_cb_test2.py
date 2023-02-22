@@ -1,13 +1,84 @@
+import copy
 import numpy as np
 import io_port
+from crossbar import Xbar_SchedToPE
 from cache_controller import CC
 from edge_cache import EC
 from vertex_cache import VC
 from processing_element import PE
-from evqueue_multicore import EVQ
-import copy
+# from evqueue_multicore import EVQ
+from output_buffer import OB
+from crossbar import Xbar_PEToQ
+
+CU_timer = np.zeros(8)
+CU_timer_n = np.zeros(8)
+
+np.random.seed(0)
+
+def QS_input():
+    io_port.rowValid_n = np.uint8(0)
+    # if io_port.rowValid == 1:
+    #     if io_port.rowReady == 1:
+    #         io_port.rowValid_n = np.uint8(np.random.randint(2))
+    #         if io_port.rowValid_n == 1:
+    #             for i in range(8):
+    #                 set_zero = np.random.randint(10)
+    #                 if set_zero < 3:
+    #                     io_port.rowDelta_n[i] = 0
+    #                 else:
+    #                     io_port.rowDelta_n[i] = np.random.rand()
+    #             io_port.binrowIdx_n = np.uint8(np.random.randint(32))
+    #         else:
+    #             io_port.rowDelta_n = np.zeros(8)
+    #             io_port.binrowIdx_n = np.uint8(0)
+    # else:
+    #     io_port.rowValid_n = np.uint8(np.random.randint(2))
+    #     if io_port.rowValid_n == 1:
+    #         for i in range(8):
+    #             set_zero = np.random.randint(10)
+    #             if set_zero < 3:
+    #                 io_port.rowDelta_n[i] = 0
+    #             else:
+    #                 io_port.rowDelta_n[i] = np.random.rand()
+    #         io_port.binrowIdx_n = np.uint8(np.random.randint(32))
+    #     else:
+    #         io_port.rowDelta_n = np.zeros(8)
+    #         io_port.binrowIdx_n = np.uint8(0)
+            
+def CU_input():
+    for i in range(8):
+        print('CUDelta[', i, '] = ', np.around(io_port.CUDelta[i], 3), '\tCUIdx[', i, '] = ', io_port.CUIdx[i], '\tCUValid[', i, '] = ', io_port.CUValid[i], '\tCUReady[', i, '] = ', io_port.CUReady[i])
+    
+        io_port.CUReady_n[i] = np.int8(1)
+    # for i in range(8):
+    #     if io_port.CUReady[i] == np.int8(0):
+    #         if CU_timer[i] < (2 + np.random.randint(4)):
+    #             CU_timer_n[i] = CU_timer[i] + 1
+    #         else:
+    #             CU_timer_n[i] = 0
+    #             io_port.CUReady_n[i] = np.int8(1)
+    #     else:
+    #         if io_port.CUValid[i] == np.int8(1):
+    #             io_port.CUReady_n[i] = np.int8(0)
 
 def update():
+    
+    # QS
+    io_port.initialFinish = copy.deepcopy(io_port.initialFinish_n)
+    io_port.rowDelta = copy.deepcopy(io_port.rowDelta_n)
+    io_port.binrowIdx = copy.deepcopy(io_port.binrowIdx_n)
+    io_port.rowValid = copy.deepcopy(io_port.rowValid_n)
+    # OB
+    io_port.rowReady = copy.deepcopy(io_port.rowReady_n)
+    io_port.IssDelta = copy.deepcopy(io_port.IssDelta_n)
+    io_port.IssIdx   = copy.deepcopy(io_port.IssIdx_n)
+    io_port.IssValid = copy.deepcopy(io_port.IssValid_n)
+    # Xbar_SchedToPE
+    io_port.PEDelta = copy.deepcopy(io_port.PEDelta_n)
+    io_port.PEIdx   = copy.deepcopy(io_port.PEIdx_n)
+    io_port.PEValid = copy.deepcopy(io_port.PEValid_n)
+    io_port.IssReady = copy.deepcopy(io_port.IssReady_n)
+    
     # cc
     io_port.cc_ec_ready = copy.deepcopy(io_port.cc_ec_ready_n)
     io_port.cc_vc_ready = copy.deepcopy(io_port.cc_vc_ready_n)
@@ -25,13 +96,16 @@ def update():
     io_port.pe_wrEn = copy.deepcopy(io_port.pe_wrEn_n)
     io_port.pe_vc_reqValid = copy.deepcopy(io_port.pe_vc_reqValid_n)
     io_port.pe_ec_reqValid = copy.deepcopy(io_port.pe_ec_reqValid_n)
-    # evque software ideal model
-    io_port.PEIdx = copy.deepcopy(io_port.PEIdx_n)
-    io_port.PEValid = copy.deepcopy(io_port.PEValid_n)
-    io_port.PEDelta = copy.deepcopy(io_port.PEDelta_n)
-    io_port.proReady = copy.deepcopy(io_port.proReady_n)
-
-
+    
+    # Xbar_PEToQ
+    io_port.CUDelta = copy.deepcopy(io_port.CUDelta_n)
+    io_port.CUIdx = copy.deepcopy(io_port.CUIdx_n)
+    io_port.CUValid = copy.deepcopy(io_port.CUValid_n)
+    io_port.proReady = copy.deepcopy(io_port.proReady_n)  
+    
+    # CU
+    io_port.CUReady = copy.deepcopy(io_port.CUReady_n)
+    
 def print_pe_status(pe_id):
     print('##### PE ' + str(pe_id) + ' #####')
     print('state = \t' + str(PE_cores[pe_id].curr_state))
@@ -79,7 +153,7 @@ def print_cc_status():
 
 def print_queue_status():
     print('##### QUEUE #####')
-    print('waiting for pe = \t' + str(EVQ0.waiting_for_pe))
+    # print('waiting for pe = \t' + str(EVQ0.waiting_for_pe))
     print('pe valid = \t' + str(io_port.PEValid))
     print('pe idx = \t' + str(io_port.PEIdx))
     print('pe delta = \t' + str(io_port.PEDelta))
@@ -102,38 +176,39 @@ def print_system_status(cycle):
     print_queue_status()
     print_vc_content(0, EC0.num_of_vertices)
     print()
-
-def send_event(pe_id, vertex_idx, delta):
-    io_port.PEValid[pe_id] = 1
-    io_port.PEDelta[pe_id] = delta
-    io_port.PEIdx[pe_id] = vertex_idx
-
-
+    
 if __name__ == "__main__":
-
     io_port.init()
+    OB0 = OB()
+    Xbar0 = Xbar_SchedToPE()
     CC_VC = CC(cache_name='vc')
     CC_EC = CC(cache_name='ec')
     EC0 = EC(csr_filename='csr.txt')
     VC0 = VC()
     # test all four cores at the same time
     curr_num_of_cores = 4
-    EVQ0 = EVQ(num_of_cores=curr_num_of_cores)
+    # EVQ0 = EVQ(num_of_cores=curr_num_of_cores)
     PE0 = PE(pe_id=0, fpu_pipe_depth=3, threshold=1e-6, damping_factor=0.85, num_of_vertices=EC0.num_of_vertices, num_of_cores=curr_num_of_cores)
     PE1 = PE(pe_id=1, fpu_pipe_depth=3, threshold=1e-6, damping_factor=0.85, num_of_vertices=EC0.num_of_vertices, num_of_cores=curr_num_of_cores)
     PE2 = PE(pe_id=2, fpu_pipe_depth=3, threshold=1e-6, damping_factor=0.85, num_of_vertices=EC0.num_of_vertices, num_of_cores=curr_num_of_cores)
     PE3 = PE(pe_id=3, fpu_pipe_depth=3, threshold=1e-6, damping_factor=0.85, num_of_vertices=EC0.num_of_vertices, num_of_cores=curr_num_of_cores)
     PE_cores = [PE0, PE1, PE2, PE3]
+    Xbar1 = Xbar_PEToQ()
 
     curr_cycle = 0
-    timeout_cycle_num = 5000
+    timeout_cycle_num = 20
     # print_range = [0, 50]
     print_range = [4995, 5000]
-
+    
     # run until convergence
-    while EVQ0.empty != 1 or not all(v == 1 for v in io_port.PEReady):
-        if curr_cycle >= timeout_cycle_num:
-            break
+    # while EVQ0.empty != 1 or not all(v == 1 for v in io_port.PEReady):
+    #     if curr_cycle >= timeout_cycle_num:
+    #         break
+    for i in range(30):
+        print("[Clock", i, "]")
+        QS_input()
+        OB0.one_clock()
+        Xbar0.one_clock()
         PE0.one_clock()
         PE1.one_clock()
         PE2.one_clock()
@@ -142,11 +217,18 @@ if __name__ == "__main__":
         CC_EC.one_clock()
         EC0.one_clock()
         VC0.one_clock()
-        EVQ0.one_clock()
+        # EVQ0.one_clock()
+        Xbar1.one_clock()
+        CU_input()
         update()
+        Xbar0.update()
+        OB0.update()
+        Xbar1.update()
+        CU_timer = copy.deepcopy(CU_timer_n)
         # if curr_cycle >= print_range[0] and curr_cycle <= print_range[1]:
-        print_system_status(curr_cycle)
-        curr_cycle += 1
+        # print_system_status(curr_cycle)
+        print('initialFinish: ', io_port.initialFinish)
+        # curr_cycle += 1
     
     print()
     if curr_cycle <= timeout_cycle_num:
