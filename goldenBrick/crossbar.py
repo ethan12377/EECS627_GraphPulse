@@ -16,16 +16,16 @@ class Xbar_SchedToPE:
         
         # Freelist: Track the free (not busy) PEs
         self.freelist = Queue(maxsize=self.num_output)
-        for output_idx in range(self.num_output):
-            self.freelist.put_nowait(output_idx)
+        # for output_idx in range(self.num_output):
+        #     self.freelist.put_nowait(output_idx)
         
         # PE allocation
         self.PE_alloc = np.zeros(self.num_input, dtype=np.uint8)
         self.PE_alloc_n = np.zeros(self.num_input, dtype=np.uint8)
             
         # Locks to prevent PEs to be inserted to freelist wrongly
-        self.PELock = np.ones(self.num_output, dtype=np.uint8)
-        self.PELock_n = np.ones(self.num_output, dtype=np.uint8)
+        self.PELock = np.zeros(self.num_output, dtype=np.uint8)
+        self.PELock_n = np.zeros(self.num_output, dtype=np.uint8)
         
         # Pipeline stages
         self.PEDelta_stages = Queue(maxsize=self.num_stages+1)
@@ -119,9 +119,12 @@ class Xbar_SchedToPE:
     def print_signals(self):
         for i in range(self.num_input):
             print('IssDelta[',i,'] = ', np.around(io_port.IssDelta[i], 3),'\tIssIdx[', i, '] = ', io_port.IssIdx[i], '\tIssValid[', i, '] = ', io_port.IssValid[i], '\tIssReady[', i, '] = ', io_port.IssReady[i], '\tPE_alloc[', i, '] = ', self.PE_alloc[i])
-        # print('PEDelta_stages = ', list(self.PEDelta_stages.queue))
-        # print('PEIdx_stages = ', list(self.PEIdx_stages.queue))
-        # print('PEValid_stages = ', list(self.PEValid_stages.queue))
+            
+        for i in range(self.num_input):
+            print('PEDelta[',i,'] = ', np.around(io_port.PEDelta[i], 3),'\tPEIdx[', i, '] = ', io_port.PEIdx[i], '\tPEValid[', i, '] = ', io_port.PEValid[i], '\tPEReady[', i, '] = ', io_port.PEReady[i])
+        print('PEDelta_stages = ', list(self.PEDelta_stages.queue))
+        print('PEIdx_stages = ', list(self.PEIdx_stages.queue))
+        print('PEValid_stages = ', list(self.PEValid_stages.queue))
         
     def update(self):
         self.PELock = copy.deepcopy(self.PELock_n)

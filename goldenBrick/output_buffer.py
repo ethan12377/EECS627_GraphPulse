@@ -5,7 +5,7 @@ import copy
 
 class OB:
 
-    def __init__(self, num_col = 8, num_output = 4, depth = 16, num_fifo_in = 2):
+    def __init__(self, num_col = 8, num_output = 4, depth = 16, num_fifo_in = 4):
         
         self.num_col = num_col
         self.num_output = num_output
