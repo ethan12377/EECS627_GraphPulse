@@ -134,13 +134,12 @@ class CU:
               
 
     def prepare_new_event(self, bin_idx):
-        io_port.searchValid_n[bin_idx] = 0
         # take the first-in event
         non_zero_indices = np.nonzero(self.CU_in_buf[bin_idx])[0]
         if len(non_zero_indices) > 0:
             (new_Delta, new_idx, new_Valid) = self.CU_in_buf[bin_idx][non_zero_indices[-1]]
             self.CUIdxreg_n[bin_idx][0] =  new_idx
-            self.CUregValid_n[bin_idx][0] =  io_port.CUValid[bin_idx]
+            self.CUDeltareg_n[bin_idx][0] = new_Delta
             # if conflict, stall
             if (new_idx  == self.CUIdxreg[bin_idx][0]) and (self.CUregValid[bin_idx][0]):
                 self.CUregValid_n[bin_idx][0] = 0
@@ -149,9 +148,12 @@ class CU:
             elif (new_idx  == self.CUIdxreg[bin_idx][2]) and (self.CUregValid[bin_idx][2]):
                 self.CUregValid_n[bin_idx][0] = 0 
             else:
-                self.CUDeltareg_n[bin_idx][0] = new_Delta
+                self.CUregValid_n[bin_idx][0] = new_Valid
                 # remove from buf
-                self.CU_in_buf[bin_idx][non_zero_indices[-1]] = 0
+                self.CU_in_buf[bin_idx][non_zero_indices[-1]][0] = 0
+                self.CU_in_buf[bin_idx][non_zero_indices[-1]][1] = 0
+                self.CU_in_buf[bin_idx][non_zero_indices[-1]][2] = 0
+                
         else:
             self.CUDeltareg_n[bin_idx][0] = 0
             self.CUIdxreg_n[bin_idx][0] = 0
@@ -173,8 +175,8 @@ class CU:
         self.take_event(bin_idx)
 
         if (self.CUregValid_n[bin_idx][0]):
-            io_port.searchIdx_n[bin_idx] = self.CUregValid_n[bin_idx][0]
-            io_port.searchValid_n[bin_idx] = self.CUIdxreg_n[bin_idx][0]
+            io_port.searchIdx_n[bin_idx] = self.CUIdxreg_n[bin_idx][0]
+            io_port.searchValid_n[bin_idx] = self.CUregValid_n[bin_idx][0]
         else:
             io_port.searchIdx_n[bin_idx] = 0
             io_port.searchValid_n[bin_idx] = 0

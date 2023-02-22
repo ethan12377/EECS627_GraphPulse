@@ -9,12 +9,12 @@ QS0 = QS()
 
 def print_CU():     
     
-    print(f"CUreg[0]: CUregValid |CUDeltareg ")
-    print(f"|         {CU0.CUregValid[0][0]}  |{CU0.CUDeltareg[0][0]} ")
+    print(f"CUreg[0]: CUregValid |CUDeltareg    |CUIdxreg")
+    print(f"|         {CU0.CUregValid[0][0]}  |{CU0.CUDeltareg[0][0]}   |{CU0.CUIdxreg[0][0]} ")
     print(f"CUreg[1]: CUregValid |CUDeltareg ")
-    print(f"|         {CU0.CUregValid[0][1]}  |{CU0.CUDeltareg[0][1]} ")
+    print(f"|         {CU0.CUregValid[0][1]}  |{CU0.CUDeltareg[0][1]}   |{CU0.CUIdxreg[0][1]} ")
     print(f"CUreg[2]: CUregValid |CUDeltareg ")
-    print(f"|         {CU0.CUregValid[0][2]}  |{CU0.CUDeltareg[0][2]} ")
+    print(f"|         {CU0.CUregValid[0][2]}  |{CU0.CUDeltareg[0][2]}   |{CU0.CUIdxreg[0][2]} ")
         
     
 
@@ -29,12 +29,13 @@ def print_CU():
     print(f"|{io_port.CUDelta[0]}  |{io_port.CUIdx[0]}   |{io_port.CUValid[0]}")
    
     print(f'output:')
-    print("CUReady_n[0] = ", io_port.CUReady_n[0])
+    print(f"CUReady_n[0] = ", io_port.CUReady_n[0])
+    print(f"cuclean_n= ", io_port.cuclean_n)
     print(f"searchIdx_n[0] |searchValid_n[0]   ")
     print(f"{io_port.searchIdx_n[0]}    |{io_port.searchValid_n[0]}")
     print(f"newDelta_n[0] |newIdx_n[0] |newValid_n[0]  ")
-    print(f"{io_port.newDelta_n[0]} |{io_port.newIdx_n[0]}  |{io_port.newValid_n[0]}", )
-    print("cuclean_n= ", io_port.cuclean_n)
+    print(f"{io_port.newDelta_n[0]} |{io_port.newIdx_n[0]}  |{io_port.newValid_n[0]}")
+    
 
 def print_qs():
     print("io_port.rowDelta_n: ", io_port.rowDelta_n)
@@ -59,6 +60,7 @@ def next_state_copy():
     io_port.newValid = np.copy(io_port.newValid_n)
 
     io_port.cuclean = np.copy(io_port.cuclean_n) 
+    io_port.CUReady = np.copy(io_port.CUReady_n) 
 
 
 
@@ -92,7 +94,6 @@ print("-------------------------------------------------------------")
 print("Cycle1:")
 QS0.one_clock()
 CU0.one_clock()
-print_qs()
 print_qs()
 print_CU()
 print("-------------------------------------------------------------")

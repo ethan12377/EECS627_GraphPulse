@@ -136,6 +136,8 @@ class QS:
                 io_port.searchValue_n[bin_idx] = self.queue[search_bin][search_row][search_col]
                 io_port.searchValueValid_n[bin_idx] = 1
             else:
+                print(f"search_bin: ", {search_bin})
+                print(f"searchValid[bin_idx]:", {bin_idx})
                 print(f"search other bins!!")
 
     #check whether bins are valid
