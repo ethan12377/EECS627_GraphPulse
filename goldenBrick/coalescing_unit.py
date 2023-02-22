@@ -55,6 +55,8 @@ class CU:
         self.coalescing_unit(5)
         self.coalescing_unit(6)
         self.coalescing_unit(7)
+
+        
         
 
         self.CUregValid = np.copy(self.CUregValid_n)
@@ -75,7 +77,7 @@ class CU:
             io_port.newDelta_n[bin_idx] = np.copy(io_port.CUDelta[bin_idx])
             io_port.newIdx_n[bin_idx] = np.copy(io_port.CUIdx[bin_idx])
             io_port.newValid_n[bin_idx] = np.copy(io_port.CUValid[bin_idx])
-            io_port.cuclean_n[bin_idx] = 1
+            io_port.cuclean_n[bin_idx] = 0
         else:
             # issue new event and update reg0_n
             # output: io_port.searchIdx_n
@@ -124,7 +126,6 @@ class CU:
         non_zero_indices = np.nonzero(self.CU_in_buf[bin_idx])[0]
         if len(non_zero_indices) > 0:
             (new_Delta, new_idx, new_Valid) = self.CU_in_buf[bin_idx][non_zero_indices[-1]]
-            print(new_Delta, new_idx, new_Valid)
             # remove from buf
             self.CU_in_buf[bin_idx][non_zero_indices[-1]] = 0
             self.take_event(bin_idx)
@@ -193,8 +194,8 @@ class CU:
             self.CUDeltareg_n[bin_idx][1] = np.copy(self.CUDeltareg[bin_idx][0])
             self.CUregtag_n[bin_idx][1] = np.copy(self.CUregtag[bin_idx][0])
 
-        # update CUclean_n and self.CUregValid_n[bin_idx][1] at the same time 
-        if (self.CUregValid_n[bin_idx][1] == 0):
+        # update CUclean_n and self.CUregValid_n[bin_idx][1] at the same time ???
+        if (self.CUregValid_n[bin_idx][1] == 0) and (io_port.state[bin_idx] != 1) and (io_port.state[bin_idx] != 0):
             io_port.cuclean_n[bin_idx] = 1
         else:
             io_port.cuclean_n[bin_idx] = 0

@@ -44,7 +44,10 @@ class QS:
                 self.write_from_cu(i)
                 if(io_port.initialFinish):
                     if(i == 0):
-                        io_port.state_n[i] = 3
+                        if (io_port.cuclean[i]):
+                            io_port.state_n[i] = 3
+                        else:
+                            io_port.state_n[i] = 2
                     else:
                         io_port.state_n[i] = 1
                 else:

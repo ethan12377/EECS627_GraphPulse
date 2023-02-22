@@ -8,14 +8,16 @@ CU0 = CU()
 QS0 = QS()
 
 def print_CU():     
+    
     print(f"CUreg[0]: CUregValid |CUIdxreg |CUDeltareg |CUregtag       ")
     print(f"|         {CU0.CUregValid[0][0]}  |{CU0.CUIdxreg[0][0]}   |{CU0.CUDeltareg[0][0]} |{CU0.CUregtag[0][0]}")
     print(f"CUreg[1]: CUregValid |CUIdxreg |CUDeltareg |CUregtag       ")
     print(f"|         {CU0.CUregValid[0][1]}  |{CU0.CUIdxreg[0][1]}   |{CU0.CUDeltareg[0][1]} |{CU0.CUregtag[0][1]}")
-    print("CU_in_buf: delta, idx, valid")
     print(f"CUreg[2]: CUregValid |CUIdxreg |CUDeltareg |CUregtag       ")
     print(f"|         {CU0.CUregValid[0][2]}  |{CU0.CUIdxreg[0][2]}   |{CU0.CUDeltareg[0][2]} |{CU0.CUregtag[0][2]}")
+        
     
+
     print('\n')
     print("CU_in_buf: delta, idx, valid")
     print(CU0.CU_in_buf[0])
@@ -33,7 +35,7 @@ def print_CU():
     print(f"{io_port.searchIdx_n[0]}    |{io_port.searchValid_n[0]}")
     print(f"newDelta_n[0] |newIdx_n[0] |newValid_n[0]  ")
     print(f"{io_port.newDelta_n[0]} |{io_port.newIdx_n[0]}  |{io_port.newValid_n[0]}", )
-    print("cuclean_n[0] = ", io_port.cuclean_n[0])
+    print("cuclean_n= ", io_port.cuclean_n)
 
 def print_qs():
     print("io_port.rowDelta_n: ", io_port.rowDelta_n)
@@ -70,6 +72,7 @@ io_port.CUIdx = np.array([0, 37, 74, 111, 147, 182, 217, 252])
 io_port.CUValid = np.zeros(8)
 
 io_port.rowReady = 1
+print('\n')
 print("-------------------------------------------------------------")
 print("Cycle0:")
 QS0.one_clock()
@@ -77,7 +80,7 @@ CU0.one_clock()
 print_qs()
 print_CU()
 print("-------------------------------------------------------------")
-
+print('\n')
 io_port.initialFinish = 0
 next_state_copy()
 
@@ -85,6 +88,7 @@ io_port.rowReady = 1
 io_port.CUDelta = np.array([2, 2, 2, 2, 2, 2, 2, 2])
 io_port.CUIdx = np.array([0, 37, 74, 111, 147, 182, 217, 252])
 io_port.CUValid = np.ones(8)
+print('\n')
 print("-------------------------------------------------------------")
 print("Cycle1:")
 QS0.one_clock()
@@ -93,8 +97,9 @@ print_qs()
 print_qs()
 print_CU()
 print("-------------------------------------------------------------")
+print('\n')
 
-# initial finished
+print("initial finished")
 io_port.initialFinish = 1
 next_state_copy()
 
@@ -102,7 +107,7 @@ io_port.rowReady = 1
 io_port.CUDelta = np.array([3, 3, 3, 3, 3, 3, 3, 3])
 io_port.CUIdx = np.array([0, 37, 74, 111, 147, 182, 217, 252])
 io_port.CUValid = np.ones(8)
-
+print('\n')
 print("-------------------------------------------------------------")
 print("Cycle2:")
 QS0.one_clock()
@@ -110,7 +115,7 @@ CU0.one_clock()
 print_qs()
 print_CU()
 print("-------------------------------------------------------------")
-
+print('\n')
 io_port.initialFinish = 1
 next_state_copy()
 
@@ -119,7 +124,7 @@ io_port.CUDelta = np.array([4, 4, 4, 4, 4, 4, 4, 4])
 io_port.CUIdx = np.array([0, 37, 74, 111, 147, 182, 217, 252])
 io_port.CUValid = np.ones(8)
 
-
+print('\n')
 print("-------------------------------------------------------------")
 print("Cycle3:")
 QS0.one_clock()
@@ -127,7 +132,7 @@ CU0.one_clock()
 print_qs()
 print_CU()
 print("-------------------------------------------------------------")
-
+print('\n')
 io_port.initialFinish = 1
 next_state_copy()
 
@@ -135,6 +140,7 @@ io_port.rowReady = 1
 io_port.CUDelta = np.array([5, 5, 5, 5, 5, 5, 5, 5])
 io_port.CUIdx = np.array([0, 37, 74, 111, 147, 182, 217, 252])
 io_port.CUValid = np.ones(8)
+print('\n')
 print("-------------------------------------------------------------")
 print("Cycle4:")
 QS0.one_clock()
@@ -142,7 +148,7 @@ CU0.one_clock()
 print_qs()
 print_CU()
 print("-------------------------------------------------------------")
-
+print('\n')
 io_port.initialFinish = 1
 next_state_copy()
 
@@ -150,6 +156,7 @@ io_port.rowReady = 1
 io_port.CUDelta = np.array([6, 6, 6, 6, 6, 6, 6, 6])
 io_port.CUIdx = np.array([0, 37, 74, 111, 147, 182, 217, 252])
 io_port.CUValid = np.ones(8)
+print('\n')
 print("-------------------------------------------------------------")
 print("Cycle5:")
 QS0.one_clock()
@@ -157,7 +164,7 @@ CU0.one_clock()
 print_qs()
 print_CU()
 print("-------------------------------------------------------------")
-
+print('\n')
 
 io_port.initialFinish = 1
 next_state_copy()
@@ -166,7 +173,7 @@ io_port.rowReady = 1
 io_port.CUDelta = np.array([7, 7, 7, 7, 7, 7, 7, 7])
 io_port.CUIdx = np.array([0, 37, 74, 111, 147, 182, 217, 252])
 io_port.CUValid = np.ones(8)
-
+print('\n')
 print("-------------------------------------------------------------")
 print("Cycle6:")
 QS0.one_clock()
@@ -174,7 +181,7 @@ CU0.one_clock()
 print_qs()
 print_CU()
 print("-------------------------------------------------------------")
-
+print('\n')
 
 io_port.initialFinish = 1
 next_state_copy()
@@ -183,7 +190,7 @@ io_port.rowReady = 1
 io_port.CUDelta = np.array([8, 8, 8, 8, 8, 8, 8, 8])
 io_port.CUIdx = np.array([0, 37, 74, 111, 147, 182, 217, 252])
 io_port.CUValid = np.ones(8)
-
+print('\n')
 print("-------------------------------------------------------------")
 print("Cycle7:")
 QS0.one_clock()
@@ -191,6 +198,6 @@ CU0.one_clock()
 print_qs()
 print_CU()
 print("-------------------------------------------------------------")
-
+print('\n')
 
 
