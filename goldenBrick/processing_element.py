@@ -4,7 +4,7 @@ from enum import Enum
 
 # reduce function:      fpu add
 
-#                         (fpu)    (8-bit integer)  
+#                         (fpu)    (8-bit integer)
 # propagate function:   d * delta / (end - start)
 
 
@@ -49,7 +49,7 @@ class PE:
         self.end = int(0)
         self.start_ready = int(0)
         self.end_ready = int(0)
-        
+
         # status for cache requests
         self.vc_req_status = int(0) # 0: idle, 1: waiting for read, 2: waiting for write
         self.ec_req_status = int(0) # 0: idle, 1: start, 2: end, 3: col_index_word
@@ -68,36 +68,36 @@ class PE:
         self.curr_col_idx_word_valid = int(0)
 
         self.proport_done = [0, 0]
-    
+
     def clear_status_regs(self):
         self.ruw_complete = 0
         self.initializing = 0
 
         self.vc_req_status = 0
         self.ec_req_status = 0
-        
+
         self.proport_done = [0, 0]
         self.start_ready = 0
         self.end_ready = 0
         self.curr_prodelta_numerator_ready = 0
         self.curr_prodelta_denom_ready = 0
         self.curr_prodelta_ready = 0
-    
+
     def hold_vc_req(self):
         io_port.pe_vc_reqAddr_n[self.pe_id] = io_port.pe_vc_reqAddr[self.pe_id]
         io_port.pe_vc_reqValid_n[self.pe_id] = io_port.pe_vc_reqValid[self.pe_id]
         io_port.pe_wrEn_n[self.pe_id] = io_port.pe_wrEn[self.pe_id]
         io_port.pe_wrData_n[self.pe_id] = io_port.pe_wrData[self.pe_id]
-    
+
     def hold_ec_req(self):
         io_port.pe_ec_reqAddr_n[self.pe_id] = io_port.pe_ec_reqAddr[self.pe_id]
         io_port.pe_ec_reqValid_n[self.pe_id] = io_port.pe_ec_reqValid[self.pe_id]
-    
+
     def hold_propagate_events(self, port): # port is either 0 or 1
         io_port.proDelta_n[self.pe_id*2 + port] = io_port.proDelta[self.pe_id*2 + port]
         io_port.proIdx_n[self.pe_id*2 + port] = io_port.proIdx[self.pe_id*2 + port]
         io_port.proValid_n[self.pe_id*2 + port] = io_port.proValid[self.pe_id*2 + port]
-    
+
     def propagate_evgen(self, port): # port is either 0 or 1
         if self.curr_evgen_idx < self.end: # ongoing event generation
             if io_port.proValid[2*self.pe_id + port] == 0 or io_port.proReady[2*self.pe_id + port] == 1: # ready to gnerate or receive new event
@@ -125,15 +125,15 @@ class PE:
                 self.proport_done[port] = 1
             else:
                 self.hold_propagate_events(port)
-    
+
     def one_clock(self):
         self.curr_state = self.next_state
-       
+
         # pipelined fpu
         for i in range(self.fpu_pipe_depth-1, -1, -1):
             self.fpu_value_pipe[i+1] = self.fpu_value_pipe[i]
             self.fpu_status_pipe[i+1] = self.fpu_status_pipe[i]
-        
+
         # default relevant outputs to zero, overwrite when necessary
         io_port.pe_ec_reqValid_n[self.pe_id] = 0
         io_port.pe_vc_reqValid_n[self.pe_id] = 0
@@ -146,19 +146,19 @@ class PE:
         #############################
         ### FSM STATES DEFINITION ###
         #############################
-        
+
         ##### INIT state #####
         # initialization: generate initialization event of (idx, (1-d)/N) for all vertices
         if self.curr_state == self.states.INIT:
             # set initializing status reg
             self.initializing = 1
             self.ready = 0 # not ready for upstream events yet
-            
+
             if np.count_nonzero(self.fpu_status_pipe) == 0 and self.init_value_ready == 0: # no ongoing calculation inside of the fpu at startup
                 # calculate initial value denominator
                 self.fpu_value_pipe[0] = 1 - self.damping_factor
                 self.fpu_status_pipe[0] = 3
-            
+
             # check fpu status
             if self.fpu_status_pipe[self.fpu_pipe_depth] == 2: # init value ready
                 self.init_value = self.fpu_value_pipe[self.fpu_pipe_depth]
@@ -167,7 +167,7 @@ class PE:
                 # calculate initialization value
                 self.fpu_value_pipe[0] = self.fpu_value_pipe[self.fpu_pipe_depth] / self.num_of_vertices
                 self.fpu_status_pipe[0] = 2
-            
+
             # start ev gen when init value ready
             if self.init_value_ready == 1:
                 self.start = self.pe_id
@@ -209,7 +209,7 @@ class PE:
             else:
                 self.ready = 1
                 self.next_state = self.states.IDLE
-        
+
         ##### RUW state #####
         if self.curr_state == self.states.RUW:
             ### check vc mem request ###
@@ -226,7 +226,7 @@ class PE:
             else:
                 if self.vc_req_status != 0: # active read or write waiting on vc
                     self.hold_vc_req()
-            
+
             ### check ec mem request ###
             if io_port.cc_ec_ready[self.pe_id] == 1:
                 if self.ec_req_status == 1: # read start fulfilled
@@ -237,7 +237,7 @@ class PE:
                     if self.curr_idx % 4 != 3:
                         self.end = io_port.ec_rdData[self.curr_idx % 4 + 1]
                         self.end_ready = 1
-                        if self.end != self.start: 
+                        if self.end != self.start:
                             # grab a col index word from ec
                             io_port.pe_ec_reqAddr_n[self.pe_id] = self.start // 8
                             io_port.pe_ec_reqValid_n[self.pe_id] = 1
@@ -252,7 +252,7 @@ class PE:
                 elif self.ec_req_status == 2: # read end fulfilled
                     self.end = io_port.ec_rdData[0]
                     self.end_ready = 1
-                    if self.end != self.start: 
+                    if self.end != self.start:
                         # grab a col index word from ec
                         io_port.pe_ec_reqAddr_n[self.pe_id] = self.start // 8
                         io_port.pe_ec_reqValid_n[self.pe_id] = 1
@@ -267,7 +267,7 @@ class PE:
             else:
                 if self.ec_req_status != 0: # active read waiting on ec
                     self.hold_ec_req()
-            
+
             ### check fpu ###
             if self.fpu_status_pipe[self.fpu_pipe_depth] != 0:
                 if self.fpu_status_pipe[self.fpu_pipe_depth] == 1: # ruw result obtained
@@ -283,7 +283,7 @@ class PE:
                 elif self.fpu_status_pipe[self.fpu_pipe_depth] == 3: # prodelta numerator obtained
                     self.curr_prodelta_numerator = self.fpu_value_pipe[self.fpu_pipe_depth]
                     self.curr_prodelta_numerator_ready = 1
-            
+
             ### check if ready to calculate prodelta denominator ###
             if self.start_ready == 1 and self.end_ready == 1 and self.curr_prodelta_denom_ready == 0:
                 if self.start == self.end: # sink detected, distribute pagerank among all other vertices
@@ -299,7 +299,7 @@ class PE:
             if self.curr_prodelta_numerator_ready == 1 and self.curr_prodelta_denom_ready == 1 and self.fpu_status_pipe[0] == 0:
                 self.fpu_value_pipe[0] = self.curr_prodelta_numerator / self.curr_prodelta_denom
                 self.fpu_status_pipe[0] = 2
-            
+
             ### determine next state ###
             if self.curr_prodelta_ready == 1 and self.curr_col_idx_word_valid == 1: # data ready for evgen
                 self.curr_evgen_idx = self.start
@@ -332,7 +332,7 @@ class PE:
                     io_port.pe_vc_reqValid_n[self.pe_id] = 1
                     io_port.pe_wrData_n[self.pe_id] = self.fpu_value_pipe[self.fpu_pipe_depth]
                     self.vc_req_status = 2
-            
+
             # check ec request
             if io_port.cc_ec_ready[self.pe_id] == 1:
                 if self.ec_req_status == 3: # col index word read fulfilled
@@ -344,7 +344,7 @@ class PE:
 
             # port 0 operations
             self.propagate_evgen(0)
-                    
+
             # port 1 operations
             self.propagate_evgen(1)
 
@@ -357,6 +357,12 @@ class PE:
                 io_port.initialFinish_n[self.pe_id] = np.uint8(1)
             else:
                 self.next_state = self.states.EVGEN
-        
+
         # update processor status to io
         io_port.PEReady_n[self.pe_id] = self.ready
+
+        # update convergence condition
+        if self.curr_state == self.states.IDLE:
+            io_port.pe_idle[self.pe_id] = 1
+        else:
+            io_port.pe_idle[self.pe_id] = 0

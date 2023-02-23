@@ -18,13 +18,14 @@ CU_timer_n = np.zeros(8)
 np.random.seed(0)
 
 def update():
-    
+
     # QS
     io_port.initialFinish = copy.deepcopy(io_port.initialFinish_0)
     io_port.initialFinish_0 = np.uint8(io_port.initialFinish_n[0] and io_port.initialFinish_n[1] and io_port.initialFinish_n[2] and io_port.initialFinish_n[3])
     io_port.rowDelta = copy.deepcopy(io_port.rowDelta_n)
     io_port.binrowIdx = copy.deepcopy(io_port.binrowIdx_n)
     io_port.rowValid = copy.deepcopy(io_port.rowValid_n)
+    io_port.queue_empty = copy.deepcopy(io_port.queue_empty_n)
     # OB
     io_port.rowReady = copy.deepcopy(io_port.rowReady_n)
     io_port.IssDelta = copy.deepcopy(io_port.IssDelta_n)
@@ -35,7 +36,7 @@ def update():
     io_port.PEIdx   = copy.deepcopy(io_port.PEIdx_n)
     io_port.PEValid = copy.deepcopy(io_port.PEValid_n)
     io_port.IssReady = copy.deepcopy(io_port.IssReady_n)
-    
+
     # cc
     io_port.cc_ec_ready = copy.deepcopy(io_port.cc_ec_ready_n)
     io_port.cc_vc_ready = copy.deepcopy(io_port.cc_vc_ready_n)
@@ -53,29 +54,33 @@ def update():
     io_port.pe_wrEn = copy.deepcopy(io_port.pe_wrEn_n)
     io_port.pe_vc_reqValid = copy.deepcopy(io_port.pe_vc_reqValid_n)
     io_port.pe_ec_reqValid = copy.deepcopy(io_port.pe_ec_reqValid_n)
-    
+
     # Xbar_PEToQ
     io_port.CUDelta = copy.deepcopy(io_port.CUDelta_n)
     io_port.CUIdx = copy.deepcopy(io_port.CUIdx_n)
     io_port.CUValid = copy.deepcopy(io_port.CUValid_n)
-    io_port.proReady = copy.deepcopy(io_port.proReady_n)  
-    
+    io_port.proReady = copy.deepcopy(io_port.proReady_n)
+
     # CU
     io_port.CUReady = copy.deepcopy(io_port.CUReady_n)
-    
+
     io_port.state = np.copy(io_port.state_n)
 
     io_port.searchValueValid = np.copy(io_port.searchValueValid_n)
     io_port.searchValue = np.copy(io_port.searchValue_n)
-    io_port.searchIdx = np.copy(io_port.searchIdx_n) 
-    io_port.searchValid = np.copy(io_port.searchValid_n) 
+    io_port.searchIdx = np.copy(io_port.searchIdx_n)
+    io_port.searchValid = np.copy(io_port.searchValid_n)
 
     io_port.newDelta = np.copy(io_port.newDelta_n)
     io_port.newIdx = np.copy(io_port.newIdx_n)
     io_port.newValid = np.copy(io_port.newValid_n)
 
-    io_port.cuclean = np.copy(io_port.cuclean_n) 
-    
+    io_port.cuclean = np.copy(io_port.cuclean_n)
+
+    io_port.cu_empty = np.uint8(io_port.cu_empty_n[0] and io_port.cu_empty_n[1] and
+            io_port.cu_empty_n[2] and io_port.cu_empty_n[3] and io_port.cu_empty_n[4] and
+            io_port.cu_empty_n[5] and io_port.cu_empty_n[6] and io_port.cu_empty_n[7])
+
 def print_pe_status(pe_id):
     print('##### PE ' + str(pe_id) + ' #####')
     print('state = \t' + str(PE_cores[pe_id].curr_state))
@@ -146,34 +151,35 @@ def print_system_status(cycle):
     print_queue_status()
     print_vc_content(0, EC0.num_of_vertices)
     print()
-    
-def print_CU():     
-    print(f"CUreg[0]: CUregValid |CUIdxreg |CUDeltareg |CUregtag       ")
-    print(f"|         {CU0.CUregValid[0][0]}  |{CU0.CUIdxreg[0][0]}   |{CU0.CUDeltareg[0][0]} |{CU0.CUregtag[0][0]}")
-    print(f"CUreg[1]: CUregValid |CUIdxreg |CUDeltareg |CUregtag       ")
-    print(f"|         {CU0.CUregValid[0][1]}  |{CU0.CUIdxreg[0][1]}   |{CU0.CUDeltareg[0][1]} |{CU0.CUregtag[0][1]}")
-    print("CU_in_buf: delta, idx, valid")
-    print(f"CUreg[2]: CUregValid |CUIdxreg |CUDeltareg |CUregtag       ")
-    print(f"|         {CU0.CUregValid[0][2]}  |{CU0.CUIdxreg[0][2]}   |{CU0.CUDeltareg[0][2]} |{CU0.CUregtag[0][2]}")
-    
+
+def print_CU():
+    # print(f"CUreg[0]: CUregValid |CUIdxreg |CUDeltareg |CUregtag       ")
+    # print(f"|         {CU0.CUregValid[0][0]}  |{CU0.CUIdxreg[0][0]}   |{CU0.CUDeltareg[0][0]} |{CU0.CUregtag[0][0]}")
+    # print(f"CUreg[1]: CUregValid |CUIdxreg |CUDeltareg |CUregtag       ")
+    # print(f"|         {CU0.CUregValid[0][1]}  |{CU0.CUIdxreg[0][1]}   |{CU0.CUDeltareg[0][1]} |{CU0.CUregtag[0][1]}")
+    # print("CU_in_buf: delta, idx, valid")
+    # print(f"CUreg[2]: CUregValid |CUIdxreg |CUDeltareg |CUregtag       ")
+    # print(f"|         {CU0.CUregValid[0][2]}  |{CU0.CUIdxreg[0][2]}   |{CU0.CUDeltareg[0][2]} |{CU0.CUregtag[0][2]}")
+
     print('\n')
     print("CU_in_buf: delta, idx, valid")
     print(CU0.CU_in_buf[0])
-    print("CU_out_buf: delta, idx, valid")
-    print(CU0.CU_out_buf[0])
+    # print("CU_out_buf: delta, idx, valid")
+    # print(CU0.CU_out_buf[0])
     print('\n')
-    
+
     print(f'input:')
     print(f"|io_port.CUDelta |io_port.CUIdx |io_port.CUValid")
     print(f"|{io_port.CUDelta[0]}  |{io_port.CUIdx[0]}   |{io_port.CUValid[0]}")
-   
+
     print(f'output:')
     print("CUReady_n[0] = ", io_port.CUReady_n[0])
     print(f"searchIdx_n[0] |searchValid_n[0]   ")
     print(f"{io_port.searchIdx_n[0]}    |{io_port.searchValid_n[0]}")
     print(f"newDelta_n[0] |newIdx_n[0] |newValid_n[0]  ")
-    print(f"{io_port.newDelta_n[0]} |{io_port.newIdx_n[0]}  |{io_port.newValid_n[0]}", )
-    print("cuclean_n[0] = ", io_port.cuclean_n[0])
+    print(f"{io_port.newDelta_n[0]} |{io_port.newIdx_n[0]}  |{io_port.newValid_n[0]}" )
+    print("cuclean_n = ", io_port.cuclean_n)
+    print("cu_empty = ", io_port.cu_empty_n)
 
 def print_qs():
     print("io_port.rowDelta_n: ", io_port.rowDelta_n)
@@ -184,7 +190,7 @@ def print_qs():
     print(QS0.queue)
     print("rowValid_matrix1: ")
     print(QS0.rowValid_matrix)
-    
+
 if __name__ == "__main__":
     io_port.init()
     OB0 = OB()
@@ -207,13 +213,18 @@ if __name__ == "__main__":
     curr_cycle = 0
     timeout_cycle_num = 20
     # print_range = [0, 50]
-    print_range = [4995, 5000]
-    
+    # print_range = [4995, 5000]
+
     # run until convergence
     # while EVQ0.empty != 1 or not all(v == 1 for v in io_port.PEReady):
     #     if curr_cycle >= timeout_cycle_num:
     #         break
     for i in range(2000):
+        #if io_port.pe_idle[0] and io_port.pe_idle[1] and io_port.pe_idle[2] and
+        #io_port.pe_idle[3] and io_port.xbar1_empty and io_port.xbar2_empty and
+        #io_port.ob_empty:
+        #    print(' ### Convergence reached at cycle ' + str(i) + ' ###')
+        #    break
         print("[Clock", i, "]")
         # QS_input()
         OB0.one_clock()
@@ -240,9 +251,9 @@ if __name__ == "__main__":
         print_system_status(i)
         # curr_cycle += 1
         print_qs()
-        # print_CU()
+        print_CU()
         print('initialFinish: ', io_port.initialFinish)
-    
+
     print()
     if curr_cycle <= timeout_cycle_num:
         print(' ### Convergence reached at cycle ' + str(curr_cycle) + ' ###')
@@ -251,4 +262,3 @@ if __name__ == "__main__":
     print()
     print_vc_content(0, EC0.num_of_vertices)
     print()
-    

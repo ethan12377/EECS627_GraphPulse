@@ -61,6 +61,9 @@ def init():
     IssIdx_n = np.zeros(4, dtype=np.uint8)
     IssValid_n = np.zeros(4, dtype=np.uint8)
 
+    global ob_empty
+    ob_empty = np.uint8(0)
+
     #############################
     ### Output from crossbar1 ###
     #############################
@@ -83,6 +86,9 @@ def init():
     PEDelta_n = np.zeros(4, dtype=np.float16)
     PEIdx_n = np.zeros(4, dtype=np.uint8)
     PEValid_n = np.zeros(4, dtype=np.uint8)
+
+    global xbar1_empty
+    xbar1_empty = np.uint8(0)
 
     ###########################
     ### Output from PE (x4) ###
@@ -124,6 +130,9 @@ def init():
     pe_ec_reqValid = np.zeros(4, dtype=int)
     pe_ec_reqValid_n = np.zeros(4, dtype=int)
 
+    global pe_idle
+    pe_idle = np.zeros(4, dtype=int)
+
     # to scratchpad
     # global vertReq, vertReq_n
     # global vertIdx, vertIdx_n
@@ -156,6 +165,9 @@ def init():
     CUIdx_n = np.zeros(8, dtype=np.uint8)
     CUValid_n = np.zeros(8, dtype=np.uint8)
 
+    global xbar2_empty
+    xbar2_empty = np.uint8(0)
+
     ###################################
     ### Output from coalescing unit ###
     ###################################
@@ -172,7 +184,7 @@ def init():
     global newValid, newValid_n
     global cuclean, cuclean_n
     global searchValid, searchValid_n
-   
+
     searchIdx = np.zeros(8, dtype=np.float16)
     searchIdx_n = np.zeros(8, dtype=np.float16)
     newDelta = np.zeros(8, dtype=np.float16)
@@ -207,7 +219,7 @@ def init():
     #########################
     ### Output from cache ###
     #########################
-    
+
     global vc_rdData, vc_rdData_n, ec_rdData, ec_rdData_n
     # global edgeEnd, edgeEnd_n
     vc_rdData = np.float16(0.0)

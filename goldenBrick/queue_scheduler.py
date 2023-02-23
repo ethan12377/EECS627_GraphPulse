@@ -43,16 +43,11 @@ class QS:
                 self.write_from_cu(i)
                 if(io_port.initialFinish):
                     if(i == 0):
-<<<<<<< HEAD
-                        io_port.state_n[i] = 3
-                        self.RRArbiter.request(np.ones((8), dtype=np.int8))
-=======
                         if (io_port.cuclean[i]):
                             io_port.state_n[i] = 3
                         else:
                             io_port.state_n[i] = 2
-                        self.RRArbiter.request(np.ones((8), dtype=np.int8))    
->>>>>>> origin/qs
+                        self.RRArbiter.request(np.ones((8), dtype=np.int8))
                     else:
                         io_port.state_n[i] = 1
                 else:
@@ -96,25 +91,7 @@ class QS:
     # read to output_buffer
     def read_row(self, bin_idx):
         if io_port.cuclean[bin_idx]:
-<<<<<<< HEAD
-            # rowValid_n
-            if self.rowValid_matrix[bin_idx].any():
-                io_port.rowValid_n = 1
-            else:
-                print(f"bin empty!! read invalid!!")
-            if(io_port.rowReady): 
-                # select row
-                read_rowidx_n = self.prior_encoder.priority(self.rowValid_matrix[bin_idx][:])
-
-                io_port.binrowIdx_n = bin_idx * 4 + read_rowidx_n
-                # io_port.rowDelta_n = temp
-                temp = self.queue[bin_idx][read_rowidx_n][:]
-                io_port.rowDelta_n = np.copy(temp)
-                # remove after read
-                self.rowValid_matrix[bin_idx, read_rowidx_n] = 0
-                self.queue[bin_idx, read_rowidx_n, :] = np.zeros(8, dtype=np.float16)
-=======
-            if(io_port.rowReady): 
+            if(io_port.rowReady):
                 # select row
                 read_rowidx_n = self.prior_encoder.priority(self.rowValid_matrix[bin_idx][:])
                 io_port.binrowIdx_n = bin_idx * 4 + read_rowidx_n
@@ -128,7 +105,6 @@ class QS:
             else:
                 io_port.rowValid_n = 0
 
->>>>>>> origin/qs
         else:
             # cu is not clean yet
             print(f"wrong state!! cu not clean yet!! cannot read_row")
@@ -144,7 +120,7 @@ class QS:
                 self.rowValid_matrix[write_bin][write_row] = 1
             else:
                 print(f"write other bins!!")
-    
+
     def idx_trans(self, idx):
         col = int(idx //32)
         bin = int((idx - col*32) // 4)
@@ -167,7 +143,7 @@ class QS:
         rowValid = np.zeros((4))
         binValid = np.zeros((8))
         for i in range(rowValid_matrix.shape[0]):
-            rowValid = rowValid_matrix[i][:] 
+            rowValid = rowValid_matrix[i][:]
             if rowValid.any():
                 binValid[i] = 1
         return binValid
