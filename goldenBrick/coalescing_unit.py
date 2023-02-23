@@ -158,9 +158,9 @@ class CU:
             else:
                 self.CUregValid_n[bin_idx][0] = new_Valid
                 # remove from buf
-                self.CU_in_buf[bin_idx][non_zero_indices[-1]][0] = 0
-                self.CU_in_buf[bin_idx][non_zero_indices[-1]][1] = 0
-                self.CU_in_buf[bin_idx][non_zero_indices[-1]][2] = 0
+                self.CU_in_buf_n[bin_idx][non_zero_indices[-1]][0] = 0
+                self.CU_in_buf_n[bin_idx][non_zero_indices[-1]][1] = 0
+                self.CU_in_buf_n[bin_idx][non_zero_indices[-1]][2] = 0
 
         else:
             self.CUDeltareg_n[bin_idx][0] = 0
