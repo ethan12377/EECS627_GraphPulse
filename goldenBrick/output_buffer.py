@@ -5,7 +5,7 @@ import copy
 
 class OB:
 
-    def __init__(self, num_col = 8, num_output = 4, depth = 1024, num_fifo_in = 4):
+    def __init__(self, num_col = 8, num_output = 4, depth = 16, num_fifo_in = 4):
 
         self.num_col = num_col
         self.num_output = num_output
@@ -86,6 +86,8 @@ class OB:
         # Get row data from scheduler and remove bubbles
         if io_port.rowValid == 1 and io_port.rowReady == 1:
             print('handshake')
+            self.buf_Delta_n = np.zeros(self.num_col, dtype=np.float16)
+            self.buf_Idx_n = np.zeros(self.num_col, dtype=np.uint8)
             self.buf_Valid_n = np.uint8(0)
             for col_idx in range(self.num_col):
                 if col_idx < (self.num_col - 1):
@@ -96,6 +98,7 @@ class OB:
                 self.buf_Delta_n[col_idx - self.offset[col_idx]] = io_port.rowDelta[col_idx]
                 self.buf_Idx_n[col_idx - self.offset[col_idx]] = col_idx + ((io_port.binrowIdx // 4) * 8) + (io_port.binrowIdx % 4) * 64
                 self.buf_Valid_n = np.uint8(1)
+
                 print('offset[', col_idx, '] = ', self.offset[col_idx])
 
         # Assert rowReady signal
