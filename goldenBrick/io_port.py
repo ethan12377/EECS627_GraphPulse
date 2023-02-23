@@ -21,12 +21,16 @@ def init():
     global newReady, newReady_n
     global searchValue, searchValue_n
     global searchValueValid,searchValueValid_n
+    global binselected, binselected_n
     newReady = np.zeros(8,dtype=np.uint8)
     newReady_n = np.zeros(8,dtype=np.uint8)
     searchValue = np.zeros(8, dtype=np.float16)
     searchValue_n = np.zeros(8, dtype=np.float16)
     searchValueValid = np.zeros(8,dtype=np.uint8)
     searchValueValid_n = np.zeros(8,dtype=np.uint8)
+    binselected = np.zeros(8,dtype=np.uint8)
+    binselected_n = np.zeros(8,dtype=np.uint8)
+
 
     # state
     global state, state_n

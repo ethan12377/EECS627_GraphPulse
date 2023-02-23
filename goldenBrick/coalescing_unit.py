@@ -47,6 +47,16 @@ class CU:
         #io_port.newDelta_n = io_port.newDelta
         #io_port.newIdx_n = io_port.newIdx
         #io_port.newValid_n = io_port.newValid
+
+        self.CUregValid = np.copy(self.CUregValid_n)
+        self.CUIdxreg = np.copy(self.CUIdxreg_n)
+        self.CUDeltareg = np.copy(self.CUDeltareg_n)
+        # self.CUregtag = np.copy(self.CUregtag_n)
+
+        self.CU_in_buf = np.copy(self.CU_in_buf_n)
+        # self.CU_out_buf = np.copy(self.CU_out_buf_n)
+
+
         self.coalescing_unit(0)
         self.coalescing_unit(1)
         self.coalescing_unit(2)
@@ -59,13 +69,7 @@ class CU:
         
         
 
-        self.CUregValid = np.copy(self.CUregValid_n)
-        self.CUIdxreg = np.copy(self.CUIdxreg_n)
-        self.CUDeltareg = np.copy(self.CUDeltareg_n)
-        # self.CUregtag = np.copy(self.CUregtag_n)
-
-        self.CU_in_buf = np.copy(self.CU_in_buf_n)
-        # self.CU_out_buf = np.copy(self.CU_out_buf_n)
+        
 
 
 
@@ -100,20 +104,19 @@ class CU:
 
              # output: io_port.CUclean_n 
              # if all reg clean, cu clean next clean
-            if (self.CUregValid[bin_idx][0] == 0) and (self.CUregValid[bin_idx][1] == 0) and (self.CUregValid[bin_idx][2] == 0):
+            if (self.CUregValid[bin_idx][0] == 0) and (self.CUregValid[bin_idx][1] == 0) and (self.CUregValid[bin_idx][2] == 0) and (io_port.newValid[bin_idx] ==0) :
                 io_port.cuclean_n[bin_idx] = 1
             else:
                 io_port.cuclean_n[bin_idx] = 0
 
             # output: io_port.CUReady_n 
-            # when buf is full cu can not take new event from crossbar
-            if (self.CU_in_buf_n[bin_idx][3][2] == 0):
+            if (self.CU_in_buf[bin_idx][3][2] == 0):
                 io_port.CUReady_n[bin_idx] = 1
             else:
                 io_port.CUReady_n[bin_idx] = 0
 
             # output: io_port.cu_empty_n
-            if(io_port.cuclean[bin_idx] == 0) and (np.all(self.CU_in_buf_n[bin_idx][:][2])) and (io_port.CUValid[bin_idx] == 0) and (io_port.newValid ==0):
+            if(io_port.cuclean[bin_idx] == 0) and (np.all(self.CU_in_buf[bin_idx,:,2]) == 0) and (io_port.CUValid[bin_idx] == 0) and (io_port.newValid[bin_idx] ==0):
                 io_port.cu_empty_n[bin_idx] = 1
             else:
                 io_port.cu_empty_n[bin_idx] = 0
@@ -135,8 +138,13 @@ class CU:
 
     def prepare_new_event(self, bin_idx):
         # take the first-in event
-        non_zero_indices = np.nonzero(self.CU_in_buf[bin_idx])[0]
-        if len(non_zero_indices) > 0:
+        non_zero_indices = np.nonzero(self.CU_in_buf[bin_idx,:,2])[0]
+        # print("CU_in_buf: delta, idx, valid")
+        # print(self.CU_in_buf[bin_idx])
+        # print(self.CU_in_buf[bin_idx,:,2])
+        # print(non_zero_indices)
+        # print(non_zero_indices)
+        if len(non_zero_indices) > 0 :
             (new_Delta, new_idx, new_Valid) = self.CU_in_buf[bin_idx][non_zero_indices[-1]]
             self.CUIdxreg_n[bin_idx][0] =  new_idx
             self.CUDeltareg_n[bin_idx][0] = new_Delta
@@ -162,9 +170,11 @@ class CU:
     # take event and issue new event     
     # update reg0
     def take_and_issue_new_event(self, bin_idx):
-        # if last event was accepted by Q or no valid event, prepare new event  
-        if (io_port.state[bin_idx] == 1):  
+        # if  prepare new event
+          
+        if (io_port.binselected[bin_idx] == 0):  
             # prepare and update reg0
+
             self.prepare_new_event(bin_idx)
         else:
             self.CUDeltareg_n[bin_idx][0] = 0

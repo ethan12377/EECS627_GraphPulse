@@ -23,6 +23,7 @@ def print_CU():
     print(CU0.CU_in_buf[0])
 
     print('\n')
+
     
     print(f'input:')
     print(f"|io_port.CUDelta |io_port.CUIdx |io_port.CUValid")
@@ -41,14 +42,22 @@ def print_qs():
     print("io_port.rowDelta_n: ", io_port.rowDelta_n)
     print("io_port.binrowIdx_n: ", io_port.binrowIdx_n)
     print("rowValid_n: ",io_port.rowValid_n)
-    print("state_n: ", io_port.state_n)
     print("Queue1: ")
     print(QS0.queue)
     print("rowValid_matrix1: ")
     print(QS0.rowValid_matrix)
+    print("reading_bin_n = ", QS0.reading_bin_n)
+    print("readen_n = ", QS0.readen_n)
+
+    print("initialFinish: ", io_port.initialFinish)
+    print("qs_state_n: ", QS0.qs_state_n)
+    print("binValid_n", QS0.binValid_n)
+    print("queue_empty_n: ", io_port.queue_empty_n)
+    print("binselected_n:", io_port.binselected_n)
 
 def next_state_copy():
-    io_port.state = np.copy(io_port.state_n)
+    io_port.binselected = np.copy(io_port.binselected_n)
+    io_port.queue_empty = np.copy(io_port.queue_empty_n)
 
     io_port.searchValueValid = np.copy(io_port.searchValueValid_n)
     io_port.searchValue = np.copy(io_port.searchValue_n)
