@@ -5,7 +5,7 @@ import copy
 
 class OB:
 
-    def __init__(self, num_col = 8, num_output = 4, depth = 16, num_fifo_in = 4):
+    def __init__(self, num_col = 8, num_output = 4, depth = 1024, num_fifo_in = 4):
 
         self.num_col = num_col
         self.num_output = num_output
@@ -94,7 +94,7 @@ class OB:
                     else:
                         self.offset[col_idx + 1] = copy.deepcopy(self.offset[col_idx])
                 self.buf_Delta_n[col_idx - self.offset[col_idx]] = io_port.rowDelta[col_idx]
-                self.buf_Idx_n[col_idx - self.offset[col_idx]] = col_idx + (io_port.binrowIdx * self.num_col)
+                self.buf_Idx_n[col_idx - self.offset[col_idx]] = col_idx + ((io_port.binrowIdx // 4) * 8) + (io_port.binrowIdx % 4) * 64
                 self.buf_Valid_n = np.uint8(1)
                 print('offset[', col_idx, '] = ', self.offset[col_idx])
 

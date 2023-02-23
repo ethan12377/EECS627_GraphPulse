@@ -26,6 +26,7 @@ def update():
     io_port.binrowIdx = copy.deepcopy(io_port.binrowIdx_n)
     io_port.rowValid = copy.deepcopy(io_port.rowValid_n)
     io_port.queue_empty = copy.deepcopy(io_port.queue_empty_n)
+    io_port.binselected = copy.deepcopy(io_port.binselected_n)
     # OB
     io_port.rowReady = copy.deepcopy(io_port.rowReady_n)
     io_port.IssDelta = copy.deepcopy(io_port.IssDelta_n)
@@ -63,8 +64,6 @@ def update():
 
     # CU
     io_port.CUReady = copy.deepcopy(io_port.CUReady_n)
-
-    io_port.state = np.copy(io_port.state_n)
 
     io_port.searchValueValid = np.copy(io_port.searchValueValid_n)
     io_port.searchValue = np.copy(io_port.searchValue_n)
@@ -180,16 +179,18 @@ def print_CU():
     print(f"{io_port.newDelta_n[0]} |{io_port.newIdx_n[0]}  |{io_port.newValid_n[0]}" )
     print("cuclean_n = ", io_port.cuclean_n)
     print("cu_empty = ", io_port.cu_empty_n)
+    print("CUregValid_n = ", CU0.CUregValid_n[1][0])
 
 def print_qs():
     print("io_port.rowDelta_n: ", io_port.rowDelta_n)
     print("io_port.binrowIdx_n: ", io_port.binrowIdx_n)
     print("rowValid_n: ",io_port.rowValid_n)
-    print("state_n: ", io_port.state_n)
+    print("qs_state_n: ", QS0.qs_state_n)
     print("Queue1: ")
     print(QS0.queue)
     print("rowValid_matrix1: ")
     print(QS0.rowValid_matrix)
+    print("binselected_n", io_port.binselected_n)
 
 if __name__ == "__main__":
     io_port.init()
