@@ -3,14 +3,14 @@
 // result. Flags include overflow, underflow, inexact, and flags used for
 // the compare instruction in the cpu.
 
-// ADD: 2'b00, SUB: 2'b01, MULT: 2'b10, DIV: 2'b11
+// TODO: remove flags because they are unnecessary for our purposes
+// TODO: add pipeline regs to pipe through fpu status
 
 module fpu #(parameter PIPELINE_DEPTH=3) (
 	input logic clk, reset,
 	input logic [15:0] opA, opB,
 	input logic [1:0] op,
 	output logic [15:0] result,
-	// output logic [3:0] FPUFlags,
 	output logic overflow, underflow, inexact
 );
 
@@ -55,12 +55,6 @@ module fpu #(parameter PIPELINE_DEPTH=3) (
 
 	fp_div divide(.opA, .opB, .quotient, .underflow(qUnderflow), 
         .overflow(qOverflow), .inexact(qInexact));
-
-	//assign flags bits
-	// assign FPUFlags[3] = result[15]; //N-flag is the sign bit of the result
-	// assign FPUFlags[2] = (result[14:0] == 15'b0); //Z-flag if result is zero
-	// assign FPUFlags[1] = cout; //C-flag
-	// assign FPUFlags[0] = overflow; //O-flag
 
 	always_comb begin
 		case(op)
