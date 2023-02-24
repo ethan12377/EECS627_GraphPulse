@@ -128,12 +128,13 @@ class CU:
     # take event from crossbar
     def take_event(self, bin_idx):
         # take new event from crossbar if valid and has space in buf
-        if (io_port.CUReady[bin_idx]):
-            if io_port.CUValid[bin_idx]:
-                self.CU_in_buf_n[bin_idx][0][0] = io_port.CUDelta[bin_idx]
-                self.CU_in_buf_n[bin_idx][0][1] = io_port.CUIdx[bin_idx]
-                self.CU_in_buf_n[bin_idx][0][2] = io_port.CUValid[bin_idx]
-                self.CU_in_buf_n[bin_idx][1:] = np.copy(self.CU_in_buf[bin_idx][:-1])
+        if (io_port.CUReady[bin_idx]) and io_port.CUValid[bin_idx]:
+            self.CU_in_buf_n[bin_idx][0][0] = io_port.CUDelta[bin_idx]
+            self.CU_in_buf_n[bin_idx][0][1] = io_port.CUIdx[bin_idx]
+            self.CU_in_buf_n[bin_idx][0][2] = io_port.CUValid[bin_idx]
+            self.CU_in_buf_n[bin_idx][1:] = np.copy(self.CU_in_buf[bin_idx][:-1])
+        else:
+            self.CU_in_buf_n[bin_idx] = np.copy(self.CU_in_buf[bin_idx])
 
 
     def prepare_new_event(self, bin_idx):
@@ -158,9 +159,9 @@ class CU:
             else:
                 self.CUregValid_n[bin_idx][0] = new_Valid
                 # remove from buf
-                self.CU_in_buf_n[bin_idx][non_zero_indices[-1]][0] = 0
-                self.CU_in_buf_n[bin_idx][non_zero_indices[-1]][1] = 0
-                self.CU_in_buf_n[bin_idx][non_zero_indices[-1]][2] = 0
+                self.CU_in_buf[bin_idx][non_zero_indices[-1]][0] = 0
+                self.CU_in_buf[bin_idx][non_zero_indices[-1]][1] = 0
+                self.CU_in_buf[bin_idx][non_zero_indices[-1]][2] = 0
 
         else:
             self.CUDeltareg_n[bin_idx][0] = 0

@@ -105,9 +105,8 @@ class QS:
     def bin_func(self, bin_idx):
         # if bin_selected and readen, read to outputbuffer
         # otherwise, do nothing and wait
-        if (io_port.binselected[bin_idx]):
-            if self.readen:
-                self.read_row(bin_idx)
+        if (io_port.binselected[bin_idx]) and (self.readen):
+            self.read_row(bin_idx)
         # if bin not selected, search and write with cu
         else:
             self.search_for_event(bin_idx)

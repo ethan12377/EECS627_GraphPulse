@@ -220,7 +220,7 @@ if __name__ == "__main__":
     # while EVQ0.empty != 1 or not all(v == 1 for v in io_port.PEReady):
     #     if curr_cycle >= timeout_cycle_num:
     #         break
-    for i in range(2000):
+    for i in range(3000):
         #if io_port.pe_idle[0] and io_port.pe_idle[1] and io_port.pe_idle[2] and
         #io_port.pe_idle[3] and io_port.xbar1_empty and io_port.xbar2_empty and
         #io_port.ob_empty:
