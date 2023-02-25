@@ -8,7 +8,18 @@
 /////////////////////////////////////////////////////////////////////////
 
 `define VERILOG_CLOCK_PERIOD   10.0
+`define SYNTH_CLOCK_PERIOD     10.0 // Clock period for synth and memory latency
 `define SD #1
+`define XLEN 16
+
+// Memory
+`define NUM_MEM_TAGS           15
+`define MEM_SIZE_IN_BYTES      (64*1024)
+`define MEM_64BIT_LINES        (`MEM_SIZE_IN_BYTES/8)
+`define MEM_LATENCY 100.0
+`define MEM_LATENCY_IN_CYCLES (`MEM_LATENCY/`SYNTH_CLOCK_PERIOD+0.49999)
+// the 0.49999 is to force ceiling(100/period).  The default behavior for
+// float to integer conversion is rounding to nearest
 
 // Event
 `define PE_IDX_WIDTH            $clog2(`PE_NUM)
@@ -36,3 +47,22 @@
 
 // Xbar from PEs to Event Queues
 `define XBAR_1_STAGES_NUM       1
+
+
+
+// Memory bus commands control signals
+typedef enum logic [1:0] {
+	BUS_NONE     = 2'h0,
+	BUS_LOAD     = 2'h1,
+	BUS_STORE    = 2'h2
+} BUS_COMMAND;
+
+`ifndef CACHE_MODE
+typedef enum logic [1:0] {
+	BYTE = 2'h0,
+	HALF = 2'h1,
+	WORD = 2'h2,
+	DOUBLE = 2'h3
+} MEM_SIZE;
+`endif
+//
