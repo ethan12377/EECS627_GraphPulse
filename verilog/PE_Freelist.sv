@@ -20,7 +20,7 @@ module PE_Freelist #(
     input   logic   [C_PE_NUM-1:0]                      PEReady_i       ,   //  PE ready signal, 0: busy, 1: free
     input   logic   [C_PE_NUM-1:0]                      PEValid_i       ,
     output  logic   [C_PE_NUM-1:0][C_PE_IDX_WIDTH-1:0]  alloc_o         ,
-    output  logic   [C_PE_NUM-1:0]                      alloc_valid_o   ,
+    output  logic   [C_PE_NUM-1:0]                      alloc_valid_o   
 );
 
 // ====================================================================
@@ -155,14 +155,16 @@ module PE_Freelist #(
 // --------------------------------------------------------------------
     genvar pe_idx;
     generate
-        always_ff @(posedge clk_i) begin
-            if (rst_i) begin
-                lock[pe_idx]    <=  `SD 'b0;
-            end else begin
-                if (push_en[pe_idx]) begin
-                    lock[pe_idx]    <=  `SD 'b1;
-                end else if (pop_en[pe_idx]) begin
+        for (pe_idx = 0; pe_idx < C_PE_NUM; pe_idx++) begin
+            always_ff @(posedge clk_i) begin
+                if (rst_i) begin
                     lock[pe_idx]    <=  `SD 'b0;
+                end else begin
+                    if (push_en[pe_idx]) begin
+                        lock[pe_idx]    <=  `SD 'b1;
+                    end else if (pop_en[pe_idx]) begin
+                        lock[pe_idx]    <=  `SD 'b0;
+                    end
                 end
             end
         end

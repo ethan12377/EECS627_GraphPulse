@@ -1,7 +1,9 @@
 
 STD_CELLS = /afs/umich.edu/class/eecs627/ibm13/artisan/2005q3v1/aci/sc-x/verilog/ibm13_neg.v
-TESTBENCH = testbench.v
-SIM_FILES = standard.vh graphpulse.v
+# TESTBENCH = testbench.v
+TESTBENCH = Xbar_SchedToPE_tb.sv
+# SIM_FILES = standard.vh graphpulse.v
+SIM_FILES = standard.vh Xbar_SchedToPE.sv PE_freelist.sv
 
 VV         = vcs
 VVOPTS     = -o $@ +v2k +vc -sverilog -timescale=1ns/1ps +vcs+lic+wait +multisource_int_delays                    \
@@ -26,5 +28,5 @@ clean:
 	rm -f verilog/*.log
 	rm -fr verilog/csrc
 
-sim:
+sim: $(STD_CELLS) $(SIM_FILES) $(TESTBENCH)
 	$(VV) $(VVOPTS) $(STD_CELLS) $(SIM_FILES) $(TESTBENCH); ./$@
