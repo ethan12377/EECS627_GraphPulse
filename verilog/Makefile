@@ -1,6 +1,6 @@
 
 STD_CELLS = /afs/umich.edu/class/eecs627/ibm13/artisan/2005q3v1/aci/sc-x/verilog/ibm13_neg.v
-TESTBENCH = testbench.v
+TESTBENCH = testbench.sv mem.sv
 SIM_FILES = standard.vh graphpulse.v
 
 VV         = vcs
