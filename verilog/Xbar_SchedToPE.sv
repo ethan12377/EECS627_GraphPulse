@@ -7,8 +7,8 @@
 /////////////////////////////////////////////////////////////////////////
 
 module Xbar_SchedToPE #(
-    parameter   C_INPUT_NUM         =   `NUM_PE             ,
-    parameter   C_OUTPUT_NUM        =   `NUM_PE             ,
+    parameter   C_INPUT_NUM         =   `PE_NUM             ,
+    parameter   C_OUTPUT_NUM        =   `PE_NUM             ,
     parameter   C_STAGES_NUM        =   `XBAR_0_STAGES_NUM  ,
     parameter   C_DELTA_WIDTH       =   `DELTA_WIDTH        ,
     parameter   C_VERTEX_IDX_WIDTH  =   `VERTEX_IDX_WIDTH   ,
@@ -22,10 +22,10 @@ module Xbar_SchedToPE #(
     input   logic   [C_INPUT_NUM-1:0]                           IssValid_i  ,
     output  logic   [C_INPUT_NUM-1:0]                           IssReady_o  ,
 
-    output  logic   [C_INPUT_NUM-1:0][C_DELTA_WIDTH-1:0]        PEDelta_o   ,
-    output  logic   [C_INPUT_NUM-1:0][C_VERTEX_IDX_WIDTH-1:0]   PEIdx_o     ,
-    output  logic   [C_INPUT_NUM-1:0]                           PEValid_o   ,
-    input   logic   [C_INPUT_NUM-1:0]                           PEReady_i   
+    output  logic   [C_OUTPUT_NUM-1:0][C_DELTA_WIDTH-1:0]       PEDelta_o   ,
+    output  logic   [C_OUTPUT_NUM-1:0][C_VERTEX_IDX_WIDTH-1:0]  PEIdx_o     ,
+    output  logic   [C_OUTPUT_NUM-1:0]                          PEValid_o   ,
+    input   logic   [C_OUTPUT_NUM-1:0]                          PEReady_i   
 );
 
 // ====================================================================
