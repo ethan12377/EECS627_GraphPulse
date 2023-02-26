@@ -29,4 +29,4 @@ clean:
 	rm -fr verilog/csrc
 
 sim: $(STD_CELLS) $(SIM_FILES) $(TESTBENCH)
-	$(VV) $(VVOPTS) $(STD_CELLS) $(SIM_FILES) $(TESTBENCH); ./$@
+	$(VV) $(VVOPTS) $(STD_CELLS) $(SIM_FILES) $(TESTBENCH); ./$@ > sim.out

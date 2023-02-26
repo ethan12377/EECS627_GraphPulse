@@ -37,8 +37,8 @@ module PE_Freelist #(
     logic   [C_PE_NUM-1:0]                          lock            ;
     logic   [C_PE_NUM-1:0]                          pop_en          ;
     logic   [C_PE_NUM-1:0]                          push_en         ;
-    logic   [C_PE_IDX_WIDTH-1:0]                    pop_num         ;
-    logic   [C_PE_IDX_WIDTH-1:0]                    push_num        ;
+    logic   [C_PE_IDX_WIDTH:0]                      pop_num         ;
+    logic   [C_PE_IDX_WIDTH:0]                      push_num        ;
     logic   [C_PE_NUM-1:0][C_PE_IDX_WIDTH-1:0]      freelist_array  ;
     logic   [C_PE_NUM-1:0][C_PE_IDX_WIDTH-1:0]      push_pe_idx     ;
     logic   [C_PE_IDX_WIDTH:0]                      head            ;
@@ -58,17 +58,21 @@ module PE_Freelist #(
 // --------------------------------------------------------------------
     always_comb begin
         // Pop
-        pop_en =   IssReady_i & IssValid_i;
-        pop_num =   'd0;
+        pop_en  =   PEReady_i & PEValid_i;
+        pop_num =  'd0;
         for (int i = 0; i < C_PE_NUM; i++) begin
-            pop_num = pop_num + pop_en[i];
+            if (pop_en[i]) begin
+                pop_num = pop_num + 'd1;
+            end
         end
 
         // Push
         push_en =   (~lock) & PEReady_i;
         push_num =  'd0;
         for (int i = 0; i < C_PE_NUM; i++) begin
-            push_num = push_num + push_en[i];
+            if (push_en[i]) begin
+                push_num    =   push_num + 'd1;
+            end
         end
     end
 
@@ -138,7 +142,11 @@ module PE_Freelist #(
         for (output_idx = 0; output_idx < C_PE_NUM; output_idx++) begin
 
             always_comb begin
-                alloc_o[output_idx] =   freelist_array[head[C_PE_IDX_WIDTH-1:0] + output_idx];
+                if (head[C_PE_IDX_WIDTH-1:0] + output_idx >= C_PE_NUM) begin
+                    alloc_o[output_idx] =   freelist_array[head[C_PE_IDX_WIDTH-1:0] + output_idx - C_PE_NUM];
+                end else begin
+                    alloc_o[output_idx] =   freelist_array[head[C_PE_IDX_WIDTH-1:0] + output_idx];
+                end
 
                 if (output_idx < valid_num) begin
                     alloc_valid_o[output_idx]   =   'b1;

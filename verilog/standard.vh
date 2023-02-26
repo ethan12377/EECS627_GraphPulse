@@ -27,7 +27,7 @@
 `define ROW_IDX_WIDTH           $clog2(`ROW_NUM)
 
 // Xbar from Scheduler / Output Buffer to PEs
-`define XBAR_0_STAGES_NUM       1
+`define XBAR_0_STAGES_NUM       2
 
 // PE
 `define PE_NUM                  4

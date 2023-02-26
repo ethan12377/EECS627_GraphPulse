@@ -164,11 +164,15 @@ module Xbar_SchedToPE_tb;
         #(`VERILOG_CLOCK_PERIOD);
         rst_i   =   0;
         for (int i = 0; i < C_CYCLE_NUM; i++) begin
+            $display("Cycle[%0d]", i);
             @(posedge clk_i);
+            `SD;
             IssDelta_i  =   IssDelta_i_ram[i];
             IssIdx_i    =   IssIdx_i_ram[i];
             IssValid_i  =   IssValid_i_ram[i];
             PEReady_i   =   PEReady_i_ram[i];
+            $display("IssValid = %h %h %h %h", Xbar_SchedToPE_inst.IssValid_i[0], Xbar_SchedToPE_inst.IssValid_i[1], Xbar_SchedToPE_inst.IssValid_i[2], Xbar_SchedToPE_inst.IssValid_i[3]);
+            $display("IssReady = %h %h %h %h", Xbar_SchedToPE_inst.IssReady_o[0], Xbar_SchedToPE_inst.IssReady_o[1], Xbar_SchedToPE_inst.IssReady_o[2], Xbar_SchedToPE_inst.IssReady_o[3]);
 
             @(negedge clk_i);
             $fdisplay(fd_w, "%h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h ",
@@ -180,6 +184,19 @@ module Xbar_SchedToPE_tb;
             PEDelta_o[1] , PEIdx_o[1] , PEValid_o[1] , PEReady_i[1],
             PEDelta_o[2] , PEIdx_o[2] , PEValid_o[2] , PEReady_i[2],
             PEDelta_o[3] , PEIdx_o[3] , PEValid_o[3] , PEReady_i[3]);
+
+            $display("PE Alloc: %h %h %h %h", Xbar_SchedToPE_inst.alloc[0], Xbar_SchedToPE_inst.alloc[1], Xbar_SchedToPE_inst.alloc[2], Xbar_SchedToPE_inst.alloc[3]);
+            $display("PE Alloc Valid: %h %h %h %h", Xbar_SchedToPE_inst.alloc_valid[0], Xbar_SchedToPE_inst.alloc_valid[1], Xbar_SchedToPE_inst.alloc_valid[2], Xbar_SchedToPE_inst.alloc_valid[3]);
+            $display("Array: %h %h %h %h", Xbar_SchedToPE_inst.PE_Freelist_inst.freelist_array[0], Xbar_SchedToPE_inst.PE_Freelist_inst.freelist_array[1], Xbar_SchedToPE_inst.PE_Freelist_inst.freelist_array[2], Xbar_SchedToPE_inst.PE_Freelist_inst.freelist_array[3]);
+            $display("Head: %h, Tail: %h", Xbar_SchedToPE_inst.PE_Freelist_inst.head, Xbar_SchedToPE_inst.PE_Freelist_inst.tail);
+            $display("Push_num: %h, Pop_num: %h", Xbar_SchedToPE_inst.PE_Freelist_inst.push_num, Xbar_SchedToPE_inst.PE_Freelist_inst.pop_num);
+            $display("Push Pe Idx: %h %h %h %h", Xbar_SchedToPE_inst.PE_Freelist_inst.push_pe_idx[0], Xbar_SchedToPE_inst.PE_Freelist_inst.push_pe_idx[1], Xbar_SchedToPE_inst.PE_Freelist_inst.push_pe_idx[2], Xbar_SchedToPE_inst.PE_Freelist_inst.push_pe_idx[3]);
+            $display("Push en: %h %h %h %h", Xbar_SchedToPE_inst.PE_Freelist_inst.push_en[0], Xbar_SchedToPE_inst.PE_Freelist_inst.push_en[1], Xbar_SchedToPE_inst.PE_Freelist_inst.push_en[2], Xbar_SchedToPE_inst.PE_Freelist_inst.push_en[3]);
+            $display("Pop en: %h %h %h %h", Xbar_SchedToPE_inst.PE_Freelist_inst.pop_en[0], Xbar_SchedToPE_inst.PE_Freelist_inst.pop_en[1], Xbar_SchedToPE_inst.PE_Freelist_inst.pop_en[2], Xbar_SchedToPE_inst.PE_Freelist_inst.pop_en[3]);
+            $display("Lock: %h %h %h %h", Xbar_SchedToPE_inst.PE_Freelist_inst.lock[0], Xbar_SchedToPE_inst.PE_Freelist_inst.lock[1], Xbar_SchedToPE_inst.PE_Freelist_inst.lock[2], Xbar_SchedToPE_inst.PE_Freelist_inst.lock[3]);
+            $display("valid_num: %h", Xbar_SchedToPE_inst.PE_Freelist_inst.valid_num);
+            $display("IssValid = %h %h %h %h", Xbar_SchedToPE_inst.IssValid_i[0], Xbar_SchedToPE_inst.IssValid_i[1], Xbar_SchedToPE_inst.IssValid_i[2], Xbar_SchedToPE_inst.IssValid_i[3]);
+            $display("IssReady = %h %h %h %h", Xbar_SchedToPE_inst.IssReady_o[0], Xbar_SchedToPE_inst.IssReady_o[1], Xbar_SchedToPE_inst.IssReady_o[2], Xbar_SchedToPE_inst.IssReady_o[3]);
             // if (IssReady_o != IssReady_o_ram[i]) begin
             //     $display("IssReady_o incorrect");
             //     $stop;
