@@ -65,4 +65,14 @@ typedef enum logic [1:0] {
 	DOUBLE = 2'h3
 } MEM_SIZE;
 `endif
+
+// Queue scheduler states
+typedef enum logic [1:0] {
+	I   = 3'h0,
+	C   = 3'h1,
+	B   = 3'h2,
+	W   = 3'h3,
+	R   = 3'h4,
+
+} QS_STATE;
 //
