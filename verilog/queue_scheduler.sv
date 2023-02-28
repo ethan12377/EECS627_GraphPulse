@@ -144,24 +144,18 @@ module queue_scheduler #(
         
     always_ff @(posedge clk_i) begin
     if (rst_i) begin
-        binselected <=  'b0;
         readen      <=  'b0;
         queue_empty <=  'b0;   
     end
     else begin
-        if (next_reading_bin_valid) begin
-            reading_bin <= next_reading_bin;
-            binselected <= next_binselected;
-        end
-        else begin
-            reading_bin <= 'b0;
-            binselected <= 'b0;
-        end
         readen      <= next_readen;
         queue_empty <= next_queue_empty;         
     end
     end
         
+    // how to assign reading_bin and binselected when next_reading_bin_valid not valid???
+    assign reading_bin = next_reading_bin_valid ? next_reading_bin : 'b0;
+    assign binselected = next_reading_bin_valid ? next_binselected : 'b0;
 // ====================================================================
 // RTL Logic End
 // ====================================================================
