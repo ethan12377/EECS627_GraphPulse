@@ -3,6 +3,8 @@
 //  Modulename  :  Xbar_SchedToPE.sv                                   //
 //                                                                     //
 //  Description :  Crossbar from Scheduler / Output Buffer to PEs      // 
+//                 It arbitrates whenever no on-going arbitration      //
+//                 AND freelist not empty. Otherwise, do nothing       //
 //                                                                     //
 /////////////////////////////////////////////////////////////////////////
 
@@ -96,8 +98,12 @@ PE_Freelist PE_Freelist_inst(
                 if (rst_i) begin
                     IssReady_o[input_idx]   <=  `SD 'b0;
                 end else begin
-                    if (IssValid_i[input_idx] && IssReady_o[input_idx]) begin
+                    // If any valid arbitration is happening
+                    // -> Don't arbitrate in the next cycle
+                    if (IssValid_i & IssReady_o) begin
                         IssReady_o[input_idx]   <=  `SD 'b0;
+                    // If no valid arbitration is happening
+                    // -> Start a new arbitration if possible (freelist not empty)
                     end else if (IssValid_i[input_idx] && alloc_valid[input_idx]) begin
                         IssReady_o[input_idx]   <=  `SD 'b1;
                     end

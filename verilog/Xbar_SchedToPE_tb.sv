@@ -188,7 +188,7 @@ module Xbar_SchedToPE_tb;
             $display("PE Alloc: %h %h %h %h", Xbar_SchedToPE_inst.alloc[0], Xbar_SchedToPE_inst.alloc[1], Xbar_SchedToPE_inst.alloc[2], Xbar_SchedToPE_inst.alloc[3]);
             $display("PE Alloc Valid: %h %h %h %h", Xbar_SchedToPE_inst.alloc_valid[0], Xbar_SchedToPE_inst.alloc_valid[1], Xbar_SchedToPE_inst.alloc_valid[2], Xbar_SchedToPE_inst.alloc_valid[3]);
             $display("Array: %h %h %h %h", Xbar_SchedToPE_inst.PE_Freelist_inst.freelist_array[0], Xbar_SchedToPE_inst.PE_Freelist_inst.freelist_array[1], Xbar_SchedToPE_inst.PE_Freelist_inst.freelist_array[2], Xbar_SchedToPE_inst.PE_Freelist_inst.freelist_array[3]);
-            $display("Head: %h, Tail: %h", Xbar_SchedToPE_inst.PE_Freelist_inst.head, Xbar_SchedToPE_inst.PE_Freelist_inst.tail);
+            $display("Head_r: %h, Head: %h, Tail_r: %h, Tail: %h", Xbar_SchedToPE_inst.PE_Freelist_inst.head[`PE_IDX_WIDTH], Xbar_SchedToPE_inst.PE_Freelist_inst.head[`PE_IDX_WIDTH-1:0], Xbar_SchedToPE_inst.PE_Freelist_inst.tail[`PE_IDX_WIDTH], Xbar_SchedToPE_inst.PE_Freelist_inst.tail[`PE_IDX_WIDTH-1:0]);
             $display("Push_num: %h, Pop_num: %h", Xbar_SchedToPE_inst.PE_Freelist_inst.push_num, Xbar_SchedToPE_inst.PE_Freelist_inst.pop_num);
             $display("Push Pe Idx: %h %h %h %h", Xbar_SchedToPE_inst.PE_Freelist_inst.push_pe_idx[0], Xbar_SchedToPE_inst.PE_Freelist_inst.push_pe_idx[1], Xbar_SchedToPE_inst.PE_Freelist_inst.push_pe_idx[2], Xbar_SchedToPE_inst.PE_Freelist_inst.push_pe_idx[3]);
             $display("Push en: %h %h %h %h", Xbar_SchedToPE_inst.PE_Freelist_inst.push_en[0], Xbar_SchedToPE_inst.PE_Freelist_inst.push_en[1], Xbar_SchedToPE_inst.PE_Freelist_inst.push_en[2], Xbar_SchedToPE_inst.PE_Freelist_inst.push_en[3]);
@@ -197,6 +197,16 @@ module Xbar_SchedToPE_tb;
             $display("valid_num: %h", Xbar_SchedToPE_inst.PE_Freelist_inst.valid_num);
             $display("IssValid = %h %h %h %h", Xbar_SchedToPE_inst.IssValid_i[0], Xbar_SchedToPE_inst.IssValid_i[1], Xbar_SchedToPE_inst.IssValid_i[2], Xbar_SchedToPE_inst.IssValid_i[3]);
             $display("IssReady = %h %h %h %h", Xbar_SchedToPE_inst.IssReady_o[0], Xbar_SchedToPE_inst.IssReady_o[1], Xbar_SchedToPE_inst.IssReady_o[2], Xbar_SchedToPE_inst.IssReady_o[3]);
+            $display("IssDelta[0] IssIdx[0] IssValid[0] IssReady[0] IssDelta[1] IssIdx[1] IssValid[1] IssReady[1] IssDelta[2] IssIdx[2] IssValid[2] IssReady[2] IssDelta[3] IssIdx[3] IssValid[3] IssReady[3] PEDelta[0] PEIdx[0] PEValid[0] PEReady[0] PEDelta[1] PEIdx[1] PEValid[1] PEReady[1] PEDelta[2] PEIdx[2] PEValid[2] PEReady[2] PEDelta[3] PEIdx[3] PEValid[3] PEReady[3] ");
+            $display("%h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h ",
+            IssDelta_i[0], IssIdx_i[0], IssValid_i[0], IssReady_o[0],
+            IssDelta_i[1], IssIdx_i[1], IssValid_i[1], IssReady_o[1],
+            IssDelta_i[2], IssIdx_i[2], IssValid_i[2], IssReady_o[2],
+            IssDelta_i[3], IssIdx_i[3], IssValid_i[3], IssReady_o[3],
+            PEDelta_o[0] , PEIdx_o[0] , PEValid_o[0] , PEReady_i[0],
+            PEDelta_o[1] , PEIdx_o[1] , PEValid_o[1] , PEReady_i[1],
+            PEDelta_o[2] , PEIdx_o[2] , PEValid_o[2] , PEReady_i[2],
+            PEDelta_o[3] , PEIdx_o[3] , PEValid_o[3] , PEReady_i[3]);
             // if (IssReady_o != IssReady_o_ram[i]) begin
             //     $display("IssReady_o incorrect");
             //     $stop;

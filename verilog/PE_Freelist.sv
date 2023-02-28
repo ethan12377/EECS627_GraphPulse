@@ -58,7 +58,7 @@ module PE_Freelist #(
 // --------------------------------------------------------------------
     always_comb begin
         // Pop
-        pop_en  =   PEReady_i & PEValid_i;
+        pop_en  =   IssValid_i & IssReady_i;
         pop_num =  'd0;
         for (int i = 0; i < C_PE_NUM; i++) begin
             if (pop_en[i]) begin
@@ -101,15 +101,39 @@ module PE_Freelist #(
 // --------------------------------------------------------------------
 // Push-in
 // --------------------------------------------------------------------
-    always_comb begin
-        int j = 0;
-        for (int i = 0; i < C_PE_NUM; i++) begin
-            if (push_en[i] == 1) begin
-                push_pe_idx[j]  =   i;
-                j++;
+
+    function automatic logic [C_PE_NUM-1:0][C_PE_IDX_WIDTH-1:0] push_in_route;
+        input   logic   [C_PE_NUM-1:0]  push_en;
+        int     push_idx  ;
+        begin
+            push_idx        =   0;
+            push_in_route   =   0;
+            for (int push_en_idx = 0; push_en_idx < C_PE_NUM; push_en_idx++) begin
+                if (push_en[push_en_idx]) begin
+                    push_in_route[push_idx] =   push_en_idx ;
+                    push_idx++;
+                end
             end
         end
+    endfunction
+
+    // int j;
+    // always_comb begin
+    //     j = 0;
+    //     push_pe_idx =   'd0;
+    //     for (int i = 0; i < C_PE_NUM; i++) begin
+    //         if (push_en[i] == 1) begin
+    //             $display("push_pe_idx[%h] = %h", j, i);
+    //             push_pe_idx[j]  =   i;
+    //             j++;
+    //         end
+    //     end
+    // end
+
+    always_comb begin
+        push_pe_idx =   push_in_route(push_en);
     end
+
 
     genvar entry_idx;
 
@@ -170,7 +194,7 @@ module PE_Freelist #(
                 end else begin
                     if (push_en[pe_idx]) begin
                         lock[pe_idx]    <=  `SD 'b1;
-                    end else if (pop_en[pe_idx]) begin
+                    end else if (PEReady_i[pe_idx] && PEValid_i[pe_idx]) begin
                         lock[pe_idx]    <=  `SD 'b0;
                     end
                 end
