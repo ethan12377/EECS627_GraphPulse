@@ -5,6 +5,7 @@ from crossbar import Xbar_PEToQ
 
 CU_timer = np.zeros(8)
 CU_timer_n = np.zeros(8)
+np.random.seed(0)
 
 def PE_input():
     for i in range(8):
@@ -62,8 +63,21 @@ if __name__ == "__main__":
     io_port.init()
     Xbar1 = Xbar_PEToQ()
     
-    for i in range(10):
+    fd = open('Xbar_PEToQ_ground_truth.txt', 'w')
+    
+    for i in range(8):
+        print(f'proDelta[{i}] proIdx[{i}] proValid[{i}] proReady[{i}]', end=' ', file=fd)
+    for i in range(8):
+        print(f'CUDelta[{i}] CUIdx[{i}] CUValid[{i}] CUReady[{i}]', end=' ', file=fd)
+    print('',end='\n', file=fd)
+    
+    for i in range(200):
         print("[Clock", i, "]")
+        for j in range(8):
+            print(hex(io_port.proDelta[j].view('H'))[2:].zfill(4), hex(io_port.proIdx[j])[2:].zfill(2), io_port.proValid[j], io_port.proReady[j], end=' ', file=fd)
+        for j in range(8):
+            print(hex(io_port.CUDelta[j].view('H'))[2:].zfill(4), hex(io_port.CUIdx[j])[2:].zfill(2), io_port.CUValid[j], io_port.CUReady[j], end=' ', file=fd)
+        print('',end='\n', file=fd)
         PE_input()
         Xbar1.one_clock()
         CU_input()

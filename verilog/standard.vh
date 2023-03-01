@@ -35,4 +35,4 @@
 `define GEN_NUM                 `GEN_PER_PE * `PE_NUM
 
 // Xbar from PEs to Event Queues
-`define XBAR_1_STAGES_NUM       1
+`define XBAR_1_STAGES_NUM       2

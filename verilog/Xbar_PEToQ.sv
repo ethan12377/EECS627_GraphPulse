@@ -48,12 +48,14 @@ module Xbar_PEToQ #(
     logic   [C_BIN_NUM-1:0]                         valid           ;
     logic   [C_BIN_NUM-1:0]                         bin_lock        ;
     logic   [C_BIN_NUM-1:0]                         arb_en          ;
+    logic   [C_BIN_NUM-1:0]                         ack             ;
     logic   [C_BIN_NUM-1:0][C_DELTA_WIDTH-1:0]      CUDelta_pipe   [C_STAGES_NUM-1:0];
     logic   [C_BIN_NUM-1:0][C_VERTEX_IDX_WIDTH-1:0] CUIdx_pipe     [C_STAGES_NUM-1:0];
     logic   [C_BIN_NUM-1:0]                         CUValid_pipe   [C_STAGES_NUM-1:0];
     logic   [C_BIN_NUM-1:0][C_DELTA_WIDTH-1:0]      CUDelta_n       ;
     logic   [C_BIN_NUM-1:0][C_VERTEX_IDX_WIDTH-1:0] CUIdx_n         ;
     logic   [C_BIN_NUM-1:0]                         CUValid_n       ;
+    logic   [C_BIN_NUM-1:0][C_GEN_NUM-1:0]          mask            ;
 
     genvar i;
 // ====================================================================
@@ -68,7 +70,7 @@ module Xbar_PEToQ #(
 // Description  :   Round-Robin Arbiter
 // --------------------------------------------------------------------
 generate
-    for (i = 0; i < C_BIN_NUM; i++) begin
+    for (i = 0; i < C_BIN_NUM; i++) begin : rr_arbiter
         rr_arbiter #(
             .C_REQ_NUM          (C_GEN_NUM                      ),
             .C_REQ_IDX_WIDTH    (C_GEN_IDX_WIDTH                )
@@ -76,14 +78,33 @@ generate
             .clk_i              (clk_i                          ),   //  Clock
             .rst_i              (rst_i                          ),   //  Reset
             .en_i               (arb_en[i]                      ),
-            .ack_i              (CUValid_o[i] && CUReady_i[i]   ),
+            .ack_i              (valid[i]                       ),
             .req_i              (request[i]                     ),
             .grant_o            (grant[i]                       ),
             .grant_onehot_o     (grant_onehot[i]                ),
-            .valid_o            (valid[i]                       )
+            .valid_o            (valid[i]                       ),
+            .mask_o             (mask[i]                        )
         );
     end
 endgenerate
+
+    // rr_arbiter #(
+    //     .C_REQ_NUM          (C_GEN_NUM                      ),
+    //     .C_REQ_IDX_WIDTH    (C_GEN_IDX_WIDTH                )
+    // ) rr_arbiter_inst [C_BIN_NUM-1:0] (
+    //     .clk_i              (clk_i                          ),   //  Clock
+    //     .rst_i              (rst_i                          ),   //  Reset
+    //     .en_i               (arb_en                         ),
+    //     .ack_i              (ack                            ),
+    //     .req_i              (request                        ),
+    //     .grant_o            (grant                          ),
+    //     .grant_onehot_o     (grant_onehot                   ),
+    //     .valid_o            (valid                          )
+    // );
+
+    always_comb begin
+        ack =   CUValid_o & CUReady_i;
+    end
 
 // --------------------------------------------------------------------
 
@@ -102,7 +123,7 @@ endgenerate
     generate
         for (i = 0; i < C_GEN_NUM; i++) begin
             always_comb begin
-                bin_idx[i]  =   proIdx_i[C_BIN_IDX_LSB +: C_BIN_IDX_WIDTH];
+                bin_idx[i]  =   proIdx_i[i][C_BIN_IDX_LSB +: C_BIN_IDX_WIDTH];
             end
         end
     endgenerate
@@ -113,9 +134,9 @@ endgenerate
     generate
         for (i = 0; i < C_BIN_NUM; i++) begin
             always_comb begin
-                request[i] =   'b0
+                request[i] =   'b0;
                 for (int j = 0; j < C_GEN_NUM; j++) begin
-                    if (bin_idx[j] == i) begin
+                    if (bin_idx[j] == i && proValid_i[j]) begin
                         request[i][j]   =   1'b1;
                     end
                 end
@@ -129,8 +150,7 @@ endgenerate
     generate
         for (i = 0; i < C_GEN_NUM; i++) begin
             always_ff @(posedge clk_i) begin
-                if ((grant[bin_idx[i]] == i) && valid[bin_idx[i]]
-                && CUReady_i[bin_idx[i]]) begin
+                if ((grant[bin_idx[i]] == i) && valid[bin_idx[i]]) begin
                     proReady_o[i]   <=  `SD 'b1;
                 end else begin
                     proReady_o[i]   <=  `SD 'b0;
@@ -150,7 +170,7 @@ endgenerate
                 end else begin
                     if (CUValid_o[i] && CUReady_i[i]) begin
                         bin_lock[i] <=  `SD 'b0;
-                    end else if (valid[i] && CUReady_i[i]) begin
+                    end else if (valid[i]) begin
                         bin_lock[i] <=  `SD 'b1;
                     end
                 end
@@ -162,7 +182,7 @@ endgenerate
 // Arbitration enable
 // disable when:
 //      bin is locked (bin_lock[i] == 1)
-//      OR bin is ready (CUReady_i[i] == 1)
+//      OR bin is not ready (CUReady_i[i] == 0)
 // --------------------------------------------------------------------
     always_comb begin
         arb_en  =   ~(bin_lock | (~CUReady_i));
@@ -174,9 +194,9 @@ endgenerate
     generate
         for (i = 0; i < C_BIN_NUM; i++) begin
             always_comb begin
-                if (proReady_o[grant[i]]) begin
+                if (valid[i]) begin
                     CUDelta_n[i]    =   proDelta_i[grant[i]];
-                    CUIdx_n[i]      =   CUIdx_n[grant[i]];
+                    CUIdx_n[i]      =   proIdx_i[grant[i]];
                     CUValid_n[i]    =   'b1;
                 end else begin
                     CUDelta_n[i]    =   'd0;
@@ -188,8 +208,42 @@ endgenerate
     endgenerate
 
 // --------------------------------------------------------------------
-// Pipelining
+// Pipeline stages
 // --------------------------------------------------------------------
+    genvar stage_idx;
+
+    generate
+        
+        for (stage_idx = 0; stage_idx < C_STAGES_NUM; stage_idx++) begin
+            if (stage_idx == 0) begin
+                
+                always_ff @(posedge clk_i) begin
+                    CUDelta_pipe[stage_idx] <=  `SD CUDelta_n   ;
+                    CUIdx_pipe  [stage_idx] <=  `SD CUIdx_n     ;
+                    CUValid_pipe[stage_idx] <=  `SD CUValid_n   ;
+                end
+
+            end else begin
+
+                always_ff @(posedge clk_i) begin
+                    CUDelta_pipe[stage_idx] <=  `SD CUDelta_pipe[stage_idx-1];
+                    CUIdx_pipe  [stage_idx] <=  `SD CUIdx_pipe  [stage_idx-1];
+                    CUValid_pipe[stage_idx] <=  `SD CUValid_pipe[stage_idx-1];
+                end
+
+            end
+        end
+    endgenerate
+
+// --------------------------------------------------------------------
+// To Queues
+// --------------------------------------------------------------------
+    always_comb begin
+        CUValid_o   =   CUValid_pipe[C_STAGES_NUM-1];
+        CUDelta_o   =   CUDelta_pipe[C_STAGES_NUM-1];
+        CUIdx_o     =   CUIdx_pipe  [C_STAGES_NUM-1];
+    end
+
 
 // ====================================================================
 // RTL Logic End
