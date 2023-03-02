@@ -17,12 +17,12 @@ def QS_input():
                 for i in range(8):
                     set_zero = np.random.randint(10)
                     if set_zero < 3:
-                        io_port.rowDelta_n[i] = 0
+                        io_port.rowDelta_n[i] = np.float16(0)
                     else:
                         io_port.rowDelta_n[i] = np.random.rand()
                 io_port.binrowIdx_n = np.uint8(np.random.randint(32))
             else:
-                io_port.rowDelta_n = np.zeros(8)
+                io_port.rowDelta_n = np.zeros(8, dtype=np.float16)
                 io_port.binrowIdx_n = np.uint8(0)
     else:
         io_port.rowValid_n = np.uint8(np.random.randint(2))
@@ -30,12 +30,12 @@ def QS_input():
             for i in range(8):
                 set_zero = np.random.randint(10)
                 if set_zero < 3:
-                    io_port.rowDelta_n[i] = 0
+                    io_port.rowDelta_n[i] = np.float16(0)
                 else:
                     io_port.rowDelta_n[i] = np.random.rand()
             io_port.binrowIdx_n = np.uint8(np.random.randint(32))
         else:
-            io_port.rowDelta_n = np.zeros(8)
+            io_port.rowDelta_n = np.zeros(8, dtype=np.float16)
             io_port.binrowIdx_n = np.uint8(0)
 
 def PE_input():
@@ -70,12 +70,20 @@ def update():
     io_port.PEReady = copy.deepcopy(io_port.PEReady_n)
     
 if __name__ == "__main__":
-    fd = open('../Xbar_SchedToPE_ground_truth.txt', 'w')
+    # fd = open('../Xbar_SchedToPE_ground_truth.txt', 'w')
+    fd = open('output_buffer_ground_truth.txt', 'w')
+    
+    print(f'rowValid rowReady binIdx rowIdx', end=' ', file=fd)
+    
+    for i in range(8):
+        print(f'rowDelta[{i}]', end=' ', file=fd)
     
     for i in range(4):
         print(f'IssDelta[{i}] IssIdx[{i}] IssValid[{i}] IssReady[{i}]', end=' ', file=fd)
-    for i in range(4):
-        print(f'PEDelta[{i}] PEIdx[{i}] PEValid[{i}] PEReady[{i}]', end=' ', file=fd)
+        
+    # for i in range(4):
+    #     print(f'PEDelta[{i}] PEIdx[{i}] PEValid[{i}] PEReady[{i}]', end=' ', file=fd)
+        
     print('',end='\n', file=fd)
     
     io_port.init()
@@ -94,10 +102,19 @@ if __name__ == "__main__":
         Xbar0.one_clock()
         PE_input()
 
+        print(io_port.rowValid, io_port.rowReady, np.uint8(io_port.binrowIdx / 4), np.uint8(io_port.binrowIdx % 4), end=' ', file=fd)
+        
+        for j in range(8):
+            print(hex(io_port.rowDelta[j].view('H'))[2:].zfill(4), end=' ', file=fd)
+
         for j in range(4):
             print(hex(io_port.IssDelta[j].view('H'))[2:].zfill(4), hex(io_port.IssIdx[j])[2:].zfill(2), io_port.IssValid[j], io_port.IssReady[j], end=' ', file=fd)
-        for j in range(4):
-            print(hex(io_port.PEDelta[j].view('H'))[2:].zfill(4), hex(io_port.PEIdx[j])[2:].zfill(2), io_port.PEValid[j], io_port.PEReady[j], end=' ', file=fd)
+
+        # print(OB0.buf_Valid, end=' ', file=fd)
+
+        # for j in range(4):
+        #     print(hex(io_port.PEDelta[j].view('H'))[2:].zfill(4), hex(io_port.PEIdx[j])[2:].zfill(2), io_port.PEValid[j], io_port.PEReady[j], end=' ', file=fd)
+
         print('',end='\n', file=fd)
 
         update()

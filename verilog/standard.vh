@@ -14,6 +14,7 @@
 `define PE_IDX_WIDTH            $clog2(`PE_NUM)
 `define DELTA_WIDTH             16
 `define VERTEX_IDX_WIDTH        8
+`define EVENT_WIDTH             24
 
 // Event Queues
 `define COL_NUM                 8
@@ -36,3 +37,8 @@
 
 // Xbar from PEs to Event Queues
 `define XBAR_1_STAGES_NUM       2
+
+// Output buffer
+`define OB_DEPTH                16
+`define OB_FIFO_INPUT_NUM       4
+`define OB_FIFO_OUTPUT_NUM      `PE_NUM

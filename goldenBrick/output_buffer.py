@@ -69,7 +69,7 @@ class OB:
             else:
                 break
 
-        if len(self.fifo_Delta) < (self.depth - self.num_fifo_in):
+        if len(self.fifo_Delta) <= (self.depth - self.num_fifo_in):
             # Insert bubble free events into the fifo
             if self.buf_Valid == 1:
                 for col_idx in range(self.fifo_in_cnt*self.num_fifo_in, (self.fifo_in_cnt + 1) *self.num_fifo_in):

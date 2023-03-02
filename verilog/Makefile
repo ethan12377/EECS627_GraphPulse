@@ -2,11 +2,13 @@
 STD_CELLS = /afs/umich.edu/class/eecs627/ibm13/artisan/2005q3v1/aci/sc-x/verilog/ibm13_neg.v
 # TESTBENCH = testbench.v
 # TESTBENCH = Xbar_SchedToPE_tb.sv
-TESTBENCH = Xbar_PEToQ_tb.sv
+# TESTBENCH = Xbar_PEToQ_tb.sv
+TESTBENCH = output_buffer_tb.sv
 COMMON = standard.vh
 # SIM_FILES = standard.vh graphpulse.v
 # SIM_FILES = Xbar_SchedToPE.sv PE_freelist.sv
-SIM_FILES = Xbar_PEToQ.sv rr_arbiter.sv priority_arbiter.sv
+# SIM_FILES = Xbar_PEToQ.sv rr_arbiter.sv priority_arbiter.sv
+SIM_FILES = output_buffer.sv OB_bubble_squeezer.sv OB_fifo.sv
 
 VV         = vcs
 VVOPTS     = -o $@ +v2k +vc -sverilog -timescale=1ns/1ps +vcs+lic+wait +multisource_int_delays                    \
@@ -23,13 +25,13 @@ endif
 all: clean sim
 
 clean:
-	rm -f verilog/ucli.key
-	rm -f verilog/sim
-	rm -f verilog/sim_syn
-	rm -fr verilog/sim.daidir
-	rm -fr verilog/sim_syn.daidir
-	rm -f verilog/*.log
-	rm -fr verilog/csrc
+	rm -f ucli.key
+	rm -f sim
+	rm -f sim_syn
+	rm -fr sim.daidir
+	rm -fr sim_syn.daidir
+	rm -f *.log
+	rm -fr csrc
 
 sim: $(STD_CELLS) $(COMMON) $(SIM_FILES) $(TESTBENCH)
 	$(VV) $(VVOPTS) $(STD_CELLS) $(COMMON) $(SIM_FILES) $(TESTBENCH); ./$@ > sim.out
