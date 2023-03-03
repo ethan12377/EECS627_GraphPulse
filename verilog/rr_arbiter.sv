@@ -17,7 +17,8 @@ module rr_arbiter #(
     input   logic   [C_REQ_NUM-1:0]         req_i           ,
     output  logic   [C_REQ_IDX_WIDTH-1:0]   grant_o         ,
     output  logic   [C_REQ_NUM-1:0]         grant_onehot_o  ,
-    output  logic                           valid_o         
+    output  logic                           valid_o         ,
+    output  logic   [C_REQ_NUM-1:0]         mask_o          
 );
 
 // ====================================================================
@@ -52,17 +53,17 @@ module rr_arbiter #(
 // --------------------------------------------------------------------
 priority_arbiter #(
     .C_REQ_NUM          (C_REQ_NUM          ),
-    .C_REQ_IDX_WIDTH    (C_REQ_IDX_WIDTH    ),
-) priority_arbiter_inst (
-    .req_i              (req_i              ),
+    .C_REQ_IDX_WIDTH    (C_REQ_IDX_WIDTH    )
+) priority_arbiter_inst_0 (
+    .req_i              (req_unmasked       ),
     .grant_o            (grant_unmasked     ),
     .valid_o            (valid_unmasked     )
 );
 
 priority_arbiter #(
     .C_REQ_NUM          (C_REQ_NUM          ),
-    .C_REQ_IDX_WIDTH    (C_REQ_IDX_WIDTH    ),
-) priority_arbiter_inst (
+    .C_REQ_IDX_WIDTH    (C_REQ_IDX_WIDTH    )
+) priority_arbiter_inst_1 (
     .req_i              (req_masked         ),
     .grant_o            (grant_masked       ),
     .valid_o            (valid_masked       )
@@ -89,6 +90,8 @@ priority_arbiter #(
         end
     end
 
+    assign  mask_o  =   mask;
+
     always_comb begin
         next_mask   =   mask    ;
         if (ack_i) begin
@@ -110,18 +113,28 @@ priority_arbiter #(
 // --------------------------------------------------------------------
 // Grant
 // --------------------------------------------------------------------
-    always_ff @(posedge clk_i) begin
-        if (rst_i) begin
-            grant_o         <=  `SD 'b0;
-            valid_o         <=  `SD 'b0;
+    // always_ff @(posedge clk_i) begin
+    //     if (rst_i) begin
+    //         grant_o         <=  `SD 'b0;
+    //         valid_o         <=  `SD 'b0;
+    //     end else begin
+    //         if (valid_masked) begin
+    //             grant_o <=  `SD grant_masked;
+    //             valid_o <=  `SD valid_masked;
+    //         end else begin
+    //             grant_o <=  `SD grant_unmasked;
+    //             valid_o <=  `SD valid_unmasked;
+    //         end
+    //     end
+    // end
+
+    always_comb begin
+        if (valid_masked) begin
+            grant_o =   grant_masked;
+            valid_o =   valid_masked;
         end else begin
-            if (valid_masked) begin
-                grant_o <=  `SD grant_masked;
-                valid_o <=  `SD valid_masked;
-            end else begin
-                grant_o <=  `SD grant_unmasked;
-                valid_o <=  `SD valid_unmasked;
-            end
+            grant_o =   grant_unmasked;
+            valid_o =   valid_unmasked;
         end
     end
 
