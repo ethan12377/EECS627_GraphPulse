@@ -1,20 +1,20 @@
 import math
 import random
 
-def bfloat_to_dec(bits):
+def float16_to_dec(bits):
     sign = bits[0]
     # print(sign)
-    exponent = bits[1:9]
+    exponent = bits[1:6]
     # print(exponent)
-    mantissa = bits[9:]
+    mantissa = bits[6:]
     # print(mantissa)
     sign_dec = (-1)**int(sign)
     # print(sign_dec)
     exponent_dec = int(exponent, 2)
-    exponent_dec = 2**(exponent_dec-127)
+    exponent_dec = 2**(exponent_dec-15)
     # print(exponent_dec)
     mantissa_dec = int(mantissa, 2)
-    mantissa_dec = 1 + (mantissa_dec * 2**-7)
+    mantissa_dec = 1 + (mantissa_dec * 2**-10)
     # print(mantissa_dec)
     dec = sign_dec * exponent_dec * mantissa_dec
     return dec
@@ -47,7 +47,7 @@ def bfloat_to_dec(bits):
 # test2 = bfloat_to_dec('0000000010000000')
 # print("smallestnum="+str(test2))
 
-def dec_to_bfloat(num):
+def dec_to_float16(num):
     print("num = "+str(num))
     if (num < 0):
         sign = 1
@@ -59,13 +59,13 @@ def dec_to_bfloat(num):
     mantissa = mantissa - 1
 
     # format exponent
-    exponent = exponent + 127
+    exponent = exponent + 15
     print("exponent = "+str(exponent))
     exponent = format(exponent, '08b')
     print("exponent = "+str(exponent))
 
     # format mantissa
-    mantissa = mantissa * (2**7)
+    mantissa = mantissa * (2**10)
     mantissa = format(int(mantissa), '07b')
     print("mantissa = "+str(mantissa))
 

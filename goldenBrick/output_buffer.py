@@ -1,9 +1,35 @@
 import io_port
 import numpy as np
 from collections import deque
+from collections import deque
 import copy
 
 class OB:
+
+    def __init__(self, num_col = 8, num_output = 4, depth = 16, num_fifo_in = 4):
+
+        self.num_col = num_col
+        self.num_output = num_output
+        self.depth = depth
+        self.num_fifo_in = num_fifo_in
+        self.fifo_in_cycle = np.ceil(num_col / num_fifo_in)
+
+        self.offset = np.zeros(self.num_col, dtype=np.uint8)
+        self.buf_Delta = np.zeros(self.num_col, dtype=np.float16)
+        self.buf_Idx = np.zeros(self.num_col, dtype=np.uint8)
+        self.buf_Valid = np.uint8(0)
+        self.buf_Delta_n = np.zeros(self.num_col, dtype=np.float16)
+        self.buf_Idx_n = np.zeros(self.num_col, dtype=np.uint8)
+        self.buf_Valid_n = np.uint8(0)
+
+        self.fifo_Delta = deque(maxlen=self.depth)
+        self.fifo_Idx = deque(maxlen=self.depth)
+
+        self.fifo_Delta_n = deque(maxlen=self.depth)
+        self.fifo_Idx_n = deque(maxlen=self.depth)
+
+        self.fifo_in_cnt = np.uint8(0)
+        self.fifo_in_cnt_n = np.uint8(0)
 
     def __init__(self, num_col = 8, num_output = 4, depth = 16, num_fifo_in = 4):
 

@@ -16,8 +16,8 @@ for line in fbin:
         op = ' * '
     else:
         op = ' / '
-    opA = convert.bfloat_to_dec(tokens[1])
-    opB = convert.bfloat_to_dec(tokens[2])
+    opA = convert.float16_to_dec(tokens[1])
+    opB = convert.float16_to_dec(tokens[2])
     fdec.write(str(opA)+op+str(opB)+'\n')
 
 fbin.close()

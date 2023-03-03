@@ -14,22 +14,86 @@ module testbench;
 
     logic           clock;
     logic           reset;
-    logic [15:0]    numVert;
+    logic [15:0]    num_vertex;
     logic           converge;
     logic [31:0]    clock_count;
-	int             cache_fileno;
+    int             cache_fileno;
+    
+    logic [1:0]  edgemem_command;
+    logic [`XLEN-1:0] edgemem_addr;
+    logic [63:0] edgemem_st_data;
+    logic  [3:0] edgemem_response;
+    logic [63:0] edgemem_ld_data;
+    logic  [3:0] edgemem_tag;
+`ifndef CACHE_MODE
+    MEM_SIZE     edgemem_size;
+`endif
+    logic [1:0]  vertexmem_command;
+    logic [`XLEN-1:0] vertexmem_addr;
+    logic [63:0] vertexmem_st_data;
+    logic  [3:0] vertexmem_response;
+    logic [63:0] vertexmem_ld_data;
+    logic  [3:0] vertexmem_tag;
+`ifndef CACHE_MODE
+    MEM_SIZE     vertexmem_size;
+`endif
 
     GraphPulse gp(
         // Inputs
-        .clock          (clock),
-        .reset          (reset),
-        .numVert        (numVert),
+        .clock              (clock),
+        .reset              (reset),
+        .num_vertex         (num_vertex),
+        .edgemem_response   (edgemem_response),
+        .edgemem_ld_data    (edgemem_ld_data),
+        .edgemem_tag        (edgemem_tag),
+        .vertexmem_response (vertexmem_response),
+        .vertexmem_ld_data  (vertexmem_ld_data),
+        .vertexmem_tag      (vertexmem_tag),
 
         // Outputs
-        // snoop cache ports?
-        .converge       (converge)
+        .converge           (converge),
+        .edgemem_command    (edgemem_command),
+        .edgemem_addr       (edgemem_addr),
+        .edgemem_st_data    (edgemem_st_data),
+        .edgemem_size       (edgemem_size)
+        .vertexmem_command  (vertexmem_command),
+        .vertexmem_addr     (vertexmem_addr),
+        .vertexmem_st_data  (vertexmem_st_data),
+        .vertexmem_size     (vertexmem_size)
     );
 
+    mem edgemem (
+        // Inputs
+        .clk               (clock),
+        .proc2mem_command  (edgemem_command),
+        .proc2mem_addr     (edgemem_addr),
+        .proc2mem_data     (edgemem_st_data),
+`ifndef CACHE_MODE
+        .proc2mem_size     (edgemem_size),
+`endif
+
+        // Outputs
+        .mem2proc_response (edgemem_response),
+        .mem2proc_data     (edgemem_ld_data),
+        .mem2proc_tag      (edgemem_tag)
+    );
+    
+    mem vertexmem (
+        // Inputs
+        .clk               (clock),
+        .proc2mem_command  (vertexmem_command),
+        .proc2mem_addr     (vertexmem_addr),
+        .proc2mem_data     (vertexmem_st_data),
+`ifndef CACHE_MODE
+        .proc2mem_size     (vertexmem_size),
+`endif
+
+        // Outputs
+        .mem2proc_response (vertexmem_response),
+        .mem2proc_data     (vertexmem_ld_data),
+        .mem2proc_tag      (vertexmem_tag)
+    );
+    
     // Generate System Clock
 	always begin
 		#(`VERILOG_CLOCK_PERIOD/2.0);
@@ -48,7 +112,7 @@ module testbench;
 		@(posedge clock);
 		@(posedge clock);
 
-		// $readmemh(, ); // need off-chip memory? or model cache here?
+		$readmemh("edge_cache.mem", edgemem.unified_memory);
 		
 		@(posedge clock);
 		@(posedge clock);
@@ -80,8 +144,15 @@ module testbench;
 			         $realtime);
         end else begin
 			`SD;
+			`SD;
 			
-			// display cahce port signal?
+            $fdisplay(cache_fileno, ""); // TODO
+            
+            if (converge) begin
+                $display("@@@\n@@ Converge");
+                    $fclose(cache_fileno);
+                    #10 $finish;
+            end
 
 		end  // if(reset)   
 	end 

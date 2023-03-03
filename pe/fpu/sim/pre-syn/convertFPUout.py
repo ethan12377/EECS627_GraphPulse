@@ -14,7 +14,7 @@ for line in fbin:
         fdec.write('OVERFLOW ')
     elif (tokens[4] == '1'):
         fdec.write('INEXACT ')
-    num = convert.bfloat_to_dec(tokens[1])
+    num = convert.float16_to_dec(tokens[1])
     fdec.write(str(num))
     fdec.write('\n')
 
