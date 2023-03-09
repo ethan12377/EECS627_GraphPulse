@@ -1,0 +1,31 @@
+################################################
+#  EECS 627 W22                                #
+#  Created by Qing Dong                        #
+#  Updated by Hyochan An and Qirui Zhang       #
+#  Innovus Input configuration file            #
+################################################
+
+
+# Specify Verilog source files
+# Include the std cells verilog modules
+set init_verilog {../syn/Xbar_PEToQ_wrapper.syn.v /afs/umich.edu/class/eecs627/ibm13/artisan/current/aci/sc-x/verilog/ibm13_modules.v}
+
+# Specify the name of your toplevel module
+set init_top_cell {Xbar_PEToQ_wrapper}
+
+
+set init_design_netlisttype {Verilog}
+set init_design_settop {1}
+
+
+# Insert I/O file (for use with I/O pads, not block I/O only
+set init_io_file {Xbar_PEToQ_wrapper.io}
+
+# Insert the standard cell LEF file and other block LEF files
+# To-Do: Whose LEF file is not here?
+set init_lef_file {/afs/umich.edu/class/eecs627/ibm13/artisan/current/aci/sc-x/lef/ibm13_8lm_2thick_tech.lef /afs/umich.edu/class/eecs627/ibm13/artisan/current/aci/sc-x/lef/ibm13rvt_macros.lef}
+
+set init_mmmc_file viewDefinition.tcl
+
+set init_pwr_net {VDD}
+set init_gnd_net {VSS}
