@@ -2,9 +2,8 @@
 // underflow, overflow, inexact, and cout flags. 
 module fp_mul(
     input logic [15:0] opA, opB,
-    output logic [15:0] product,
-    output logic underflow, overflow, inexact
-    );
+    output logic [15:0] product
+);
 
     logic sA, sB;
     logic [4:0] eA, eB;
@@ -47,9 +46,6 @@ module fp_mul(
     assign sign = sA ^ sB;
 
     assign product = {sign, finalE, finalP[19:10]}; // 15=overflow, 14=hidden
-    assign overflow = (eAddOverflow | eNormalOverflow);
-    assign inexact = |normalP[9:0];
-    assign underflow = 1'b0;
 
 endmodule
 

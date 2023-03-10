@@ -2,17 +2,16 @@
 // underflow, overflow, inexact, and cout flags. 
 module fp_add(
     input logic [15:0] opA, opB,
-    output logic [15:0] sum,
-    output logic underflow, overflow, inexact, cout
-    );
+    output logic [15:0] sum
+);
 
-    logic sA, sB;
+    logic sA, sB, cout;
     logic [4:0] eA, eB;
     logic [9:0] mA, mB;
     
     logic [4:0] diffE, absDiffE;
     logic [10:0] shiftInput, shiftOutput, op2;
-    logic sticky, sticky2, subtract;
+    logic subtract;
 
     logic [10:0] mSum, diffM, absDiffM;
     logic selBigE;
@@ -38,17 +37,6 @@ module fp_add(
 
     // select operand w/ smaller exponent to shift mantissa to the right
     assign shiftInput = diffE[4] ? {1'b1, mA} : {1'b1, mB};
-    
-    always_comb begin
-        casez(absDiffE)
-            5'd0: sticky = 1'b0;
-            5'd1: sticky = |shiftInput[0];
-            5'd2: sticky = |shiftInput[1:0];
-            5'd3: sticky = |shiftInput[2:0];
-            5'd4: sticky = |shiftInput[3:0];
-            default: sticky = |shiftInput;
-        endcase
-    end
     
     assign subtract = sA ^ sB;
     
@@ -115,7 +103,6 @@ module fp_add(
     assign sumE = subtract ? (bigE - subShiftAmount) : (bigE + addShiftAmount);
     assign sumM = subtract ? (mSum << subShiftAmount) : 
                              (mSum >> addShiftAmount);
-    assign sticky2 = cout & mSum[0];
 
     // Handle special cases
     assign finalM = (sumE == 5'b11111) ? 10'd0 : sumM;
@@ -124,7 +111,4 @@ module fp_add(
         if(subtract & (opA[14:0]==opB[14:0]) & (opA[15] != opB[15])) sum = 16'b0000000000000000;
         else sum = {finalS, finalE, finalM[9:0]};
     end
-    assign overflow = (sumE == 5'b11111) ? 1'b1 : 1'b0;
-    assign underflow = (finalE == 5'd0 & sticky) ? 1'b1 : 1'b0;
-    assign inexact = sticky | sticky2;
 endmodule 

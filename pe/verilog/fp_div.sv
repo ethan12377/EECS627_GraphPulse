@@ -2,18 +2,17 @@
 // underflow, overflow, inexact, and cout flags. 
 module fp_div(
     input logic [15:0] opA, opB,
-    output logic [15:0] quotient,
-    output logic underflow, overflow, inexact
-    );
+    output logic [15:0] quotient
+);
 
     logic sA, sB, sign;
     logic [4:0] eA, eB, biasedEDiff, finalE, shiftAmount;
     logic [4:0] eDiff;
     logic [5:0] normalizedE;
     logic [9:0] mA, mB, finalM, normalizedM;
-    logic dbz, ovf;
+    logic dbz;
     logic [10:0] mQuotient, r;
-    logic sticky, eSub0, eNormal0;
+    logic eSub0, eNormal0;
     logic [10:0] fullmA, fullmB;
     logic [20:0] op1, op2;
     logic diffOverflow;
@@ -77,17 +76,10 @@ module fp_div(
     assign finalE = normalizedE[4:0];
     // exponent normalizes to 0
     assign eNormal0 = (finalE == 5'd0) ? 1'b1 : 1'b0;
-    assign sticky = (r != 11'd0);
 
     // handle overflow
     assign finalM = (finalE == 5'b11111) ? 8'd0 : normalizedM;
-    assign ovf = (finalE == 5'b11111) ? 1'b1 : 1'b0;
 
     assign quotient = {sign, finalE, finalM[9:0]};
-    assign overflow = ovf;
-    assign inexact = sticky;
-    // google says underflow needs sticky flag true too, but
-    // that's not necessarily true if quotient is too small
-    assign underflow = (eSub0 | eNormal0);
 
 endmodule

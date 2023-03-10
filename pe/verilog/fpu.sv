@@ -3,26 +3,22 @@
 // result. Flags include overflow, underflow, inexact, and flags used for
 // the compare instruction in the cpu.
 
-// TODO: remove flags because they are unnecessary for our purposes
-// TODO: add pipeline regs to pipe through fpu status
-
 module fpu #(parameter PIPELINE_DEPTH=3) (
 	input logic clk, reset,
 	input logic [15:0] opA, opB,
 	input logic [1:0] op,
+	input logic [1:0] status_i,
 	output logic [15:0] result,
-	output logic overflow, underflow, inexact
+	output logic [1:0] status_o,
+	output logic empty_o
 );
 
 	logic [15:0] newOpB;
 	logic [15:0] sum, product, quotient;
-	logic aUnderflow, aOverflow, aInexact,
-			pUnderflow, pOverflow, pInexact,
-			qUnderflow, qOverflow, qInexact;
 	logic cout;
 	
 	// pipelining
-	logic [PIPELINE_DEPTH:0][18:0] pipeline_regs;
+	logic [PIPELINE_DEPTH:0][17:0] pipeline_regs;
 	always_ff @(posedge clk)
 	begin
 		if (reset) pipeline_regs[PIPELINE_DEPTH:1] <= '0;
@@ -33,61 +29,36 @@ module fpu #(parameter PIPELINE_DEPTH=3) (
 		end
 	end
 
-	// internal nets
+	// internal nets and assigning I/O
 	logic [15:0] result_internal;
-	logic overflow_internal, underflow_internal, inexact_internal;
 
 	assign pipeline_regs[0][15:0] = result_internal;
-	assign pipeline_regs[0][16] = overflow_internal;
-	assign pipeline_regs[0][17] = underflow_internal;
-	assign pipeline_regs[0][18] = inexact_internal;
+	assign pipeline_regs[0][17:16] = status_i;
 	assign result = pipeline_regs[PIPELINE_DEPTH][15:0];
-	assign overflow = pipeline_regs[PIPELINE_DEPTH][16];
-	assign underflow = pipeline_regs[PIPELINE_DEPTH][17];
-	assign inexact = pipeline_regs[PIPELINE_DEPTH][18];
+	assign status_o = pipeline_regs[PIPELINE_DEPTH][17:16];
+	always_comb
+	begin
+		empty_o = 1
+		for (integer i = 1; i < PIPELINE_DEPTH; i = i + 1)
+			if (pipeline_regs[i][17:16] != 2'b00)
+				empty_o = 0;
+	end
 
 	assign newOpB = (op == 2'd0) ? opB : {~opB[15], opB[14:0]};
-	fp_add add_sub(.opA, .opB(newOpB), .sum, .underflow(aUnderflow), 
-        .overflow(aOverflow), .inexact(aInexact), .cout);
+	
+	fp_add add_sub(.opA, .opB(newOpB), .sum);
 
-	fp_mul multiply(.opA, .opB, .product, .underflow(pUnderflow), .overflow(pOverflow), 
-        .inexact(pInexact));
+	fp_mul multiply(.opA, .opB, .product);
 
-	fp_div divide(.opA, .opB, .quotient, .underflow(qUnderflow), 
-        .overflow(qOverflow), .inexact(qInexact));
+	fp_div divide(.opA, .opB, .quotient);
 
 	always_comb begin
 		case(op)
-			2'b00: begin // add
-				result_internal = sum;
-				overflow_internal = aOverflow;
-				underflow_internal = aUnderflow;
-				inexact_internal = aInexact;
-			end
-			2'b01: begin // sub
-				result_internal = sum;
-				overflow_internal = aOverflow;
-				underflow_internal = aUnderflow;
-				inexact_internal = aInexact;
-			end
-			2'b10: begin // mult
-				result_internal = product;
-				overflow_internal = pOverflow;
-				underflow_internal = pUnderflow;
-				inexact_internal = pInexact;
-			end
-			2'b11: begin // div
-				result_internal = quotient;
-				overflow_internal = qOverflow;
-				underflow_internal = qUnderflow;
-				inexact_internal = qInexact;
-			end
-            default: begin
-				result_internal = 'X;
-				overflow_internal = 'X;
-				underflow_internal = 'X;
-				inexact_internal = 'X;
-            end
+			2'b00: result_internal = sum;      // add
+			2'b01: result_internal = sum;      // sub
+			2'b10: result_internal = product;  // mult
+			2'b11: result_internal = quotient; // div
+            default: result_internal = 'X;
 		endcase
 	end
 
