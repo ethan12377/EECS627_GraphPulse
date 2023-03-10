@@ -31,8 +31,17 @@
 // Xbar from Scheduler / Output Buffer to PEs
 `define XBAR_0_STAGES_NUM       2
 
+// FPU
+`define FPU_ADD					2'b00
+`define FPU_SUB					2'b01
+`define FPU_MUL					2'b01
+`define FPU_DIV					2'b11
+
 // PE
-`define PE_NUM                  4
+`define PE_THRESH               16'h0010 // PE threshold for stopping event propagation, float16 representation of 9.6e-7
+`define PE_FPU_PIPE_DEPTH       3
+`define PE_DAMPING_FACTOR	    16'h3ACC // float16 representation of 0.85
+`define PE_NUM_OF_CORES         4
 `define GEN_PER_PE              2
 `define GEN_NUM                 `GEN_PER_PE * `PE_NUM
 
