@@ -254,3 +254,46 @@ def init():
     cc_ec_ready_n = np.zeros(4)
     cc_vc_ready = np.zeros(4)
     cc_vc_ready_n = np.zeros(4)
+
+    ##########################
+    ### Output from memory ###
+    ##########################
+
+    global vmem_rsp, vmem_rsp_n, vmem_data, vmem_data_n, vmem_tag, vmem_tag_n
+    global emem_rsp, emem_rsp_n, emem_data, emem_data_n, emem_tag, emem_tag_n
+
+    vmem_rsp = np.uint8(0)
+    vmem_rsp_n = np.uint8(0)
+    vmem_data = np.float16(0.0)
+    vmem_data_n = np.float16(0.0)
+    vmem_tag = np.uint8(0)
+    vmem_tag_n = np.uint8(0)
+
+    emem_rsp = np.uint8(0)
+    emem_rsp_n = np.uint8(0)
+    emem_data = np.zeros(8, dtype=int)
+    emem_data_n = np.zeros(8, dtype=int)
+    emem_tag = np.uint8(0)
+    emem_tag_n = np.uint8(0)
+
+    #####################################
+    ### Output from memory controller ###
+    #####################################
+    # to vertex memory
+    global mc_vm_addr, mc_vm_data, mc_vm_cmd
+    mc_vm_addr = 0
+    mc_vm_data = np.float16(0.0)
+    mc_vm_cmd = 0 # 0:none, 1:load, 2:store
+
+    # to edge memory
+    global mc_em_addr, mc_em_data, mc_em_cmd
+    mc_em_addr = 0
+    mc_em_data = np.float16(0.0)
+    mc_em_cmd = 0 # 0:none, 1:load, 2:store
+
+    # to PE TODO
+    global cc_ec_ready, cc_ec_ready_n, cc_vc_ready, cc_vc_ready_n
+    cc_ec_ready = np.zeros(4)
+    cc_ec_ready_n = np.zeros(4)
+    cc_vc_ready = np.zeros(4)
+    cc_vc_ready_n = np.zeros(4)
