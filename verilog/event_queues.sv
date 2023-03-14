@@ -46,18 +46,19 @@ module event_queues #(
 // ====================================================================
 // Signal Declarations Start
 // ====================================================================
-logic                                   newValid    [C_BIN_NUM-1:0] ;
-logic  [C_VERTEX_IDX_WIDTH-1:0]         newIdx      [C_BIN_NUM-1:0] ;
-logic  [C_DELTA_WIDTH-1:0]              newDelta    [C_BIN_NUM-1:0] ;
+logic                                   newValid         [C_BIN_NUM-1:0] ;
+logic  [C_VERTEX_IDX_WIDTH-1:0]         newIdx           [C_BIN_NUM-1:0] ;
+logic  [C_DELTA_WIDTH-1:0]              newDelta         [C_BIN_NUM-1:0] ;
 
-logic  [C_VERTEX_IDX_WIDTH-1:0]         searchIdx   [C_BIN_NUM-1:0] ;
-logic                                   searchValid [C_BIN_NUM-1:0] ;
-logic  [C_DELTA_WIDTH-1:0]              searchValue [C_BIN_NUM-1:0] ;
+logic  [C_VERTEX_IDX_WIDTH-1:0]         searchIdx        [C_BIN_NUM-1:0] ;
+logic                                   searchValid      [C_BIN_NUM-1:0] ;
+logic  [C_DELTA_WIDTH-1:0]              searchValue      [C_BIN_NUM-1:0] ;
+logic                                   searchValueValid [C_BIN_NUM-1:0] ;
 
-logic  [C_ROW_IDX_WIDTH-1:0]            rowIdx      [C_BIN_NUM-1:0] ;
-logic  [C_DELTA_WIDTH * C_COL_NUM-1:0]  rowDelta    [C_BIN_NUM-1:0] ;
-logic                                   rowValid    [C_BIN_NUM-1:0] ;
-logic                                   rowReady    [C_BIN_NUM-1:0] ;
+logic  [C_ROW_IDX_WIDTH-1:0]            rowIdx           [C_BIN_NUM-1:0] ;
+logic  [C_DELTA_WIDTH * C_COL_NUM-1:0]  rowDelta         [C_BIN_NUM-1:0] ;
+logic                                   rowValid         [C_BIN_NUM-1:0] ;
+logic                                   rowReady         [C_BIN_NUM-1:0] ;
 
 genvar binIter;
 
@@ -75,21 +76,22 @@ genvar binIter;
 generate
     for (binIter = 0; binIter < C_BIN_NUM; binIter++) begin
         bin_func event_bin_inst (
-            .clk_i          (clk_i                  ),   //  Clock
-            .rst_i          (rst_i                  ),   //  Reset
-            .binSelected_i  (binSelected_i[binIter] ),
-            .readEn_i       (readEn_i               ),
-            .binValid_o     (binValid_o   [binIter] ),
-            .newValid_i     (newValid     [binIter] ),
-            .newIdx_i       (newIdx       [binIter] ),    
-            .newDelta_i     (newDelta     [binIter] ),
-            .searchIdx_i    (searchIdx    [binIter] ),
-            .searchValid_i  (searchValid  [binIter] ),
-            .searchValue_o  (searchValue  [binIter] ),
-            .rowIdx_o       (rowIdx       [binIter] ),
-            .rowDelta_o     (rowDelta     [binIter] ),
-            .rowValid_o     (rowValid     [binIter] ),
-            .rowReady_i     (rowReady     [binIter] )
+            .clk_i             (clk_i                       ),   //  Clock
+            .rst_i             (rst_i                       ),   //  Reset
+            .binSelected_i     (binSelected_i   [binIter]   ),
+            .readEn_i          (readEn_i                    ),
+            .binValid_o        (binValid_o      [binIter]   ),
+            .newValid_i        (newValid        [binIter]   ),
+            .newIdx_i          (newIdx          [binIter]   ),    
+            .newDelta_i        (newDelta        [binIter]   ),
+            .searchIdx_i       (searchIdx       [binIter]   ),
+            .searchValid_i     (searchValid     [binIter]   ),
+            .searchValue_o     (searchValue     [binIter]   ),
+            .searchValueValid_o(searchValueValid[binIter]   ),
+            .rowIdx_o          (rowIdx          [binIter]   ),
+            .rowDelta_o        (rowDelta        [binIter]   ),
+            .rowValid_o        (rowValid        [binIter]   ),
+            .rowReady_i        (rowReady        [binIter]   )
         );
     end
 endgenerate
@@ -102,19 +104,21 @@ endgenerate
 generate
     for (binIter = 0; binIter < C_BIN_NUM; binIter++) begin
         coalescing_unit coalescing_unit_inst (
-            .clk_i          (clk_i                  ),   //  Clock
-            .rst_i          (rst_i                  ),   //  Reset
-            .CUDelta_i      (CUDelta_i    [binIter] ),
-            .CUIdx_i        (CUIdx_i      [binIter] ),
-            .CUValid_i      (CUValid_i    [binIter] ),
-            .CUReady_o      (CUReady_o    [binIter] ),
-            .newValid_o     (newValid     [binIter] ),
-            .newIdx_o       (newIdx       [binIter] ),    
-            .newDelta_o     (newDelta     [binIter] ),
-            .searchIdx_o    (searchIdx    [binIter] ),
-            .searchValid_o  (searchValid  [binIter] ),
-            .searchValue_i  (searchValue  [binIter] ),
-            .CUClean_o      (CUClean_o    [binIter] )
+            .clk_i             (clk_i                     ),   //  Clock
+            .rst_i             (rst_i                     ),   //  Reset
+            .binSelected_i     (binSelected_i   [binIter] ),
+            .CUDelta_i         (CUDelta_i       [binIter] ),
+            .CUIdx_i           (CUIdx_i         [binIter] ),
+            .CUValid_i         (CUValid_i       [binIter] ),
+            .CUReady_o         (CUReady_o       [binIter] ),
+            .newValid_o        (newValid        [binIter] ),
+            .newIdx_o          (newIdx          [binIter] ),    
+            .newDelta_o        (newDelta        [binIter] ),
+            .searchIdx_o       (searchIdx       [binIter] ),
+            .searchValid_o     (searchValid     [binIter] ),
+            .searchValue_i     (searchValue     [binIter] ),
+            .searchValueValid_i(searchValueValid[binIter] ),
+            .CUClean_o         (CUClean_o       [binIter] )
         );
     end
 endgenerate

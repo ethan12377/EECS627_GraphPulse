@@ -21,23 +21,24 @@ module bin_func #(
     input   logic                                   rst_i           ,   //  Reset
 
     // Interface with queue_scheduler
-    input   logic                                   binSelected_i   ,
-    input   logic                                   readEn_i        ,
-    output  logic                                   binValid_o      ,
+    input   logic                                   binSelected_i     ,
+    input   logic                                   readEn_i          ,
+    output  logic                                   binValid_o        ,
 
     // Interface with coalescing_unit
-    input   logic                                   newValid_i      ,
-    input   logic  [C_VERTEX_IDX_WIDTH-1:0]         newIdx_i        ,    
-    input   logic  [C_DELTA_WIDTH-1:0]              newDelta_i      ,
+    input   logic                                   newValid_i        ,
+    input   logic  [C_VERTEX_IDX_WIDTH-1:0]         newIdx_i          ,    
+    input   logic  [C_DELTA_WIDTH-1:0]              newDelta_i        ,
 
-    input   logic  [C_VERTEX_IDX_WIDTH-1:0]         searchIdx_i     ,
-    input   logic                                   searchValid_i   ,
-    output  logic  [C_DELTA_WIDTH-1:0]              searchValue_o   ,
+    input   logic  [C_VERTEX_IDX_WIDTH-1:0]         searchIdx_i       ,
+    input   logic                                   searchValid_i     ,
+    output  logic  [C_DELTA_WIDTH-1:0]              searchValue_o     ,
+    output  logic                                   searchValueValid_o,
 
     // Interface with output_buffer
-    output  logic  [C_ROW_IDX_WIDTH-1:0]            rowIdx_o        ,
-    output  logic  [C_DELTA_WIDTH * C_COL_NUM-1:0]  rowDelta_o      ,
-    output  logic                                   rowValid_o      ,
+    output  logic  [C_ROW_IDX_WIDTH-1:0]            rowIdx_o          ,
+    output  logic  [C_DELTA_WIDTH * C_COL_NUM-1:0]  rowDelta_o        ,
+    output  logic                                   rowValid_o        ,
     input   logic                                   rowReady_i      
 );
 
@@ -117,9 +118,11 @@ module bin_func #(
     // search for cu
     always_ff @(posedge clk_i) begin 
         if (searchValid_i)begin
-            searchValue_o   <=  `SD eventArray[searchRowIdx][searchColIdx];
+            searchValue_o       <=  `SD eventArray[searchRowIdx][searchColIdx];
+            searchValueValid_o <=  `SD 'b1;
         end else begin
-            searchValue_o   <=  `SD 'b0;
+            searchValue_o       <=  `SD 'b0;
+            searchValueValid_o <=  `SD 'b0;
         end
     end
 

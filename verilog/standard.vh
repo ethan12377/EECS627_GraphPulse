@@ -28,6 +28,9 @@
 `define ROW_IDX_LSB             `BIN_IDX_LSB + `BIN_IDX_WIDTH
 `define ROW_IDX_WIDTH           $clog2(`ROW_NUM)
 
+// coalescing unit
+`define CU_FIFO_DEPTH           4
+
 // Xbar from Scheduler / Output Buffer to PEs
 `define XBAR_0_STAGES_NUM       2
 
