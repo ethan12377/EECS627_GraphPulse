@@ -17,7 +17,8 @@ module mc (
     ////////// OUTPUTS //////////
     output  logic [`XLEN-1:0]                           mc2mem_addr_o,
     output  logic [63:0]                                mc2mem_data_o,
-    output  logic [1:0]                                 mc2mem_command_o
+    output  BUS_COMMAND                                 mc2mem_command_o,
+    output  logic [`PE_NUM_OF_CORES-1:0]                mc2pe_grant_onehot_o
 );
 
 // ====================================================================
@@ -52,9 +53,9 @@ module mc (
 // Module name  :   rr_arbiter0
 // Description  :   round robin arbiter
 // --------------------------------------------------------------------
-    rr_arbiter rr_arbiter0 #(
-        parameter C_REQ_NUM = `PE_NUM_OF_CORES
-    ) (
+    rr_arbiter #(
+        .C_REQ_NUM          (`PE_NUM_OF_CORES)
+    ) mc_rr_arbiter (
         .clk_i(clk_i),
         .rst_i(rst_i),
         .en_i(1'b1),
@@ -62,8 +63,8 @@ module mc (
         .req_i(pe2mem_reqValid_i),
         .grant_o(), // do not need this signal
         .grant_onehot_o(rra_grant_onehot),
-        .valid(rra_valid),
-        .mask() // do not need this signal
+        .valid_o(rra_valid),
+        .mask_o() // do not need this signal
     );
 
 // --------------------------------------------------------------------
@@ -76,20 +77,23 @@ module mc (
 // RTL Logic Start
 // ====================================================================
 
+    assign mc2pe_grant_onehot_o = rra_grant_onehot;
+    // assign inputs to internal arrays
+    generate
+        for (genvar i = 0; i < `PE_NUM_OF_CORES; i = i + 1)
+        begin
+            assign pe2mem_reqAddr[i] = pe2mem_reqAddr_i[`XLEN*(i+1)-1 : `XLEN*i];
+            assign pe2mem_wrData[i] = pe2mem_wrData_i[64*(i+1)-1 : 64*i];
+        end
+    endgenerate
     // --------------------------------------------------------------------
     // Output logic
     // --------------------------------------------------------------------
     always_comb
     begin
-        // assign inputs to internal arrays
-        for (integer i = 0; i < `PE_NUM_OF_CORES; i = i + 1)
-        begin
-            pe2mem_reqAddr[i] = pe2mem_reqAddr_i[`XLEN*(i+1)-1 : `XLEN*i];
-            pe2mem_wrData[i] = pe2mem_wrData[64*(i+1)-1 : 64*i];
-        end
         // default to invalid outputs
         mc2mem_addr_o = 'x;
-        mc2mem_command_o = `BUS_NONE;
+        mc2mem_command_o = BUS_NONE;
         mc2mem_data_o = 'x;
         // check current grant
         if (rra_valid)
@@ -99,7 +103,7 @@ module mc (
                 if (rra_grant_onehot[i])
                 begin
                     mc2mem_addr_o = pe2mem_reqAddr[i];
-                    mc2mem_command_o = pe2mem_wrEn_i[i] ? `BUS_STORE : BUS_LOAD;
+                    mc2mem_command_o = pe2mem_wrEn_i[i] ? BUS_STORE : BUS_LOAD;
                     mc2mem_data_o = pe2mem_wrData[i];
                 end
             end

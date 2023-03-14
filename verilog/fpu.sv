@@ -21,11 +21,16 @@ module fpu #(parameter PIPELINE_DEPTH=3) (
 	logic [PIPELINE_DEPTH:0][17:0] pipeline_regs;
 	always_ff @(posedge clk)
 	begin
-		if (reset) pipeline_regs[PIPELINE_DEPTH:1] <= '0;
+		if (reset)
+        begin
+            pipeline_regs[PIPELINE_DEPTH:1] <= '0;
+        end
 		else
 		begin
 			for (integer i = 0; i < PIPELINE_DEPTH; i = i + 1)
-				pipeline_regs[i+1] <= pipeline_regs[i];
+            begin
+                pipeline_regs[i+1] <= pipeline_regs[i];
+            end
 		end
 	end
 
@@ -35,10 +40,14 @@ module fpu #(parameter PIPELINE_DEPTH=3) (
 	assign pipeline_regs[0][15:0] = result_internal;
 	assign pipeline_regs[0][17:16] = status_i;
 	assign result = pipeline_regs[PIPELINE_DEPTH][15:0];
-	assign status_o = pipeline_regs[PIPELINE_DEPTH][17:16];
+	assign status_o = pipeline_regs[PIPELINE_DEPTH][17:16]; // 0: invalid; 
+                                                            // 1: ruw; 
+                                                            // 2: prodelta / init value (INIT);
+                                                            // 3: d * delta / init value denom (INIT);
+
 	always_comb
 	begin
-		empty_o = 1
+		empty_o = 1;
 		for (integer i = 1; i < PIPELINE_DEPTH; i = i + 1)
 			if (pipeline_regs[i][17:16] != 2'b00)
 				empty_o = 0;

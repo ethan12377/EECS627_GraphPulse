@@ -7,7 +7,7 @@
 /////////////////////////////////////////////////////////////////////////
 
 // TODO: length of tag is still a bit unclear, edge mem address map
-// TODO: change logic width to parameters in standard.vh
+// TODO: fix holding behavior after acknowledgement from mem
 
 module pe #(
     parameter           C_PEID             = `PE_NUM_OF_CORES  // default to an invalid value, change this parameter for every PE
@@ -24,12 +24,16 @@ module pe #(
     input   logic                                   PEValid_i,
     // from crossbar2
     input   logic [1:0]                             ProReady_i,
-    // from mem and mem controllers
-    input   logic                                   vertexmem_ready_i,
-    input   logic                                   edgemem_ready_i,
+    // from mem controller
+    input   logic                                   vertexmem_ack_i,
+    input   logic                                   edgemem_ack_i,
+    // from mem
+    input   logic [3:0]                             vertexmem_resp_i,
+    input   logic [3:0]                             vertexmem_tag_i,
     input   logic [63:0]                            vertexmem_data_i,
+    input   logic [3:0]                             edgemem_resp_i,
+    input   logic [3:0]                             edgemem_tag_i,
     input   logic [63:0]                            edgemem_data_i,
-
     ///////////// OUTPUTS /////////////////
     // idle status
     output  logic                                   idle_o,
@@ -101,9 +105,15 @@ module pe #(
     logic [15:0] adj_list_start_n, adj_list_end_n;
     logic adj_list_start_ready_n, adj_list_end_ready_n;
 
-    // mem req status
-    logic [1:0] vc_req_status, ec_req_status;
-    logic [1:0] vc_req_status_n, ec_req_status_n;
+    // mem
+    enum {VM_IDLE, VM_READ, VM_WRITE}           vm_req_status, vm_req_status_n;
+    enum {EM_IDLE, EM_START, EM_END, EM_WORD}   em_req_status, em_req_status_n;
+    logic [3:0] curr_vm_tag, curr_em_tag;
+    logic [3:0] curr_vm_tag_n, curr_em_tag_n;
+    logic vm_capture_resp, em_capture_resp;
+    logic vm_acked, em_acked;
+    logic vm_capture_resp_n, em_capture_resp_n;
+    logic vm_acked_n, em_acked_n;
 
     // propagate evgen
     logic [15:0] curr_evgen_idx;
@@ -141,7 +151,9 @@ module pe #(
     // Module name  :   fpu
     // Description  :   fpu
     // ----------------------------------------------------------------
-    fpu fpu0 #(`PE_FPU_PIPE_DEPTH) (
+    fpu #(
+        .PIPELINE_DEPTH(`PE_FPU_PIPE_DEPTH)
+    ) pe_fpu (
         .clk(clk_i),
         .reset(rst_i || fpu_clear),
         .opA(fpu_opA),
@@ -150,7 +162,7 @@ module pe #(
         .status_i(fpu_status_i),
         .result(fpu_result),
         .status_o(fpu_status_o),
-        .empty(fpu_empty)
+        .empty_o(fpu_empty)
     );
 
     // ----------------------------------------------------------------
@@ -167,6 +179,14 @@ module pe #(
     assign idle_o = (curr_state == S_IDLE);
     assign ready = (curr_state == S_IDLE);
     assign fpu_clear = (curr_state == S_IDLE);
+    // mem
+    // always capture response one cycle after acknowledgement
+    assign vm_capture_resp_n            = vertexmem_ack_i;
+    assign em_capture_resp_n            = edgemem_ack_i;
+    assign vm_acked_n                   = (vm_req_status_n == VM_IDLE) ? 1'b0 : vertexmem_ack_i ? 1'b1 : vm_acked;
+    assign em_acked_n                   = (em_req_status_n == EM_IDLE) ? 1'b0 : edgemem_ack_i ? 1'b1 : em_acked;
+    assign curr_vm_tag_n                = (vm_req_status_n == VM_IDLE) ? 'x : vm_capture_resp ? vertexmem_resp_i : curr_vm_tag;
+    assign curr_em_tag_n                = (em_req_status_n == EM_IDLE) ? 'x : em_capture_resp ? edgemem_resp_i : curr_em_tag;
 
     // ----------------------------------------------------------------
     // Status Registers
@@ -197,8 +217,14 @@ module pe #(
             adj_list_start_ready            <= 1'b0;
             adj_list_end_ready              <= 1'b0;
             // mem req status registers
-            ec_req_status                   <= '0;
-            vc_req_status                   <= '0;
+            em_req_status                   <= EM_IDLE;
+            vm_req_status                   <= VM_IDLE;
+            curr_vm_tag                     <= 'x;
+            curr_em_tag                     <= 'x;
+            vm_capture_resp                 <= 1'b0;
+            em_capture_resp                 <= 1'b0;
+            vm_acked                        <= 1'b0;
+            em_acked                        <= 1'b0;
             // evgen registers
             curr_evgen_idx                  <= 'x;
             curr_col_idx_word_tag           <= 'x;
@@ -230,8 +256,14 @@ module pe #(
             adj_list_start_ready            <= adj_list_start_ready_n;
             adj_list_end_ready              <= adj_list_end_ready_n;
             // mem req status registers
-            ec_req_status                   <= ec_req_status_n;
-            vc_req_status                   <= vc_req_status_n;
+            em_req_status                   <= em_req_status_n;
+            vm_req_status                   <= vm_req_status_n;
+            curr_vm_tag                     <= curr_vm_tag_n;
+            curr_em_tag                     <= curr_em_tag_n;
+            vm_capture_resp                 <= vm_capture_resp_n;
+            em_capture_resp                 <= em_capture_resp_n;
+            vm_acked                        <= vm_acked_n;
+            em_acked                        <= em_acked_n;
             // evgen registers
             curr_evgen_idx                  <= curr_evgen_idx_n;
             curr_col_idx_word_tag           <= curr_col_idx_word_tag_n;
@@ -322,8 +354,8 @@ module pe #(
         adj_list_start_ready_n              = adj_list_start_ready;
         adj_list_end_ready_n                = adj_list_end_ready;
         // mem req status registers
-        ec_req_status_n                     = ec_req_status;
-        vc_req_status_n                     = vc_req_status;
+        vm_req_status_n                     = vm_req_status;
+        em_req_status_n                     = em_req_status;
         // evgen registers
         curr_evgen_idx_n                    = curr_evgen_idx;
         curr_col_idx_word_tag_n             = curr_col_idx_word_tag;
@@ -358,6 +390,9 @@ module pe #(
         fpu_opA                             = '0;
         fpu_opB                             = '0;
         fpu_status_i                        = '0;
+
+        // capture tags from mem when needed (if acknowledged, capture resp at next posedge)
+        
         
         // FSM output behavior definition
         case(curr_state)
@@ -418,14 +453,14 @@ module pe #(
                     pe_vertex_reqAddr_n = curr_idx_n << 3;
                     pe_wrEn_n = 1'b0;
                     pe_vertex_reqValid_n = 1'b1;
-                    vc_req_status_n = 2'd1;
+                    vm_req_status_n = VM_READ;
                     // check if delta over threshold
                     if (curr_delta_n > C_THRESHOLD)
                     begin
                         // request start index from edgemem
-                        pe_edge_reqAddr_n = {1'b1, 7'b0, curr_idx_n[7:2]};
+                        pe_edge_reqAddr_n = {2'b00, 1'b1, 7'b0, curr_idx_n[7:2]};
                         pe_edge_reqValid_n = 1'b1;
-                        ec_req_status_n = 2'd1;
+                        em_req_status_n = EM_START;
                         // calculate d * delta to prepare for propagate calculation
                         fpu_opA = C_DAMPING_FACTOR;
                         fpu_opB = curr_delta_n;
@@ -439,23 +474,23 @@ module pe #(
             S_RUW: begin
 
                 // check vertexmem request
-                if (vertexmem_ready_i)
+                if (vertexmem_tag_i == curr_vm_tag)
                 begin
-                    if (vc_req_status == 2'd1) // read fulfilled
+                    if (vm_req_status_n == VM_READ) // read fulfilled
                     begin
-                        vc_req_status_n = 2'd0;
+                        vm_req_status_n = VM_IDLE;
                         // send data into fpu
                         fpu_opA = vertexmem_data_i[15:0];
                         fpu_opB = curr_delta;
                         fpu_status_i = 2'd1;
                     end
-                    else if (vc_req_status == 2'd2) // write fulfilled
+                    else if (vm_req_status_n == VM_WRITE) // write fulfilled
                     begin
-                        vc_req_status_n = 2'd0;
+                        vm_req_status_n = VM_IDLE;
                         ruw_complete_n = 1'b1;
                     end
                 end
-                else if (vc_req_status != 2'd0) // hold current vertexmem request
+                else if (vm_req_status_n != VM_IDLE && ~vm_acked_n) // hold current vertexmem request while not acknowledged by mem
                 begin
                     pe_vertex_reqAddr_n = pe_vertex_reqAddr_o;
                     pe_vertex_reqValid_n = pe_vertex_reqValid_o;
@@ -464,9 +499,9 @@ module pe #(
                 end
 
                 // check edge mem request
-                if (edgemem_ready_i)
+                if (edgemem_tag_i == curr_em_tag)
                 begin
-                    if (ec_req_status == 2'd1) // read start fulfilled
+                    if (em_req_status_n == EM_START) // read start fulfilled
                     begin
                         // store start
                         adj_list_start_n = (curr_idx[1:0] == 2'd0) ? edgemem_data_i[15:0] : 
@@ -486,19 +521,19 @@ module pe #(
                                 // grab a column index word from edgemem
                                 pe_edge_reqAddr_n = adj_list_start_n;
                                 pe_edge_reqValid_n = 1'b1;
-                                ec_req_status_n = 2'd3;
+                                em_req_status_n = EM_WORD;
                                 curr_col_idx_word_tag_n = adj_list_start_n[15:3];
                             end
-                            else ec_req_status_n = 2'd0;
+                            else em_req_status_n = EM_IDLE;
                         end
                         else // start and end are not in the same word, send edgemem request for end
                         begin
-                            pe_edge_reqAddr_n = {8'b10000000, (curr_idx[7:2] + 1)} // curr_idx[7:2] + 8192 + 1
+                            pe_edge_reqAddr_n = {10'b0010000000, (curr_idx[7:2] + 1)}; // curr_idx[7:2] + 8192 + 1
                             pe_edge_reqValid_n = 1'b1;
-                            self.ec_req_status = 2'd2;
+                            em_req_status_n = EM_END;
                         end
                     end
-                    else if (ec_req_status == 2'd2) // read end fulfilled
+                    else if (em_req_status_n == EM_END) // read end fulfilled
                     begin
                         adj_list_end_n = edgemem_data_i[15:0];
                         adj_list_end_ready_n = 1'b1;
@@ -507,19 +542,19 @@ module pe #(
                             // grab a column index word from edgemem
                             pe_edge_reqAddr_n = adj_list_start_n;
                             pe_edge_reqValid_n = 1'b1;
-                            ec_req_status_n = 2'd3;
+                            em_req_status_n = EM_WORD;
                             curr_col_idx_word_tag_n = adj_list_start_n[15:3];
                         end
-                        else ec_req_status_n = 2'd0;
+                        else em_req_status_n = EM_IDLE;
                     end
-                    else if (ec_req_status == 2'd3) // read col index word fulfilled
+                    else if (em_req_status_n == EM_WORD) // read col index word fulfilled
                     begin
                         curr_col_idx_word_n = edgemem_data_i;
                         curr_col_idx_word_valid_n = 1'b1;
-                        ec_req_status_n = 2'd0;
+                        em_req_status_n = EM_IDLE;
                     end
                 end
-                else if (ec_req_status != 2'd0) // active read waiting on edgemem
+                else if (em_req_status_n != EM_IDLE && ~em_acked_n) // active read waiting on edgemem
                 begin
                     pe_edge_reqAddr_n = pe_edge_reqAddr_o;
                     pe_edge_reqValid_n = pe_edge_reqValid_o;
@@ -533,7 +568,7 @@ module pe #(
                     pe_vertex_reqValid_n = 1'b1;
                     pe_wrEn_n = 1'b1;
                     pe_wrData_n = fpu_result;
-                    vc_req_status_n = 2'd2;
+                    vm_req_status_n = VM_WRITE;
                 end
                 else if (fpu_status_o == 2'd2) // prodelta obtained
                 begin
@@ -555,7 +590,7 @@ module pe #(
                         adj_list_end_n = num_of_vertices_int8;
                         curr_prodelta_denom_n = num_of_vertices_int8;
                     end
-                    else curr_prodelta_denom_n = adj_list_end_n = adj_list_start_n;
+                    else curr_prodelta_denom_n = adj_list_end_n - adj_list_start_n;
                     curr_prodelta_denom_ready_n = 1'b1;
                 end
 
@@ -587,12 +622,12 @@ module pe #(
                 // hold write request to vertexmem when ruw is not completed
                 if (~ruw_complete)
                 begin
-                    if (vertexmem_ready_i) // write request completed by vertexmem
+                    if (vertexmem_tag_i == curr_vm_tag) // write request completed by vertexmem
                     begin
-                        vc_req_status_n = 0;
+                        vm_req_status_n = VM_IDLE;
                         ruw_complete_n = 1;
                     end
-                    else if (vc_req_status == 2'd2) //  waiting for vertex cache write, hold request
+                    else if (vm_req_status_n == VM_WRITE && ~vm_acked_n) //  waiting for vertex cache write, hold request
                     begin
                         pe_vertex_reqAddr_n = pe_vertex_reqAddr_o;
                         pe_vertex_reqValid_n = pe_vertex_reqValid_o;
@@ -605,22 +640,22 @@ module pe #(
                         pe_wrEn_n = 1'b1;
                         pe_vertex_reqValid_n = 1'b1;
                         pe_wrData_n = fpu_result;
-                        vc_req_status_n = 2'd2;
+                        vm_req_status_n = VM_WRITE;
                     end
                 end
 
                 // check edgemem request
-                if (edgemem_ready_i)
+                if (edgemem_tag_i == curr_em_tag)
                 begin
-                    if (ec_req_status == 2'd3) // col index word read fulfilled
+                    if (em_req_status_n == EM_WORD) // col index word read fulfilled
                     begin
                         curr_col_idx_word_n = edgemem_data_i;
                         curr_col_idx_word_valid_n = 1'b1;
                         // clear existing request
-                        ec_req_status_n = 2'd0;
+                        em_req_status_n = EM_IDLE;
                         pe_edge_reqValid_n = 1'b0;
                     end
-                    else if (ec_req_status != 2'd0) 
+                    else if (em_req_status_n != EM_IDLE && ~em_acked_n) 
                     begin
                         pe_edge_reqAddr_n = pe_edge_reqAddr_o;
                         pe_edge_reqValid_n = pe_edge_reqValid_o;
@@ -659,7 +694,7 @@ module pe #(
                             // request a new word from edgemem
                             pe_edge_reqAddr_n = curr_evgen_idx_n;
                             curr_col_idx_word_tag_n = curr_evgen_idx_n[15:3];
-                            ec_req_status_n = 2'd3;
+                            em_req_status_n = EM_WORD;
                         end
                     end
                     else // not ready to receive new event. Hold current event.
@@ -712,7 +747,7 @@ module pe #(
                             // request a new word from edgemem
                             pe_edge_reqAddr_n = curr_evgen_idx_n;
                             curr_col_idx_word_tag_n = curr_evgen_idx_n[15:3];
-                            ec_req_status_n = 2'd3;
+                            em_req_status_n = EM_WORD;
                         end
                     end
                     else // not ready to receive new event. Hold current event.
