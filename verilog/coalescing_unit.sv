@@ -32,12 +32,12 @@ module coalescing_unit #(
     output logic   [C_VERTEX_IDX_WIDTH-1:0] newIdx_o       ,    
     output logic   [C_DELTA_WIDTH-1:0]      newDelta_o     ,
 
-    output logic   [C_DELTA_WIDTH-1:0]      searchIdx_o    ,
+    output logic   [C_VERTEX_IDX_WIDTH-1:0] searchIdx_o    ,
     output logic                            searchValid_o  ,
     input  logic   [C_DELTA_WIDTH-1:0]      searchValue_i  ,
-    input  logic   [C_DELTA_WIDTH-1:0]      searchValue_Valid_i  ,
+    input  logic                            searchValueValid_i  ,
 
-    input  logic                            CUClean_o      
+    output  logic                            CUClean_o      
 
 );
 
@@ -100,10 +100,10 @@ CU_fifo CU_fifo_inst (
 // Description  :   adder
 // --------------------------------------------------------------------
 fp_add fp_add_inst(
-    .opa (searchValue_i),
-    .opb (Delta_o_reg1),
+    .opA (searchValue_i),
+    .opB (Delta_o_reg1),
     .sum (sum)
-)
+);
 // --------------------------------------------------------------------
 
 // ====================================================================
@@ -118,61 +118,84 @@ fp_add fp_add_inst(
 // output to Queue
 // --------------------------------------------------------------------
 
-always_ff @(posedge clk_i) begin
-    if (rst_i) begin
-        newValid_o   <=  ` SD 'b0;
-        newIdx_o     <=  ` SD 'b0;
-        newDelta_o   <=  ` SD 'b0;
+    always_ff @(posedge clk_i) begin
+        if (rst_i) begin
+            newValid_o   <=  ` SD 'b0;
+            newIdx_o     <=  ` SD 'b0;
+            newDelta_o   <=  ` SD 'b0;
+        end
+        else if (~initialFinish_i) begin
+            newValid_o   <=  ` SD CUValid_i;
+            newIdx_o     <=  ` SD CUIdx_i  ;
+            newDelta_o   <=  ` SD CUDelta_i;
+        end
+        else begin
+            newValid_o   <=  ` SD Valid_o_reg2;
+            newIdx_o     <=  ` SD Idx_o_reg2  ;
+            newDelta_o   <=  ` SD Delta_o_reg2;
+        end
     end
-    else if (~initialFinish_i) begin
-        newValid_o   <=  ` SD CUValid_i;
-        newIdx_o     <=  ` SD CUIdx_i  ;
-        newDelta_o   <=  ` SD CUDelta_i;
-    end
-    else begin
-        newValid_o   <=  ` SD Valid_o_reg2;
-        newIdx_o     <=  ` SD Idx_o_reg2  ;
-        newDelta_o   <=  ` SD Delta_o_reg2;
-    end
-end
-
+    
 // --------------------------------------------------------------------
-// register 0
+// register 0 & search
 // --------------------------------------------------------------------
 
-always_comb begin
-    Valid_o_reg0   =  fifo_valid_o                 ;
-    Idx_o_reg0     =  fifo_o[C_WIDTH:C_DELTA_WIDTH];
-    Delta_o_reg0   =  fifo_o[C_DELTA_WIDTH-1:0]    ;
-end
+    always_comb begin
+        Valid_o_reg0   =  fifo_valid_o                   ;
+        Idx_o_reg0     =  fifo_o[C_WIDTH-1:C_DELTA_WIDTH];
+        Delta_o_reg0   =  fifo_o[C_DELTA_WIDTH-1:0]      ;
+    end
+
+    always_comb begin
+        if (fifo_valid_o) begin
+            searchIdx_o    =  fifo_o[C_WIDTH-1:C_DELTA_WIDTH];
+            searchValid_o  =  fifo_valid_o;
+        end
+        else begin
+            searchIdx_o    =  'd0  ;  
+            searchValid_o  =  'd0  ; 
+        end
+    end 
 
 
 // --------------------------------------------------------------------
 // register 1
 // --------------------------------------------------------------------
-always_ff @(posedge clk_i) begin
-        Valid_o_reg1   <=  ` SD Valid_o_reg0;
-        Idx_o_reg1     <=  ` SD Idx_o_reg0  ;
-        Delta_o_reg1   <=  ` SD Delta_o_reg0;
+    always_ff @(posedge clk_i) begin
+            Valid_o_reg1   <=  ` SD Valid_o_reg0;
+            Idx_o_reg1     <=  ` SD Idx_o_reg0  ;
+            Delta_o_reg1   <=  ` SD Delta_o_reg0;
     end
-end
+    
 
 // --------------------------------------------------------------------
 // register 2
 // --------------------------------------------------------------------
-always_ff @(posedge clk_i) begin
-    if (searchValue_Valid_i) begin
-        Valid_o_reg2   <=  ` SD Valid_o_reg1;
-        Idx_o_reg2     <=  ` SD Idx_o_reg1  ;
-        Delta_o_reg2   <=  ` SD sum         ;
+    always_ff @(posedge clk_i) begin
+        if (searchValueValid_i) begin
+            Valid_o_reg2   <=  ` SD Valid_o_reg1;
+            Idx_o_reg2     <=  ` SD Idx_o_reg1  ;
+            Delta_o_reg2   <=  ` SD sum         ;
+        end
+        else begin
+            Valid_o_reg2   <=  ` SD 'b0;
+            Idx_o_reg2     <=  ` SD 'd0;
+            Delta_o_reg2   <=  ` SD 'd0;
+        end
     end
-    else begin
-        Valid_o_reg2   <=  ` SD 'b0;
-        Idx_o_reg2     <=  ` SD 'b0;
-        Delta_o_reg2   <=  ` SD 'b0;
+
+// --------------------------------------------------------------------
+// CUClean_o
+// --------------------------------------------------------------------
+    always_ff @(posedge clk_i) begin
+        if (rst_i)
+            CUClean_o <= `SD 'b0;
+
+        else if (~Valid_o_reg2 & ~Valid_o_reg1 & ~Valid_o_reg0 & ~newValid_o & initialFinish_i)
+                CUClean_o <= `SD 'b1;
+            else
+                CUClean_o <= `SD 'b0;
     end
-    end
-end
 
 // ====================================================================
 // RTL Logic End

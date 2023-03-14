@@ -34,6 +34,10 @@ module bin_func #(
     input   logic                                   searchValid_i     ,
     output  logic  [C_DELTA_WIDTH-1:0]              searchValue_o     ,
     output  logic                                   searchValueValid_o,
+    //for test
+    output  logic   [C_ROW_NUM-1:0]                 rowNotEmpty     ,
+    output  logic   [C_COL_NUM-1:0][C_DELTA_WIDTH-1:0]   allrow0  ,
+
 
     // Interface with output_buffer
     output  logic  [C_ROW_IDX_WIDTH-1:0]            rowIdx_o          ,
@@ -49,12 +53,16 @@ module bin_func #(
     logic   [C_ROW_IDX_WIDTH-1:0]           newRowIdx                       ;
     logic   [C_COL_IDX_WIDTH-1:0]           newColIdx                       ;
 
+    logic   [C_ROW_IDX_WIDTH-1:0]           readRowIdx                      ;
+    logic                                   readRowValid                    ;
+
     // extract Idx
     logic   [C_ROW_IDX_WIDTH-1:0]           searchRowIdx                    ;
     logic   [C_COL_IDX_WIDTH-1:0]           searchColIdx                    ;
 
-    logic   [C_ROW_NUM-1:0]                 rowNotEmpty                     ;
+    // logic   [C_ROW_NUM-1:0]                 rowNotEmpty                     ;
     logic   [C_ROW_NUM-1:0][C_COL_NUM-1:0][C_DELTA_WIDTH-1:0]   eventArray  ;
+    assign allrow0 = eventArray[0];
 
     genvar rowIter, colIter;
 
@@ -95,34 +103,39 @@ module bin_func #(
     always_ff @(posedge clk_i) begin 
         if (rst_i) begin
             rowValid_o  <=  `SD 'b0;
+            rowIdx_o    <=  `SD 'd0;
+            rowDelta_o  <=  `SD 'd0;
         end else begin
-            if (binSelected_i && readEn_i && readRowValid) begin
-                rowValid_o  <=  `SD 'b1;
-            end else if (rowValid_o && rowReady_i) begin
-                rowValid_o  <=  `SD 'b0;
+            if (binSelected_i && readEn_i && readRowValid && rowReady_i) begin
+                rowValid_o  <=  `SD 'b1                     ;
+                rowIdx_o    <=  `SD readRowIdx              ;
+                rowDelta_o  <=  `SD eventArray[readRowIdx]  ;
+            end else begin
+                rowValid_o  <=  `SD 'b0       ;
+                rowIdx_o    <=  `SD 'd0  ;
+                rowDelta_o  <=  `SD 'd0;
             end
         end
 
-        rowIdx_o    <=  `SD readRowIdx              ;
-        rowDelta_o  <=  `SD eventArray[readRowIdx]  ;
+        
     end
 
 // --------------------------------------------------------------------
 // Event-wise read operation (to CU)
 // --------------------------------------------------------------------
     always_comb begin
-        searchRowIdx    =   newIdx[C_ROW_IDX_LSB +: C_ROW_IDX_WIDTH];
-        searchColIdx    =   newIdx[C_COL_IDX_LSB +: C_COL_IDX_WIDTH];
+        searchRowIdx    =   searchIdx_i[C_ROW_IDX_LSB +: C_ROW_IDX_WIDTH];
+        searchColIdx    =   searchIdx_i[C_COL_IDX_LSB +: C_COL_IDX_WIDTH];
     end
 
     // search for cu
     always_ff @(posedge clk_i) begin 
         if (searchValid_i)begin
             searchValue_o       <=  `SD eventArray[searchRowIdx][searchColIdx];
-            searchValueValid_o <=  `SD 'b1;
+            searchValueValid_o  <=  `SD 'b1;
         end else begin
-            searchValue_o       <=  `SD 'b0;
-            searchValueValid_o <=  `SD 'b0;
+            searchValue_o       <=  `SD 'd0;
+            searchValueValid_o  <=  `SD 'b0;
         end
     end
 
@@ -130,8 +143,8 @@ module bin_func #(
 // Event-wise write operation
 // --------------------------------------------------------------------
     always_comb begin
-        newRowIdx   =   newIdx[C_ROW_IDX_LSB +: C_ROW_IDX_WIDTH];
-        newColIdx   =   newIdx[C_COL_IDX_LSB +: C_COL_IDX_WIDTH];
+        newRowIdx   =   newIdx_i[C_ROW_IDX_LSB +: C_ROW_IDX_WIDTH];
+        newColIdx   =   newIdx_i[C_COL_IDX_LSB +: C_COL_IDX_WIDTH];
     end
 
     generate
@@ -143,12 +156,15 @@ module bin_func #(
                         eventArray[rowIter][colIter]    <=  `SD 'd0;
                     end else begin
                         // Read to output_buffer -> clear every entry of the row
-                        if ((readRowIdx == rowIter) && rowValid_o && rowReady_i) begin
+                        if ((readRowIdx == rowIter) && binSelected_i && readEn_i && readRowValid && rowReady_i) begin
                             eventArray[rowIter][colIter]    <=  `SD 'd0;
                         // New event (from CU) is mapped to this element -> store the event value
                         end else if (newValid_i && (newRowIdx == rowIter)
-                        && (newColIdx == colIter)) begin
+                        && (newColIdx == colIter) ) begin
                             eventArray[rowIter][colIter]    <=  `SD newDelta_i;
+                        end
+                        else begin
+                            eventArray[rowIter][colIter]    <=  eventArray[rowIter][colIter];
                         end
                     end
                 end
@@ -169,7 +185,7 @@ module bin_func #(
                     rowNotEmpty[rowIter]  <=  `SD 'b0;
                 end else begin
                     // Read to output_buffer -> empty
-                    if ((readRowIdx == rowIter) && rowValid_o && rowReady_i) begin
+                    if ((readRowIdx == rowIter) && binSelected_i && readEn_i && readRowValid && rowReady_i) begin
                         rowNotEmpty[rowIter]  <=  `SD 'b0;
                     // Any event written in the row -> not empty
                     end else if (newValid_i 
@@ -185,17 +201,19 @@ module bin_func #(
 // --------------------------------------------------------------------
 // Bin valid (not empty)
 // --------------------------------------------------------------------
-    always_ff @(posedge clk_i) begin
-        if (rst_i) begin
-            binValid_o  <=  'b0;
-        end else begin
-            if (rowNotEmpty == 'b0) begin
-                binValid_o  <=  'b0;
-            end else begin
-                binValid_o  <=  'b1;
-            end
-        end
-    end
+    // always_ff @(posedge clk_i) begin
+    //     if (rst_i) begin
+    //         binValid_o  <=  'b0;
+    //     end else begin
+    //         if (rowNotEmpty == 'd0) begin
+    //             binValid_o  <=  'b0;
+    //         end else begin
+    //             binValid_o  <=  'b1;
+    //         end
+    //     end
+    // end
+
+    assign binValid_o = (rowNotEmpty == 'd0) ? 'b0: 'b1;
 
 // ====================================================================
 // RTL Logic End

@@ -7,10 +7,18 @@
 /////////////////////////////////////////////////////////////////////////
 
 module event_queues #(
-    parameter   C_BIN_NUM   =   `BIN_NUM
+    parameter   C_BIN_NUM           =   `BIN_NUM     ,
+    parameter   C_ROW_NUM           =   `ROW_NUM            ,
+    parameter   C_COL_NUM           =   `COL_NUM            ,
+    parameter   C_VERTEX_IDX_WIDTH  =   `VERTEX_IDX_WIDTH   ,
+    parameter   C_BIN_IDX_WIDTH     =   `BIN_IDX_WIDTH      ,
+    parameter   C_ROW_IDX_WIDTH     =   `ROW_IDX_WIDTH      ,
+    parameter   C_COL_IDX_WIDTH     =   `COL_IDX_WIDTH      ,
+    parameter   C_DELTA_WIDTH       =   `DELTA_WIDTH        
 ) (
     input   logic                                           clk_i           ,   //  Clock
     input   logic                                           rst_i           ,   //  Reset
+    input   logic                                           initialFinish_i ,
 
     // Interface with corssbar
     input   logic   [C_BIN_NUM-1:0][C_DELTA_WIDTH-1:0]      CUDelta_i       ,
@@ -59,6 +67,11 @@ logic  [C_ROW_IDX_WIDTH-1:0]            rowIdx           [C_BIN_NUM-1:0] ;
 logic  [C_DELTA_WIDTH * C_COL_NUM-1:0]  rowDelta         [C_BIN_NUM-1:0] ;
 logic                                   rowValid         [C_BIN_NUM-1:0] ;
 logic                                   rowReady         [C_BIN_NUM-1:0] ;
+// test
+logic   [C_ROW_NUM-1:0]                 rowNotEmpty      [C_BIN_NUM-1:0] ;
+logic   [C_COL_NUM-1:0][C_DELTA_WIDTH-1:0]   allrow0     [C_BIN_NUM-1:0] ;
+// test end
+
 
 genvar binIter;
 
@@ -88,6 +101,10 @@ generate
             .searchValid_i     (searchValid     [binIter]   ),
             .searchValue_o     (searchValue     [binIter]   ),
             .searchValueValid_o(searchValueValid[binIter]   ),
+            // test
+            .rowNotEmpty       (rowNotEmpty     [binIter]   ),
+            .allrow0           (allrow0         [binIter]   ),
+            // test end
             .rowIdx_o          (rowIdx          [binIter]   ),
             .rowDelta_o        (rowDelta        [binIter]   ),
             .rowValid_o        (rowValid        [binIter]   ),
@@ -106,6 +123,7 @@ generate
         coalescing_unit coalescing_unit_inst (
             .clk_i             (clk_i                     ),   //  Clock
             .rst_i             (rst_i                     ),   //  Reset
+            .initialFinish_i   (initialFinish_i           ),
             .binSelected_i     (binSelected_i   [binIter] ),
             .CUDelta_i         (CUDelta_i       [binIter] ),
             .CUIdx_i           (CUIdx_i         [binIter] ),
@@ -152,7 +170,7 @@ endgenerate
         rowDelta_o  =   'd0;
         rowValid_o  =   'b0;
         for (int i = 0; i < C_BIN_NUM; i++) begin
-            if (bin_selected[i]) begin
+            if (binSelected_i[i] & rowValid[i]) begin
                 binIdx_o    =   i;
                 rowIdx_o    =   rowIdx[i];
                 rowDelta_o  =   rowDelta[i];
@@ -165,7 +183,7 @@ endgenerate
         for (binIter = 0; binIter < C_BIN_NUM; binIter++) begin
             always_comb begin
                 rowReady[binIter]   =   'b0;
-                if (bin_selected[binIter]) begin
+                if (binSelected_i[binIter]) begin
                     rowReady[binIter]   =   rowReady_i;
                 end
             end

@@ -13,7 +13,7 @@ module queue_scheduler #(
     input   logic                         clk_i             ,   //  Clock
     input   logic                         rst_i             ,   //  Reset
     input   logic                         initialFinish_i   ,   
-    input   logic  [C_BIN_NUM-1:0]        cuclean_i         ,
+    input   logic  [C_BIN_NUM-1:0]        CUClean_i         ,
     input   logic  [C_BIN_NUM-1:0]        binValid_i        ,
     output  logic  [C_BIN_NUM-1:0]        binSelected_o     ,   
     output  logic                         readEn_o          
@@ -88,7 +88,7 @@ module queue_scheduler #(
 // --------------------------------------------------------------------
     always_ff @(posedge clk_i) begin
         if (rst_i) begin
-            qs_state    <=  `SD 'I';
+            qs_state    <=  `SD I;
         end else begin
             qs_state    <=  `SD next_qs_state;
         end
@@ -101,34 +101,34 @@ module queue_scheduler #(
         case(qs_state)
             
             // Initial state
-            'I': next_qs_state = initialFinish_i ? 'C' : 'I';
+            I: next_qs_state = initialFinish_i ? C : I;
             
             // read and write from CU
-            'C': begin
-                if (binValid_i != 8'b0) begin
-                    next_qs_state    = 'B';
+            C: begin
+                if (binValid_i != 8'd0) begin
+                    next_qs_state    = B;
                 end 
             end
             
             // Bin selection state
-            'B': next_qs_state = 'W';
+            B: next_qs_state = W;
             
             // Wait state
-            'W': begin
-                if (cuclean_i[reading_bin]) begin
-                    next_qs_state = 'R';
+            W: begin
+                if (CUClean_i[reading_bin]) begin
+                    next_qs_state = R;
                 end
             end
             
             // Read state
-            'R': begin
+            R: begin
                 if (binValid_i[reading_bin] == 1'b0) begin
-                    next_qs_state = 'C';
+                    next_qs_state = C;
                 end
             end
             
             // Default state
-            default: next_qs_state = 'I';
+            default: next_qs_state = I;
         endcase
     end
 
@@ -139,10 +139,13 @@ module queue_scheduler #(
         if (rst_i) begin
             readEn_o      <=  `SD 'b0;
         end else begin
-            if (qs_state == 'W' && cuclean_i[reading_bin]) begin
+            if (qs_state == W && CUClean_i[reading_bin]) begin
                 readEn_o  <=  `SD 'b1;
-            end else if (qs_state == 'R' && binValid_i[reading_bin]) begin
+            end else if (qs_state == R && ~binValid_i[reading_bin]) begin
                 readEn_o  <=  `SD 'b0;
+            end
+            else begin
+                readEn_o  <=  `SD readEn_o;
             end
         end
     end
@@ -156,10 +159,10 @@ module queue_scheduler #(
         if (rst_i) begin
             reading_bin     <=  `SD 'd0;
             binSelected_o   <=  `SD 'b0;
-        end else if (qs_state == 'C' && grant_valid) begin
+        end else if (qs_state == C && grant_valid) begin
             reading_bin     <=  `SD grant;
             binSelected_o   <=  `SD grant_onehot;
-        end else if (qs_state == 'R' && binValid_i[reading_bin] == 1'b0) begin
+        end else if (qs_state == R && binValid_i[reading_bin] == 1'b0) begin
             reading_bin     <=  `SD 'd0;
             binSelected_o   <=  `SD 'b0;
         end
@@ -169,7 +172,7 @@ module queue_scheduler #(
 // Acknowledge the grant and shift priority
 // --------------------------------------------------------------------
     always_ff @(posedge clk_i) begin
-        if (qs_state == 'B') begin
+        if (qs_state == B) begin
             grant_ack   <=  'b1;
         end else begin
             grant_ack   <=  'b0;

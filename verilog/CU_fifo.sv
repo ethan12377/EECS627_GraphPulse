@@ -23,7 +23,7 @@ module CU_fifo #(
     output logic [C_WIDTH-1:0]              rdata_o        ,
     output logic                            rdata_valid_o  ,
     input  logic                            rd_en_i        ,
-    output logiC                            empty_o        
+    output logic                            empty_o        
 
 );
 
@@ -55,17 +55,17 @@ module CU_fifo #(
 // --------------------------------------------------------------------
 // Data count
 // --------------------------------------------------------------------
-always_ff@(posedge clk,posedge rst)
-if(rst)
-    data_count<=0;
-else 
-begin
-    case({push_in_en,pop_out_en})
-        2'b00:data_count  <=  `SD  data_count;
-        2'b11:data_count  <=  `SD  data_count;
-        2'b01:data_count  <=  `SD  data_count-1;
-        2'b10:data_count  <=  `SD  data_count+1;          
-    endcase
+always_ff@(posedge clk_i) begin 
+    if(rst_i)
+        data_count             <= `SD 'd0;
+    else begin
+        case({push_in_en,pop_out_en})
+            2'b00:data_count  <=  `SD  data_count;
+            2'b11:data_count  <=  `SD  data_count;
+            2'b01:data_count  <=  `SD  data_count-1;
+            2'b10:data_count  <=  `SD  data_count+1;          
+        endcase
+    end
 end
 
 // --------------------------------------------------------------------
@@ -90,12 +90,12 @@ end
 
     // Next state of pointers
     always_comb begin
-        if (head + pop_out_en >= C_DEPTH) begin
+        if (head + pop_out_en >= C_CU_FIFO_DEPTH) begin
             next_head   =   0;
         end else begin
             next_head   =   head + pop_out_en;
         end       
-        if (tail + push_in_en >= C_DEPTH) begin
+        if (tail + push_in_en >= C_CU_FIFO_DEPTH) begin
             next_tail   =   0;
         end else begin
             next_tail   =   tail + push_in_en;
@@ -107,7 +107,7 @@ end
 // Push-in and Pop-out Entry
 // --------------------------------------------------------------------
     // Push-in 
-    always_ff@(posedge clk) begin
+    always_ff@(posedge clk_i) begin
     if(push_in_en)
         FIFO[tail]    <=    `SD wdata_i;
     else
@@ -115,16 +115,15 @@ end
     end
 
     // Pop-out 
-    always_ff@(posedge clk) begin
-    if (rst_i)
-        rdata_o       <=    `SD 'b0;
-        rdata_valid_o <=    `SD 'b0;
-    else if(pop_out_en)
-        rdata_o       <=    `SD FIFO[head];
-        rdata_valid_o <=    `SD 'b1;
-    else
-        rdata_o       <=    `SD 'b0;
-        rdata_valid_o <=    `SD 'b0;
+    always_ff@(posedge clk_i) begin
+        if(pop_out_en) begin
+            rdata_o       <=    `SD FIFO[head];
+            rdata_valid_o <=    `SD 'b1;
+        end
+        else begin
+            rdata_o       <=    `SD 'b0;
+            rdata_valid_o <=    `SD 'b0;
+        end
     end
 
 // ====================================================================

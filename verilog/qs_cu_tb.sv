@@ -23,7 +23,7 @@ module qs_cu_tb;
     logic                         rst_i             ;
 
     logic                         initialFinish_i   ;   
-    logic  [`BIN_NUM-1:0]         cuclean           ;
+    logic  [`BIN_NUM-1:0]         CUClean           ;
     logic  [`BIN_NUM-1:0]         binValid          ;
     logic  [`BIN_NUM-1:0]         binSelected       ;   
     logic                         readEn            ;
@@ -68,7 +68,7 @@ queue_scheduler queue_scheduler_inst(
     .clk_i                  (clk_i),   //  Clock
     .rst_i                  (rst_i),   //  Reset
     .initialFinish_i        (initialFinish_i),   
-    .cuclean_i              (cuclean),
+    .CUClean_i              (CUClean),
     .binValid_i             (binValid),
     .binSelected_o          (binSelected),   
     .readEn_o               (readEn)          
@@ -82,11 +82,12 @@ queue_scheduler queue_scheduler_inst(
 event_queues  event_queues_inst(
     .clk_i                  (clk_i),   //  Clock
     .rst_i                  (rst_i),   //  Reset
+    .initialFinish_i        (initialFinish_i),
     .CUDelta_i              (CUDelta_i),
     .CUIdx_i                (CUIdx_i),
     .CUValid_i              (CUValid_i),
     .CUReady_o              (CUReady_o),
-    .CUClean_o              (cuclean),
+    .CUClean_o              (CUClean),
     .binValid_o             (binValid),
     .binSelected_i          (binSelected),   
     .readEn_i               (readEn), 
@@ -185,7 +186,7 @@ event_queues  event_queues_inst(
                 44: CUReady_o_ram[cycle_idx][7]          =   value;
                 default: ;
             endcase
-            if (value_idx == 27) begin
+            if (value_idx == 44) begin
                 value_idx = 0;
                 cycle_idx++;
             end else begin
@@ -236,7 +237,24 @@ event_queues  event_queues_inst(
             rowDelta_o[0], rowDelta_o[1], rowDelta_o[2], rowDelta_o[3], 
             rowDelta_o[4], rowDelta_o[5], rowDelta_o[6], rowDelta_o[7],
             CUReady_o[0], CUReady_o[1], CUReady_o[2], CUReady_o[3],
-            CUReady_o[4], CUReady_o[5], CUReady_o[6], CUReady_o[7])
+            CUReady_o[4], CUReady_o[5], CUReady_o[6], CUReady_o[7]);
+
+            // $display("binSelected[0]:(%b) [1]:(%b) [2]:(%b) [3]:(%b) [4]:(%b) [5]:(%b) [6]:(%b) [7]:(%b) ",
+            // binSelected[0],binSelected[1],binSelected[2],binSelected[3],
+            // binSelected[4],binSelected[5],binSelected[6],binSelected[7]);
+
+            $display("readEn:(%b)", readEn);
+            $display("CUClean[1]:(%b)", CUClean[1]);
+            $display("allrow0[1][3]:(%h)", event_queues_inst.allrow0[1][3]);
+            // ,CUClean[1],CUClean[2],CUClean[3],CUClean[4],CUClean[5],CUClean[6],CUClean[7]
+
+            $display("rowNotEmpty[bin1]:(%d,%d,%d,%d)", 
+            event_queues_inst.rowNotEmpty[1][0],
+            event_queues_inst.rowNotEmpty[1][1],
+            event_queues_inst.rowNotEmpty[1][2],
+            event_queues_inst.rowNotEmpty[1][3]); 
+
+            
         end
         $fclose(fd_w);
         $finish;

@@ -122,7 +122,7 @@ class QS:
                 read_rowidx_n = self.prior_encoder(self.rowValid_matrix[bin_idx][:])
                 if (read_rowidx_n == 4):# return invalid row, all row empty
                     io_port.binrowIdx_n = 0
-                    io_port.rowDelta_n = 0
+                    io_port.rowDelta_n = np.zeros(8, dtype=np.float16)
                     io_port.rowValid_n = 0
                 else:
                     io_port.binrowIdx_n = bin_idx * 4 + read_rowidx_n
@@ -133,6 +133,8 @@ class QS:
                     self.queue[bin_idx, read_rowidx_n, :] = np.zeros(8, dtype=np.float16)
             else:
                 io_port.rowValid_n = 0
+                io_port.binrowIdx_n = 0
+                io_port.rowDelta_n = np.zeros(8, dtype=np.float16)
 
         else:
             # cu is not clean yet
