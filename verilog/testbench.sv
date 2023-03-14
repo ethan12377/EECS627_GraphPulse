@@ -49,11 +49,9 @@ module testbench;
         .edgemem_command    (edgemem_command),
         .edgemem_addr       (edgemem_addr),
         .edgemem_st_data    (edgemem_st_data),
-        .edgemem_size       (edgemem_size)
         .vertexmem_command  (vertexmem_command),
         .vertexmem_addr     (vertexmem_addr),
-        .vertexmem_st_data  (vertexmem_st_data),
-        .vertexmem_size     (vertexmem_size)
+        .vertexmem_st_data  (vertexmem_st_data)
     );
 
     mem edgemem (
@@ -101,6 +99,10 @@ module testbench;
 		@(posedge clock);
 
 		$readmemh("edge_cache.mem", edgemem.unified_memory);
+        /*
+        $display("%h", edgemem.unified_memory[0]);
+        $display("%h", edgemem.unified_memory[1]);
+        $display("%h", edgemem.unified_memory[2]);*/
 		
 		@(posedge clock);
 		@(posedge clock);

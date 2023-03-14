@@ -18,13 +18,13 @@ endif
 all: clean sim
 
 clean:
-	rm -f verilog/ucli.key
-	rm -f verilog/sim
-	rm -f verilog/sim_syn
-	rm -fr verilog/sim.daidir
-	rm -fr verilog/sim_syn.daidir
-	rm -f verilog/*.log
-	rm -fr verilog/csrc
+	rm -f ucli.key
+	rm -f sim
+	rm -f sim_syn
+	rm -fr sim.daidir
+	rm -fr sim_syn.daidir
+	rm -f *.log
+	rm -fr csrc
 
 sim:
 	$(VV) $(VVOPTS) $(STD_CELLS) $(SIM_FILES) $(TESTBENCH); ./$@
