@@ -6,9 +6,6 @@
 //                                                                     //
 /////////////////////////////////////////////////////////////////////////
 
-// TODO: length of tag is still a bit unclear, edge mem address map
-// TODO: fix holding behavior after acknowledgement from mem
-
 module pe #(
     parameter           C_PEID             = `PE_NUM_OF_CORES  // default to an invalid value, change this parameter for every PE
 ) (

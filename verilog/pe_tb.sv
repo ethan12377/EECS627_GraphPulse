@@ -147,6 +147,24 @@ module pe_tb ();
 
 // --------------------------------------------------------------------
 
+// --------------------------------------------------------------------
+// Module name  :   evqueue
+// Description  :   ideal evqueue for simulation
+// --------------------------------------------------------------------
+    evqueue_sim evqueue (
+        .clk_i                  (clk_i),
+        .rst_i                  (rst_i),
+        .PEReady_i              (PEReady),
+        .proDelta_i             (ProDelta),
+        .proIdx_i               (ProIdx),
+        .proValid_i             (ProValid),
+        .ProReady_o             (ProReady),
+        .PEDelta_o              (PEDelta),
+        .PEIdx_o                (PEIdx),
+        .PEValid_o              (PEValid)
+    );
+
+// --------------------------------------------------------------------
 
 // --------------------------------------------------------------------
 // Module name  :   mc_vm
