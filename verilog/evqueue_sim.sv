@@ -146,7 +146,6 @@ module evqueue_sim
                                 delta_queue_n[curr_index] = '0;
                                 valid_queue_n[curr_index] = 1'b0;
                                 curr_scan_idx_n = curr_index + 1;
-                                // TODO: break?
                             end
                         end
                     end

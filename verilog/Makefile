@@ -13,7 +13,7 @@ COMMON = standard.vh
 SIM_FILES = mem.sv fp_add.sv fp_div.sv fp_mul.sv fpu.sv priority_arbiter.sv rr_arbiter.sv mc.sv evqueue_sim.sv pe.sv
 
 VV         = vcs
-VVOPTS     = -o $@ +v2k +vc -sverilog -timescale=1ns/1ps +vcs+lic+wait +multisource_int_delays                    \
+VVOPTS     = -o $@ +v2k +vc -sverilog -timescale=1ns/1ps +vcs+lic+wait +multisource_int_delays -debug_access+r -kdb\
 	       	+neg_tchk +incdir+$(VERIF) +plusarg_save +overlap +warn=noSDFCOM_UHICD,noSDFCOM_IWSBA,noSDFCOM_IANE,noSDFCOM_PONF -full64 -cc gcc +libext+.v+.vlib+.vh -v2k_generate
 
 ifdef WAVES
@@ -35,6 +35,14 @@ clean:
 	rm -f *.log
 	rm -fr csrc
 	rm -rf sim.out
+	rm -rf csr.txt
+	rm -rf edge_cache.mem
+	rm -rf verdi*
+	rm -rf novas*
+	rm -rf inter.fsdb
 
 sim: $(STD_CELLS) $(COMMON) $(SIM_FILES) $(TESTBENCH)
 	$(VV) $(VVOPTS) $(STD_CELLS) $(COMMON) $(SIM_FILES) $(TESTBENCH); ./$@ > sim.out
+
+verdi:
+	./sim -gui=verdi

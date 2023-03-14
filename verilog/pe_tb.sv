@@ -27,7 +27,9 @@ module pe_tb ();
     logic                                                         rst_i           ;   //  Reset
     // number of vertices as int 8 and float16 values, sampled on the negative edge of reset
     logic [15:0]                                                  num_of_vertices_float16;
+    assign num_of_vertices_float16 = 16'h4900;
     logic [7:0]                                                   num_of_vertices_int8;
+    assign num_of_vertices_int8 = 8'd10;
     // from crossbar1
     logic [`PE_NUM_OF_CORES-1:0][`DELTA_WIDTH-1:0]                PEDelta;
     logic [`PE_NUM_OF_CORES-1:0][`VERTEX_IDX_WIDTH-1:0]           PEIdx;
@@ -102,8 +104,8 @@ module pe_tb ();
                 .clk_i                      (clk_i),
                 .rst_i                      (rst_i),
                 // num of vertices
-                .num_of_vertices_float16_i  (16'h4900), // 10 for tb 
-                .num_of_vertices_int8_i     (8'd10), // 10 for tb
+                .num_of_vertices_float16_i  (num_of_vertices_float16),
+                .num_of_vertices_int8_i     (num_of_vertices_int8),
                 // from crossbar1
                 .PEDelta_i                  (PEDelta[i]),
                 .PEIdx_i                    (PEIdx[i]),
@@ -244,19 +246,27 @@ module pe_tb ();
 // ====================================================================
 // RTL Logic Start
 // ====================================================================
-// --------------------------------------------------------------------
-// Clock generation
-// --------------------------------------------------------------------
-    initial begin
-        clk_i   =   'b0 ;
-        forever begin
-            #(`VERILOG_CLOCK_PERIOD/2);
-            clk_i   =   ~clk_i;
-        end
+    always
+    begin
+        #(`VERILOG_CLOCK_PERIOD/2);
+        clk_i   =   ~clk_i;
     end
 // --------------------------------------------------------------------
-// Logic Divider
+// Sim
 // --------------------------------------------------------------------
+    initial begin
+        // clock generation
+        clk_i = 1'b0;
+        // initialize memory content
+        $readmemb("edge_cache.mem", edgemem.unified_memory);
+        rst_i = 1'b1; repeat(5) @(posedge clk_i);
+        rst_i = 1'b0; repeat(5000) @(posedge clk_i);
+        for (integer i = 0; i < 10; i = i + 1)
+        begin
+            $display("vertex mem [%d] = %b", i, vertexmem.unified_memory[i]);
+        end
+        $finish;
+    end
 
 // ====================================================================
 // RTL Logic End
