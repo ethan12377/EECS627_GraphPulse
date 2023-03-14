@@ -13,8 +13,9 @@
 `define XLEN 16
 
 // Memory
+`define CACHE_MODE
 `define NUM_MEM_TAGS           15
-`define MEM_SIZE_IN_BYTES      (64*1024)
+`define MEM_SIZE_IN_BYTES      (64*1032)
 `define MEM_64BIT_LINES        (`MEM_SIZE_IN_BYTES/8)
 `define MEM_LATENCY 100.0
 `define MEM_LATENCY_IN_CYCLES (`MEM_LATENCY/`SYNTH_CLOCK_PERIOD+0.49999)

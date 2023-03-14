@@ -25,18 +25,12 @@ module testbench;
     logic  [3:0] edgemem_response;
     logic [63:0] edgemem_ld_data;
     logic  [3:0] edgemem_tag;
-`ifndef CACHE_MODE
-    MEM_SIZE     edgemem_size;
-`endif
     logic [1:0]  vertexmem_command;
     logic [`XLEN-1:0] vertexmem_addr;
     logic [63:0] vertexmem_st_data;
     logic  [3:0] vertexmem_response;
     logic [63:0] vertexmem_ld_data;
     logic  [3:0] vertexmem_tag;
-`ifndef CACHE_MODE
-    MEM_SIZE     vertexmem_size;
-`endif
 
     GraphPulse gp(
         // Inputs
@@ -68,9 +62,6 @@ module testbench;
         .proc2mem_command  (edgemem_command),
         .proc2mem_addr     (edgemem_addr),
         .proc2mem_data     (edgemem_st_data),
-`ifndef CACHE_MODE
-        .proc2mem_size     (edgemem_size),
-`endif
 
         // Outputs
         .mem2proc_response (edgemem_response),
@@ -84,9 +75,6 @@ module testbench;
         .proc2mem_command  (vertexmem_command),
         .proc2mem_addr     (vertexmem_addr),
         .proc2mem_data     (vertexmem_st_data),
-`ifndef CACHE_MODE
-        .proc2mem_size     (vertexmem_size),
-`endif
 
         // Outputs
         .mem2proc_response (vertexmem_response),
