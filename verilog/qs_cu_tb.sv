@@ -246,6 +246,7 @@ event_queues  event_queues_inst(
             $display("readEn:(%b)", readEn);
             $display("CUClean[1]:(%b)", CUClean[1]);
             $display("allrow0[1][3]:(%h)", event_queues_inst.allrow0[1][3]);
+            $display("searchIdx[1]:(%h)", event_queues_inst.searchIdx[1]);
             // ,CUClean[1],CUClean[2],CUClean[3],CUClean[4],CUClean[5],CUClean[6],CUClean[7]
 
             $display("rowNotEmpty[bin1]:(%d,%d,%d,%d)", 

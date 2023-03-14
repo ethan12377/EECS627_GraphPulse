@@ -90,15 +90,21 @@ end
 
     // Next state of pointers
     always_comb begin
-        if (head + pop_out_en >= C_CU_FIFO_DEPTH) begin
-            next_head   =   0;
-        end else begin
-            next_head   =   head + pop_out_en;
-        end       
-        if (tail + push_in_en >= C_CU_FIFO_DEPTH) begin
-            next_tail   =   0;
-        end else begin
-            next_tail   =   tail + push_in_en;
+        next_head   =   head;
+        next_tail   =   tail;
+        if (pop_out_en) begin
+            if (head == C_CU_FIFO_DEPTH -1) begin
+                next_head   =   0;
+            end else begin
+                next_head   =   head + 1;
+            end
+        end
+        if (push_in_en) begin
+            if (tail == C_CU_FIFO_DEPTH -1) begin
+                next_tail   =   0;
+            end else begin
+                next_tail   =   tail + 1;
+            end        
         end
     end
 
