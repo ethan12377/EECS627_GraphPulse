@@ -37,6 +37,10 @@ module coalescing_unit #(
     input  logic   [C_DELTA_WIDTH-1:0]      searchValue_i  ,
     input  logic                            searchValueValid_i  ,
 
+    // test
+    output  logic   [C_IDX_WIDTH:0]                     data_count      ,    
+    // testend
+
     output  logic                            CUClean_o      
 
 );
@@ -53,6 +57,7 @@ module coalescing_unit #(
 // Signal Declarations Start
 // ====================================================================
     logic                            CU_fifo_empty    ;
+    logic                            ready_o    ;
     logic   [C_WIDTH-1:0]            fifo_o           ;
     logic                            fifo_valid_o     ;
     logic   [C_DELTA_WIDTH-1:0]      sum              ;
@@ -85,9 +90,12 @@ module coalescing_unit #(
 CU_fifo CU_fifo_inst (
     .clk_i        (clk_i                               ),   //  Clock
     .rst_i        (rst_i                               ),   //  Reset   
+    // test
+    .data_count(data_count),
+    // test end
     .wr_en_i      (CUValid_i & (initialFinish_i)       ),   //  fifo after initial
     .wdata_i      ({CUIdx_i, CUDelta_i}                ),
-    .ready_o      (CUReady_o                           ),   
+    .ready_o      (ready_o                           ),   
     .rdata_o      (fifo_o                              ),
     .rdata_valid_o(fifo_valid_o                        ),
     .rd_en_i      ((~binSelected_i) & (initialFinish_i)),   //  issue new data only when bin not selected
@@ -196,6 +204,16 @@ fp_add fp_add_inst(
             else
                 CUClean_o <= `SD 'b0;
     end
+
+    always_ff @(posedge clk_i) begin
+        if (rst_i)
+            CUReady_o <= `SD 'b0;
+
+        else 
+            CUReady_o <= `SD ready_o;
+         
+    end
+
 
 // ====================================================================
 // RTL Logic End

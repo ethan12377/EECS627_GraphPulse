@@ -243,10 +243,12 @@ event_queues  event_queues_inst(
             // binSelected[0],binSelected[1],binSelected[2],binSelected[3],
             // binSelected[4],binSelected[5],binSelected[6],binSelected[7]);
 
-            $display("readEn:(%b)", readEn);
-            $display("CUClean[1]:(%b)", CUClean[1]);
-            $display("allrow0[1][3]:(%h)", event_queues_inst.allrow0[1][3]);
-            $display("searchIdx[1]:(%h)", event_queues_inst.searchIdx[1]);
+            // $display("readEn:(%b)", readEn);
+            // $display("CUClean[1]:(%b)", CUClean[1]);
+            // $display("allrow0[1][3]:(%h)", event_queues_inst.allrow0[1][3]);
+            $display("datacount[4]:(%h)", event_queues_inst.data_count[4]);
+            $display("ready_o[4]:(%h)", event_queues_inst.CUReady_o[4]);
+            $display("ready_o[4]:(%h)", CUReady_o[4]);
             // ,CUClean[1],CUClean[2],CUClean[3],CUClean[4],CUClean[5],CUClean[6],CUClean[7]
 
             $display("rowNotEmpty[bin1]:(%d,%d,%d,%d)", 

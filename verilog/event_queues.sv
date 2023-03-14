@@ -70,6 +70,8 @@ logic                                   rowReady         [C_BIN_NUM-1:0] ;
 // test
 logic   [C_ROW_NUM-1:0]                 rowNotEmpty      [C_BIN_NUM-1:0] ;
 logic   [C_COL_NUM-1:0][C_DELTA_WIDTH-1:0]   allrow0     [C_BIN_NUM-1:0] ;
+logic   [2:0]                     data_count    [C_BIN_NUM-1:0] ;
+
 // test end
 
 
@@ -136,6 +138,10 @@ generate
             .searchValid_o     (searchValid     [binIter] ),
             .searchValue_i     (searchValue     [binIter] ),
             .searchValueValid_i(searchValueValid[binIter] ),
+
+            // test
+            .data_count(data_count[binIter]),
+            // test end
             .CUClean_o         (CUClean_o       [binIter] )
         );
     end

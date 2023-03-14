@@ -14,6 +14,10 @@ module CU_fifo #(
     input  logic                            clk_i          ,   //  Clock
     input  logic                            rst_i          ,   //  Reset
     
+
+    // test
+    output  logic   [C_IDX_WIDTH:0]                     data_count      ,    
+    // testend
     // Push_In
     input  logic                            wr_en_i        ,
     input  logic [C_WIDTH-1:0]              wdata_i        ,
@@ -30,11 +34,12 @@ module CU_fifo #(
 // ====================================================================
 // Signal Declarations Start
 // ====================================================================
-    logic   [C_IDX_WIDTH:0]                     data_count      ;             
+    // logic   [C_IDX_WIDTH:0]                     data_count      ;             
     logic   [C_IDX_WIDTH-1:0]                   tail            ;                 
     logic   [C_IDX_WIDTH-1:0]                   head            ; 
     logic   [C_IDX_WIDTH-1:0]                   next_head       ;
     logic   [C_IDX_WIDTH-1:0]                   next_tail       ;
+    logic                                       ready_o_reg ;
 
     logic   [C_CU_FIFO_DEPTH-1:0][C_WIDTH-1:0]  FIFO            ;              
 // ====================================================================
@@ -62,8 +67,8 @@ always_ff@(posedge clk_i) begin
         case({push_in_en,pop_out_en})
             2'b00:data_count  <=  `SD  data_count;
             2'b11:data_count  <=  `SD  data_count;
-            2'b01:data_count  <=  `SD  data_count-1;
-            2'b10:data_count  <=  `SD  data_count+1;          
+            2'b01:data_count  <=  `SD  data_count - 1;
+            2'b10:data_count  <=  `SD  data_count + 1;          
         endcase
     end
 end
@@ -71,8 +76,39 @@ end
 // --------------------------------------------------------------------
 // Flag assign
 // --------------------------------------------------------------------
-    assign ready_o     =    (data_count==C_CU_FIFO_DEPTH)?1'b0:1'b1;
+    assign ready_o        =    (data_count==C_CU_FIFO_DEPTH)?1'b0:1'b1;
     assign empty_o     =    (data_count==0)?1'b1:1'b0;
+
+    // always_comb begin
+    //     if (full & ~pop_out_en) begin
+    //         ready_o = 1'b0;
+    //     end else begin
+    //         ready_o = 1'b1;
+    //     end
+    // end
+
+
+    // always_ff @(posedge clk_i) begin
+    //     if (rst_i) begin
+    //         ready_o <=   `SD 1'b0;
+    //     end
+    //     else if (data_count==C_CU_FIFO_DEPTH) begin
+    //             ready_o <=   `SD 1'b0;
+    //     end else begin
+    //         ready_o <=   `SD 1'b1;
+    //     end
+    // end
+
+    //     always_ff @(posedge clk_i) begin
+    //     if (rst_i) begin
+    //         ready_o <=   `SD 1'b0;
+    //     end
+    //     else begin
+    //         ready_o <=   `SD ready_o_reg;
+    //     end 
+    // end
+
+    
 
 // --------------------------------------------------------------------
 // Pointer movement
@@ -117,7 +153,7 @@ end
     if(push_in_en)
         FIFO[tail]    <=    `SD wdata_i;
     else
-        FIFO[tail]    <=    `SD 'b0;
+        FIFO[tail]    <=    `SD FIFO[tail];
     end
 
     // Pop-out 
