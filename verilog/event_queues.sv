@@ -76,6 +76,8 @@ logic                                   rowReady         [C_BIN_NUM-1:0] ;
 logic   [C_ROW_NUM-1:0]                 rowNotEmpty      [C_BIN_NUM-1:0] ;
 logic   [C_COL_NUM-1:0][C_DELTA_WIDTH-1:0]   allrow0     [C_BIN_NUM-1:0] ;
 logic   [2:0]                     data_count    [C_BIN_NUM-1:0] ;
+logic                            r_en        [C_BIN_NUM-1:0]      ;
+logic   [C_VERTEX_IDX_WIDTH-1:0]            arrayheadIdx       [C_BIN_NUM-1:0]      ;
 
 // test end
 
@@ -146,6 +148,8 @@ generate
 
             // test
             .data_count(data_count[binIter]),
+            .r_en(r_en[binIter]),
+            .arrayheadIdx(arrayheadIdx[binIter]),
             // test end
             .CUClean_o         (CUClean_o       [binIter] )
         );

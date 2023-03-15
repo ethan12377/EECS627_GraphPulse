@@ -38,7 +38,9 @@ module coalescing_unit #(
     input  logic                            searchValueValid_i  ,
 
     // test
-    output  logic   [C_IDX_WIDTH:0]                     data_count      ,    
+    output  logic   [C_IDX_WIDTH:0]                     data_count      ,   
+    output    logic                            r_en             ,
+    output    logic   [C_VERTEX_IDX_WIDTH-1:0]            arrayheadIdx       ,
     // testend
 
     output  logic                            CUClean_o      
@@ -58,8 +60,8 @@ module coalescing_unit #(
 // ====================================================================
     logic                            CU_fifo_empty    ;
     logic                            ready_o    ;
-    logic   [C_WIDTH-1:0]            array_head       ;
-    logic                            r_en             ;
+    // logic   [C_IDX_WIDTH-1:0]            array_head       ;
+    // logic                            r_en             ;
     logic   [C_WIDTH-1:0]            fifo_o           ;
     logic                            fifo_valid_o     ;
     logic   [C_DELTA_WIDTH-1:0]      sum              ;
@@ -95,10 +97,10 @@ CU_fifo CU_fifo_inst (
     // test
     .data_count(data_count),
     // test end
-    .arrayhead    (arrayhead                           ),
+    .arrayheadIdx (arrayheadIdx                           ),
     .wr_en_i      (CUValid_i && (initialFinish_i)      ),   //  fifo after initial
     .wdata_i      ({CUIdx_i, CUDelta_i}                ),
-    .ready_o      (ready_o                             ),   
+    .ready_o      (CUReady_o                           ),   
     .rdata_o      (fifo_o                              ),
     .rdata_valid_o(fifo_valid_o                        ),
     .rd_en_i      (r_en                                ),   //  issue new data only when bin not selected
@@ -132,9 +134,9 @@ fp_add fp_add_inst(
     always_comb begin
         r_en = 'b0;
         if ((~binSelected_i) && (initialFinish_i)) begin
-            if (((array_head[C_WIDTH-1:C_DELTA_WIDTH] == searchIdx_o) && searchValid_o)
-                || ((array_head[C_WIDTH-1:C_DELTA_WIDTH] == Idx_o_reg1) && Valid_o_reg1)
-                || ((array_head[C_WIDTH-1:C_DELTA_WIDTH] == Idx_o_reg2) && Valid_o_reg2)) begin
+            if (((arrayheadIdx == searchIdx_o) && searchValid_o)
+                || ((arrayheadIdx == Idx_o_reg1) && Valid_o_reg1)
+                || ((arrayheadIdx == Idx_o_reg2) && Valid_o_reg2)) begin
                     
                 r_en = 'b0;
             end
@@ -228,14 +230,14 @@ fp_add fp_add_inst(
                 CUClean_o <= `SD 'b0;
     end
 
-    always_ff @(posedge clk_i) begin
-        if (rst_i)
-            CUReady_o <= `SD 'b0;
+    // always_ff @(posedge clk_i) begin
+    //     if (rst_i)
+    //         CUReady_o <= `SD 'b0;
 
-        else 
-            CUReady_o <= `SD ready_o;
+    //     else 
+    //         CUReady_o <= `SD ready_o;
          
-    end
+    // end
 
 
 // ====================================================================

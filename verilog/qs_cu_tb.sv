@@ -278,6 +278,8 @@ event_queues  event_queues_inst(
             // $display("binSelected[0]:(%b) [1]:(%b) [2]:(%b) [3]:(%b) [4]:(%b) [5]:(%b) [6]:(%b) [7]:(%b) ",
             // binSelected[0],binSelected[1],binSelected[2],binSelected[3],
             // binSelected[4],binSelected[5],binSelected[6],binSelected[7]);
+            $display("r_en[7]:(%b)", event_queues_inst.r_en[7]);
+            $display("arrayhead[7]:(%h)", event_queues_inst.arrayheadIdx[7]);
 
             $display("readEn:(%b)", readEn);
             // $display("CUClean[1]:(%b)", CUClean[1]);

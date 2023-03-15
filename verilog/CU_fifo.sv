@@ -8,6 +8,8 @@
 
 module CU_fifo #(
     parameter   C_WIDTH             =   `EVENT_WIDTH           ,
+    parameter   C_VERTEX_IDX_WIDTH             =   `VERTEX_IDX_WIDTH           ,
+    parameter   C_DELTA_WIDTH       =   `DELTA_WIDTH           ,
     parameter   C_CU_FIFO_DEPTH     =   `CU_FIFO_DEPTH         ,
     parameter   C_IDX_WIDTH         =   $clog2(C_CU_FIFO_DEPTH)
 ) (
@@ -19,7 +21,7 @@ module CU_fifo #(
     output  logic   [C_IDX_WIDTH:0]                     data_count      ,    
     // testend
 
-    output  logic   [C_WIDTH-1:0]           arrayhead      ,
+    output logic [C_VERTEX_IDX_WIDTH-1:0]          arrayheadIdx   ,
     // Push_In
     input  logic                            wr_en_i        ,
     input  logic [C_WIDTH-1:0]              wdata_i        ,
@@ -58,7 +60,7 @@ module CU_fifo #(
 // --------------------------------------------------------------------
 // assign arrayhead
 // --------------------------------------------------------------------
-    assign arrayhead = empty_o ? 'd0:FIFO[head];
+    assign arrayheadIdx = FIFO[head][C_WIDTH-1:C_DELTA_WIDTH];
 
 // --------------------------------------------------------------------
 // Push-in & Pop-out handshake
