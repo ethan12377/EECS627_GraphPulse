@@ -41,8 +41,11 @@ clean:
 	rm -rf novas*
 	rm -rf inter.fsdb
 
+mem:
+	python3 pagerank_mem_init.py
+
 sim: $(STD_CELLS) $(COMMON) $(SIM_FILES) $(TESTBENCH)
 	$(VV) $(VVOPTS) $(STD_CELLS) $(COMMON) $(SIM_FILES) $(TESTBENCH); ./$@ > sim.out
 
-verdi:
+verdi: ./sim
 	./sim -gui=verdi

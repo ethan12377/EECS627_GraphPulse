@@ -133,7 +133,7 @@ module evqueue_sim
                     // scan for next available event until the end of queue
                     for (integer curr_index = 0; curr_index < 256; curr_index = curr_index + 1)
                     begin
-                        if (curr_index > curr_scan_idx_n && ~PEValid_n[i])
+                        if (curr_index >= curr_scan_idx_n && ~PEValid_n[i])
                         begin
                             curr_scan_idx_n = curr_index;
                             if (valid_queue_n[curr_index])
@@ -169,7 +169,7 @@ module evqueue_sim
         begin
             // internal queue
             valid_queue     <= '0;
-            delta_queue     <= 'x;
+            delta_queue     <= '0;
             // status regs
             waiting_for_pe  <= 1'b1;
             curr_scan_idx   <= 0;

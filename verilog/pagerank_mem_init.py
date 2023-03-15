@@ -32,25 +32,27 @@ def matrix_to_binary(matrix, filename):
         indptr.append(len(col_indices))
     with open(filename, 'w') as f:
         # write col index into mem
-        for i in range(0, 256*256):
-            if i < len(col_indices):
-                f.write('{0:08b}'.format(col_indices[i]))
-            else:
-                f.write('00000000')
-            if i % 8 == 7:
-                f.write('\n')
-            else:
-                f.write('_')
+        for i in range(0, 256*256, 8):
+            for j in range(i+7, i-1, -1): # write from MSB to LSB (left to right)
+                if j < len(col_indices):
+                    f.write('{0:08b}'.format(col_indices[j]))
+                else:
+                    f.write('00000000')
+                if j % 8 == 0:
+                    f.write('\n')
+                else:
+                    f.write('_')
         # write row index into mem
-        for i in range(0, 256):
-            if (i < len(indptr)):
-                f.write('{0:016b}'.format(indptr[i]))
-            else:
-                f.write('0000000000000000')
-            if i % 4 == 3:
-                f.write('\n')
-            else:
-                f.write('_')
+        for i in range(0, 256, 4):
+            for j in range(i+3, i-1, -1):
+                if (j < len(indptr)):
+                    f.write('{0:016b}'.format(indptr[j]))
+                else:
+                    f.write('0000000000000000')
+                if j % 4 == 0:
+                    f.write('\n')
+                else:
+                    f.write('_')
 
 # converts regular adjacency matrix to have: 1) equally weighted edges with sum = 1 and 2) no sinks
 def csr_to_matrix(filename):

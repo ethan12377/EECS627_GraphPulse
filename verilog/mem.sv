@@ -37,8 +37,10 @@ module mem (
 	logic acquire_tag;
 	logic bus_filled;
 	
-	wire valid_address = (proc2mem_addr[2:0]==3'b0) &
-	                     (proc2mem_addr<`MEM_SIZE_IN_BYTES);
+	//wire valid_address = (proc2mem_addr[2:0]==3'b0) &
+	//                     (proc2mem_addr<`MEM_SIZE_IN_BYTES);
+
+	wire valid_address = (proc2mem_addr<`MEM_64BIT_LINES);
 
 	always @(negedge clk) begin
 		next_mem2proc_tag      = 4'b0;
@@ -62,9 +64,11 @@ module mem (
 				
 				if(proc2mem_command == BUS_LOAD) begin
 					waiting_for_bus[i] = 1'b1;
-					loaded_data[i]     = unified_memory[proc2mem_addr[`XLEN-1:3]];
+					// loaded_data[i]     = unified_memory[proc2mem_addr[`XLEN-1:3]];
+					loaded_data[i]     = unified_memory[proc2mem_addr];
 				end else begin
-					unified_memory[proc2mem_addr[`XLEN-1:3]]=proc2mem_data;
+					// unified_memory[proc2mem_addr[`XLEN-1:3]]=proc2mem_data;
+					unified_memory[proc2mem_addr]=proc2mem_data;
 				end
 			end
 			

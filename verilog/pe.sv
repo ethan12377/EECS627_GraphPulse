@@ -107,9 +107,7 @@ module pe #(
     enum {EM_IDLE, EM_START, EM_END, EM_WORD}   em_req_status, em_req_status_n;
     logic [3:0] curr_vm_tag, curr_em_tag;
     logic [3:0] curr_vm_tag_n, curr_em_tag_n;
-    logic vm_capture_resp, em_capture_resp;
     logic vm_acked, em_acked;
-    logic vm_capture_resp_n, em_capture_resp_n;
     logic vm_acked_n, em_acked_n;
 
     // propagate evgen
@@ -174,16 +172,14 @@ module pe #(
 // ====================================================================
 
     assign idle_o = (curr_state == S_IDLE);
-    assign ready = (curr_state == S_IDLE);
-    assign fpu_clear = (curr_state == S_IDLE);
+    assign ready = (next_state == S_IDLE);
+    assign fpu_clear = (next_state == S_IDLE);
     // mem
     // always capture response one cycle after acknowledgement
-    assign vm_capture_resp_n            = vertexmem_ack_i;
-    assign em_capture_resp_n            = edgemem_ack_i;
     assign vm_acked_n                   = (vm_req_status_n == VM_IDLE) ? 1'b0 : vertexmem_ack_i ? 1'b1 : vm_acked;
     assign em_acked_n                   = (em_req_status_n == EM_IDLE) ? 1'b0 : edgemem_ack_i ? 1'b1 : em_acked;
-    assign curr_vm_tag_n                = (vm_req_status_n == VM_IDLE) ? 'x : vm_capture_resp ? vertexmem_resp_i : curr_vm_tag;
-    assign curr_em_tag_n                = (em_req_status_n == EM_IDLE) ? 'x : em_capture_resp ? edgemem_resp_i : curr_em_tag;
+    assign curr_vm_tag_n                = (vm_req_status_n == VM_IDLE) ? 'x : vertexmem_ack_i ? vertexmem_resp_i : curr_vm_tag;
+    assign curr_em_tag_n                = (em_req_status_n == EM_IDLE) ? 'x : edgemem_ack_i ? edgemem_resp_i : curr_em_tag;
 
     // ----------------------------------------------------------------
     // Status Registers
@@ -218,8 +214,6 @@ module pe #(
             vm_req_status                   <= VM_IDLE;
             curr_vm_tag                     <= 'x;
             curr_em_tag                     <= 'x;
-            vm_capture_resp                 <= 1'b0;
-            em_capture_resp                 <= 1'b0;
             vm_acked                        <= 1'b0;
             em_acked                        <= 1'b0;
             // evgen registers
@@ -257,8 +251,6 @@ module pe #(
             vm_req_status                   <= vm_req_status_n;
             curr_vm_tag                     <= curr_vm_tag_n;
             curr_em_tag                     <= curr_em_tag_n;
-            vm_capture_resp                 <= vm_capture_resp_n;
-            em_capture_resp                 <= em_capture_resp_n;
             vm_acked                        <= vm_acked_n;
             em_acked                        <= em_acked_n;
             // evgen registers
@@ -386,6 +378,7 @@ module pe #(
         ////////// fpu inputs //////////
         fpu_opA                             = '0;
         fpu_opB                             = '0;
+        fpu_op                              = `FPU_ADD;
         fpu_status_i                        = '0;
 
         // capture tags from mem when needed (if acknowledged, capture resp at next posedge)
@@ -447,7 +440,7 @@ module pe #(
                     curr_delta_n = PEDelta_i;
                     curr_idx_n = PEIdx_i;
                     // send read vertex value request to vertexmem
-                    pe_vertex_reqAddr_n = curr_idx_n << 3;
+                    pe_vertex_reqAddr_n = curr_idx_n;
                     pe_wrEn_n = 1'b0;
                     pe_vertex_reqValid_n = 1'b1;
                     vm_req_status_n = VM_READ;
@@ -461,6 +454,7 @@ module pe #(
                         // calculate d * delta to prepare for propagate calculation
                         fpu_opA = C_DAMPING_FACTOR;
                         fpu_opB = curr_delta_n;
+                        fpu_op = `FPU_MUL;
                         fpu_status_i = 2'd3;
                     end
                     next_state = S_RUW;
@@ -479,6 +473,7 @@ module pe #(
                         // send data into fpu
                         fpu_opA = vertexmem_data_i[15:0];
                         fpu_opB = curr_delta;
+                        fpu_op = `FPU_ADD;
                         fpu_status_i = 2'd1;
                     end
                     else if (vm_req_status_n == VM_WRITE) // write fulfilled
@@ -516,7 +511,7 @@ module pe #(
                             if (adj_list_end_n != adj_list_start_n)
                             begin
                                 // grab a column index word from edgemem
-                                pe_edge_reqAddr_n = adj_list_start_n;
+                                pe_edge_reqAddr_n = adj_list_start_n >> 3;
                                 pe_edge_reqValid_n = 1'b1;
                                 em_req_status_n = EM_WORD;
                                 curr_col_idx_word_tag_n = adj_list_start_n[15:3];
@@ -537,7 +532,7 @@ module pe #(
                         if (adj_list_end_n != adj_list_start)
                         begin
                             // grab a column index word from edgemem
-                            pe_edge_reqAddr_n = adj_list_start_n;
+                            pe_edge_reqAddr_n = adj_list_start_n >> 3;
                             pe_edge_reqValid_n = 1'b1;
                             em_req_status_n = EM_WORD;
                             curr_col_idx_word_tag_n = adj_list_start_n[15:3];
@@ -561,7 +556,7 @@ module pe #(
                 if (fpu_status_o == 2'd1) // ruw result obtained
                 begin
                     // write result to vertexmem
-                    pe_vertex_reqAddr_n = curr_idx << 3;
+                    pe_vertex_reqAddr_n = curr_idx;
                     pe_vertex_reqValid_n = 1'b1;
                     pe_wrEn_n = 1'b1;
                     pe_wrData_n = fpu_result;
@@ -633,7 +628,7 @@ module pe #(
                     end
                     else if (fpu_status_o == 2'd1) // ruw result obtained from FPU, sent write request to vertexmem
                     begin 
-                        pe_vertex_reqAddr_n = curr_idx << 3;
+                        pe_vertex_reqAddr_n = curr_idx;
                         pe_wrEn_n = 1'b1;
                         pe_vertex_reqValid_n = 1'b1;
                         pe_wrData_n = fpu_result;
@@ -689,7 +684,7 @@ module pe #(
                         begin
                             curr_col_idx_word_valid_n = 1'b0;
                             // request a new word from edgemem
-                            pe_edge_reqAddr_n = curr_evgen_idx_n;
+                            pe_edge_reqAddr_n = curr_evgen_idx_n >> 3;
                             curr_col_idx_word_tag_n = curr_evgen_idx_n[15:3];
                             em_req_status_n = EM_WORD;
                         end
@@ -742,7 +737,7 @@ module pe #(
                         begin
                             curr_col_idx_word_valid_n = 1'b0;
                             // request a new word from edgemem
-                            pe_edge_reqAddr_n = curr_evgen_idx_n;
+                            pe_edge_reqAddr_n = curr_evgen_idx_n >> 3;
                             curr_col_idx_word_tag_n = curr_evgen_idx_n[15:3];
                             em_req_status_n = EM_WORD;
                         end

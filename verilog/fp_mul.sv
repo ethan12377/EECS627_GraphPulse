@@ -38,14 +38,14 @@ module fp_mul(
     // Normalize
     // ------------------------------
 
-    assign normalP = mProduct[15] ? mProduct >> 1 : mProduct;
-    assign normalE = mProduct[15] ? biasedESum + 1 : biasedESum;
+    assign normalP = mProduct[21] ? mProduct >> 1 : mProduct;
+    assign normalE = mProduct[21] ? biasedESum + 1 : biasedESum;
     assign eNormalOverflow = (normalE == 5'b11111);
     assign finalE = (eAddOverflow | eNormalOverflow) ? 5'd31 : normalE;
-    assign finalP = (eAddOverflow | eNormalOverflow) ? 5'd0 : normalP;
+    assign finalP = (eAddOverflow | eNormalOverflow) ? '0 : normalP;
     assign sign = sA ^ sB;
 
-    assign product = {sign, finalE, finalP[19:10]}; // 15=overflow, 14=hidden
+    assign product = {sign, finalE, finalP[19:10]}; // 21=overflow, 20=hidden
 
 endmodule
 
