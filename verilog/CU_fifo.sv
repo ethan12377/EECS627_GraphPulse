@@ -18,6 +18,8 @@ module CU_fifo #(
     // test
     output  logic   [C_IDX_WIDTH:0]                     data_count      ,    
     // testend
+
+    output  logic   [C_WIDTH-1:0]           arrayhead      ,
     // Push_In
     input  logic                            wr_en_i        ,
     input  logic [C_WIDTH-1:0]              wdata_i        ,
@@ -39,7 +41,9 @@ module CU_fifo #(
     logic   [C_IDX_WIDTH-1:0]                   head            ; 
     logic   [C_IDX_WIDTH-1:0]                   next_head       ;
     logic   [C_IDX_WIDTH-1:0]                   next_tail       ;
-    logic                                       ready_o_reg ;
+    logic                                       push_in_en      ;
+    logic                                       pop_out_en      ;
+    // logic                                       full ;
 
     logic   [C_CU_FIFO_DEPTH-1:0][C_WIDTH-1:0]  FIFO            ;              
 // ====================================================================
@@ -50,6 +54,11 @@ module CU_fifo #(
 // ====================================================================
 // RTL Logic Start
 // ====================================================================
+
+// --------------------------------------------------------------------
+// assign arrayhead
+// --------------------------------------------------------------------
+    assign arrayhead = empty_o ? 'd0:FIFO[head];
 
 // --------------------------------------------------------------------
 // Push-in & Pop-out handshake
@@ -76,16 +85,8 @@ end
 // --------------------------------------------------------------------
 // Flag assign
 // --------------------------------------------------------------------
-    assign ready_o        =    (data_count==C_CU_FIFO_DEPTH)?1'b0:1'b1;
+    assign ready_o     =    (data_count==C_CU_FIFO_DEPTH)?1'b0:1'b1;
     assign empty_o     =    (data_count==0)?1'b1:1'b0;
-
-    // always_comb begin
-    //     if (full & ~pop_out_en) begin
-    //         ready_o = 1'b0;
-    //     end else begin
-    //         ready_o = 1'b1;
-    //     end
-    // end
 
 
     // always_ff @(posedge clk_i) begin
@@ -116,31 +117,38 @@ end
     // Pointer sequential
     always_ff @(posedge clk_i) begin
         if (rst_i) begin
-            head    <=  `SD 'd0;
+            // head    <=  `SD 'd0;
             tail    <=  `SD 'd0;
         end else begin
-            head    <=  `SD next_head;
+            // head    <=  `SD next_head;
             tail    <=  `SD next_tail;
         end
     end
+    
 
     // Next state of pointers
     always_comb begin
-        next_head   =   head;
         next_tail   =   tail;
-        if (pop_out_en) begin
-            if (head == C_CU_FIFO_DEPTH -1) begin
-                next_head   =   0;
-            end else begin
-                next_head   =   head + 1;
-            end
-        end
         if (push_in_en) begin
             if (tail == C_CU_FIFO_DEPTH -1) begin
                 next_tail   =   0;
             end else begin
                 next_tail   =   tail + 1;
             end        
+        end
+    end
+
+    always_ff @(posedge clk_i) begin
+        if (rst_i) begin
+            head    <=  `SD 'd0;
+        end else if (pop_out_en) begin
+                if (head == C_CU_FIFO_DEPTH -1) begin
+                    head   <=  `SD 'd0;
+                end else begin
+                    head   <=  `SD 'd1+head;
+                end
+        end else begin
+            head   <=  `SD head;
         end
     end
 

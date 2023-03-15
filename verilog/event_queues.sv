@@ -39,6 +39,11 @@ module event_queues #(
     output  logic                                           rowValid_o      ,
     input   logic                                           rowReady_i      ,
 
+    // test
+    output logic  [C_BIN_NUM-1:0][C_VERTEX_IDX_WIDTH-1:0]         searchIdx         ,
+    output logic  [C_BIN_NUM-1:0]                                 searchValid       ,
+    // test end
+
     // Queue empty flag for convergence check
     output  logic                                           queueEmpty_o     
 );
@@ -58,8 +63,8 @@ logic                                   newValid         [C_BIN_NUM-1:0] ;
 logic  [C_VERTEX_IDX_WIDTH-1:0]         newIdx           [C_BIN_NUM-1:0] ;
 logic  [C_DELTA_WIDTH-1:0]              newDelta         [C_BIN_NUM-1:0] ;
 
-logic  [C_VERTEX_IDX_WIDTH-1:0]         searchIdx        [C_BIN_NUM-1:0] ;
-logic                                   searchValid      [C_BIN_NUM-1:0] ;
+// logic  [C_VERTEX_IDX_WIDTH-1:0]         searchIdx        [C_BIN_NUM-1:0] ;
+// logic                                   searchValid      [C_BIN_NUM-1:0] ;
 logic  [C_DELTA_WIDTH-1:0]              searchValue      [C_BIN_NUM-1:0] ;
 logic                                   searchValueValid [C_BIN_NUM-1:0] ;
 

@@ -32,12 +32,17 @@ module qs_cu_tb;
     logic   [`BIN_NUM-1:0][`VERTEX_IDX_WIDTH-1:0]   CUIdx_i         ;
     logic   [`BIN_NUM-1:0]                          CUValid_i       ;
     logic   [`BIN_NUM-1:0]                          CUReady_o       ;
+    logic   [`BIN_NUM-1:0]                          CUClean_o       ;
     
     logic   [`ROW_IDX_WIDTH-1:0]                    rowIdx_o        ;
     logic   [`BIN_IDX_WIDTH-1:0]                    binIdx_o        ;
     logic   [`COL_NUM-1:0][`DELTA_WIDTH-1:0]        rowDelta_o      ;
     logic                                           rowValid_o      ;
     logic                                           rowReady_i      ;
+    // test
+    logic  [`BIN_NUM-1:0][`VERTEX_IDX_WIDTH-1:0]         searchIdx        ;
+    logic  [`BIN_NUM-1:0]                                 searchValid      ;
+    // test end
 
     //???
     logic                                           queueEmpty_o    ;
@@ -52,6 +57,9 @@ module qs_cu_tb;
     logic   [`ROW_IDX_WIDTH-1:0]                    rowIdx_o_ram            [C_CYCLE_NUM-1:0]; 
     logic   [`COL_NUM-1:0][`DELTA_WIDTH-1:0]        rowDelta_o_ram          [C_CYCLE_NUM-1:0];
     logic   [`BIN_NUM-1:0]                          CUReady_o_ram           [C_CYCLE_NUM-1:0];
+    logic   [`BIN_NUM-1:0]                          CUClean_o_ram           [C_CYCLE_NUM-1:0];
+    logic   [`BIN_NUM-1:0][`VERTEX_IDX_WIDTH-1:0]   searchidx_i_ram             [C_CYCLE_NUM-1:0];
+    logic   [`BIN_NUM-1:0]                          searchValid_i_ram           [C_CYCLE_NUM-1:0];
 
 // ====================================================================
 // Signal Declarations End
@@ -68,7 +76,7 @@ queue_scheduler queue_scheduler_inst(
     .clk_i                  (clk_i),   //  Clock
     .rst_i                  (rst_i),   //  Reset
     .initialFinish_i        (initialFinish_i),   
-    .CUClean_i              (CUClean),
+    .CUClean_i              (CUClean_o),
     .binValid_i             (binValid),
     .binSelected_o          (binSelected),   
     .readEn_o               (readEn)          
@@ -87,7 +95,7 @@ event_queues  event_queues_inst(
     .CUIdx_i                (CUIdx_i),
     .CUValid_i              (CUValid_i),
     .CUReady_o              (CUReady_o),
-    .CUClean_o              (CUClean),
+    .CUClean_o              (CUClean_o),
     .binValid_o             (binValid),
     .binSelected_i          (binSelected),   
     .readEn_i               (readEn), 
@@ -96,6 +104,10 @@ event_queues  event_queues_inst(
     .rowDelta_o             (rowDelta_o),
     .rowValid_o             (rowValid_o),
     .rowReady_i             (rowReady_i),
+    // test
+    .searchIdx        (searchIdx),
+    .searchValid      (searchValid),
+    // test end
     .queueEmpty_o           (queueEmpty_o)     
 );
 // --------------------------------------------------------------------
@@ -168,25 +180,42 @@ event_queues  event_queues_inst(
                 26: rowValid_o_ram[cycle_idx]            =   value;
                 27: binIdx_o_ram[cycle_idx]              =   value;
                 28: rowIdx_o_ram[cycle_idx]              =   value;
-                29: rowDelta_o_ram[cycle_idx][0]         =   value;
-                30: rowDelta_o_ram[cycle_idx][1]         =   value;
-                31: rowDelta_o_ram[cycle_idx][2]         =   value;
-                32: rowDelta_o_ram[cycle_idx][3]         =   value;
-                33: rowDelta_o_ram[cycle_idx][4]         =   value;
-                34: rowDelta_o_ram[cycle_idx][5]         =   value;
-                35: rowDelta_o_ram[cycle_idx][6]         =   value;
-                36: rowDelta_o_ram[cycle_idx][7]         =   value;
-                37: CUReady_o_ram[cycle_idx][0]          =   value;
-                38: CUReady_o_ram[cycle_idx][1]          =   value;
-                39: CUReady_o_ram[cycle_idx][2]          =   value;
-                40: CUReady_o_ram[cycle_idx][3]          =   value;
-                41: CUReady_o_ram[cycle_idx][4]          =   value;
-                42: CUReady_o_ram[cycle_idx][5]          =   value;
-                43: CUReady_o_ram[cycle_idx][6]          =   value;
-                44: CUReady_o_ram[cycle_idx][7]          =   value;
+                29: CUReady_o_ram[cycle_idx][0]          =   value; // rowDelta_o_ram[cycle_idx][0]         =   value;37:
+                30: CUReady_o_ram[cycle_idx][1]          =   value; // rowDelta_o_ram[cycle_idx][1]         =   value;38:
+                31: CUReady_o_ram[cycle_idx][2]          =   value; // rowDelta_o_ram[cycle_idx][2]         =   value;39:
+                32: CUReady_o_ram[cycle_idx][3]          =   value; // rowDelta_o_ram[cycle_idx][3]         =   value;40:
+                33: CUReady_o_ram[cycle_idx][4]          =   value; // rowDelta_o_ram[cycle_idx][4]         =   value;41:
+                34: CUReady_o_ram[cycle_idx][5]          =   value; // rowDelta_o_ram[cycle_idx][5]         =   value;42:
+                35: CUReady_o_ram[cycle_idx][6]          =   value; // rowDelta_o_ram[cycle_idx][6]         =   value;43:
+                36: CUReady_o_ram[cycle_idx][7]          =   value; // rowDelta_o_ram[cycle_idx][7]         =   value;44: 
+                37: CUClean_o_ram[cycle_idx][0]          =   value;
+                38: CUClean_o_ram[cycle_idx][1]          =   value;
+                39: CUClean_o_ram[cycle_idx][2]          =   value;
+                40: CUClean_o_ram[cycle_idx][3]          =   value;
+                41: CUClean_o_ram[cycle_idx][4]          =   value;
+                42: CUClean_o_ram[cycle_idx][5]          =   value;
+                43: CUClean_o_ram[cycle_idx][6]          =   value;
+                44: CUClean_o_ram[cycle_idx][7]          =   value;
+
+                45: searchidx_i_ram[cycle_idx][0]          =   value;
+                46: searchValid_i_ram[cycle_idx][1]          =   value;
+                47: searchidx_i_ram[cycle_idx][2]          =   value;
+                48: searchValid_i_ram[cycle_idx][3]          =   value;
+                49: searchidx_i_ram[cycle_idx][4]          =   value;
+                50: searchValid_i_ram[cycle_idx][5]          =   value;
+                51: searchidx_i_ram[cycle_idx][6]          =   value;
+                52: searchValid_i_ram[cycle_idx][7]          =   value;
+                53: searchidx_i_ram[cycle_idx][0]          =   value;
+                54: searchValid_i_ram[cycle_idx][1]          =   value;
+                55: searchidx_i_ram[cycle_idx][2]          =   value;
+                56: searchValid_i_ram[cycle_idx][3]          =   value;
+                57: searchidx_i_ram[cycle_idx][4]          =   value;
+                58: searchValid_i_ram[cycle_idx][5]          =   value;
+                59: searchidx_i_ram[cycle_idx][6]          =   value;
+                60: searchValid_i_ram[cycle_idx][7]          =   value;
                 default: ;
             endcase
-            if (value_idx == 44) begin
+            if (value_idx == 60) begin
                 value_idx = 0;
                 cycle_idx++;
             end else begin
@@ -223,7 +252,7 @@ event_queues  event_queues_inst(
             rowReady_i      = rowReady_i_ram[i];
             
             @(negedge clk_i);
-            $fdisplay(fd_w, "%h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h ", 
+            $fdisplay(fd_w, "%h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h %h ",   //
             initialFinish_i, 
             CUDelta_i[0], CUIdx_i[0], CUValid_i[0],
             CUDelta_i[1], CUIdx_i[1], CUValid_i[1],
@@ -234,16 +263,23 @@ event_queues  event_queues_inst(
             CUDelta_i[6], CUIdx_i[6], CUValid_i[6],
             CUDelta_i[7], CUIdx_i[7], CUValid_i[7],
             rowReady_i, rowValid_o, binIdx_o, rowIdx_o,
-            rowDelta_o[0], rowDelta_o[1], rowDelta_o[2], rowDelta_o[3], 
-            rowDelta_o[4], rowDelta_o[5], rowDelta_o[6], rowDelta_o[7],
+            // rowDelta_o[0], rowDelta_o[1], rowDelta_o[2], rowDelta_o[3], 
+            // rowDelta_o[4], rowDelta_o[5], rowDelta_o[6], rowDelta_o[7],
             CUReady_o[0], CUReady_o[1], CUReady_o[2], CUReady_o[3],
-            CUReady_o[4], CUReady_o[5], CUReady_o[6], CUReady_o[7]);
+            CUReady_o[4], CUReady_o[5], CUReady_o[6], CUReady_o[7],
+            CUClean_o[0], CUClean_o[1], CUClean_o[2], CUClean_o[3],
+            CUClean_o[4], CUClean_o[5], CUClean_o[6], CUClean_o[7],
+            searchIdx[0],searchValid[0],searchIdx[1],searchValid[1],
+            searchIdx[2],searchValid[2],searchIdx[3],searchValid[3],
+            searchIdx[4],searchValid[4],searchIdx[5],searchValid[5],
+            searchIdx[6],searchValid[6],searchIdx[7],searchValid[7]
+            );
 
             // $display("binSelected[0]:(%b) [1]:(%b) [2]:(%b) [3]:(%b) [4]:(%b) [5]:(%b) [6]:(%b) [7]:(%b) ",
             // binSelected[0],binSelected[1],binSelected[2],binSelected[3],
             // binSelected[4],binSelected[5],binSelected[6],binSelected[7]);
 
-            // $display("readEn:(%b)", readEn);
+            $display("readEn:(%b)", readEn);
             // $display("CUClean[1]:(%b)", CUClean[1]);
             // $display("allrow0[1][3]:(%h)", event_queues_inst.allrow0[1][3]);
             $display("datacount[4]:(%h)", event_queues_inst.data_count[4]);

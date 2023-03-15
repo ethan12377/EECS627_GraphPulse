@@ -58,6 +58,8 @@ module coalescing_unit #(
 // ====================================================================
     logic                            CU_fifo_empty    ;
     logic                            ready_o    ;
+    logic   [C_WIDTH-1:0]            array_head       ;
+    logic                            r_en             ;
     logic   [C_WIDTH-1:0]            fifo_o           ;
     logic                            fifo_valid_o     ;
     logic   [C_DELTA_WIDTH-1:0]      sum              ;
@@ -93,12 +95,13 @@ CU_fifo CU_fifo_inst (
     // test
     .data_count(data_count),
     // test end
-    .wr_en_i      (CUValid_i & (initialFinish_i)       ),   //  fifo after initial
+    .arrayhead    (arrayhead                           ),
+    .wr_en_i      (CUValid_i && (initialFinish_i)      ),   //  fifo after initial
     .wdata_i      ({CUIdx_i, CUDelta_i}                ),
-    .ready_o      (ready_o                           ),   
+    .ready_o      (ready_o                             ),   
     .rdata_o      (fifo_o                              ),
     .rdata_valid_o(fifo_valid_o                        ),
-    .rd_en_i      ((~binSelected_i) & (initialFinish_i)),   //  issue new data only when bin not selected
+    .rd_en_i      (r_en                                ),   //  issue new data only when bin not selected
     .empty_o      (CU_fifo_empty                       )     
 
 );
@@ -121,6 +124,26 @@ fp_add fp_add_inst(
 // ====================================================================
 // RTL Logic Start
 // ====================================================================
+
+// --------------------------------------------------------------------
+// assign r_en
+// --------------------------------------------------------------------
+
+    always_comb begin
+        r_en = 'b0;
+        if ((~binSelected_i) && (initialFinish_i)) begin
+            if (((array_head[C_WIDTH-1:C_DELTA_WIDTH] == searchIdx_o) && searchValid_o)
+                || ((array_head[C_WIDTH-1:C_DELTA_WIDTH] == Idx_o_reg1) && Valid_o_reg1)
+                || ((array_head[C_WIDTH-1:C_DELTA_WIDTH] == Idx_o_reg2) && Valid_o_reg2)) begin
+                    
+                r_en = 'b0;
+            end
+            else begin
+                r_en = 'b1;
+            end
+        end
+    end
+
 
 // --------------------------------------------------------------------
 // output to Queue
@@ -199,7 +222,7 @@ fp_add fp_add_inst(
         if (rst_i)
             CUClean_o <= `SD 'b0;
 
-        else if (~Valid_o_reg2 & ~Valid_o_reg1 & ~Valid_o_reg0 & ~newValid_o & initialFinish_i)
+        else if (~Valid_o_reg2 && ~Valid_o_reg1 && ~Valid_o_reg0 && ~newValid_o && initialFinish_i)
                 CUClean_o <= `SD 'b1;
             else
                 CUClean_o <= `SD 'b0;
