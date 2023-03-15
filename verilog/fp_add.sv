@@ -19,6 +19,8 @@ module fp_add(
     logic finalS;
     logic [4:0] bigE, sumE, finalE, addShiftAmount, subShiftAmount;
     logic [10:0] sumM, finalM;
+
+    logic implicit_one_opA, implicit_one_opB;
      
     /////////////////////////////////////////////////////////
     // Match exponents
@@ -31,17 +33,21 @@ module fp_add(
     assign eB = opB[14:10];
     assign mB = opB[9:0];
 
+    // if exponent is zero, there is no implicit '1' for mantissa
+    assign implicit_one_opA = (eA != 5'b00000);
+    assign implicit_one_opB = (eB != 5'b00000);
+
     // subtract exponents
     assign diffE = eA - eB;
     assign absDiffE = diffE[4] ? ~diffE+1 : diffE;
 
     // select operand w/ smaller exponent to shift mantissa to the right
-    assign shiftInput = diffE[4] ? {1'b1, mA} : {1'b1, mB};
+    assign shiftInput = diffE[4] ? {implicit_one_opA, mA} : {implicit_one_opB, mB};
     
     assign subtract = sA ^ sB;
     
     assign shiftOutput = shiftInput >> absDiffE;
-    assign op2 = diffE[4] ? {1'b1, mB} : {1'b1, mA};
+    assign op2 = diffE[4] ? {implicit_one_opB, mB} : {implicit_one_opA, mA};
     assign selBigE = diffE[4];
 
     

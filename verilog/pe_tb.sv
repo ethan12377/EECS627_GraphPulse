@@ -7,7 +7,7 @@
 /////////////////////////////////////////////////////////////////////////
 
 
-// CURRENT ISSUE: PE stuck at RUW
+// CURRENT ISSUE: UNEXPECTED RETURN VALUE WHEN GRABBING NEW END
 
 module pe_tb ();
 
@@ -35,6 +35,7 @@ module pe_tb ();
     assign num_of_vertices_int8 = 8'd10;
     // from crossbar1
     logic [`PE_NUM_OF_CORES-1:0][`DELTA_WIDTH-1:0]                PEDelta;
+    
     logic [`PE_NUM_OF_CORES-1:0][`VERTEX_IDX_WIDTH-1:0]           PEIdx;
     logic [`PE_NUM_OF_CORES-1:0]                                  PEValid;
     // from crossbar2
@@ -257,17 +258,39 @@ module pe_tb ();
 // --------------------------------------------------------------------
 // Sim
 // --------------------------------------------------------------------
+    integer cycle_num, timeout_cycle_num;
     initial begin
+        cycle_num = 0;
+        timeout_cycle_num = 10000;
         // clock generation
         clk_i = 1'b0;
         // initialize memory content
         $readmemb("edge_cache.mem", edgemem.unified_memory);
         rst_i = 1'b1; repeat(5) @(posedge clk_i);
-        rst_i = 1'b0; repeat(5000) @(posedge clk_i);
+        rst_i = 1'b0; repeat(10000) @(posedge clk_i);
         for (integer i = 0; i < 10; i = i + 1)
         begin
-            $display("vertex mem [%d] = %b", i, vertexmem.unified_memory[i]);
+            $display("vertex mem [%d] = %h", i, vertexmem.unified_memory[i][15:0]);
         end
+        /*
+        while (~evqueue.queue_empty || ~(|idle) || cycle_num < timeout_cycle_num)
+        begin
+            cycle_num = cycle_num + 1;
+            @(posedge clk_i);
+        end
+        if (cycle_num >= timeout_cycle_num)
+        begin
+            $display("@@@ TIMEOUT AT CYCLE %d @@@", cycle_num);
+        end
+        else
+        begin
+            $display("@@@ CONVERGENCE REACHED AT %d @@@", cycle_num);
+            for (integer i = 0; i < 10; i = i + 1)
+            begin
+                $display("vertex mem [%d] = %h", i, vertexmem.unified_memory[i][15:0]);
+            end
+        end
+        */
         $finish;
     end
 

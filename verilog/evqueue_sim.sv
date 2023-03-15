@@ -6,9 +6,6 @@
 //                                                                     //
 /////////////////////////////////////////////////////////////////////////
 
-
-/// ************** TODO: integrate into pe_tb.sv
-
 module evqueue_sim
 (
     input   logic                                                   clk_i           ,   //  Clock
@@ -102,7 +99,7 @@ module evqueue_sim
         fpu_opB = '0;
 
         // reactivation
-        if (waiting_for_pe_n && (|PEReady_i))
+        if (waiting_for_pe_n && (&PEReady_i))
         begin
             waiting_for_pe_n = 1'b0;
             curr_scan_idx_n = '0;

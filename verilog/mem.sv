@@ -62,13 +62,16 @@ module mem (
 				                          // though this could be done via a non-number
 				                          // definition for this macro
 				
+				waiting_for_bus[i] = 1'b1; // store also needs to return tag to acknowledge store completion
+
 				if(proc2mem_command == BUS_LOAD) begin
-					waiting_for_bus[i] = 1'b1;
+					// waiting_for_bus[i] = 1'b1;
 					// loaded_data[i]     = unified_memory[proc2mem_addr[`XLEN-1:3]];
 					loaded_data[i]     = unified_memory[proc2mem_addr];
 				end else begin
 					// unified_memory[proc2mem_addr[`XLEN-1:3]]=proc2mem_data;
 					unified_memory[proc2mem_addr]=proc2mem_data;
+					loaded_data[i] = 'x;
 				end
 			end
 			

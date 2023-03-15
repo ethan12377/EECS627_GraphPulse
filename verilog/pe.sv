@@ -92,6 +92,9 @@ module pe #(
     logic [1:0] fpu_op, fpu_status_i, fpu_status_o;
     logic fpu_empty, fpu_clear;
 
+    // converter
+    logic [15:0] converter_int16, converter_float16;
+
     // current event info
     logic [`DELTA_WIDTH-1:0] curr_delta, curr_delta_n;
     logic [`VERTEX_IDX_WIDTH-1:0]  curr_idx, curr_idx_n;
@@ -158,6 +161,16 @@ module pe #(
         .result(fpu_result),
         .status_o(fpu_status_o),
         .empty_o(fpu_empty)
+    );
+
+    // ----------------------------------------------------------------
+    // ----------------------------------------------------------------
+    // Module name  :   int16_to_float16
+    // Description  :   int16 to float16 converter
+    // ----------------------------------------------------------------
+    int16_to_float16 float16_converter (
+        .int16_i(converter_int16),
+        .float16_o(converter_float16)
     );
 
     // ----------------------------------------------------------------
@@ -380,6 +393,8 @@ module pe #(
         fpu_opB                             = '0;
         fpu_op                              = `FPU_ADD;
         fpu_status_i                        = '0;
+        ////////// converter input //////////
+        converter_int16                     = '0;
 
         // capture tags from mem when needed (if acknowledged, capture resp at next posedge)
         
@@ -520,7 +535,7 @@ module pe #(
                         end
                         else // start and end are not in the same word, send edgemem request for end
                         begin
-                            pe_edge_reqAddr_n = {10'b0010000000, (curr_idx[7:2] + 1)}; // curr_idx[7:2] + 8192 + 1
+                            pe_edge_reqAddr_n = {2'b00, 1'b1, 7'b0, curr_idx_n[7:2]} + 1;
                             pe_edge_reqValid_n = 1'b1;
                             em_req_status_n = EM_END;
                         end
@@ -579,10 +594,15 @@ module pe #(
                     if (adj_list_start_n == adj_list_end_n) // sink detected, distribute pagerank among all other vertices
                     begin
                         adj_list_start_n = 0;
-                        adj_list_end_n = num_of_vertices_int8;
-                        curr_prodelta_denom_n = num_of_vertices_int8;
+                        adj_list_end_n = {8'b0, num_of_vertices_int8};
+                        converter_int16 = {8'b0, num_of_vertices_int8};
+                        curr_prodelta_denom_n = converter_float16;
                     end
-                    else curr_prodelta_denom_n = adj_list_end_n - adj_list_start_n;
+                    else 
+                    begin
+                        converter_int16 = adj_list_end_n - adj_list_start_n;
+                        curr_prodelta_denom_n = converter_float16;
+                    end
                     curr_prodelta_denom_ready_n = 1'b1;
                 end
 
@@ -764,8 +784,11 @@ module pe #(
                 if (proport_done_n == 2'b11 && (initializing || ruw_complete)) // finished fulfilling last event
                 begin
                     // clear initializing status
-                    initializing_n = 1'b0;
-                    initialFinish_n = 1'b1;
+                    if (initializing)
+                    begin
+                        initializing_n = 1'b0;
+                        initialFinish_n = 1'b1;
+                    end
                     next_state = S_IDLE;
                 end
                 else next_state = S_EVGEN;
