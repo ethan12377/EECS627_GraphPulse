@@ -2,13 +2,14 @@
 //                                                                     //
 //  Modulename  :  CU_fifo.sv                                          //
 //                                                                     //
-//  Description :  basic fifo in coalescing unit                       // 
+//  Description :  basic fifo in coalescing unit,                      //
+//                 head output all the time                            // 
 //                                                                     //
 /////////////////////////////////////////////////////////////////////////
 
 module CU_fifo #(
     parameter   C_WIDTH             =   `EVENT_WIDTH           ,
-    parameter   C_VERTEX_IDX_WIDTH             =   `VERTEX_IDX_WIDTH           ,
+    parameter   C_VERTEX_IDX_WIDTH  =   `VERTEX_IDX_WIDTH      ,
     parameter   C_DELTA_WIDTH       =   `DELTA_WIDTH           ,
     parameter   C_CU_FIFO_DEPTH     =   `CU_FIFO_DEPTH         ,
     parameter   C_IDX_WIDTH         =   $clog2(C_CU_FIFO_DEPTH)
@@ -17,11 +18,12 @@ module CU_fifo #(
     input  logic                            rst_i          ,   //  Reset
     
 
-    // test
-    output  logic   [C_IDX_WIDTH:0]                     data_count      ,    
-    // testend
+    // // test
+    // output  logic   [C_IDX_WIDTH:0]         data_count     ,    
+    // // testend
 
-    output logic [C_VERTEX_IDX_WIDTH-1:0]          arrayheadIdx   ,
+    output logic [C_VERTEX_IDX_WIDTH-1:0]   arrayheadIdx   ,
+
     // Push_In
     input  logic                            wr_en_i        ,
     input  logic [C_WIDTH-1:0]              wdata_i        ,
@@ -38,14 +40,11 @@ module CU_fifo #(
 // ====================================================================
 // Signal Declarations Start
 // ====================================================================
-    // logic   [C_IDX_WIDTH:0]                     data_count      ;             
+    logic   [C_IDX_WIDTH:0]                     data_count      ;             
     logic   [C_IDX_WIDTH-1:0]                   tail            ;                 
     logic   [C_IDX_WIDTH-1:0]                   head            ; 
-    logic   [C_IDX_WIDTH-1:0]                   next_head       ;
-    logic   [C_IDX_WIDTH-1:0]                   next_tail       ;
     logic                                       push_in_en      ;
     logic                                       pop_out_en      ;
-    // logic                                       full ;
 
     logic   [C_CU_FIFO_DEPTH-1:0][C_WIDTH-1:0]  FIFO            ;              
 // ====================================================================
@@ -73,7 +72,7 @@ module CU_fifo #(
 // --------------------------------------------------------------------
 always_ff@(posedge clk_i) begin 
     if(rst_i)
-        data_count             <= `SD 'd0;
+        data_count            <= `SD 'd0;
     else begin
         case({push_in_en,pop_out_en})
             2'b00:data_count  <=  `SD  data_count;
@@ -89,57 +88,29 @@ end
 // --------------------------------------------------------------------
     assign ready_o     =    (data_count==C_CU_FIFO_DEPTH)?1'b0:1'b1;
     assign empty_o     =    (data_count==0)?1'b1:1'b0;
-
-
-    // always_ff @(posedge clk_i) begin
-    //     if (rst_i) begin
-    //         ready_o <=   `SD 1'b0;
-    //     end
-    //     else if (data_count==C_CU_FIFO_DEPTH) begin
-    //             ready_o <=   `SD 1'b0;
-    //     end else begin
-    //         ready_o <=   `SD 1'b1;
-    //     end
-    // end
-
-    //     always_ff @(posedge clk_i) begin
-    //     if (rst_i) begin
-    //         ready_o <=   `SD 1'b0;
-    //     end
-    //     else begin
-    //         ready_o <=   `SD ready_o_reg;
-    //     end 
-    // end
-
-    
+  
 
 // --------------------------------------------------------------------
 // Pointer movement
 // --------------------------------------------------------------------
-    // Pointer sequential
+    // tail
     always_ff @(posedge clk_i) begin
         if (rst_i) begin
-            // head    <=  `SD 'd0;
             tail    <=  `SD 'd0;
-        end else begin
-            // head    <=  `SD next_head;
-            tail    <=  `SD next_tail;
+        end else if (push_in_en) begin
+            if (tail == C_CU_FIFO_DEPTH -1) begin
+                tail    <=  `SD 'd0;
+                end else begin
+                tail    <=  `SD 'd1+tail;
+            end
         end
+            else begin 
+                tail    <=  `SD tail;
+            end
     end
     
 
-    // Next state of pointers
-    always_comb begin
-        next_tail   =   tail;
-        if (push_in_en) begin
-            if (tail == C_CU_FIFO_DEPTH -1) begin
-                next_tail   =   0;
-            end else begin
-                next_tail   =   tail + 1;
-            end        
-        end
-    end
-
+    // head
     always_ff @(posedge clk_i) begin
         if (rst_i) begin
             head    <=  `SD 'd0;

@@ -59,17 +59,13 @@ if __name__ == "__main__":
 
     print(f'rowValid binIdx rowIdx', end=' ', file=fd)
 
-    for i in range(8):
-        print(f'rowDelta[{i}]', end=' ', file=fd)
+    # for i in range(8):
+    #     print(f'rowDelta[{i}]', end=' ', file=fd)
     
     for i in range(8):
         print(f'CUReady[{i}]', end=' ', file=fd)
 
-    for i in range(8):
-        print(f'CUClean[{i}]', end=' ', file=fd)
 
-    for i in range(8):
-        print(f'searchidx[{i}] searchvalid[{i}]', end=' ', file=fd)
 
     print('',end='\n', file=fd)
 
@@ -107,11 +103,11 @@ if __name__ == "__main__":
         for j in range(8):
             print(io_port.CUReady[j], end=' ', file=fd)
 
-        for j in range(8):
-            print(io_port.cuclean[j], end=' ', file=fd)
+        # for j in range(8):
+        #     print(io_port.cuclean[j], end=' ', file=fd)
 
-        for j in range(8):
-            print(hex(io_port.searchIdx[j])[2:].zfill(2), io_port.searchValid[j], end=' ', file=fd)
+        # for j in range(8):
+        #     print(hex(io_port.searchIdx[j])[2:].zfill(2), io_port.searchValid[j], end=' ', file=fd)
         
 
         print('',end='\n', file=fd)

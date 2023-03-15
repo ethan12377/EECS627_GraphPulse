@@ -39,10 +39,10 @@ module event_queues #(
     output  logic                                           rowValid_o      ,
     input   logic                                           rowReady_i      ,
 
-    // test
-    output logic  [C_BIN_NUM-1:0][C_VERTEX_IDX_WIDTH-1:0]         searchIdx         ,
-    output logic  [C_BIN_NUM-1:0]                                 searchValid       ,
-    // test end
+    // // test
+    // output logic  [C_BIN_NUM-1:0][C_VERTEX_IDX_WIDTH-1:0]         searchIdx         ,
+    // output logic  [C_BIN_NUM-1:0]                                 searchValid       ,
+    // // test end
 
     // Queue empty flag for convergence check
     output  logic                                           queueEmpty_o     
@@ -63,8 +63,8 @@ logic                                   newValid         [C_BIN_NUM-1:0] ;
 logic  [C_VERTEX_IDX_WIDTH-1:0]         newIdx           [C_BIN_NUM-1:0] ;
 logic  [C_DELTA_WIDTH-1:0]              newDelta         [C_BIN_NUM-1:0] ;
 
-// logic  [C_VERTEX_IDX_WIDTH-1:0]         searchIdx        [C_BIN_NUM-1:0] ;
-// logic                                   searchValid      [C_BIN_NUM-1:0] ;
+logic  [C_VERTEX_IDX_WIDTH-1:0]         searchIdx        [C_BIN_NUM-1:0] ;
+logic                                   searchValid      [C_BIN_NUM-1:0] ;
 logic  [C_DELTA_WIDTH-1:0]              searchValue      [C_BIN_NUM-1:0] ;
 logic                                   searchValueValid [C_BIN_NUM-1:0] ;
 
@@ -72,12 +72,12 @@ logic  [C_ROW_IDX_WIDTH-1:0]            rowIdx           [C_BIN_NUM-1:0] ;
 logic  [C_DELTA_WIDTH * C_COL_NUM-1:0]  rowDelta         [C_BIN_NUM-1:0] ;
 logic                                   rowValid         [C_BIN_NUM-1:0] ;
 logic                                   rowReady         [C_BIN_NUM-1:0] ;
-// test
-logic   [C_ROW_NUM-1:0]                 rowNotEmpty      [C_BIN_NUM-1:0] ;
-logic   [C_COL_NUM-1:0][C_DELTA_WIDTH-1:0]   allrow0     [C_BIN_NUM-1:0] ;
-logic   [2:0]                     data_count    [C_BIN_NUM-1:0] ;
-logic                            r_en        [C_BIN_NUM-1:0]      ;
-logic   [C_VERTEX_IDX_WIDTH-1:0]            arrayheadIdx       [C_BIN_NUM-1:0]      ;
+// // test
+// logic   [C_ROW_NUM-1:0]                 rowNotEmpty      [C_BIN_NUM-1:0] ;
+// logic   [C_COL_NUM-1:0][C_DELTA_WIDTH-1:0]   allrow0     [C_BIN_NUM-1:0] ;
+// logic   [2:0]                     data_count    [C_BIN_NUM-1:0] ;
+// logic                            r_en        [C_BIN_NUM-1:0]      ;
+// logic   [C_VERTEX_IDX_WIDTH-1:0]            arrayheadIdx       [C_BIN_NUM-1:0]      ;
 
 // test end
 
@@ -110,10 +110,10 @@ generate
             .searchValid_i     (searchValid     [binIter]   ),
             .searchValue_o     (searchValue     [binIter]   ),
             .searchValueValid_o(searchValueValid[binIter]   ),
-            // test
-            .rowNotEmpty       (rowNotEmpty     [binIter]   ),
-            .allrow0           (allrow0         [binIter]   ),
-            // test end
+            // // test
+            // .rowNotEmpty       (rowNotEmpty     [binIter]   ),
+            // .allrow0           (allrow0         [binIter]   ),
+            // // test end
             .rowIdx_o          (rowIdx          [binIter]   ),
             .rowDelta_o        (rowDelta        [binIter]   ),
             .rowValid_o        (rowValid        [binIter]   ),
@@ -146,11 +146,11 @@ generate
             .searchValue_i     (searchValue     [binIter] ),
             .searchValueValid_i(searchValueValid[binIter] ),
 
-            // test
-            .data_count(data_count[binIter]),
-            .r_en(r_en[binIter]),
-            .arrayheadIdx(arrayheadIdx[binIter]),
-            // test end
+            // // test
+            // .data_count(data_count[binIter]),
+            // .r_en(r_en[binIter]),
+            // .arrayheadIdx(arrayheadIdx[binIter]),
+            // // test end
             .CUClean_o         (CUClean_o       [binIter] )
         );
     end
