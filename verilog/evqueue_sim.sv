@@ -42,7 +42,6 @@ module evqueue_sim
     logic waiting_for_pe, waiting_for_pe_n;
     // fpu
     logic [15:0] fpu_opA, fpu_opB, fpu_result;
-    logic [1:0] fpu_op;
     // outputs
     logic [`PE_NUM_OF_CORES-1:0][`DELTA_WIDTH-1:0]          PEDelta_n;
     logic [`PE_NUM_OF_CORES-1:0][`VERTEX_IDX_WIDTH-1:0]     PEIdx_n;

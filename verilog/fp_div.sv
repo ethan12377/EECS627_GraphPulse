@@ -17,6 +17,11 @@ module fp_div(
     logic [20:0] op1, op2;
     logic diffOverflow;
     
+    logic implicit_one_opA, implicit_one_opB;
+    // if exponent is zero, there is no implicit '1' for mantissa
+    assign implicit_one_opA = (eA != 5'b00000);
+    assign implicit_one_opB = (eB != 5'b00000);
+
     assign dbz = (opB == 16'd0);
     
     assign sA = opA[15];
@@ -30,8 +35,8 @@ module fp_div(
     // Divide mantissas
     // ------------------------------
 
-    assign fullmA = {1'b1, mA};
-    assign fullmB = {1'b1, mB};
+    assign fullmA = {implicit_one_opA, mA};
+    assign fullmB = {implicit_one_opB, mB};
     assign op1 = {fullmA, 10'b0000000000};
     assign op2 = {10'b0000000000, fullmB};
     // concatenate 0's to operands for fixed point division

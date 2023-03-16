@@ -6,7 +6,7 @@ from scipy.sparse import csr_matrix
 # matrix format: adjacency matrix where M_i,j represents the link from 'j' to 'i', such that for all 'j', sum(i, M_i,j) = 1
 #                all edges weighted equally
 
-# this program generates "edge_cache.mem" and "vertex_cache.mem"
+# this program generates "edge_cache.mem"
 
 def matrix_to_csr(matrix, filename):
     rows, cols = len(matrix), len(matrix[0])

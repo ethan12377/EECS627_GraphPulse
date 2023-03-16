@@ -6,9 +6,6 @@
 //                                                                     //
 /////////////////////////////////////////////////////////////////////////
 
-
-// CURRENT ISSUE: UNEXPECTED RETURN VALUE WHEN GRABBING NEW END
-
 module pe_tb ();
 
 // ====================================================================
@@ -267,14 +264,11 @@ module pe_tb ();
         // initialize memory content
         $readmemb("edge_cache.mem", edgemem.unified_memory);
         rst_i = 1'b1; repeat(5) @(posedge clk_i);
-        rst_i = 1'b0; repeat(10000) @(posedge clk_i);
-        for (integer i = 0; i < 10; i = i + 1)
+        // rst_i = 1'b0; repeat(10000) @(posedge clk_i);
+        rst_i = 1'b0; @(posedge clk_i);
+        while (~evqueue.queue_empty || ~(|idle))
         begin
-            $display("vertex mem [%d] = %h", i, vertexmem.unified_memory[i][15:0]);
-        end
-        /*
-        while (~evqueue.queue_empty || ~(|idle) || cycle_num < timeout_cycle_num)
-        begin
+            if (cycle_num >= timeout_cycle_num) break;
             cycle_num = cycle_num + 1;
             @(posedge clk_i);
         end
@@ -285,12 +279,11 @@ module pe_tb ();
         else
         begin
             $display("@@@ CONVERGENCE REACHED AT %d @@@", cycle_num);
-            for (integer i = 0; i < 10; i = i + 1)
-            begin
-                $display("vertex mem [%d] = %h", i, vertexmem.unified_memory[i][15:0]);
-            end
         end
-        */
+        for (integer i = 0; i < 10; i = i + 1)
+        begin
+            $display("vertex mem [%d] = %h", i, vertexmem.unified_memory[i][15:0]);
+        end
         $finish;
     end
 

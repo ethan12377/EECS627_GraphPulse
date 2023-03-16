@@ -21,11 +21,16 @@ module fp_mul(
     assign eB = opB[14:10];
     assign mB = opB[9:0];
     
+    logic implicit_one_opA, implicit_one_opB;
+    // if exponent is zero, there is no implicit '1' for mantissa
+    assign implicit_one_opA = (eA != 5'b00000);
+    assign implicit_one_opB = (eB != 5'b00000);
+
     /////////////////////////////////////////////////////////
     // Multiply mantissas
     // ------------------------------
 
-    assign mProduct = {1'b1, mA} * {1'b1, mB};
+    assign mProduct = {implicit_one_opA, mA} * {implicit_one_opB, mB};
 
     /////////////////////////////////////////////////////////
     // Add exponents
