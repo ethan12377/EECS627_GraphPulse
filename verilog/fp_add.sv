@@ -10,10 +10,12 @@ module fp_add(
     logic [9:0] mA, mB;
     
     logic [4:0] diffE, absDiffE;
-    logic [10:0] shiftInput, shiftOutput, op2;
+    logic [10:0] shiftInput;
+    logic [39:0] shiftOutput, op2;
     logic subtract;
 
-    logic [10:0] mSum, diffM, absDiffM;
+    logic [10:0] mSum;
+    logic [39:0] mSum_long, diffM, absDiffM;
     logic selBigE;
 
     logic finalS;
@@ -38,11 +40,10 @@ module fp_add(
     assign implicit_one_opB = (eB != 5'b00000);
 
     // subtract exponents
-    always_comb
-    begin
-        if (((eA == 5'b00001) || (eA == 5'b00000)) && ((eB == 5'b00001 || eB == 5'b00000))) diffE = 5'b00000; // 5'b00001 and 5'b00000 both represents exponent of -14
-        else diffE = eA - eB;
-    end
+    logic [4:0] eA_adjusted, eB_adjusted;
+    assign eA_adjusted = (eA == 5'b00000) ? 5'b00001 : eA;
+    assign eB_adjusted = (eB == 5'b00000) ? 5'b00001 : eB;
+    assign diffE = eA_adjusted - eB_adjusted;
     assign absDiffE = diffE[4] ? ~diffE+1 : diffE;
 
     // select operand w/ smaller exponent to shift mantissa to the right
@@ -50,8 +51,8 @@ module fp_add(
     
     assign subtract = sA ^ sB;
     
-    assign shiftOutput = shiftInput >> absDiffE;
-    assign op2 = diffE[4] ? {implicit_one_opB, mB} : {implicit_one_opA, mA};
+    assign shiftOutput = {shiftInput, 29'b0} >> absDiffE;
+    assign op2 = diffE[4] ? {implicit_one_opB, mB, 29'b0} : {implicit_one_opA, mA, 29'b0};
     assign selBigE = diffE[4];
 
     
@@ -60,8 +61,8 @@ module fp_add(
     // ------------------------------
     assign diffM = op2 - shiftOutput;
     assign absDiffM = (op2 < shiftOutput) ? ~diffM+1 : diffM; 
-    assign {cout, mSum} = subtract ? (absDiffM) : 
-                                    (op2 + shiftOutput);
+    assign {cout, mSum_long} = subtract ? (absDiffM) : (op2 + shiftOutput);
+    assign mSum = mSum_long[28] ? (mSum_long[39:29] + 1) : mSum_long[39:29];
     
     /////////////////////////////////////////////////////////
     // Normalize & set flags 
