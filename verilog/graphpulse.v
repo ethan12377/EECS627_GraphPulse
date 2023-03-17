@@ -13,11 +13,9 @@ module GraphPulse (
     output [1:0]    edgemem_command,
     output [`XLEN-1:0] edgemem_addr,
     output [63:0]   edgemem_st_data,
-    output [1:0]    edgemem_size,
     output [1:0]    vertexmem_command,
     output [`XLEN-1:0] vertexmem_addr,
-    output [63:0]   vertexmem_st_data,
-    output [1:0]    vertexmem_size
+    output [63:0]   vertexmem_st_data
 );
 
 endmodule // GraphPulse

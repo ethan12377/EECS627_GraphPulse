@@ -18,26 +18,31 @@ module coalescing_unit #(
     input   logic               clk_i           ,   //  Clock
     input   logic               rst_i           ,   //  Reset
     
-    input   logic                           initialFinish_i,
-    input   logic                           binSelected_i  ,
+    input   logic                           initialFinish_i     ,
+    input   logic                           binSelected_i       ,
     
     // Interface with corssbar
-    input  logic   [C_DELTA_WIDTH-1:0]      CUDelta_i      ,
-    input  logic   [C_VERTEX_IDX_WIDTH-1:0] CUIdx_i        ,
-    input  logic                            CUValid_i      ,
-    output logic                            CUReady_o      ,
+    input  logic   [C_DELTA_WIDTH-1:0]      CUDelta_i           ,
+    input  logic   [C_VERTEX_IDX_WIDTH-1:0] CUIdx_i             ,
+    input  logic                            CUValid_i           ,
+    output logic                            CUReady_o           ,
 
     // Interface with queue
-    output logic                            newValid_o     ,
-    output logic   [C_VERTEX_IDX_WIDTH-1:0] newIdx_o       ,    
-    output logic   [C_DELTA_WIDTH-1:0]      newDelta_o     ,
+    output logic                            newValid_o          ,
+    output logic   [C_VERTEX_IDX_WIDTH-1:0] newIdx_o            ,    
+    output logic   [C_DELTA_WIDTH-1:0]      newDelta_o          ,
 
-    output logic   [C_VERTEX_IDX_WIDTH-1:0] searchIdx_o    ,
-    output logic                            searchValid_o  ,
-    input  logic   [C_DELTA_WIDTH-1:0]      searchValue_i  ,
+    output logic   [C_VERTEX_IDX_WIDTH-1:0] searchIdx_o         ,
+    output logic                            searchValid_o       ,
+    input  logic   [C_DELTA_WIDTH-1:0]      searchValue_i       ,
     input  logic                            searchValueValid_i  ,
 
-    output  logic                            CUClean_o      
+    // // test
+    // output  logic   [C_IDX_WIDTH:0]                     data_count      ,   
+    // output    logic                            r_en             ,
+    // // testend
+    // output 
+    output logic                            CUClean_o      
 
 );
 
@@ -53,9 +58,11 @@ module coalescing_unit #(
 // Signal Declarations Start
 // ====================================================================
     logic                            CU_fifo_empty    ;
+    logic                            r_en             ;
     logic   [C_WIDTH-1:0]            fifo_o           ;
     logic                            fifo_valid_o     ;
     logic   [C_DELTA_WIDTH-1:0]      sum              ;
+    logic   [C_VERTEX_IDX_WIDTH-1:0] arrayheadIdx     ;
 
 
     // register
@@ -85,12 +92,16 @@ module coalescing_unit #(
 CU_fifo CU_fifo_inst (
     .clk_i        (clk_i                               ),   //  Clock
     .rst_i        (rst_i                               ),   //  Reset   
-    .wr_en_i      (CUValid_i & (initialFinish_i)       ),   //  fifo after initial
+    // // test
+    // .data_count(data_count),
+    // // test end
+    .arrayheadIdx (arrayheadIdx                        ),
+    .wr_en_i      (CUValid_i && (initialFinish_i)      ),   //  fifo after initial
     .wdata_i      ({CUIdx_i, CUDelta_i}                ),
     .ready_o      (CUReady_o                           ),   
     .rdata_o      (fifo_o                              ),
     .rdata_valid_o(fifo_valid_o                        ),
-    .rd_en_i      ((~binSelected_i) & (initialFinish_i)),   //  issue new data only when bin not selected
+    .rd_en_i      (r_en                                ),   //  issue new data only when bin not selected
     .empty_o      (CU_fifo_empty                       )     
 
 );
@@ -113,6 +124,26 @@ fp_add fp_add_inst(
 // ====================================================================
 // RTL Logic Start
 // ====================================================================
+
+// --------------------------------------------------------------------
+// assign r_en
+// --------------------------------------------------------------------
+
+    always_comb begin
+        r_en = 'b0;
+        if ((~binSelected_i) && (initialFinish_i)) begin
+            if (((arrayheadIdx == searchIdx_o) && searchValid_o)
+                || ((arrayheadIdx == Idx_o_reg1) && Valid_o_reg1)
+                || ((arrayheadIdx == Idx_o_reg2) && Valid_o_reg2)) begin
+                    
+                r_en = 'b0;
+            end
+            else begin
+                r_en = 'b1;
+            end
+        end
+    end
+
 
 // --------------------------------------------------------------------
 // output to Queue
@@ -191,11 +222,14 @@ fp_add fp_add_inst(
         if (rst_i)
             CUClean_o <= `SD 'b0;
 
-        else if (~Valid_o_reg2 & ~Valid_o_reg1 & ~Valid_o_reg0 & ~newValid_o & initialFinish_i)
+        else if (~Valid_o_reg2 && ~Valid_o_reg1 && ~Valid_o_reg0 && ~newValid_o && initialFinish_i)
                 CUClean_o <= `SD 'b1;
             else
                 CUClean_o <= `SD 'b0;
     end
+
+
+
 
 // ====================================================================
 // RTL Logic End

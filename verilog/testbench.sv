@@ -25,18 +25,12 @@ module testbench;
     logic  [3:0] edgemem_response;
     logic [63:0] edgemem_ld_data;
     logic  [3:0] edgemem_tag;
-`ifndef CACHE_MODE
-    MEM_SIZE     edgemem_size;
-`endif
     logic [1:0]  vertexmem_command;
     logic [`XLEN-1:0] vertexmem_addr;
     logic [63:0] vertexmem_st_data;
     logic  [3:0] vertexmem_response;
     logic [63:0] vertexmem_ld_data;
     logic  [3:0] vertexmem_tag;
-`ifndef CACHE_MODE
-    MEM_SIZE     vertexmem_size;
-`endif
 
     GraphPulse gp(
         // Inputs
@@ -55,11 +49,9 @@ module testbench;
         .edgemem_command    (edgemem_command),
         .edgemem_addr       (edgemem_addr),
         .edgemem_st_data    (edgemem_st_data),
-        .edgemem_size       (edgemem_size)
         .vertexmem_command  (vertexmem_command),
         .vertexmem_addr     (vertexmem_addr),
-        .vertexmem_st_data  (vertexmem_st_data),
-        .vertexmem_size     (vertexmem_size)
+        .vertexmem_st_data  (vertexmem_st_data)
     );
 
     mem edgemem (
@@ -68,9 +60,6 @@ module testbench;
         .proc2mem_command  (edgemem_command),
         .proc2mem_addr     (edgemem_addr),
         .proc2mem_data     (edgemem_st_data),
-`ifndef CACHE_MODE
-        .proc2mem_size     (edgemem_size),
-`endif
 
         // Outputs
         .mem2proc_response (edgemem_response),
@@ -84,9 +73,6 @@ module testbench;
         .proc2mem_command  (vertexmem_command),
         .proc2mem_addr     (vertexmem_addr),
         .proc2mem_data     (vertexmem_st_data),
-`ifndef CACHE_MODE
-        .proc2mem_size     (vertexmem_size),
-`endif
 
         // Outputs
         .mem2proc_response (vertexmem_response),
@@ -113,6 +99,10 @@ module testbench;
 		@(posedge clock);
 
 		$readmemh("edge_cache.mem", edgemem.unified_memory);
+        /*
+        $display("%h", edgemem.unified_memory[0]);
+        $display("%h", edgemem.unified_memory[1]);
+        $display("%h", edgemem.unified_memory[2]);*/
 		
 		@(posedge clock);
 		@(posedge clock);
