@@ -35,6 +35,10 @@ module fp_mul(
     /////////////////////////////////////////////////////////
     // Add exponents
     // ------------------------------
+    logic [4:0] eA_adjusted, eB_adjusted;
+    assign eA_adjusted = (eA == 5'b00000) ? 5'b00001 : eA;
+    assign eB_adjusted = (eB == 5'b00000) ? 5'b00001 : eB;
+
     assign eSum = eA + eB;
     assign {cout, biasedESum} = eSum - 15;
     assign eAddOverflow = (cout | (biasedESum == 5'b11111)) ? 1'b1 : 1'b0;
@@ -50,7 +54,7 @@ module fp_mul(
     assign finalP = (eAddOverflow | eNormalOverflow) ? '0 : normalP;
     assign sign = sA ^ sB;
 
-    assign product = {sign, finalE, finalP[19:10]}; // 21=overflow, 20=hidden
+    assign product = {sign, finalE, (finalP[19:10] + finalP[9])}; // 21=overflow, 20=hidden
 
 endmodule
 

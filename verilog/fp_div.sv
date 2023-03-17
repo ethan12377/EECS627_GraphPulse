@@ -5,13 +5,16 @@ module fp_div(
     output logic [15:0] quotient
 );
 
+// eB >= 5'b00001. Divider cannot handle subnormal denominator.
+// In pagerank, we only divide by integers. So this divider is fine.
+
     logic sA, sB, sign;
     logic [4:0] eA, eB, biasedEDiff, finalE, shiftAmount;
     logic [4:0] eDiff;
     logic [5:0] normalizedE;
     logic [9:0] mA, mB, finalM, normalizedM;
     logic dbz;
-    logic [10:0] mQuotient, r;
+    logic [20:0] mQuotient, r;
     logic eSub0, eNormal0;
     logic [10:0] fullmA, fullmB;
     logic [20:0] op1, op2;
@@ -47,8 +50,11 @@ module fp_div(
     /////////////////////////////////////////////////////////
     // Subtract exponents
     // ------------------------------
+    logic [4:0] eA_adjusted, eB_adjusted;
+    assign eA_adjusted = (eA == 5'b00000) ? 5'b00001 : eA;
+    assign eB_adjusted = (eB == 5'b00000) ? 5'b00001 : eB;
 
-    assign {diffOverflow, eDiff} = eA - eB;
+    assign {diffOverflow, eDiff} = eA_adjusted - eB_adjusted;
     assign biasedEDiff = eDiff + 15;
     // exponent difference is too small
     assign eSub0 = ((diffOverflow) & (eDiff < 5'd18)) ? 1'b1 : 1'b0;
