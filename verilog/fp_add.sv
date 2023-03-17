@@ -15,7 +15,7 @@ module fp_add(
     logic subtract;
 
     logic [10:0] mSum;
-    logic [39:0] mSum_long, diffM, absDiffM;
+    logic [39:0] mSum_long, sumM_long, diffM, absDiffM;
     logic selBigE;
 
     logic finalS;
@@ -62,7 +62,7 @@ module fp_add(
     assign diffM = op2 - shiftOutput;
     assign absDiffM = (op2 < shiftOutput) ? ~diffM+1 : diffM; 
     assign {cout, mSum_long} = subtract ? (absDiffM) : (op2 + shiftOutput);
-    assign mSum = mSum_long[28] ? (mSum_long[39:29] + 1) : mSum_long[39:29];
+    assign mSum = mSum_long[39:29] + (|mSum_long[28:0]);
     
     /////////////////////////////////////////////////////////
     // Normalize & set flags 
@@ -112,8 +112,8 @@ module fp_add(
     end
 
     assign sumE = subtract ? (bigE - subShiftAmount) : (bigE + addShiftAmount);
-    assign sumM = subtract ? (mSum << subShiftAmount) : 
-                             (mSum >> addShiftAmount);
+    assign sumM_long = subtract ? (mSum_long << subShiftAmount) : (mSum_long >> addShiftAmount);
+    assign sumM = sumM_long[39:29] + (|sumM_long[28:0]);
 
     // Handle special cases
     assign finalM = (sumE == 5'b11111) ? 10'd0 : sumM;
