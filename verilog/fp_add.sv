@@ -38,7 +38,11 @@ module fp_add(
     assign implicit_one_opB = (eB != 5'b00000);
 
     // subtract exponents
-    assign diffE = eA - eB;
+    always_comb
+    begin
+        if (((eA == 5'b00001) || (eA == 5'b00000)) && ((eB == 5'b00001 || eB == 5'b00000))) diffE = 5'b00000; // 5'b00001 and 5'b00000 both represents exponent of -14
+        else diffE = eA - eB;
+    end
     assign absDiffE = diffE[4] ? ~diffE+1 : diffE;
 
     // select operand w/ smaller exponent to shift mantissa to the right
