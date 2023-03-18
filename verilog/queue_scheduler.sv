@@ -12,7 +12,7 @@ module queue_scheduler #(
 ) (
     input   logic                         clk_i             ,   //  Clock
     input   logic                         rst_i             ,   //  Reset
-    input   logic                         initialFinish_i   ,   
+    input   logic  [`PE_NUM_OF_CORES-1:0] initialFinish_i   ,   
     input   logic  [C_BIN_NUM-1:0]        CUClean_i         ,
     input   logic  [C_BIN_NUM-1:0]        binValid_i        ,
     output  logic  [C_BIN_NUM-1:0]        binSelected_o     ,   
@@ -47,6 +47,9 @@ module queue_scheduler #(
 
     //logic bin
 
+    logic initialFinish;
+    assign initialFinish = &initialFinish_i;
+
 // ====================================================================
 // Signal Declarations End
 // ====================================================================
@@ -69,7 +72,8 @@ module queue_scheduler #(
         .req_i              (binValid_i             ),
         .grant_o            (grant                  ),
         .grant_onehot_o     (grant_onehot           ),
-        .valid_o            (grant_valid            )
+        .valid_o            (grant_valid            ),
+        .mask_o             ()
     );
 
 // --------------------------------------------------------------------
@@ -101,7 +105,7 @@ module queue_scheduler #(
         case(qs_state)
             
             // Initial state
-            I: next_qs_state = initialFinish_i ? C : I;
+            I: next_qs_state = initialFinish ? C : I;
             
             // read and write from CU
             C: begin
