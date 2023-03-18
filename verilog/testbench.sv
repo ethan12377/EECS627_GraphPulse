@@ -12,12 +12,18 @@
 
 module testbench;
 
+// ====================================================================
+// Signal Declarations Start
+// ====================================================================
     logic           clock;
     logic           reset;
-    logic [15:0]    num_vertex;
-    logic           converge;
+    logic [15:0]    num_of_vertecies_float16;
+    assign num_of_vertecies_float16 = 16'h4900;
+    logic [7:0]     num_of_vertecies_int8;
+    assign num_of_vertecies_int8 = 8'd10;
+    // logic           converge;
     logic [31:0]    clock_count;
-    int             cache_fileno;
+    // int             cache_fileno;
     
     logic [1:0]  edgemem_command;
     logic [`XLEN-1:0] edgemem_addr;
@@ -31,12 +37,23 @@ module testbench;
     logic  [3:0] vertexmem_response;
     logic [63:0] vertexmem_ld_data;
     logic  [3:0] vertexmem_tag;
+// ====================================================================
+// Signal Declarations End
+// ====================================================================
 
+// ====================================================================
+// Module Instantiations Start
+// ====================================================================
+// --------------------------------------------------------------------
+// Module name  :   Graphpulse
+// Description  :   top module
+// --------------------------------------------------------------------
     GraphPulse gp(
         // Inputs
         .clock              (clock),
         .reset              (reset),
-        .num_vertex         (num_vertex),
+        .num_of_vertices_float16(num_of_vertecies_float16),
+        .num_of_vertecies_int8(num_of_vertecies_int8),
         .edgemem_response   (edgemem_response),
         .edgemem_ld_data    (edgemem_ld_data),
         .edgemem_tag        (edgemem_tag),
@@ -45,7 +62,7 @@ module testbench;
         .vertexmem_tag      (vertexmem_tag),
 
         // Outputs
-        .converge           (converge),
+        //.converge           (converge),
         .edgemem_command    (edgemem_command),
         .edgemem_addr       (edgemem_addr),
         .edgemem_st_data    (edgemem_st_data),
@@ -53,7 +70,12 @@ module testbench;
         .vertexmem_addr     (vertexmem_addr),
         .vertexmem_st_data  (vertexmem_st_data)
     );
+// --------------------------------------------------------------------
 
+// --------------------------------------------------------------------
+// Module name  :   edgemem
+// Description  :   edge mem
+// --------------------------------------------------------------------
     mem edgemem (
         // Inputs
         .clk               (clock),
@@ -66,7 +88,12 @@ module testbench;
         .mem2proc_data     (edgemem_ld_data),
         .mem2proc_tag      (edgemem_tag)
     );
-    
+// --------------------------------------------------------------------
+
+// --------------------------------------------------------------------
+// Module name  :   vertexmem
+// Description  :   vertex mem
+// --------------------------------------------------------------------
     mem vertexmem (
         // Inputs
         .clk               (clock),
@@ -79,13 +106,26 @@ module testbench;
         .mem2proc_data     (vertexmem_ld_data),
         .mem2proc_tag      (vertexmem_tag)
     );
-    
+// --------------------------------------------------------------------
+// ====================================================================
+// Module Instantiations End
+// ====================================================================
+
+// ====================================================================
+// RTL Logic Start
+// ====================================================================
+// --------------------------------------------------------------------
+// Clock generation
+// --------------------------------------------------------------------
     // Generate System Clock
 	always begin
 		#(`VERILOG_CLOCK_PERIOD/2.0);
 		clock = ~clock;
 	end
 
+// --------------------------------------------------------------------
+// Read edge mem from file
+// --------------------------------------------------------------------
     initial begin
 		// $dumpvars;
 	
@@ -112,9 +152,12 @@ module testbench;
 		reset = 1'b0;
 		$display("@@  %t  Deasserting System reset......\n@@\n@@", $realtime);
 		
-		cache_fileno = $fopen("cache.out");
+		// cache_fileno = $fopen("cache.out");
 	end
 
+// --------------------------------------------------------------------
+// Simulation
+// --------------------------------------------------------------------
     // Count the number of posedges till simulation ends
 	always @(posedge clock) begin
 		if(reset) begin
@@ -122,7 +165,10 @@ module testbench;
 		end else begin
 			clock_count <= `SD (clock_count + 1);
 		end
-		if (clock_count > 3000000) begin
+		if (clock_count > 100000) begin
+            for (integer i = 0; i < 10; i = i + 1) begin
+                $display("vertex mem [%d] = %h", i, vertexmem.unified_memory[i][15:0]);
+            end
 			$display("Time out @ %d", clock_count);
 			$finish;
 		end
@@ -132,19 +178,24 @@ module testbench;
         if(reset) begin
 			$display("@@\n@@  %t : System STILL at reset, can't show anything\n@@",
 			         $realtime);
-        end else begin
-			`SD;
-			`SD;
+        end
+        // else begin
+		// 	`SD;
+		// 	`SD;
 			
-            $fdisplay(cache_fileno, ""); // TODO
+        //     $fdisplay(cache_fileno, ""); // TODO
             
-            if (converge) begin
-                $display("@@@\n@@ Converge");
-                    $fclose(cache_fileno);
-                    #10 $finish;
-            end
+        //     if (converge) begin
+        //         $display("@@@\n@@ Converge");
+        //             $fclose(cache_fileno);
+        //             #10 $finish;
+        //     end
 
-		end  // if(reset)   
+		// end  // if(reset)   
 	end 
+
+// ====================================================================
+// RTL Logic End
+// ====================================================================
 
 endmodule  // module testbench
