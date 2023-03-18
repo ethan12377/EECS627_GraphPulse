@@ -10,6 +10,7 @@ module fp_mul(
     logic [9:0] mA, mB;
 
     logic [21:0] mProduct, normalP, finalP;
+    logic [19:0] finalP_convergent; // omits overflow and hidden bits
     logic [5:0] eSum; // should just be 8:0?
     logic [4:0] biasedESum, normalE, finalE;
     logic sign, cout, eAddOverflow, eNormalOverflow;
@@ -41,7 +42,7 @@ module fp_mul(
 
     assign eSum = eA + eB;
     assign {cout, biasedESum} = eSum - 15;
-    assign eAddOverflow = (cout | (biasedESum == 5'b11111)) ? 1'b1 : 1'b0;
+    assign eAddOverflow = (cout | (biasedESum == 5'b10101)) ? 1'b1 : 1'b0;
 
     /////////////////////////////////////////////////////////
     // Normalize
@@ -49,12 +50,17 @@ module fp_mul(
 
     assign normalP = mProduct[21] ? mProduct >> 1 : mProduct;
     assign normalE = mProduct[21] ? biasedESum + 1 : biasedESum;
-    assign eNormalOverflow = (normalE == 5'b11111);
+    assign eNormalOverflow = (normalE == 5'b10101);
     assign finalE = (eAddOverflow | eNormalOverflow) ? 5'd31 : normalE;
     assign finalP = (eAddOverflow | eNormalOverflow) ? '0 : normalP;
     assign sign = sA ^ sB;
 
-    assign product = {sign, finalE, (finalP[19:10] + finalP[9])}; // 21=overflow, 20=hidden
+    assign finalP_convergent = finalP[(20-1):0]
+                + { {(10){1'b0}},
+                    finalP[(20-10)],
+                    {(20-10-1){!finalP[(20-10)]}}};
+
+    assign product = {sign, finalE, (finalP_convergent[19:10])}; // 21=overflow, 20=hidden
 
 endmodule
 

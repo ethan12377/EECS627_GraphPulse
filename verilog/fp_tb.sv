@@ -1,20 +1,19 @@
 module fp_tb;
 
-    logic [15:0] opA, opB, addsub_result, mul_result, div_result;
+    logic [15:0] opA, opB, sum, diff, product, quotient;
 
-    fp_add fpadd (.opA(opA), .opB(opB), .sum(addsub_result));
+    fpu_comb dut (.*);
 
-    fp_mul fpmul (.opA(opA), .opB(opB), .product(mul_result));
-
-    fp_div fpdiv (.opA(opA), .opB(opB), .quotient(div_result));
+    task calculate;
+        input [15:0] opA_val, opB_val;
+        opA = opA_val; opB = opB_val;
+        #10;
+        $display("opA = %h\t opB = %h\t add = %h\t sub = %h\t mul = %h\t div = %h\t", opA, opB, sum, diff, product, quotient);
+    endtask
 
     initial begin
-        opA = 16'h22fc; opB = 16'h37dc;
-        #10;
-        $display("opA = %h\t opB = %h\t addsub = %h\t mul = %h\t div = %h\t", opA, opB, addsub_result, mul_result, div_result);
-        opA = 16'h39e3; opB = 16'h3b38;
-        #10;
-        $display("opA = %h\t opB = %h\t addsub = %h\t mul = %h\t div = %h\t", opA, opB, addsub_result, mul_result, div_result);
+        calculate(16'h22fc, 16'h37dc);
+        calculate(16'h39e3, 16'h3b38);
         $finish;
     end
 
