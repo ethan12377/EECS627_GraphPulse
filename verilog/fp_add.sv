@@ -1,5 +1,5 @@
-// fp_add takes 2 16-bit operands and outputs a 16-bit sum has well as 
-// underflow, overflow, inexact, and cout flags. 
+// fp_add takes 2 16-bit operands and outputs a 16-bit sum
+
 module fp_add(
     input logic [15:0] opA, opB,
     output logic [15:0] sum
@@ -15,7 +15,7 @@ module fp_add(
     logic subtract;
 
     logic [10:0] mSum;
-    logic [39:0] mSum_long, sumM_long, diffM, absDiffM;
+    logic [39:0] mSum_long, mSum_convergent, sumM_long, sumM_convergent, diffM, absDiffM;
     logic selBigE;
 
     logic finalS;
@@ -62,7 +62,12 @@ module fp_add(
     assign diffM = op2 - shiftOutput;
     assign absDiffM = (op2 < shiftOutput) ? ~diffM+1 : diffM; 
     assign {cout, mSum_long} = subtract ? (absDiffM) : (op2 + shiftOutput);
-    assign mSum = mSum_long[39:29] + (|mSum_long[28:0]);
+    // Round mSum with "round half to even", 40-bit mSum_long to 11-bit mSum
+    assign mSum_convergent = mSum_long[39:0]
+                + { {(11){1'b0}},
+                    mSum_long[(40-11)],
+                    {(40-11-1){!mSum_long[(40-11)]}}};
+    assign mSum = mSum_convergent[39:29]; // used to determie subShiftAmount
     
     /////////////////////////////////////////////////////////
     // Normalize & set flags 
@@ -113,7 +118,12 @@ module fp_add(
 
     assign sumE = subtract ? (bigE - subShiftAmount) : (bigE + addShiftAmount);
     assign sumM_long = subtract ? (mSum_long << subShiftAmount) : (mSum_long >> addShiftAmount);
-    assign sumM = sumM_long[39:29] + (|sumM_long[28:0]);
+    // Round sumM with "round half to even", 40-bit mSum_long to 11-bit mSum
+    assign sumM_convergent = sumM_long[39:0]
+                + { {(11){1'b0}},
+                    sumM_long[(40-11)],
+                    {(40-11-1){!sumM_long[(40-11)]}}};
+    assign sumM = sumM_convergent[39:29];
 
     // Handle special cases
     assign finalM = (sumE == 5'b11111) ? 10'd0 : sumM;
