@@ -10,7 +10,7 @@
 
 `timescale 1ns/100ps
 
-module testbench;
+module gp_testbench;
 
 // ====================================================================
 // Signal Declarations Start
@@ -127,7 +127,8 @@ module testbench;
 // Read edge mem from file
 // --------------------------------------------------------------------
     initial begin
-		// $dumpvars;
+        // $dumpfile("gp.dump");
+		// $dumpvars(0, gp_testbench);
 	
 		clock = 1'b0;
 		reset = 1'b0;

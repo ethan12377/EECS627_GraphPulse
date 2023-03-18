@@ -9,8 +9,8 @@ SIM_FILES += output_buffer.sv OB_bubble_squeezer.sv OB_fifo.sv
 SIM_FILES += coalescing_unit.sv bin_func.sv event_queues.sv queue_scheduler.sv CU_fifo.sv
 
 VV         = vcs
-VVOPTS     = -o $@ +v2k +vc -sverilog -timescale=1ns/1ps +vcs+lic+wait +multisource_int_delays                    \
-	       	+neg_tchk +incdir+$(VERIF) +plusarg_save +overlap +warn=noSDFCOM_UHICD,noSDFCOM_IWSBA,noSDFCOM_IANE,noSDFCOM_PONF -full64 -cc gcc +libext+.v+.vlib+.vh 
+VVOPTS     = -o $@ +v2k +vc -sverilog -timescale=1ns/1ps +vcs+lic+wait +multisource_int_delays -debug_access+r -kdb\
+	       	+neg_tchk +incdir+$(VERIF) +plusarg_save +overlap +warn=noSDFCOM_UHICD,noSDFCOM_IWSBA,noSDFCOM_IANE,noSDFCOM_PONF -full64 -cc gcc +libext+.v+.vlib+.vh -v2k_generate
 
 ifdef WAVES
 VVOPTS += +define+DUMP_VCD=1 +memcbk +vcs+dumparrays +sdfverbose
@@ -30,6 +30,15 @@ clean:
 	rm -fr sim_syn.daidir
 	rm -f *.log
 	rm -fr csrc
+	rm -rf sim.out
+	rm -rf csr.txt
+	rm -rf edge_cache.mem
+	rm -rf verdi*
+	rm -rf novas*
+	rm -rf inter.fsdb
 
-sim:
+sim: $(STD_CELLS) $(SIM_FILES) $(TESTBENCH)
 	$(VV) $(VVOPTS) $(STD_CELLS) $(SIM_FILES) $(TESTBENCH); ./$@
+
+verdi: ./sim
+	./sim -gui=verdi
