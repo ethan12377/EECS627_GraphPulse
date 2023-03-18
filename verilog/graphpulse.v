@@ -138,63 +138,63 @@ module GraphPulse (
 // Module name  :   queue_scheduler
 // Description  :   
 // --------------------------------------------------------------------
-queue_scheduler queue_scheduler_inst(
-    .clk_i                  (clock),   //  Clock
-    .rst_i                  (reset),   //  Reset
-    .initialFinish_i        (initialFinish),   
-    .CUClean_i              (CUClean),
-    .binValid_i             (binValid),
-    .binSelected_o          (binSelected),   
-    .readEn_o               (readEn)          
-);
+    queue_scheduler queue_scheduler_inst(
+        .clk_i                  (clock),   //  Clock
+        .rst_i                  (reset),   //  Reset
+        .initialFinish_i        (initialFinish),   
+        .CUClean_i              (CUClean),
+        .binValid_i             (binValid),
+        .binSelected_o          (binSelected),   
+        .readEn_o               (readEn)          
+    );
 // --------------------------------------------------------------------
 
 // --------------------------------------------------------------------
 // Module name  :   event_queues
 // Description  :   
 // --------------------------------------------------------------------
-event_queues  event_queues_inst(
-    .clk_i                  (clock),   //  Clock
-    .rst_i                  (reset),   //  Reset
-    .initialFinish_i        (initialFinish),
-    .CUDelta_i              (CUDelta),
-    .CUIdx_i                (CUIdx),
-    .CUValid_i              (CUValid),
-    .CUReady_o              (CUReady),
-    .CUClean_o              (CUClean),
-    .binValid_o             (binValid),
-    .binSelected_i          (binSelected),   
-    .readEn_i               (readEn), 
-    .rowIdx_o               (rowIdx),
-    .binIdx_o               (binIdx),
-    .rowDelta_o             (rowDelta),
-    .rowValid_o             (rowValid),
-    .rowReady_i             (rowReady),
-    // // test
-    // .searchIdx        (searchIdx),
-    // .searchValid      (searchValid),
-    // // test end
-    .queueEmpty_o           (queueEmpty)     
-);
+    event_queues  event_queues_inst(
+        .clk_i                  (clock),   //  Clock
+        .rst_i                  (reset),   //  Reset
+        .initialFinish_i        (initialFinish),
+        .CUDelta_i              (CUDelta),
+        .CUIdx_i                (CUIdx),
+        .CUValid_i              (CUValid),
+        .CUReady_o              (CUReady),
+        .CUClean_o              (CUClean),
+        .binValid_o             (binValid),
+        .binSelected_i          (binSelected),   
+        .readEn_i               (readEn), 
+        .rowIdx_o               (rowIdx),
+        .binIdx_o               (binIdx),
+        .rowDelta_o             (rowDelta),
+        .rowValid_o             (rowValid),
+        .rowReady_i             (rowReady),
+        // // test
+        // .searchIdx        (searchIdx),
+        // .searchValid      (searchValid),
+        // // test end
+        .queueEmpty_o           (queueEmpty)     
+    );
 // --------------------------------------------------------------------
 
 // --------------------------------------------------------------------
 // Module name  :   output_buffer
 // Description  :   
 // --------------------------------------------------------------------
-output_buffer output_buffer_inst (
-    .clk_i      (clock      ),   //  Clock
-    .rst_i      (reset      ),   //  Reset
-    .rowIdx_i   (rowIdx     ),
-    .binIdx_i   (binIdx     ),
-    .rowDelta_i (rowDelta   ),
-    .rowValid_i (rowValid   ),
-    .rowReady_o (rowReady   ),
-    .IssDelta_o (IssDelta   ),
-    .IssIdx_o   (IssIdx     ),
-    .IssValid_o (IssValid   ),
-    .IssReady_i (IssReady   )
-);
+    output_buffer output_buffer_inst (
+        .clk_i      (clock      ),   //  Clock
+        .rst_i      (reset      ),   //  Reset
+        .rowIdx_i   (rowIdx     ),
+        .binIdx_i   (binIdx     ),
+        .rowDelta_i (rowDelta   ),
+        .rowValid_i (rowValid   ),
+        .rowReady_o (rowReady   ),
+        .IssDelta_o (IssDelta   ),
+        .IssIdx_o   (IssIdx     ),
+        .IssValid_o (IssValid   ),
+        .IssReady_i (IssReady   )
+    );
 // --------------------------------------------------------------------
 
 // --------------------------------------------------------------------
@@ -271,25 +271,6 @@ output_buffer output_buffer_inst (
             );
         end
     endgenerate
-// --------------------------------------------------------------------
-
-// --------------------------------------------------------------------
-// Module name  :   evqueue
-// Description  :   ideal evqueue for simulation
-// --------------------------------------------------------------------
-    evqueue_sim evqueue (
-        .clk_i                  (clock),
-        .rst_i                  (reset),
-        .PEReady_i              (PEReady),
-        .proDelta_i             (proDelta),
-        .proIdx_i               (proIdx),
-        .proValid_i             (proValid),
-        .ProReady_o             (proReady),
-        .PEDelta_o              (PEDelta),
-        .PEIdx_o                (PEIdx),
-        .PEValid_o              (PEValid)
-    );
-
 // --------------------------------------------------------------------
 
 // --------------------------------------------------------------------

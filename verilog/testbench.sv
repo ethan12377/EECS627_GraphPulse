@@ -17,10 +17,10 @@ module testbench;
 // ====================================================================
     logic           clock;
     logic           reset;
-    logic [15:0]    num_of_vertecies_float16;
-    assign num_of_vertecies_float16 = 16'h4900;
-    logic [7:0]     num_of_vertecies_int8;
-    assign num_of_vertecies_int8 = 8'd10;
+    logic [15:0]    num_of_vertices_float16;
+    assign num_of_vertices_float16 = 16'h4900;
+    logic [7:0]     num_of_vertices_int8;
+    assign num_of_vertices_int8 = 8'd10;
     // logic           converge;
     logic [31:0]    clock_count;
     // int             cache_fileno;
@@ -52,8 +52,8 @@ module testbench;
         // Inputs
         .clock              (clock),
         .reset              (reset),
-        .num_of_vertices_float16(num_of_vertecies_float16),
-        .num_of_vertecies_int8(num_of_vertecies_int8),
+        .num_of_vertices_float16(num_of_vertices_float16),
+        .num_of_vertices_int8(num_of_vertices_int8),
         .edgemem_response   (edgemem_response),
         .edgemem_ld_data    (edgemem_ld_data),
         .edgemem_tag        (edgemem_tag),

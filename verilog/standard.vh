@@ -56,6 +56,7 @@
 `define PE_FPU_PIPE_DEPTH       3
 `define PE_DAMPING_FACTOR	    16'h3ACC // float16 representation of 0.85
 `define PE_NUM_OF_CORES         4
+`define PE_NUM					`PE_NUM_OF_CORES
 `define GEN_PER_PE              2
 `define GEN_NUM                 `GEN_PER_PE * `PE_NUM
 
