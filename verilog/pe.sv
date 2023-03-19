@@ -372,7 +372,7 @@ module pe #(
         proport_done_n                      = proport_done;
         ////////// top-level outputs //////////
         // to scheduler
-        initialFinish_n                     = 1'b0;
+        initialFinish_n                     = initialFinish_o;
         // to crossbar 2
         ProDelta_n[0]                       = 'x;
         ProIdx_n[0]                         = 'x;

@@ -32,7 +32,6 @@ clean:
 	rm -fr csrc
 	rm -rf sim.out
 	rm -rf csr.txt
-	rm -rf edge_cache.mem
 	rm -rf verdi*
 	rm -rf novas*
 	rm -rf inter.fsdb
