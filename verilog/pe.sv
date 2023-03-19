@@ -189,10 +189,14 @@ module pe #(
     assign fpu_clear = (next_state == S_IDLE);
     // mem
     // always capture response one cycle after acknowledgement
-    assign vm_acked_n                   = (vm_req_status_n == VM_IDLE) ? 1'b0 : vertexmem_ack_i ? 1'b1 : vm_acked;
-    assign em_acked_n                   = (em_req_status_n == EM_IDLE) ? 1'b0 : edgemem_ack_i ? 1'b1 : em_acked;
+    assign vm_acked_n                   = (vm_req_status_n == VM_IDLE) ? 1'b0 : 
+                                          (vertexmem_ack_i) ? 1'b1 : 
+                                          (vertexmem_resp_i == curr_vm_tag) ? 1'b0 : vm_acked;
+    assign em_acked_n                   = (em_req_status_n == EM_IDLE) ? 1'b0 :              // default while em is idle
+                                          (edgemem_ack_i) ? 1'b1 :                           // capture ack while em ack_i
+                                          (edgemem_resp_i == curr_em_tag) ? 1'b0 : em_acked; // clear em_acked when previous req fulfilled
     assign curr_vm_tag_n                = (vm_req_status_n == VM_IDLE) ? 'x : vertexmem_ack_i ? vertexmem_resp_i : curr_vm_tag;
-    assign curr_em_tag_n                = (em_req_status_n == EM_IDLE) ? 'x : edgemem_ack_i ? edgemem_resp_i : curr_em_tag;
+    assign curr_em_tag_n                = (em_req_status_n == EM_IDLE) ? 'x : (edgemem_ack_i) ? edgemem_resp_i : curr_em_tag;
 
     // ----------------------------------------------------------------
     // Status Registers
