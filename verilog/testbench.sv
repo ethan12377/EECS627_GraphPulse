@@ -166,7 +166,7 @@ module gp_testbench;
 		end else begin
 			clock_count <= `SD (clock_count + 1);
 		end
-		if (clock_count > 5000000) begin
+		if (clock_count > 5000) begin
             for (integer i = 0; i < 10; i = i + 1) begin
                 $display("vertex mem [%d] = %h", i, vertexmem.unified_memory[i][15:0]);
             end
