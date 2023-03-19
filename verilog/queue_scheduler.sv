@@ -162,14 +162,14 @@ module queue_scheduler #(
         end else if (qs_state == C && grant_valid) begin
             reading_bin     <=  `SD grant;
             binSelected_o   <=  `SD grant_onehot;
+        end else if (qs_state == C && binValid_i[reading_bin] == 1'b0) begin
+            reading_bin     <=  `SD 'd0;
+            binSelected_o   <=  `SD 'b0;
         end else begin 
             reading_bin     <=  `SD  reading_bin;
             binSelected_o   <=  `SD  binSelected_o;
         end
-        // else if (qs_state == R && binValid_i[reading_bin] == 1'b0) begin
-        //     reading_bin     <=  `SD 'd0;
-        //     binSelected_o   <=  `SD 'b0;
-        // end
+        
     end
 
 // --------------------------------------------------------------------
