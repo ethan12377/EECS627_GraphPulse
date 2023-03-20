@@ -35,3 +35,7 @@ clean:
 
 sim: $(STD_CELLS) $(COMMON) $(SIM_FILES) $(TESTBENCH)
 	$(VV) $(VVOPTS) $(STD_CELLS) $(COMMON) $(SIM_FILES) $(TESTBENCH); ./$@ > sim.out
+
+
+synth:
+	cd ../syn; dc_shell -tcl_mode -xg_mode -f qs.syn.tcl | tee output.txt 

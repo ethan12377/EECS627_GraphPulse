@@ -1,6 +1,6 @@
 Chronologic VCS simulator copyright 1991-2020
 Contains Synopsys proprietary information.
-Compiler version R-2020.12-SP2-1_Full64; Runtime version R-2020.12-SP2-1_Full64;  Mar 15 11:52 2023
+Compiler version R-2020.12-SP2-1_Full64; Runtime version R-2020.12-SP2-1_Full64;  Mar 20 15:30 2023
 Cycle[0]
 Cycle[1]
 Cycle[2]
@@ -505,5 +505,5 @@ $finish called from file "qs_cu_tb.sv", line 294.
 $finish at simulation time              5020000
            V C S   S i m u l a t i o n   R e p o r t 
 Time: 5020000 ps
-CPU Time:      0.560 seconds;       Data structure size:   0.3Mb
-Wed Mar 15 11:52:19 2023
+CPU Time:      0.240 seconds;       Data structure size:   0.3Mb
+Mon Mar 20 15:30:50 2023

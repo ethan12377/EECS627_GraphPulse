@@ -1,5 +1,5 @@
 initialFinish CUDelta[0] CUIdx[0] CUValid[0] CUDelta[1] CUIdx[1] CUValid[1] CUDelta[2] CUIdx[2] CUValid[2] CUDelta[3] CUIdx[3] CUValid[3] CUDelta[4] CUIdx[4] CUValid[4] CUDelta[5] CUIdx[5] CUValid[5] CUDelta[6] CUIdx[6] CUValid[6] CUDelta[7] CUIdx[7] CUValid[7] rowReady rowValid binIdx rowIdx CUReady[0] CUReady[1] CUReady[2] CUReady[3] CUReady[4] CUReady[5] CUReady[6] CUReady[7] 
-0 0000 00 0 0000 00 0 0000 00 0 0000 00 0 0000 00 0 0000 00 0 0000 00 0 0000 00 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0000 00 0 0000 00 0 0000 00 0 0000 00 0 0000 00 0 0000 00 0 0000 00 0 0000 00 0 0 0 0 0 1 1 1 1 1 1 1 1 
 0 38be 03 1 385c 4b 1 3626 d6 0 3bb6 99 0 3a7f a0 1 3b68 68 1 392f 33 1 3a3a f8 0 1 0 0 0 1 1 1 1 1 1 1 1 
 0 3a65 c5 1 396e c8 1 3096 d0 1 2ec7 db 0 3a32 e4 0 3054 2d 1 38e6 31 1 3b39 ba 1 0 0 0 0 1 1 1 1 1 1 1 1 
 0 3b38 c1 1 3956 cb 0 35bb 16 1 35d2 5a 0 3913 a4 1 32af ec 0 38a8 b7 0 33d2 ff 1 1 0 0 0 1 1 1 1 1 1 1 1 
