@@ -52,7 +52,7 @@ def gen_rand_ops(num_of_ops, filename):
             f.write(op1 + ' ' + op2 + ' \n')
 
 def main():
-    gen_rand_ops(100, 'fp_rand_ops.txt')
+    gen_rand_ops(10000, 'fp_rand_ops.txt')
     float16_calc_all('fp_rand_ops.txt', 'fp_results_python.txt')
 
 if __name__ == '__main__':

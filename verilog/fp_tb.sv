@@ -13,7 +13,7 @@ module fp_tb;
 
     integer fi, fo;
     initial begin
-        calculate(16'h07ff, 16'h0001);
+        calculate(16'h5b79, 16'h8011);
         fi = $fopen("fp_rand_ops.txt", "r");
         fo = $fopen("fp_results_verilog.txt", "w");
         while ($fscanf(fi, "%h %h", opA, opB) == 2)

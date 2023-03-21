@@ -14,7 +14,7 @@ module fp_add(
     logic [39:0] shiftOutput, op2;
     logic subtract;
 
-    logic [39:0] mSum_long, mSum_convergent, sumM_long, sumM_shifted, sumM_convergent, diffM, absDiffM;
+    logic [39:0] mSum_long, mSum_long_rounded, sumM_long, sumM_shifted, sumM_convergent, diffM, absDiffM;
 
     logic finalS;
     logic signed [6:0] sumE, bigE, addShiftAmount, subShiftAmount;
@@ -50,7 +50,7 @@ module fp_add(
     assign shiftOutput = {shiftInput, 29'b0} >> absDiffE;
     
     assign subtract = sA ^ sB;
-    assign bigE = (eA_adjusted < eB_adjusted) ? eB : eA;
+    assign bigE = (eA_adjusted < eB_adjusted) ? eB_adjusted : eA_adjusted;
 
     /////////////////////////////////////////////////////////
     // Add mantissas
@@ -58,7 +58,11 @@ module fp_add(
     assign diffM = op2 - shiftOutput;
     assign absDiffM = (op2 < shiftOutput) ? ~diffM+1 : diffM; 
     assign {cout, mSum_long} = subtract ? (absDiffM) : (op2 + shiftOutput);
-    
+    // need to round once here to determine shift amount
+    assign mSum_long_rounded = mSum_long[39:0]
+                + { {(11){1'b0}},
+                    sumM_long[(40-11)],
+                    {(40-11-1){!sumM_long[(40-11)]}}};
     /////////////////////////////////////////////////////////
     // Normalize & set flags 
     // ------------------------------
@@ -89,7 +93,7 @@ module fp_add(
         subShiftAmount = 0;
         for (integer i = 0; i < 40; i = i + 1)
         begin
-            if (mSum_long[39-i]) firstOneNotFound = 1'b0;
+            if (mSum_long_rounded[39-i]) firstOneNotFound = 1'b0;
             subShiftAmount = subShiftAmount + firstOneNotFound;
         end
         case(cout)
@@ -132,6 +136,7 @@ module fp_add(
     // assemble final output
     always_comb begin
         if(subtract & (opA[14:0]==opB[14:0]) & (opA[15] != opB[15])) sum = 16'b0000000000000000;
+        else if ((eA == 5'b00000) && (eB == 5'b00000) && (~sumM[10])) sum = {finalS, 5'b00000, sumM[9:0]}; // output 0 exponent to counter the previous adjustment made
         else sum = {finalS, finalE, sumM[9:0]};
     end
 endmodule 
