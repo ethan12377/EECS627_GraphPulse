@@ -14,13 +14,12 @@ module fp_add(
     logic [39:0] shiftOutput, op2;
     logic subtract;
 
-    logic [10:0] mSum;
-    logic [39:0] mSum_long, mSum_convergent, sumM_long, sumM_convergent, diffM, absDiffM;
-    logic selBigE;
+    logic [39:0] mSum_long, mSum_convergent, sumM_long, sumM_shifted, sumM_convergent, diffM, absDiffM;
 
     logic finalS;
-    logic [4:0] bigE, sumE, finalE, addShiftAmount, subShiftAmount;
-    logic [10:0] sumM, finalM;
+    logic signed [6:0] sumE, bigE, addShiftAmount, subShiftAmount;
+    logic [4:0] finalE;
+    logic [10:0] sumM;
 
     logic implicit_one_opA, implicit_one_opB;
      
@@ -44,37 +43,27 @@ module fp_add(
     assign eA_adjusted = (eA == 5'b00000) ? 5'b00001 : eA;
     assign eB_adjusted = (eB == 5'b00000) ? 5'b00001 : eB;
     assign diffE = eA_adjusted - eB_adjusted;
-    assign absDiffE = diffE[4] ? ~diffE+1 : diffE;
-
-    // select operand w/ smaller exponent to shift mantissa to the right
-    assign shiftInput = diffE[4] ? {implicit_one_opA, mA} : {implicit_one_opB, mB};
+    assign absDiffE = (eA_adjusted < eB_adjusted) ? eB_adjusted - eA_adjusted : eA_adjusted - eB_adjusted;
+    // choose the mantissa with the smaller exponent to be shifted
+    assign shiftInput = (eA_adjusted < eB_adjusted) ? {implicit_one_opA, mA} : {implicit_one_opB, mB};
+    assign op2 = (eA_adjusted < eB_adjusted) ? {implicit_one_opB, mB, 29'b0} : {implicit_one_opA, mA, 29'b0};
+    assign shiftOutput = {shiftInput, 29'b0} >> absDiffE;
     
     assign subtract = sA ^ sB;
-    
-    assign shiftOutput = {shiftInput, 29'b0} >> absDiffE;
-    assign op2 = diffE[4] ? {implicit_one_opB, mB, 29'b0} : {implicit_one_opA, mA, 29'b0};
-    assign selBigE = diffE[4];
+    assign bigE = (eA_adjusted < eB_adjusted) ? eB : eA;
 
-    
     /////////////////////////////////////////////////////////
     // Add mantissas
     // ------------------------------
     assign diffM = op2 - shiftOutput;
     assign absDiffM = (op2 < shiftOutput) ? ~diffM+1 : diffM; 
     assign {cout, mSum_long} = subtract ? (absDiffM) : (op2 + shiftOutput);
-    // Round mSum with "round half to even", 40-bit mSum_long to 11-bit mSum
-    assign mSum_convergent = mSum_long[39:0]
-                + { {(11){1'b0}},
-                    mSum_long[(40-11)],
-                    {(40-11-1){!mSum_long[(40-11)]}}};
-    assign mSum = mSum_convergent[39:29]; // used to determie subShiftAmount
     
     /////////////////////////////////////////////////////////
     // Normalize & set flags 
     // ------------------------------
 
-    // Normalize
-    // assign finalS = (subtract & selBigE) ? sB : sA;
+    // determine sign of result
     always_comb begin
         if (subtract) begin
             if (eA == eB) begin
@@ -93,31 +82,46 @@ module fp_add(
         end
     end
 
-    assign bigE = selBigE ? eB : eA;
+    // determine shift amount needed on mantissa for subtraction/addition
+    logic firstOneNotFound;
     always_comb begin
-        casez(mSum)
-            11'b1??????????: subShiftAmount = 0;
-            11'b01?????????: subShiftAmount = 1;
-            11'b001????????: subShiftAmount = 2;
-            11'b0001???????: subShiftAmount = 3;
-            11'b00001??????: subShiftAmount = 4;
-            11'b000001?????: subShiftAmount = 5;
-            11'b0000001????: subShiftAmount = 6;
-            11'b00000001???: subShiftAmount = 7;
-            11'b000000001??: subShiftAmount = 8;
-            11'b0000000001?: subShiftAmount = 9;
-            11'b00000000001: subShiftAmount = 10;
-            11'b00000000000: subShiftAmount = 11;
-            default: subShiftAmount = 11;
-        endcase
+        firstOneNotFound = 1'b1;
+        subShiftAmount = 0;
+        for (integer i = 0; i < 40; i = i + 1)
+        begin
+            if (mSum_long[39-i]) firstOneNotFound = 1'b0;
+            subShiftAmount = subShiftAmount + firstOneNotFound;
+        end
         case(cout)
-            1'b1: addShiftAmount = 10'd1;
-            1'b0: addShiftAmount = 10'd0;
+            1'b1: addShiftAmount = 1;
+            1'b0: addShiftAmount = 0;
         endcase
     end
 
+    // calculate E with the determined shift amount
     assign sumE = subtract ? (bigE - subShiftAmount) : (bigE + addShiftAmount);
-    assign sumM_long = subtract ? (mSum_long << subShiftAmount) : (mSum_long >> addShiftAmount);
+    assign sumM_shifted = subtract ? (mSum_long << subShiftAmount) : (mSum_long >> addShiftAmount);
+
+    // calculate special cases
+    always_comb
+    begin
+        if (sumE <= 0) // shift mantissa to the right to compensate for insufficient exponent
+        begin
+            finalE = 5'b00000;
+            sumM_long = sumM_shifted >> (1 - sumE);
+        end
+        else if (sumE > 30) // overflow
+        begin
+            finalE = 5'b11111;
+            sumM_long = '0;
+        end
+        else
+        begin
+            finalE = sumE[4:0];
+            sumM_long = sumM_shifted;
+        end
+    end
+
     // Round sumM with "round half to even", 40-bit mSum_long to 11-bit mSum
     assign sumM_convergent = sumM_long[39:0]
                 + { {(11){1'b0}},
@@ -125,11 +129,9 @@ module fp_add(
                     {(40-11-1){!sumM_long[(40-11)]}}};
     assign sumM = sumM_convergent[39:29];
 
-    // Handle special cases
-    assign finalM = (sumE == 5'b11111) ? 10'd0 : sumM;
-    assign finalE = sumE;
+    // assemble final output
     always_comb begin
         if(subtract & (opA[14:0]==opB[14:0]) & (opA[15] != opB[15])) sum = 16'b0000000000000000;
-        else sum = {finalS, finalE, finalM[9:0]};
+        else sum = {finalS, finalE, sumM[9:0]};
     end
 endmodule 
