@@ -145,6 +145,7 @@ module GraphPulse (
         .CUClean_i              (CUClean),
         .binValid_i             (binValid),
         .binSelected_o          (binSelected),   
+        .PEready_i              (PEReady), 
         .readEn_o               (readEn)          
     );
 // --------------------------------------------------------------------

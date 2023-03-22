@@ -63,10 +63,10 @@ module fpu #(parameter PIPELINE_DEPTH=3) (
 
 	always_comb begin
 		case(op)
-			2'b00: result_internal = sum;      // add
-			2'b01: result_internal = sum;      // sub
-			2'b10: result_internal = product;  // mult
-			2'b11: result_internal = quotient; // div
+			`FPU_ADD: result_internal = sum;      // add
+			`FPU_SUB: result_internal = sum;      // sub
+			`FPU_MUL: result_internal = product;  // mult
+			`FPU_DIV: result_internal = quotient; // div
             default: result_internal = 'X;
 		endcase
 	end
