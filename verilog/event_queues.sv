@@ -18,7 +18,7 @@ module event_queues #(
 ) (
     input   logic                                           clk_i           ,   //  Clock
     input   logic                                           rst_i           ,   //  Reset
-    input   logic                                           initialFinish_i ,
+    input   logic   [`PE_NUM_OF_CORES-1:0]                  initialFinish_i ,
 
     // Interface with corssbar
     input   logic   [C_BIN_NUM-1:0][C_DELTA_WIDTH-1:0]      CUDelta_i       ,
@@ -80,6 +80,8 @@ logic                                   rowReady         [C_BIN_NUM-1:0] ;
 // logic   [C_VERTEX_IDX_WIDTH-1:0]            arrayheadIdx       [C_BIN_NUM-1:0]      ;
 
 // test end
+logic initialFinish;
+assign initialFinish = &initialFinish_i;
 
 
 genvar binIter;
@@ -111,8 +113,8 @@ generate
             .searchValue_o     (searchValue     [binIter]   ),
             .searchValueValid_o(searchValueValid[binIter]   ),
             // // test
-            // .rowNotEmpty       (rowNotEmpty     [binIter]   ),
-            // .allrow0           (allrow0         [binIter]   ),
+            .rowNotEmpty       (),
+            .allrow0           (),
             // // test end
             .rowIdx_o          (rowIdx          [binIter]   ),
             .rowDelta_o        (rowDelta        [binIter]   ),
@@ -132,7 +134,7 @@ generate
         coalescing_unit coalescing_unit_inst (
             .clk_i             (clk_i                     ),   //  Clock
             .rst_i             (rst_i                     ),   //  Reset
-            .initialFinish_i   (initialFinish_i           ),
+            .initialFinish_i   (initialFinish             ),
             .binSelected_i     (binSelected_i   [binIter] ),
             .CUDelta_i         (CUDelta_i       [binIter] ),
             .CUIdx_i           (CUIdx_i         [binIter] ),

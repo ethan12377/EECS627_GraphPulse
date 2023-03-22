@@ -4,11 +4,10 @@ STD_CELLS = /afs/umich.edu/class/eecs627/ibm13/artisan/2005q3v1/aci/sc-x/verilog
 # TESTBENCH = Xbar_SchedToPE_tb.sv
 # TESTBENCH = Xbar_PEToQ_tb.sv
 TESTBENCH = qs_cu_tb.sv
-COMMON = standard.vh
 # SIM_FILES = standard.vh graphpulse.v
 # SIM_FILES = Xbar_SchedToPE.sv PE_freelist.sv
 # SIM_FILES = Xbar_PEToQ.sv rr_arbiter.sv priority_arbiter.sv
-SIM_FILES = coalescing_unit.sv bin_func.sv event_queues.sv queue_scheduler.sv CU_fifo.sv priority_arbiter.sv rr_arbiter.sv ../pe/verilog/fp_add.sv
+SIM_FILES = standard.vh coalescing_unit.sv bin_func.sv event_queues.sv queue_scheduler.sv CU_fifo.sv priority_arbiter.sv rr_arbiter.sv ../pe/verilog/fp_add.sv
 
 VV         = vcs
 VVOPTS     = -o $@ +v2k +vc -sverilog -timescale=1ns/1ps +vcs+lic+wait +multisource_int_delays                    \
@@ -33,7 +32,7 @@ clean:
 	rm -f *.log
 	rm -fr csrc
 
-sim: $(STD_CELLS) $(COMMON) $(SIM_FILES) $(TESTBENCH)
+sim: $(STD_CELLS) $(SIM_FILES) $(TESTBENCH)
 	$(VV) $(VVOPTS) $(STD_CELLS) $(COMMON) $(SIM_FILES) $(TESTBENCH); ./$@ > sim.out
 
 

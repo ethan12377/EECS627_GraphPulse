@@ -1,7 +1,7 @@
 import io_port
 import copy
 import numpy as np
-
+from collections import deque
 from RoundRobinArbiter import RoundRobinArbiter
 
 
@@ -21,6 +21,7 @@ class QS:
         # I for Initial
         # C for search and write event from CU
         # B for bin selected
+        # D for waiting detecting PE idle after a round
         # W for selected_bin waiting for CU clean
         # R for selected_bin reading
 
@@ -29,6 +30,10 @@ class QS:
 
         self.binValid = np.zeros((8), dtype=np.uint8)
         self.binValid_n = np.zeros((8), dtype=np.uint8)
+        
+        self.round_buffer = deque(maxlen=8)
+        
+        self.pe_idle_cnt = np.uint8(0)
 
 
     def one_clock(self):
@@ -82,8 +87,41 @@ class QS:
                     io_port.binselected_n = np.zeros((8),dtype=np.uint8)
                     io_port.queue_empty_n = 1
             elif (self.qs_state == 'B'):
+               
+                print('reading_bin: ', self.reading_bin)
+                print('round_buffer: ', self.round_buffer)
+                
+                if self.reading_bin in self.round_buffer:
+                    print('round finished!!!')
+                    self.qs_state_n = 'D'
+                    self.round_buffer.clear()
+                    self.round_buffer.append(self.reading_bin)
+                else:
                     self.qs_state_n = 'W'
+                    self.round_buffer.append(self.reading_bin)
+                    
 
+                    
+            elif (self.qs_state == 'D'):
+                print('PEReady: ', io_port.PEReady)
+                pe_idle = 1
+                for i in range(4):
+                    if io_port.PEReady[i] != 1:
+                        pe_idle = 0
+                
+                print('PE idle: ', pe_idle)
+                if pe_idle == 1:
+                    self.pe_idle_cnt = self.pe_idle_cnt + np.uint8(1)
+                else:
+                    self.pe_idle_cnt = np.uint8(0)
+                print('PE idle cnt: ', self.pe_idle_cnt)
+                # in python, we have 10.
+                # in verilog, we have 8.
+                
+                if self.pe_idle_cnt == 10:
+                    self.qs_state_n = 'W'
+                    self.pe_idle_cnt = np.uint8(0)
+                    
             elif (self.qs_state == 'W'):
                 if io_port.cuclean[self.reading_bin]:
                     self.qs_state_n = 'R'
