@@ -35,6 +35,9 @@ class QS:
         
         self.pe_idle_cnt = np.uint8(0)
 
+        self.prebinselected = np.zeros(8,dtype=np.uint8)
+        self.prebinselected_n = np.zeros(8,dtype=np.uint8)
+
 
     def one_clock(self):
         # input:
@@ -54,6 +57,7 @@ class QS:
         self.readen = copy.deepcopy(self.readen_n)
         self.qs_state = copy.deepcopy(self.qs_state_n)
         self.binValid = self.binValid_n
+        self.prebinselected = self.prebinselected_n
 
         self.update_qs_state()
 
@@ -79,12 +83,12 @@ class QS:
                 if (reading_bin_n_valid):
                     self.qs_state_n = 'B'
                     # update binselected
-                    io_port.binselected_n = np.zeros((8),dtype=np.uint8)
-                    io_port.binselected_n[self.reading_bin_n] = 1
+                    self.prebinselected_n = np.zeros((8),dtype=np.uint8)
+                    self.prebinselected_n[self.reading_bin_n] = 1
                 else:
                     # if no bin selected, all bin empty stay in C state
                     self.qs_state_n = self.qs_state
-                    io_port.binselected_n = np.zeros((8),dtype=np.uint8)
+                    self.prebinselected_n = np.zeros((8),dtype=np.uint8)
                     io_port.queue_empty_n = 1
             elif (self.qs_state == 'B'):
                
@@ -123,6 +127,7 @@ class QS:
                     self.pe_idle_cnt = np.uint8(0)
                     
             elif (self.qs_state == 'W'):
+                io_port.binselected_n = self.prebinselected
                 if io_port.cuclean[self.reading_bin]:
                     self.qs_state_n = 'R'
                     self.readen_n = 1

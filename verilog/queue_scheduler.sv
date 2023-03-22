@@ -59,6 +59,9 @@ module queue_scheduler #(
     logic                       bin_reselect          ;
     logic                       RoundFinish           ;
 
+    // preselect bin at Binselection stage and output binselecion at Wait stage
+    logic [C_BIN_NUM-1:0]       prebinSelected        ;
+
     //logic bin
 
     logic initialFinish;
@@ -220,18 +223,28 @@ module queue_scheduler #(
     always_ff @(posedge clk_i) begin
         if (rst_i) begin
             reading_bin     <=  `SD 'd0;
-            binSelected_o   <=  `SD 'b0;
+            prebinSelected  <=  `SD 'd0;
         end else if (qs_state == CUComm && grant_valid) begin
             reading_bin     <=  `SD grant;
-            binSelected_o   <=  `SD grant_onehot;
+            prebinSelected  <=  `SD grant_onehot;
         end else if (qs_state == CUComm && binValid_i[reading_bin] == 1'b0) begin
             reading_bin     <=  `SD 'd0;
-            binSelected_o   <=  `SD 'b0;
+            prebinSelected  <=  `SD 'd0;
         end else begin 
             reading_bin     <=  `SD  reading_bin;
-            binSelected_o   <=  `SD  binSelected_o;
+            prebinSelected  <=  `SD  prebinSelected;
         end
         
+    end
+
+    always_ff@(posedge clk_i) begin
+        if (rst_i) begin
+            binSelected_o <=  `SD 'd0;
+        end else if (qs_state == WaitRead) begin
+            binSelected_o <=  `SD prebinSelected;
+        end else begin
+            binSelected_o <=  `SD binSelected_o;
+        end
     end
 
 // --------------------------------------------------------------------
