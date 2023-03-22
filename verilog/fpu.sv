@@ -49,8 +49,7 @@ module fpu #(parameter PIPELINE_DEPTH=3) (
 	begin
 		empty_o = 1;
 		for (integer i = 1; i < PIPELINE_DEPTH; i = i + 1)
-			if (pipeline_regs[i][17:16] != 2'b00)
-				empty_o = 0;
+			if (pipeline_regs[i][17:16] != 2'b00) empty_o = 0;
 	end
 
 	assign newOpB = (op == 2'd0) ? opB : {~opB[15], opB[14:0]};

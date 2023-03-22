@@ -1,6 +1,6 @@
 // fp_add takes 2 16-bit operands and outputs a 16-bit sum
 
-module fp_add(
+module fp_add (
     input logic [15:0] opA, opB,
     output logic [15:0] sum
 );
@@ -9,7 +9,7 @@ module fp_add(
     logic [4:0] eA, eB;
     logic [9:0] mA, mB;
     
-    logic [4:0] diffE, absDiffE;
+    logic [4:0] absDiffE;
     logic [10:0] shiftInput;
     logic [39:0] shiftOutput, op2;
     logic subtract;
@@ -42,15 +42,15 @@ module fp_add(
     logic [4:0] eA_adjusted, eB_adjusted;
     assign eA_adjusted = (eA == 5'b00000) ? 5'b00001 : eA;
     assign eB_adjusted = (eB == 5'b00000) ? 5'b00001 : eB;
-    assign diffE = eA_adjusted - eB_adjusted;
     assign absDiffE = (eA_adjusted < eB_adjusted) ? eB_adjusted - eA_adjusted : eA_adjusted - eB_adjusted;
+
     // choose the mantissa with the smaller exponent to be shifted
     assign shiftInput = (eA_adjusted < eB_adjusted) ? {implicit_one_opA, mA} : {implicit_one_opB, mB};
     assign op2 = (eA_adjusted < eB_adjusted) ? {implicit_one_opB, mB, 29'b0} : {implicit_one_opA, mA, 29'b0};
     assign shiftOutput = {shiftInput, 29'b0} >> absDiffE;
     
     assign subtract = sA ^ sB;
-    assign bigE = (eA_adjusted < eB_adjusted) ? eB_adjusted : eA_adjusted;
+    assign bigE = (eA_adjusted < eB_adjusted) ? {1'b0, eB_adjusted} : {1'b0, eA_adjusted};
 
     /////////////////////////////////////////////////////////
     // Add mantissas
@@ -61,29 +61,18 @@ module fp_add(
     // need to round once here to determine shift amount
     assign mSum_long_rounded = mSum_long[39:0]
                 + { {(11){1'b0}},
-                    sumM_long[(40-11)],
-                    {(40-11-1){!sumM_long[(40-11)]}}};
+                    mSum_long[(40-11)],
+                    {(40-11-1){!mSum_long[(40-11)]}}};
     /////////////////////////////////////////////////////////
     // Normalize & set flags 
     // ------------------------------
 
-    // determine sign of result
     always_comb begin
         if (subtract) begin
-            if (eA == eB) begin
-                if (mA > mB)
-                    finalS = sA;
-                else
-                    finalS = sB;
-            end else begin
-                if (eA > eB)
-                    finalS = sA;
-                else 
-                    finalS = sB;
-            end
-        end else begin
-            finalS = sA;
+            if (eA_adjusted == eB_adjusted) finalS = (mA < mB) ? sB : sA; // while exponent is equal, take sign of larger mantissa
+            else finalS = (eA_adjusted < eB_adjusted) ? sB : sA;          // take sign of larger exponent
         end
+        else finalS = sA;
     end
 
     // determine shift amount needed on mantissa for subtraction/addition
