@@ -6,6 +6,8 @@ import copy
 
 np.random.seed(0)
 
+set_PEReady = 0
+
 def Xbar_PEToQ_input():
     for i in range(8):
         io_port.CUDelta_n[i] = np.random.rand()
@@ -14,6 +16,11 @@ def Xbar_PEToQ_input():
 
 def OB_input():
     io_port.rowReady_n = np.uint8(np.random.randint(2))
+    for i in range(4):
+        if set_PEReady == 1:
+            io_port.PEReady_n[i] = np.uint8(1)
+        else:
+            io_port.PEReady_n[i] = np.uint8(np.random.randint(2))
 
 def update():
     # Xbar_PEToQ
@@ -46,6 +53,8 @@ def update():
     io_port.newValid = np.copy(io_port.newValid_n)
 
     io_port.cuclean = np.copy(io_port.cuclean_n)
+    
+    io_port.PEReady = copy.deepcopy(io_port.PEReady_n)
 
 if __name__ == "__main__":
     fd = open('qs_cu_ground_truth.txt', 'w')
@@ -64,6 +73,9 @@ if __name__ == "__main__":
     
     for i in range(8):
         print(f'CUReady[{i}]', end=' ', file=fd)
+        
+    for i in range(4):
+        print(f'PEReady[{i}]', end=' ', file=fd)
 
     print('',end='\n', file=fd)
 
@@ -75,6 +87,13 @@ if __name__ == "__main__":
 
     for i in range(500):
         print("[Clock", i, "]")
+        
+        if i > 200 and i < 220:
+            set_PEReady = 1
+        elif i > 360 and i < 380:
+            set_PEReady = 1
+        else:
+            set_PEReady = 0
         
         if(i < initial):
             io_port.initialFinish_0 = np.int8(0)
@@ -100,6 +119,9 @@ if __name__ == "__main__":
 
         for j in range(8):
             print(io_port.CUReady[j], end=' ', file=fd)
+            
+        for j in range(4):
+            print(io_port.PEReady[j], end=' ', file=fd)
 
         print('',end='\n', file=fd)
 
