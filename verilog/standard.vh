@@ -93,10 +93,11 @@ typedef enum logic [1:0] {
 
 // Queue scheduler states
 typedef enum logic [2:0] {
-	I   = 3'h0,
-	C   = 3'h1,
-	B   = 3'h2,
-	W   = 3'h3,
-	R   = 3'h4
+	Init        = 3'd0,
+	CUComm      = 3'd1,
+	BinSelect   = 3'd2,
+	DetectRound = 3'd3,
+	WaitRead    = 3'd4,
+	Read        = 3'd5
 } QS_STATE;
 //

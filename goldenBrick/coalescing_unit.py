@@ -111,7 +111,10 @@ class CU:
 
             # output: io_port.CUReady_n
             if (self.CU_in_buf[bin_idx][3][2] == 0):
-                io_port.CUReady_n[bin_idx] = 1
+                if (io_port.CUReady[bin_idx] == 1 and io_port.CUValid[bin_idx] == 1 and self.CU_in_buf[bin_idx][2][2] == 1):
+                    io_port.CUReady_n[bin_idx] = 0
+                else:
+                    io_port.CUReady_n[bin_idx] = 1
             else:
                 io_port.CUReady_n[bin_idx] = 0
 

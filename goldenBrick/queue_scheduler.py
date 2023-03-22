@@ -95,6 +95,7 @@ class QS:
                     print('round finished!!!')
                     self.qs_state_n = 'D'
                     self.round_buffer.clear()
+                    self.round_buffer.append(self.reading_bin)
                 else:
                     self.qs_state_n = 'W'
                     self.round_buffer.append(self.reading_bin)
@@ -114,7 +115,8 @@ class QS:
                 else:
                     self.pe_idle_cnt = np.uint8(0)
                 print('PE idle cnt: ', self.pe_idle_cnt)
-                
+                # in python, we have 10.
+                # in verilog, we have 8.
                 
                 if self.pe_idle_cnt == 10:
                     self.qs_state_n = 'W'

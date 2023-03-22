@@ -178,8 +178,8 @@ def init():
 
     # to crossbar2
     global CUReady, CUReady_n
-    CUReady = np.zeros(8, dtype=np.uint8)
-    CUReady_n = np.zeros(8, dtype=np.uint8)
+    CUReady = np.ones(8, dtype=np.uint8)
+    CUReady_n = np.ones(8, dtype=np.uint8)
 
     # to queue
     global searchIdx, searchIdx_n
@@ -189,8 +189,8 @@ def init():
     global cuclean, cuclean_n
     global searchValid, searchValid_n
 
-    searchIdx = np.zeros(8, dtype=np.float16)
-    searchIdx_n = np.zeros(8, dtype=np.float16)
+    searchIdx = np.zeros(8, dtype=np.uint8)
+    searchIdx_n = np.zeros(8, dtype=np.uint8)
     newDelta = np.zeros(8, dtype=np.float16)
     newDelta_n = np.zeros(8, dtype=np.float16)
     newIdx = np.zeros(8, dtype=np.float16)
