@@ -14,7 +14,7 @@ list_designs
 current_design $top_level
 
 # Clock period
-set clk_period 10
+set clk_period 9
 set clk_uncertainty 0.1
 set clk_transition 0.1
 
