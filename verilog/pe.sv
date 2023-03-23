@@ -89,7 +89,9 @@ module pe #(
 
     // FPU
     logic [`DELTA_WIDTH-1:0] fpu_opA, fpu_opB, fpu_result;
+    logic [`DELTA_WIDTH-1:0] fpu_opA_n, fpu_opB_n;
     logic [1:0] fpu_op, fpu_status_i, fpu_status_o;
+    logic [1:0] fpu_op_n, fpu_status_i_n;
     logic fpu_empty, fpu_clear;
 
     // converter
@@ -290,6 +292,29 @@ module pe #(
     end
 
     // ----------------------------------------------------------------
+    // Clocked input to fpu to prevent long combinational path
+    // in the first fpu stage during synthesis
+    // ----------------------------------------------------------------
+
+    always_ff @(posedge clk_i)
+    begin
+        if (rst_i)
+        begin
+            fpu_opA         <= '0;
+            fpu_opB         <= '0;
+            fpu_op          <= `FPU_ADD;
+            fpu_status_i    <= '0;
+        end
+        else
+        begin
+            fpu_opA         <= fpu_opA_n;
+            fpu_opB         <= fpu_opB_n;
+            fpu_op          <= fpu_op_n;
+            fpu_status_i    <= fpu_status_i_n;
+        end
+    end
+
+    // ----------------------------------------------------------------
     // Outputs
     // ----------------------------------------------------------------
 
@@ -397,10 +422,10 @@ module pe #(
         pe_edge_reqAddr_n                   = 'x;
         pe_edge_reqValid_n                  = 1'b0;
         ////////// fpu inputs //////////
-        fpu_opA                             = '0;
-        fpu_opB                             = '0;
-        fpu_op                              = `FPU_ADD;
-        fpu_status_i                        = '0;
+        fpu_opA_n                             = '0;
+        fpu_opB_n                             = '0;
+        fpu_op_n                              = `FPU_ADD;
+        fpu_status_i_n                        = '0;
         ////////// converter input //////////
         converter_int16                     = '0;
 
@@ -415,10 +440,10 @@ module pe #(
                 if (fpu_empty && ~init_value_ready) // no ongoing calculation inside fpu at startup
                 begin
                     // calculate initial value denominator
-                    fpu_opA = 16'h3C00; // float16 representation of 1
-                    fpu_opB = C_DAMPING_FACTOR;
-                    fpu_op = `FPU_SUB;
-                    fpu_status_i = 2'd3;
+                    fpu_opA_n = 16'h3C00; // float16 representation of 1
+                    fpu_opB_n = C_DAMPING_FACTOR;
+                    fpu_op_n = `FPU_SUB;
+                    fpu_status_i_n = 2'd3;
                 end
                 if (fpu_status_o == 2'd2) // init value ready
                 begin
@@ -428,10 +453,10 @@ module pe #(
                 else if (fpu_status_o == 2'd3) // init value denom ready
                 begin
                     // calculate initialization value
-                    fpu_opA = fpu_result;
-                    fpu_opB = num_of_vertices_float16;
-                    fpu_op = `FPU_DIV;
-                    fpu_status_i = 2'd2;
+                    fpu_opA_n = fpu_result;
+                    fpu_opB_n = num_of_vertices_float16;
+                    fpu_op_n = `FPU_DIV;
+                    fpu_status_i_n = 2'd2;
                 end
                 // next-state logic
                 if (init_value_ready || init_value_ready_n)
@@ -475,10 +500,10 @@ module pe #(
                         pe_edge_reqValid_n = 1'b1;
                         em_req_status_n = EM_START;
                         // calculate d * delta to prepare for propagate calculation
-                        fpu_opA = C_DAMPING_FACTOR;
-                        fpu_opB = curr_delta_n;
-                        fpu_op = `FPU_MUL;
-                        fpu_status_i = 2'd3;
+                        fpu_opA_n = C_DAMPING_FACTOR;
+                        fpu_opB_n = curr_delta_n;
+                        fpu_op_n = `FPU_MUL;
+                        fpu_status_i_n = 2'd3;
                     end
                     next_state = S_RUW;
                 end
@@ -494,10 +519,10 @@ module pe #(
                     begin
                         vm_req_status_n = VM_IDLE;
                         // send data into fpu
-                        fpu_opA = vertexmem_data_i[15:0];
-                        fpu_opB = curr_delta;
-                        fpu_op = `FPU_ADD;
-                        fpu_status_i = 2'd1;
+                        fpu_opA_n = vertexmem_data_i[15:0];
+                        fpu_opB_n = curr_delta;
+                        fpu_op_n = `FPU_ADD;
+                        fpu_status_i_n = 2'd1;
                     end
                     else if (vm_req_status_n == VM_WRITE) // write fulfilled
                     begin
@@ -615,12 +640,12 @@ module pe #(
                 end
 
                 // check if ready to calculate prodelta
-                if (curr_prodelta_denom_ready_n && curr_prodelta_numerator_ready_n && fpu_status_i == 2'd0) // need to make sure prodelta does not overwrite other calculations
+                if (curr_prodelta_denom_ready_n && curr_prodelta_numerator_ready_n && fpu_status_i_n == 2'd0) // need to make sure prodelta does not overwrite other calculations
                 begin
-                    fpu_opA = curr_prodelta_numerator_n;
-                    fpu_opB = curr_prodelta_denom_n;
-                    fpu_op = `FPU_DIV;
-                    fpu_status_i = 2'd2;
+                    fpu_opA_n = curr_prodelta_numerator_n;
+                    fpu_opB_n = curr_prodelta_denom_n;
+                    fpu_op_n = `FPU_DIV;
+                    fpu_status_i_n = 2'd2;
                 end
 
                 // next state logic
