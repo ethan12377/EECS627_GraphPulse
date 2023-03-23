@@ -40,7 +40,7 @@ module GraphPulse (
 // ====================================================================
 
     ///// PE <---> Sched/Q /////
-    logic  [`PE_NUM_OF_CORES-1:0]  initialFinish;
+    logic [`PE_NUM_OF_CORES-1:0]  initialFinish;
 
     ///// Q <---> Sched /////
     logic  [`BIN_NUM-1:0]         CUClean           ;
@@ -51,15 +51,21 @@ module GraphPulse (
     ///// Q <---> OB /////
     logic   [`ROW_IDX_WIDTH-1:0]                    rowIdx      ;
     logic   [`BIN_IDX_WIDTH-1:0]                    binIdx      ;
-    logic   [`COL_NUM*`DELTA_WIDTH-1:0]             rowDelta    ;
+    logic   [`COL_NUM-1:0][`DELTA_WIDTH-1:0]        rowDelta    ;
     logic                                           rowValid    ;
     logic                                           rowReady    ;
 
+    ///// OB <---> Xbar1 /////
+    logic   [`PE_NUM_OF_CORES-1:0][`DELTA_WIDTH-1:0]         IssDelta  ;
+    logic   [`PE_NUM_OF_CORES-1:0][`VERTEX_IDX_WIDTH-1:0]    IssIdx    ;
+    logic   [`PE_NUM_OF_CORES-1:0]                           IssValid  ;
+    logic   [`PE_NUM_OF_CORES-1:0]                           IssReady  ;
+
     ///// Xbar1 <---> PE /////
-    logic   [`PE_NUM_OF_CORES*`DELTA_WIDTH-1:0]             PEDelta   ;
-    logic   [`PE_NUM_OF_CORES*`VERTEX_IDX_WIDTH-1:0]        PEIdx     ;
-    logic   [`PE_NUM_OF_CORES-1:0]                          PEValid   ;
-    logic   [`PE_NUM_OF_CORES-1:0]                          PEReady   ;
+    logic   [`PE_NUM_OF_CORES-1:0][`DELTA_WIDTH-1:0]         PEDelta   ;
+    logic   [`PE_NUM_OF_CORES-1:0][`VERTEX_IDX_WIDTH-1:0]    PEIdx     ;
+    logic   [`PE_NUM_OF_CORES-1:0]                           PEValid   ;
+    logic   [`PE_NUM_OF_CORES-1:0]                           PEReady   ;
 
     ///// PE <---> MC /////
     // to vertex mem controller
@@ -104,14 +110,14 @@ module GraphPulse (
     assign vm_tag = vertexmem_tag;
 
     ///// PE <---> Xbar2 /////
-    logic [`GEN_NUM*`DELTA_WIDTH-1:0]               proDelta;
-    logic [`GEN_NUM*`VERTEX_IDX_WIDTH-1:0]          proIdx;
-    logic [`GEN_NUM-1:0]                            proValid;
-    logic [`GEN_NUM-1:0]                            proReady;
+    logic [2*`PE_NUM_OF_CORES-1:0][`DELTA_WIDTH-1:0]              proDelta;
+    logic [2*`PE_NUM_OF_CORES-1:0][`VERTEX_IDX_WIDTH-1:0]         proIdx;
+    logic [2*`PE_NUM_OF_CORES-1:0]                                proValid;
+    logic [`PE_NUM_OF_CORES-1:0][1:0]                             proReady;
 
     ///// Xbar2 <---> Q /////
-    logic   [`BIN_NUM*`DELTA_WIDTH-1:0]             CUDelta   ;
-    logic   [`BIN_NUM*`VERTEX_IDX_WIDTH-1:0]        CUIdx     ;
+    logic   [`BIN_NUM-1:0][`DELTA_WIDTH-1:0]        CUDelta   ;
+    logic   [`BIN_NUM-1:0][`VERTEX_IDX_WIDTH-1:0]   CUIdx     ;
     logic   [`BIN_NUM-1:0]                          CUValid   ;
     logic   [`BIN_NUM-1:0]                          CUReady   ;
 
@@ -129,35 +135,26 @@ module GraphPulse (
 // ====================================================================
 
 // --------------------------------------------------------------------
-// Module name  :   threein1
-// Description  :   Crossbar from Scheds to PE with output_buffer 
-//                  and queue_scheduler
+// Module name  :   queue_scheduler
+// Description  :   
 // --------------------------------------------------------------------
-    threein1 threein1_inst(
+    queue_scheduler queue_scheduler_inst(
         .clk_i                  (clock),   //  Clock
         .rst_i                  (reset),   //  Reset
-        .rowIdx_i               (rowIdx     ),
-        .binIdx_i               (binIdx     ),
-        .rowDelta_i             (rowDelta   ),
-        .rowValid_i             (rowValid   ),
-        .rowReady_o             (rowReady   ),
-        .PEDelta_o              (PEDelta    ),
-        .PEIdx_o                (PEIdx      ),
-        .PEValid_o              (PEValid    ),
-        .PEReady_i              (PEReady    ),
         .initialFinish_i        (initialFinish),   
         .CUClean_i              (CUClean),
         .binValid_i             (binValid),
-        .binSelected_o          (binSelected),    
+        .binSelected_o          (binSelected),   
+        .PEready_i              (PEReady), 
         .readEn_o               (readEn)          
     );
 // --------------------------------------------------------------------
 
 // --------------------------------------------------------------------
-// Module name  :   EQ_wrapper
-// Description  :   2D to 1D for event_queues
+// Module name  :   event_queues
+// Description  :   
 // --------------------------------------------------------------------
-    EQ_wrapper EQ_wrapper_inst(
+    event_queues  event_queues_inst(
         .clk_i                  (clock),   //  Clock
         .rst_i                  (reset),   //  Reset
         .initialFinish_i        (initialFinish),
@@ -174,7 +171,48 @@ module GraphPulse (
         .rowDelta_o             (rowDelta),
         .rowValid_o             (rowValid),
         .rowReady_i             (rowReady),
+        // // test
+        // .searchIdx        (searchIdx),
+        // .searchValid      (searchValid),
+        // // test end
         .queueEmpty_o           (queueEmpty)     
+    );
+// --------------------------------------------------------------------
+
+// --------------------------------------------------------------------
+// Module name  :   output_buffer
+// Description  :   
+// --------------------------------------------------------------------
+    output_buffer output_buffer_inst (
+        .clk_i      (clock      ),   //  Clock
+        .rst_i      (reset      ),   //  Reset
+        .rowIdx_i   (rowIdx     ),
+        .binIdx_i   (binIdx     ),
+        .rowDelta_i (rowDelta   ),
+        .rowValid_i (rowValid   ),
+        .rowReady_o (rowReady   ),
+        .IssDelta_o (IssDelta   ),
+        .IssIdx_o   (IssIdx     ),
+        .IssValid_o (IssValid   ),
+        .IssReady_i (IssReady   )
+    );
+// --------------------------------------------------------------------
+
+// --------------------------------------------------------------------
+// Module name  :   Xbar_SchedToPE
+// Description  :   Crossbar
+// --------------------------------------------------------------------
+    Xbar_SchedToPE Xbar_SchedToPE_inst(
+        .clk_i      (clock      ),   //  Clock
+        .rst_i      (reset      ),   //  Reset
+        .IssDelta_i (IssDelta   ),
+        .IssIdx_i   (IssIdx     ),
+        .IssValid_i (IssValid   ),
+        .IssReady_o (IssReady   ),
+        .PEDelta_o  (PEDelta    ),
+        .PEIdx_o    (PEIdx      ),
+        .PEValid_o  (PEValid    ),
+        .PEReady_i  (PEReady    )
     );
 // --------------------------------------------------------------------
 
@@ -195,11 +233,11 @@ module GraphPulse (
                 .num_of_vertices_float16_i  (num_of_vertices_float16),
                 .num_of_vertices_int8_i     (num_of_vertices_int8),
                 // from crossbar1
-                .PEDelta_i                  (PEDelta[i*`DELTA_WIDTH +: `DELTA_WIDTH]),
-                .PEIdx_i                    (PEIdx[i*`VERTEX_IDX_WIDTH +: `VERTEX_IDX_WIDTH]),
+                .PEDelta_i                  (PEDelta[i]),
+                .PEIdx_i                    (PEIdx[i]),
                 .PEValid_i                  (PEValid[i]),
                 // from crossbar 2
-                .ProReady_i                 (proReady[2*i +: 2]),
+                .ProReady_i                 (proReady[i]),
                 // from mem controller
                 .vertexmem_ack_i            (vm2pe_grant_onehot[i]),
                 .edgemem_ack_i              (em2pe_grant_onehot[i]),
@@ -217,11 +255,11 @@ module GraphPulse (
                 // to crossbar 1
                 .PEReady_o                  (PEReady[i]),
                 // to crossbar2
-                .ProDelta0_o                (proDelta[2*i*`DELTA_WIDTH +: `DELTA_WIDTH]),
-                .ProIdx0_o                  (proIdx[2*i*`VERTEX_IDX_WIDTH +: `VERTEX_IDX_WIDTH]),
+                .ProDelta0_o                (proDelta[2*i]),
+                .ProIdx0_o                  (proIdx[2*i]),
                 .ProValid0_o                (proValid[2*i]),
-                .ProDelta1_o                (proDelta[(2*i+1)*`DELTA_WIDTH +: `DELTA_WIDTH]),
-                .ProIdx1_o                  (proIdx[(2*i+1)*`VERTEX_IDX_WIDTH +: `VERTEX_IDX_WIDTH]),
+                .ProDelta1_o                (proDelta[2*i+1]),
+                .ProIdx1_o                  (proIdx[2*i+1]),
                 .ProValid1_o                (proValid[2*i+1]),
                 // to vertex mem controller
                 .pe_vertex_reqAddr_o        (pe_vertex_reqAddr[i]),
@@ -273,10 +311,10 @@ module GraphPulse (
 // --------------------------------------------------------------------
 
 // --------------------------------------------------------------------
-// Module name  :   Xbar_PEToQ_wrapper
-// Description  :   Crossbar from PEs to Event Queues
+// Module name  :   Xbar_PEToQ
+// Description  :   Crossbar
 // --------------------------------------------------------------------
-    Xbar_PEToQ_wrapper Xbar_PEToQ_wrapper_inst(
+    Xbar_PEToQ Xbar_PEToQ_inst(
         .clk_i      (clock      ),   //  Clock
         .rst_i      (reset      ),   //  Reset
         .proDelta_i (proDelta   ),

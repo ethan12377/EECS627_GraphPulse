@@ -2,6 +2,7 @@
 STD_CELLS = /afs/umich.edu/class/eecs627/ibm13/artisan/2005q3v1/aci/sc-x/verilog/ibm13_neg.v
 TESTBENCH = testbench.sv mem.sv
 SIM_FILES = standard.vh graphpulse.v mem.sv
+SIM_FILES += threein1.sv EQ_wrapper.sv Xbar_PEToQ_wrapper.sv
 SIM_FILES += priority_arbiter.sv rr_arbiter.sv 
 SIM_FILES += fp_add.sv fp_div.sv fp_mul.sv fpu.sv mc.sv int16_to_float16.sv pe.sv
 SIM_FILES += Xbar_SchedToPE.sv PE_Freelist.sv Xbar_PEToQ.sv
