@@ -527,7 +527,7 @@ module pe #(
                         ruw_complete_n = 1'b1;
                     end
                 end
-                else if (vm_req_status_n != VM_IDLE && ~vm_acked_n) // hold current vertexmem request while not acknowledged by mem
+                else if (vm_req_status_n != VM_IDLE && ~(vm_acked || vertexmem_ack_i)) // hold current vertexmem request while not acknowledged by mem
                 begin
                     pe_vertex_reqAddr_n = pe_vertex_reqAddr_o;
                     pe_vertex_reqValid_n = pe_vertex_reqValid_o;
@@ -591,7 +591,7 @@ module pe #(
                         em_req_status_n = EM_IDLE;
                     end
                 end
-                else if (em_req_status_n != EM_IDLE && ~em_acked_n) // active read waiting on edgemem
+                else if (em_req_status_n != EM_IDLE && ~(em_acked || edgemem_ack_i)) // active read waiting on edgemem
                 begin
                     pe_edge_reqAddr_n = pe_edge_reqAddr_o;
                     pe_edge_reqValid_n = pe_edge_reqValid_o;
@@ -669,7 +669,7 @@ module pe #(
                         vm_req_status_n = VM_IDLE;
                         ruw_complete_n = 1;
                     end
-                    else if (vm_req_status_n == VM_WRITE && ~vm_acked_n) //  waiting for vertex cache write, hold request
+                    else if (vm_req_status_n == VM_WRITE && ~(vm_acked || vertexmem_ack_i)) // waiting for vertexmem write, hold request
                     begin
                         pe_vertex_reqAddr_n = pe_vertex_reqAddr_o;
                         pe_vertex_reqValid_n = pe_vertex_reqValid_o;
@@ -697,7 +697,7 @@ module pe #(
                         em_req_status_n = EM_IDLE;
                         pe_edge_reqValid_n = 1'b0;
                     end
-                    else if (em_req_status_n != EM_IDLE && ~em_acked_n) 
+                    else if (em_req_status_n != EM_IDLE && ~(em_acked || edgemem_ack_i))
                     begin
                         pe_edge_reqAddr_n = pe_edge_reqAddr_o;
                         pe_edge_reqValid_n = pe_edge_reqValid_o;
