@@ -65,7 +65,7 @@ check_design
 uniquify
 
 # Synthesize the design
-compile_ultra
+compile_ultra -retime
 optimize_registers
 # compile -map_effort medium
 # set_optimize_registers -sync_transform multiclass -async_transform multiclass
