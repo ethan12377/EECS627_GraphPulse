@@ -13,7 +13,7 @@ module queue_scheduler #(
 ) (
     input   logic                         clk_i             ,   //  Clock
     input   logic                         rst_i             ,   //  Reset
-    input   logic  [`PE_NUM_OF_CORES-1:0] initialFinish_i   ,   
+    input   logic                         initialFinish_i   ,   
     input   logic  [C_BIN_NUM-1:0]        CUClean_i         ,
     input   logic  [C_BIN_NUM-1:0]        binValid_i        ,
     output  logic  [C_BIN_NUM-1:0]        binSelected_o     ,
@@ -64,8 +64,6 @@ module queue_scheduler #(
 
     //logic bin
 
-    logic initialFinish;
-    assign initialFinish = &initialFinish_i;
 
 
 // ====================================================================
@@ -123,7 +121,7 @@ module queue_scheduler #(
         case(qs_state)
             
             // Initial state
-            Init: next_qs_state = initialFinish ? CUComm : Init;
+            Init: next_qs_state = initialFinish_i ? CUComm : Init;
             
             // read and write from CU
             CUComm: begin
