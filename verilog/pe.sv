@@ -422,16 +422,13 @@ module pe #(
         pe_edge_reqAddr_n                   = 'x;
         pe_edge_reqValid_n                  = 1'b0;
         ////////// fpu inputs //////////
-        fpu_opA_n                             = '0;
-        fpu_opB_n                             = '0;
-        fpu_op_n                              = `FPU_ADD;
-        fpu_status_i_n                        = '0;
+        fpu_opA_n                           = '0;
+        fpu_opB_n                           = '0;
+        fpu_op_n                            = `FPU_ADD;
+        fpu_status_i_n                      = '0;
         ////////// converter input //////////
         converter_int16                     = '0;
-
-        // capture tags from mem when needed (if acknowledged, capture resp at next posedge)
-        
-        
+              
         // FSM output behavior definition
         case(curr_state)
             //////////////////// INIT ////////////////////
