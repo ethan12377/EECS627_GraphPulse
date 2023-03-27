@@ -98,12 +98,12 @@ module pe_tb ();
     generate
         for (genvar i = 0; i < `PE_NUM_OF_CORES; i = i + 1)
         begin
-            pe #(
-                .C_PEID(i)
-            ) dut (
+            pe dut (
                 ////////// INPUTS //////////
                 .clk_i                      (clk_i),
                 .rst_i                      (rst_i),
+                // PE ID
+                .pe_id_i                    (i),
                 // num of vertices
                 .num_of_vertices_float16_i  (num_of_vertices_float16),
                 .num_of_vertices_int8_i     (num_of_vertices_int8),

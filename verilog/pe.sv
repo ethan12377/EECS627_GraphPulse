@@ -6,13 +6,13 @@
 //                                                                     //
 /////////////////////////////////////////////////////////////////////////
 
-module pe #(
-    parameter           C_PEID             = `PE_NUM_OF_CORES  // default to an invalid value, change this parameter for every PE
-) (
+module pe (
     ///////////// INPUTS /////////////////
     input   logic                                   clk_i           ,   //  Clock
     input   logic                                   rst_i           ,   //  Reset
-    // number of vertices as int 8 and float16 values, sampled on the negative edge of reset?
+    // PE ID, sampled on the first posedge clk after deasserting reset
+    input   logic [1:0]                             pe_id_i,
+    // number of vertices as int 8 and float16 values, sampled on the first posedge clk after deasserting reset
     input   logic [15:0]                            num_of_vertices_float16_i,
     input   logic [7:0]                             num_of_vertices_int8_i,
     // from crossbar1
@@ -77,6 +77,7 @@ module pe #(
     // status
     logic ready, ruw_complete, initializing;
     logic initializing_n;
+    logic [1:0] pe_id;
     logic [15:0] num_of_vertices_float16;
     logic [7:0]  num_of_vertices_int8;
     logic ruw_complete_n;
@@ -211,6 +212,7 @@ module pe #(
     begin
         if (rst_i) // stop updating num of vertices once reset is deasserted
         begin
+            pe_id                   <= pe_id_i;
             num_of_vertices_float16 <= num_of_vertices_float16_i;
             num_of_vertices_int8    <= num_of_vertices_int8_i;
         end
@@ -461,9 +463,9 @@ module pe #(
                 // next-state logic
                 if (init_value_ready || init_value_ready_n)
                 begin
-                    adj_list_start_n = C_PEID;
+                    adj_list_start_n = pe_id;
                     adj_list_end_n = num_of_vertices_int8;
-                    curr_evgen_idx_n = C_PEID;
+                    curr_evgen_idx_n = pe_id;
                     next_state = S_EVGEN;
                 end
                 else next_state = S_INIT;
