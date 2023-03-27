@@ -13,7 +13,7 @@ module priority_arbiter #(
     input   logic   [C_REQ_NUM-1:0]         req_i           ,
     output  logic   [C_REQ_IDX_WIDTH-1:0]   grant_o         ,
     output  logic                           valid_o         
-);
+);// synopsys template
 
 // ====================================================================
 // RTL Logic Start

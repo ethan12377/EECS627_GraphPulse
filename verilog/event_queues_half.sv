@@ -1,13 +1,13 @@
 /////////////////////////////////////////////////////////////////////////
 //                                                                     //
-//  Modulename  :  event_queues.sv                                     //
+//  Modulename  :  event_queues_half.sv                                //
 //                                                                     //
 //  Description :  event_queues                                        // 
 //                                                                     //
 /////////////////////////////////////////////////////////////////////////
 
-module event_queues #(
-    parameter   C_BIN_NUM           =   `BIN_NUM     ,
+module event_queues_half #(
+    parameter   C_BIN_HALF          =   `BIN_NUM / 2        ,
     parameter   C_ROW_NUM           =   `ROW_NUM            ,
     parameter   C_COL_NUM           =   `COL_NUM            ,
     parameter   C_VERTEX_IDX_WIDTH  =   `VERTEX_IDX_WIDTH   ,
@@ -18,18 +18,18 @@ module event_queues #(
 ) (
     input   logic                                           clk_i           ,   //  Clock
     input   logic                                           rst_i           ,   //  Reset
-    input   logic   [`PE_NUM_OF_CORES-1:0]                  initialFinish_i ,
+    input   logic                                           initialFinish_i ,
 
     // Interface with corssbar
-    input   logic   [C_BIN_NUM-1:0][C_DELTA_WIDTH-1:0]      CUDelta_i       ,
-    input   logic   [C_BIN_NUM-1:0][C_VERTEX_IDX_WIDTH-1:0] CUIdx_i         ,
-    input   logic   [C_BIN_NUM-1:0]                         CUValid_i       ,
-    output  logic   [C_BIN_NUM-1:0]                         CUReady_o       ,
+    input   logic   [C_BIN_HALF-1:0][C_DELTA_WIDTH-1:0]      CUDelta_i       ,
+    input   logic   [C_BIN_HALF-1:0][C_VERTEX_IDX_WIDTH-1:0] CUIdx_i         ,
+    input   logic   [C_BIN_HALF-1:0]                         CUValid_i       ,
+    output  logic   [C_BIN_HALF-1:0]                         CUReady_o       ,
 
     // Interface with queue_scheduler
-    output  logic   [C_BIN_NUM-1:0]                         CUClean_o       ,
-    output  logic   [C_BIN_NUM-1:0]                         binValid_o      ,
-    input   logic   [C_BIN_NUM-1:0]                         binSelected_i   ,   
+    output  logic   [C_BIN_HALF-1:0]                         CUClean_o       ,
+    output  logic   [C_BIN_HALF-1:0]                         binValid_o      ,
+    input   logic   [C_BIN_HALF-1:0]                         binSelected_i   ,   
     input   logic                                           readEn_i        , 
 
     // Interface with output_buffer
@@ -37,7 +37,7 @@ module event_queues #(
     output  logic   [C_BIN_IDX_WIDTH-1:0]                   binIdx_o        ,
     output  logic   [C_COL_NUM-1:0][C_DELTA_WIDTH-1:0]      rowDelta_o      ,
     output  logic                                           rowValid_o      ,
-    input   logic                                           rowReady_i      ,
+    input   logic                                           rowReady_i
 
     // // test
     // output logic  [C_BIN_NUM-1:0][C_VERTEX_IDX_WIDTH-1:0]         searchIdx         ,
@@ -45,7 +45,7 @@ module event_queues #(
     // // test end
 
     // Queue empty flag for convergence check
-    output  logic                                           queueEmpty_o     
+    // output  logic                                           queueEmpty_o     
 );
 
 // ====================================================================
@@ -59,19 +59,19 @@ module event_queues #(
 // ====================================================================
 // Signal Declarations Start
 // ====================================================================
-logic                                   newValid         [C_BIN_NUM-1:0] ;
-logic  [C_VERTEX_IDX_WIDTH-1:0]         newIdx           [C_BIN_NUM-1:0] ;
-logic  [C_DELTA_WIDTH-1:0]              newDelta         [C_BIN_NUM-1:0] ;
+logic                                   newValid         [C_BIN_HALF-1:0] ;
+logic  [C_VERTEX_IDX_WIDTH-1:0]         newIdx           [C_BIN_HALF-1:0] ;
+logic  [C_DELTA_WIDTH-1:0]              newDelta         [C_BIN_HALF-1:0] ;
 
-logic  [C_VERTEX_IDX_WIDTH-1:0]         searchIdx        [C_BIN_NUM-1:0] ;
-logic                                   searchValid      [C_BIN_NUM-1:0] ;
-logic  [C_DELTA_WIDTH-1:0]              searchValue      [C_BIN_NUM-1:0] ;
-logic                                   searchValueValid [C_BIN_NUM-1:0] ;
+logic  [C_VERTEX_IDX_WIDTH-1:0]         searchIdx        [C_BIN_HALF-1:0] ;
+logic                                   searchValid      [C_BIN_HALF-1:0] ;
+logic  [C_DELTA_WIDTH-1:0]              searchValue      [C_BIN_HALF-1:0] ;
+logic                                   searchValueValid [C_BIN_HALF-1:0] ;
 
-logic  [C_ROW_IDX_WIDTH-1:0]            rowIdx           [C_BIN_NUM-1:0] ;
-logic  [C_DELTA_WIDTH * C_COL_NUM-1:0]  rowDelta         [C_BIN_NUM-1:0] ;
-logic                                   rowValid         [C_BIN_NUM-1:0] ;
-logic                                   rowReady         [C_BIN_NUM-1:0] ;
+logic  [C_ROW_IDX_WIDTH-1:0]            rowIdx           [C_BIN_HALF-1:0] ;
+logic  [C_DELTA_WIDTH * C_COL_NUM-1:0]  rowDelta         [C_BIN_HALF-1:0] ;
+logic                                   rowValid         [C_BIN_HALF-1:0] ;
+logic                                   rowReady         [C_BIN_HALF-1:0] ;
 // // test
 // logic   [C_ROW_NUM-1:0]                 rowNotEmpty      [C_BIN_NUM-1:0] ;
 // logic   [C_COL_NUM-1:0][C_DELTA_WIDTH-1:0]   allrow0     [C_BIN_NUM-1:0] ;
@@ -80,8 +80,6 @@ logic                                   rowReady         [C_BIN_NUM-1:0] ;
 // logic   [C_VERTEX_IDX_WIDTH-1:0]            arrayheadIdx       [C_BIN_NUM-1:0]      ;
 
 // test end
-logic initialFinish;
-assign initialFinish = &initialFinish_i;
 
 
 genvar binIter;
@@ -98,7 +96,7 @@ genvar binIter;
 // Description  :   A bin in the event queues
 // --------------------------------------------------------------------
 generate
-    for (binIter = 0; binIter < C_BIN_NUM; binIter++) begin
+    for (binIter = 0; binIter < C_BIN_HALF; binIter++) begin
         bin_func event_bin_inst (
             .clk_i             (clk_i                       ),   //  Clock
             .rst_i             (rst_i                       ),   //  Reset
@@ -130,11 +128,11 @@ endgenerate
 // Description  :   A bin in the event queues
 // --------------------------------------------------------------------
 generate
-    for (binIter = 0; binIter < C_BIN_NUM; binIter++) begin
+    for (binIter = 0; binIter < C_BIN_HALF; binIter++) begin
         coalescing_unit coalescing_unit_inst (
             .clk_i             (clk_i                     ),   //  Clock
             .rst_i             (rst_i                     ),   //  Reset
-            .initialFinish_i   (initialFinish             ),
+            .initialFinish_i   (initialFinish_i           ),
             .binSelected_i     (binSelected_i   [binIter] ),
             .CUDelta_i         (CUDelta_i       [binIter] ),
             .CUIdx_i           (CUIdx_i         [binIter] ),
@@ -170,13 +168,13 @@ endgenerate
 // --------------------------------------------------------------------
 // Empty flag
 // --------------------------------------------------------------------
-    always_ff @(posedge clk_i) begin
-        if (binValid_o == 'b0) begin
-            queueEmpty_o <=  `SD 'b1;
-        end else begin
-            queueEmpty_o <=  `SD 'b0;
-        end
-    end
+    // always_ff @(posedge clk_i) begin
+    //     if (binValid_o == 'b0) begin
+    //         queueEmpty_o <=  `SD 'b1;
+    //     end else begin
+    //         queueEmpty_o <=  `SD 'b0;
+    //     end
+    // end
 
 // --------------------------------------------------------------------
 // Output MUX
@@ -186,7 +184,7 @@ endgenerate
         rowIdx_o    =   'd0;
         rowDelta_o  =   'd0;
         rowValid_o  =   'b0;
-        for (int i = 0; i < C_BIN_NUM; i++) begin
+        for (int i = 0; i < C_BIN_HALF; i++) begin
             if (binSelected_i[i] & rowValid[i]) begin
                 binIdx_o    =   i;
                 rowIdx_o    =   rowIdx[i];
@@ -197,7 +195,7 @@ endgenerate
     end
 
     generate
-        for (binIter = 0; binIter < C_BIN_NUM; binIter++) begin
+        for (binIter = 0; binIter < C_BIN_HALF; binIter++) begin
             always_comb begin
                 rowReady[binIter]   =   'b0;
                 if (binSelected_i[binIter]) begin

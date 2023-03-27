@@ -10,6 +10,8 @@
 `define VERILOG_CLOCK_PERIOD   10.0
 `define SYNTH_CLOCK_PERIOD     10.0 // Clock period for synth and memory latency
 `define SD #1
+`define XLEN 16
+
 
 // Event
 `define PE_IDX_WIDTH            $clog2(`PE_NUM)
@@ -28,11 +30,24 @@
 `define ROW_IDX_LSB             `BIN_IDX_LSB + `BIN_IDX_WIDTH
 `define ROW_IDX_WIDTH           $clog2(`ROW_NUM)
 
+// coalescing unit
+`define CU_FIFO_DEPTH           4
+
 // Xbar from Scheduler / Output Buffer to PEs
 `define XBAR_0_STAGES_NUM       2
 
+// FPU
+`define FPU_ADD					2'b00
+`define FPU_SUB					2'b01
+`define FPU_MUL					2'b10
+`define FPU_DIV					2'b11
+
 // PE
-`define PE_NUM                  4
+`define PE_THRESH               16'h0400 // PE threshold for stopping event propagation, float16 representation of 6.104e-5, the smallest normal number
+`define PE_FPU_PIPE_DEPTH       3
+`define PE_DAMPING_FACTOR	    16'h3ACC // float16 representation of 0.85
+`define PE_NUM_OF_CORES         4
+`define PE_NUM					`PE_NUM_OF_CORES
 `define GEN_PER_PE              2
 `define GEN_NUM                 `GEN_PER_PE * `PE_NUM
 
@@ -47,13 +62,18 @@
 `define XLEN 16
 
 // Memory
+`define EDGE_MEM_ADDR_WIDTH	   14
+`define COL_IDX_WORD_TAG_WIDTH 13
+
+`define CACHE_MODE
 `define NUM_MEM_TAGS           15
-`define MEM_SIZE_IN_BYTES      (64*1024)
+`define MEM_SIZE_IN_BYTES      (256*256+256*2)
 `define MEM_64BIT_LINES        (`MEM_SIZE_IN_BYTES/8)
-`define MEM_LATENCY 100.0
+`define MEM_LATENCY 		   100.0
 `define MEM_LATENCY_IN_CYCLES (`MEM_LATENCY/`SYNTH_CLOCK_PERIOD+0.49999)
 // the 0.49999 is to force ceiling(100/period).  The default behavior for
 // float to integer conversion is rounding to nearest
+
 
 // Memory bus commands control signals
 typedef enum logic [1:0] {
@@ -73,11 +93,11 @@ typedef enum logic [1:0] {
 
 // Queue scheduler states
 typedef enum logic [2:0] {
-	I   = 3'h0,
-	C   = 3'h1,
-	B   = 3'h2,
-	W   = 3'h3,
-	R   = 3'h4
-
+	Init        = 3'd0,
+	CUComm      = 3'd1,
+	BinSelect   = 3'd2,
+	DetectRound = 3'd3,
+	WaitRead    = 3'd4,
+	Read        = 3'd5
 } QS_STATE;
 //
