@@ -207,10 +207,13 @@ module pe #(
     // ----------------------------------------------------------------
     // Status Registers
     // ----------------------------------------------------------------
-    always_ff @(negedge rst_i)
+    always_ff @(posedge clk_i)
     begin
-        num_of_vertices_float16 <= num_of_vertices_float16_i;
-        num_of_vertices_int8    <= num_of_vertices_int8_i;
+        if (rst_i) // stop updating num of vertices once reset is deasserted
+        begin
+            num_of_vertices_float16 <= num_of_vertices_float16_i;
+            num_of_vertices_int8    <= num_of_vertices_int8_i;
+        end
     end
 
     always_ff @(posedge clk_i)
