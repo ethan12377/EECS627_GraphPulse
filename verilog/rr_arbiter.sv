@@ -51,23 +51,23 @@ module rr_arbiter #(
 // Module name  :   priority_arbiter
 // Description  :   Priority Arbiter (LSB is prioritized)
 // --------------------------------------------------------------------
-priority_arbiter #(
-    .C_REQ_NUM          (C_REQ_NUM          ),
-    .C_REQ_IDX_WIDTH    (C_REQ_IDX_WIDTH    )
-) priority_arbiter_inst_0 (
-    .req_i              (req_unmasked       ),
-    .grant_o            (grant_unmasked     ),
-    .valid_o            (valid_unmasked     )
-);
+    priority_arbiter #(
+        .C_REQ_NUM          (C_REQ_NUM          ),
+        .C_REQ_IDX_WIDTH    (C_REQ_IDX_WIDTH    )
+    ) priority_arbiter_inst_0 (
+        .req_i              (req_unmasked       ),
+        .grant_o            (grant_unmasked     ),
+        .valid_o            (valid_unmasked     )
+    );
 
-priority_arbiter #(
-    .C_REQ_NUM          (C_REQ_NUM          ),
-    .C_REQ_IDX_WIDTH    (C_REQ_IDX_WIDTH    )
-) priority_arbiter_inst_1 (
-    .req_i              (req_masked         ),
-    .grant_o            (grant_masked       ),
-    .valid_o            (valid_masked       )
-);
+    priority_arbiter #(
+        .C_REQ_NUM          (C_REQ_NUM          ),
+        .C_REQ_IDX_WIDTH    (C_REQ_IDX_WIDTH    )
+    ) priority_arbiter_inst_1 (
+        .req_i              (req_masked         ),
+        .grant_o            (grant_masked       ),
+        .valid_o            (valid_masked       )
+    );
 
 // --------------------------------------------------------------------
 
@@ -95,7 +95,7 @@ priority_arbiter #(
     always_comb begin
         next_mask   =   mask    ;
         if (ack_i) begin
-            for (int i = 0; i < C_REQ_NUM; i++) begin
+            for (int unsigned i = 0; i < C_REQ_NUM; i++) begin
                 if (i <= grant_o) begin
                     next_mask[i]    =   1'b0;
                 end else begin
@@ -113,21 +113,6 @@ priority_arbiter #(
 // --------------------------------------------------------------------
 // Grant
 // --------------------------------------------------------------------
-    // always_ff @(posedge clk_i) begin
-    //     if (rst_i) begin
-    //         grant_o         <=  `SD 'b0;
-    //         valid_o         <=  `SD 'b0;
-    //     end else begin
-    //         if (valid_masked) begin
-    //             grant_o <=  `SD grant_masked;
-    //             valid_o <=  `SD valid_masked;
-    //         end else begin
-    //             grant_o <=  `SD grant_unmasked;
-    //             valid_o <=  `SD valid_unmasked;
-    //         end
-    //     end
-    // end
-
     always_comb begin
         if (valid_masked) begin
             grant_o =   grant_masked;

@@ -1,8 +1,8 @@
 /////////////////////////////////////////////////////////////////////////
 //                                                                     //
-//  Modulename  :  Xbar_PEToQ_tb.sv                                //
+//  Modulename  :  Xbar_PEToQ_tb.sv                                    //
 //                                                                     //
-//  Description :  Xbar_PEToQ_tb                                   // 
+//  Description :  Xbar_PEToQ_tb                                       // 
 //                                                                     //
 /////////////////////////////////////////////////////////////////////////
 
@@ -70,6 +70,11 @@ module Xbar_PEToQ_tb;
 // ====================================================================
 // RTL Logic Start
 // ====================================================================
+
+// --------------------------------------------------------------------
+// Post-synth annotation
+// --------------------------------------------------------------------
+    initial $sdf_annotate("/home/ztguan/EECS627_GraphPulse/syn/Xbar_PEToQ.syn.sdf", Xbar_PEToQ_inst, , , "MAXIMUM");
 
 // --------------------------------------------------------------------
 // Clock generation
@@ -189,8 +194,12 @@ module Xbar_PEToQ_tb;
             $display("Output File not opened!!!");
             $finish;
         end
-        $fdisplay(fd_w, "proDelta[0] proIdx[0] proValid[0] proReady[0] proDelta[1] proIdx[1] proValid[1] proReady[1] proDelta[2] proIdx[2] proValid[2] proReady[2] proDelta[3] proIdx[3] proValid[3] proReady[3] proDelta[4] proIdx[4] proValid[4] proReady[4] proDelta[5] proIdx[5] proValid[5] proReady[5] proDelta[6] proIdx[6] proValid[6] proReady[6] proDelta[7] proIdx[7] proValid[7] proReady[7] CUDelta[0] CUIdx[0] CUValid[0] CUReady[0] CUDelta[1] CUIdx[1] CUValid[1] CUReady[1] CUDelta[2] CUIdx[2] CUValid[2] CUReady[2] CUDelta[3] CUIdx[3] CUValid[3] CUReady[3] CUDelta[4] CUIdx[4] CUValid[4] CUReady[4] CUDelta[5] CUIdx[5] CUValid[5] CUReady[5] CUDelta[6] CUIdx[6] CUValid[6] CUReady[6] CUDelta[7] CUIdx[7] CUValid[7] CUReady[7]");
+        $fdisplay(fd_w, "proDelta[0] proIdx[0] proValid[0] proReady[0] proDelta[1] proIdx[1] proValid[1] proReady[1] proDelta[2] proIdx[2] proValid[2] proReady[2] proDelta[3] proIdx[3] proValid[3] proReady[3] proDelta[4] proIdx[4] proValid[4] proReady[4] proDelta[5] proIdx[5] proValid[5] proReady[5] proDelta[6] proIdx[6] proValid[6] proReady[6] proDelta[7] proIdx[7] proValid[7] proReady[7] CUDelta[0] CUIdx[0] CUValid[0] CUReady[0] CUDelta[1] CUIdx[1] CUValid[1] CUReady[1] CUDelta[2] CUIdx[2] CUValid[2] CUReady[2] CUDelta[3] CUIdx[3] CUValid[3] CUReady[3] CUDelta[4] CUIdx[4] CUValid[4] CUReady[4] CUDelta[5] CUIdx[5] CUValid[5] CUReady[5] CUDelta[6] CUIdx[6] CUValid[6] CUReady[6] CUDelta[7] CUIdx[7] CUValid[7] CUReady[7] ");
         rst_i   =   0;
+        proDelta_i  =   0;
+        proIdx_i    =   0;
+        proValid_i  =   0;
+        CUReady_i   =   0;
         #(`VERILOG_CLOCK_PERIOD);
         rst_i   =   1;
         #(`VERILOG_CLOCK_PERIOD);

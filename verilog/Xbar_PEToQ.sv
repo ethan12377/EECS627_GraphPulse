@@ -43,19 +43,16 @@ module Xbar_PEToQ #(
 // ====================================================================
     logic   [C_GEN_NUM-1:0][C_BIN_IDX_WIDTH-1:0]    bin_idx         ;
     logic   [C_BIN_NUM-1:0][C_GEN_NUM-1:0]          request         ;
-    logic   [C_BIN_NUM-1:0][C_GEN_NUM-1:0]          grant_onehot    ;
     logic   [C_BIN_NUM-1:0][C_GEN_IDX_WIDTH-1:0]    grant           ;
     logic   [C_BIN_NUM-1:0]                         valid           ;
     logic   [C_BIN_NUM-1:0]                         bin_lock        ;
     logic   [C_BIN_NUM-1:0]                         arb_en          ;
-    logic   [C_BIN_NUM-1:0]                         ack             ;
     logic   [C_BIN_NUM-1:0][C_DELTA_WIDTH-1:0]      CUDelta_pipe   [C_STAGES_NUM-1:0];
     logic   [C_BIN_NUM-1:0][C_VERTEX_IDX_WIDTH-1:0] CUIdx_pipe     [C_STAGES_NUM-1:0];
     logic   [C_BIN_NUM-1:0]                         CUValid_pipe   [C_STAGES_NUM-1:0];
     logic   [C_BIN_NUM-1:0][C_DELTA_WIDTH-1:0]      CUDelta_n       ;
     logic   [C_BIN_NUM-1:0][C_VERTEX_IDX_WIDTH-1:0] CUIdx_n         ;
     logic   [C_BIN_NUM-1:0]                         CUValid_n       ;
-    logic   [C_BIN_NUM-1:0][C_GEN_NUM-1:0]          mask            ;
 
     genvar i;
 // ====================================================================
@@ -72,39 +69,19 @@ module Xbar_PEToQ #(
 generate
     for (i = 0; i < C_BIN_NUM; i++) begin : rr_arbiter
         rr_arbiter #(
-            .C_REQ_NUM          (C_GEN_NUM                      ),
-            .C_REQ_IDX_WIDTH    (C_GEN_IDX_WIDTH                )
+            .C_REQ_NUM          (C_GEN_NUM          ),
+            .C_REQ_IDX_WIDTH    (C_GEN_IDX_WIDTH    )
         ) rr_arbiter_inst(
-            .clk_i              (clk_i                          ),   //  Clock
-            .rst_i              (rst_i                          ),   //  Reset
-            .en_i               (arb_en[i]                      ),
-            .ack_i              (valid[i]                       ),
-            .req_i              (request[i]                     ),
-            .grant_o            (grant[i]                       ),
-            .grant_onehot_o     (grant_onehot[i]                ),
-            .valid_o            (valid[i]                       ),
-            .mask_o             (mask[i]                        )
+            .clk_i              (clk_i              ),   //  Clock
+            .rst_i              (rst_i              ),   //  Reset
+            .en_i               (arb_en[i]          ),
+            .ack_i              (valid[i]           ),
+            .req_i              (request[i]         ),
+            .grant_o            (grant[i]           ),
+            .valid_o            (valid[i]           )
         );
     end
 endgenerate
-
-    // rr_arbiter #(
-    //     .C_REQ_NUM          (C_GEN_NUM                      ),
-    //     .C_REQ_IDX_WIDTH    (C_GEN_IDX_WIDTH                )
-    // ) rr_arbiter_inst [C_BIN_NUM-1:0] (
-    //     .clk_i              (clk_i                          ),   //  Clock
-    //     .rst_i              (rst_i                          ),   //  Reset
-    //     .en_i               (arb_en                         ),
-    //     .ack_i              (ack                            ),
-    //     .req_i              (request                        ),
-    //     .grant_o            (grant                          ),
-    //     .grant_onehot_o     (grant_onehot                   ),
-    //     .valid_o            (valid                          )
-    // );
-
-    always_comb begin
-        ack =   CUValid_o & CUReady_i;
-    end
 
 // --------------------------------------------------------------------
 
