@@ -42,9 +42,6 @@ set_max_fanout 16 $top_level
 set_fix_hold [all_clocks] 
 set_dont_touch_network $clk_port
 
-# to save some time - do not resize fpu
-# set_dont_touch fpu
-
 # Set delays: Input, Output
 set_driving_cell -lib_cell INVX2TR [all_inputs]
 set_input_delay $typical_input_delay [all_inputs] -clock $clk_name 
@@ -61,7 +58,7 @@ check_design
 uniquify
 
 # Synthesize the design
-compile_ultra
+compile_ultra -retime
 optimize_registers
 # compile -map_effort medium
 # set_optimize_registers -sync_transform multiclass -async_transform multiclass

@@ -19,7 +19,7 @@ module rr_arbiter #(
     output  logic   [C_REQ_NUM-1:0]         grant_onehot_o  ,
     output  logic                           valid_o         ,
     output  logic   [C_REQ_NUM-1:0]         mask_o          
-);
+);// synopsys template
 
 // ====================================================================
 // Local Parameters Declarations Start
