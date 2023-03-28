@@ -1,0 +1,1821 @@
+ 
+****************************************
+check_design summary:
+Version:     T-2022.03-SP3
+Date:        Tue Mar 28 15:22:00 2023
+****************************************
+
+                   Name                                            Total
+--------------------------------------------------------------------------------
+Cells                                                               1
+    Connected to power or ground (LINT-32)                          1
+--------------------------------------------------------------------------------
+
+Warning: In design 'queue_scheduler', a pin on submodule 'qs_rr_arbiter' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'en_i' is connected to logic 1. 
+1
+ 
+****************************************
+Report : area
+Design : queue_scheduler
+Version: T-2022.03-SP3
+Date   : Tue Mar 28 15:22:00 2023
+****************************************
+
+Library(s) Used:
+
+    typical (File: /afs/umich.edu/class/eecs627/ibm13/artisan/current/aci/sc-x/synopsys/typical.db)
+
+Number of ports:                           91
+Number of nets:                           425
+Number of cells:                          346
+Number of combinational cells:            273
+Number of sequential cells:                69
+Number of macros/black boxes:               0
+Number of buf/inv:                         56
+Number of references:                      31
+
+Combinational area:               2113.920044
+Buf/Inv area:                      254.880010
+Noncombinational area:            1782.720003
+Macro/Black Box area:                0.000000
+Net Interconnect area:           43866.887421
+
+Total cell area:                  3896.640048
+Total area:                      47763.527468
+1
+Loading db file '/afs/umich.edu/class/eecs627/ibm13/artisan/current/aci/sc-x/synopsys/typical.db'
+Information: Propagating switching activity (medium effort zero delay simulation). (PWR-6)
+Warning: Design has unannotated primary inputs. (PWR-414)
+Warning: Design has unannotated sequential cell outputs. (PWR-415)
+ 
+****************************************
+Report : power
+        -hier
+        -analysis_effort medium
+Design : queue_scheduler
+Version: T-2022.03-SP3
+Date   : Tue Mar 28 15:22:01 2023
+****************************************
+
+
+Library(s) Used:
+
+    typical (File: /afs/umich.edu/class/eecs627/ibm13/artisan/current/aci/sc-x/synopsys/typical.db)
+
+
+Operating Conditions: typical   Library: typical
+Wire Load Model Mode: segmented
+
+Design        Wire Load Model            Library
+------------------------------------------------
+queue_scheduler        ibm13_wl10        typical
+
+
+Global Operating Voltage = 1.2  
+Power-specific unit information :
+    Voltage Units = 1V
+    Capacitance Units = 1.000000pf
+    Time Units = 1ns
+    Dynamic Power Units = 1mW    (derived from V,C,T units)
+    Leakage Power Units = 1pW
+
+
+--------------------------------------------------------------------------------
+                                       Switch   Int      Leak     Total
+Hierarchy                              Power    Power    Power    Power    %
+--------------------------------------------------------------------------------
+queue_scheduler                        3.15e-03 1.19e-02 9.16e+04 1.51e-02 100.0
+  qs_rr_arbiter (rr_arbiter)           1.82e-03 1.63e-03 1.88e+04 3.47e-03  23.0
+    priority_arbiter_inst_1 (priority_arbiter_C_REQ_NUM8_C_REQ_IDX_WIDTH3_0)
+                                       1.77e-04 6.03e-05 2.21e+03 2.40e-04   1.6
+    priority_arbiter_inst_0 (priority_arbiter_C_REQ_NUM8_C_REQ_IDX_WIDTH3_1)
+                                       1.67e-04 4.73e-05 2.15e+03 2.17e-04   1.4
+1
+ 
+****************************************
+Report : design
+Design : queue_scheduler
+Version: T-2022.03-SP3
+Date   : Tue Mar 28 15:22:01 2023
+****************************************
+
+Design allows ideal nets on clock nets.
+
+Library(s) Used:
+
+    typical (File: /afs/umich.edu/class/eecs627/ibm13/artisan/current/aci/sc-x/synopsys/typical.db)
+
+Local Link Library:
+
+    {typical.db}
+
+Flip-Flop Types:
+
+    No flip-flop types specified.
+
+Latch Types:
+
+    No latch types specified.
+
+Operating Conditions:
+
+
+    Operating Condition Name : typical
+    Library : typical
+    Process :   1.00
+    Temperature :  25.00
+    Voltage :   1.20
+    Interconnect Model : balanced_tree
+
+Wire Loading Model:
+
+    Selected manually by the user.
+
+Name           :   ibm13_wl10
+Location       :   typical
+Resistance     :   8.5e-08
+Capacitance    :   0.00015
+Area           :   0.7
+Slope          :   66.667
+Fanout   Length   Points Average Cap Std Deviation
+--------------------------------------------------------------
+     1    66.67
+
+
+
+Wire Loading Model Mode: segmented.
+
+Timing Ranges:
+
+    No timing ranges specified.
+
+Pin Input Delays:
+
+    None specified.
+
+Pin Output Delays:
+
+    None specified.
+
+Disabled Timing Arcs:
+
+    No arcs disabled.
+
+Required Licenses:
+
+    DesignWare
+
+Design Parameters:
+
+    None specified.
+1
+ 
+****************************************
+Report : cell
+Design : queue_scheduler
+Version: T-2022.03-SP3
+Date   : Tue Mar 28 15:22:01 2023
+****************************************
+
+Attributes:
+    b - black box (unknown)
+    h - hierarchical
+    n - noncombinational
+    p - parameterized
+    r - removable
+    u - contains unmapped logic
+
+Cell                      Reference       Library             Area  Attributes
+--------------------------------------------------------------------------------
+PEReady_reg               DFFQX1TR        typical         24.480000 n
+U163                      CLKBUFX2TR      typical         5.760000  
+U164                      CLKBUFX2TR      typical         5.760000  
+U165                      CLKINVX2TR      typical         4.320000  
+U166                      CLKINVX2TR      typical         4.320000  
+U167                      NAND2X1TR       typical         5.760000  
+U168                      OR2X2TR         typical         7.200000  
+U169                      CLKBUFX2TR      typical         5.760000  
+U170                      CLKINVX2TR      typical         4.320000  
+U171                      CLKINVX2TR      typical         4.320000  
+U172                      CLKINVX2TR      typical         4.320000  
+U173                      CLKINVX2TR      typical         4.320000  
+U174                      CLKBUFX2TR      typical         5.760000  
+U175                      NAND2X1TR       typical         5.760000  
+U176                      CLKINVX2TR      typical         4.320000  
+U177                      CLKINVX2TR      typical         4.320000  
+U178                      OAI222X1TR      typical         14.400000 
+U179                      CLKAND2X2TR     typical         7.200000  
+U180                      AO22X1TR        typical         10.080000 
+U181                      AO22X1TR        typical         10.080000 
+U182                      AO22X1TR        typical         10.080000 
+U183                      CLKINVX2TR      typical         4.320000  
+U184                      CLKBUFX2TR      typical         5.760000  
+U185                      NOR2X1TR        typical         5.760000  
+U186                      OAI22X1TR       typical         8.640000  
+U187                      OAI22X1TR       typical         8.640000  
+U188                      OAI22X1TR       typical         8.640000  
+U189                      OAI22X1TR       typical         8.640000  
+U190                      OAI22X1TR       typical         8.640000  
+U191                      OAI22X1TR       typical         8.640000  
+U192                      OR2X2TR         typical         7.200000  
+U193                      NAND2BX1TR      typical         7.200000  
+U194                      AOI21X1TR       typical         7.200000  
+U195                      CLKINVX2TR      typical         4.320000  
+U196                      OAI32X1TR       typical         10.080000 
+U197                      NAND2X1TR       typical         5.760000  
+U198                      CLKINVX2TR      typical         4.320000  
+U199                      NOR2X2TR        typical         7.200000  
+U200                      CLKINVX2TR      typical         4.320000  
+U201                      CLKBUFX2TR      typical         5.760000  
+U202                      NOR2X1TR        typical         5.760000  
+U203                      NAND2X1TR       typical         5.760000  
+U204                      NOR4X1TR        typical         10.080000 
+U205                      NOR4X1TR        typical         10.080000 
+U206                      NAND2X1TR       typical         5.760000  
+U207                      OAI21X1TR       typical         7.200000  
+U208                      NAND2X1TR       typical         5.760000  
+U209                      NOR2X1TR        typical         5.760000  
+U210                      NAND2X1TR       typical         5.760000  
+U211                      OAI222X1TR      typical         14.400000 
+U212                      OAI21X1TR       typical         7.200000  
+U213                      AOI22X1TR       typical         8.640000  
+U214                      OAI211X1TR      typical         8.640000  
+U215                      AOI32X1TR       typical         10.080000 
+U216                      CLKBUFX2TR      typical         5.760000  
+U217                      OAI221X1TR      typical         12.960000 
+U218                      NAND4X1TR       typical         8.640000  
+U219                      CLKBUFX2TR      typical         5.760000  
+U220                      AND3X2TR        typical         8.640000  
+U221                      NAND3X1TR       typical         7.200000  
+U222                      AO22X1TR        typical         10.080000 
+U223                      AO22X1TR        typical         10.080000 
+U224                      AO22X1TR        typical         10.080000 
+U225                      AO22X1TR        typical         10.080000 
+U226                      AO22X1TR        typical         10.080000 
+U227                      AO22X1TR        typical         10.080000 
+U228                      AO22X1TR        typical         10.080000 
+U229                      AO22X1TR        typical         10.080000 
+U230                      AOI21X1TR       typical         7.200000  
+U231                      NAND2X1TR       typical         5.760000  
+U232                      OAI21X1TR       typical         7.200000  
+U233                      CLKBUFX2TR      typical         5.760000  
+U234                      NAND3X1TR       typical         7.200000  
+U235                      CLKINVX2TR      typical         4.320000  
+U236                      NOR3X1TR        typical         7.200000  
+U237                      OAI22X1TR       typical         8.640000  
+U238                      OAI22X1TR       typical         8.640000  
+U239                      OAI22X1TR       typical         8.640000  
+U240                      OAI22X1TR       typical         8.640000  
+U241                      OAI22X1TR       typical         8.640000  
+U242                      OAI22X1TR       typical         8.640000  
+U243                      OAI22X1TR       typical         8.640000  
+U244                      OAI22X1TR       typical         8.640000  
+U245                      OAI22X1TR       typical         8.640000  
+U246                      OAI22X1TR       typical         8.640000  
+U247                      OAI22X1TR       typical         8.640000  
+U248                      OAI22X1TR       typical         8.640000  
+U249                      OAI22X1TR       typical         8.640000  
+U250                      OAI22X1TR       typical         8.640000  
+U251                      OAI22X1TR       typical         8.640000  
+U252                      OAI22X1TR       typical         8.640000  
+U253                      OAI22X1TR       typical         8.640000  
+U254                      OAI22X1TR       typical         8.640000  
+U255                      NAND3X1TR       typical         7.200000  
+U256                      CLKINVX2TR      typical         4.320000  
+U257                      OAI32X1TR       typical         10.080000 
+U258                      NAND3X1TR       typical         7.200000  
+U259                      OA21X2TR        typical         10.080000 
+U260                      CLKINVX2TR      typical         4.320000  
+U261                      OAI22X1TR       typical         8.640000  
+U262                      CLKINVX2TR      typical         4.320000  
+U263                      NAND4X1TR       typical         8.640000  
+U264                      NOR2BX1TR       typical         7.200000  
+U265                      NAND3X1TR       typical         7.200000  
+U266                      OAI22X1TR       typical         8.640000  
+U267                      OAI22X1TR       typical         8.640000  
+U268                      OAI22X1TR       typical         8.640000  
+U269                      NAND4X1TR       typical         8.640000  
+U270                      XOR2X1TR        typical         11.520000 
+U271                      XOR2X1TR        typical         11.520000 
+U272                      XOR2X1TR        typical         11.520000 
+U273                      NOR2X1TR        typical         5.760000  
+U274                      NAND4X1TR       typical         8.640000  
+U275                      NAND4X1TR       typical         8.640000  
+U276                      NAND4X1TR       typical         8.640000  
+U277                      NAND4X1TR       typical         8.640000  
+U278                      XOR2X1TR        typical         11.520000 
+U279                      XOR2X1TR        typical         11.520000 
+U280                      XOR2X1TR        typical         11.520000 
+U281                      NAND4X1TR       typical         8.640000  
+U282                      XOR2X1TR        typical         11.520000 
+U283                      XOR2X1TR        typical         11.520000 
+U284                      XOR2X1TR        typical         11.520000 
+U285                      NAND4X1TR       typical         8.640000  
+U286                      XOR2X1TR        typical         11.520000 
+U287                      XOR2X1TR        typical         11.520000 
+U288                      XOR2X1TR        typical         11.520000 
+U289                      NAND4X1TR       typical         8.640000  
+U290                      XOR2X1TR        typical         11.520000 
+U291                      XOR2X1TR        typical         11.520000 
+U292                      XOR2X1TR        typical         11.520000 
+U293                      NAND4X1TR       typical         8.640000  
+U294                      XOR2X1TR        typical         11.520000 
+U295                      XOR2X1TR        typical         11.520000 
+U296                      XOR2X1TR        typical         11.520000 
+U297                      XOR2X1TR        typical         11.520000 
+U298                      XOR2X1TR        typical         11.520000 
+U299                      NAND4X1TR       typical         8.640000  
+U300                      XOR2X1TR        typical         11.520000 
+U301                      XOR2X1TR        typical         11.520000 
+U302                      XOR2X1TR        typical         11.520000 
+U303                      XOR2X1TR        typical         11.520000 
+U304                      NOR2X1TR        typical         5.760000  
+U305                      CLKINVX2TR      typical         4.320000  
+U306                      NAND3X1TR       typical         7.200000  
+U307                      NAND4X1TR       typical         8.640000  
+U308                      CLKINVX2TR      typical         4.320000  
+U309                      CLKINVX2TR      typical         4.320000  
+U310                      CLKINVX2TR      typical         4.320000  
+U311                      AO22X1TR        typical         10.080000 
+U312                      AO22X1TR        typical         10.080000 
+U313                      AO22X1TR        typical         10.080000 
+U314                      AO22X1TR        typical         10.080000 
+U315                      AO22X1TR        typical         10.080000 
+U316                      AO22X1TR        typical         10.080000 
+U317                      AO22X1TR        typical         10.080000 
+U318                      AO22X1TR        typical         10.080000 
+U319                      AND3X2TR        typical         8.640000  
+U320                      OAI22X1TR       typical         8.640000  
+U321                      OAI22X1TR       typical         8.640000  
+U322                      OAI22X1TR       typical         8.640000  
+U323                      NOR2X1TR        typical         5.760000  
+U324                      XOR2X1TR        typical         11.520000 
+U325                      CLKINVX2TR      typical         4.320000  
+U326                      CLKINVX2TR      typical         4.320000  
+U327                      CLKINVX2TR      typical         4.320000  
+U328                      CLKINVX2TR      typical         4.320000  
+U329                      CLKINVX2TR      typical         4.320000  
+U330                      CLKINVX2TR      typical         4.320000  
+U331                      CLKINVX2TR      typical         4.320000  
+U332                      NOR2X1TR        typical         5.760000  
+U333                      NOR2X1TR        typical         5.760000  
+U334                      NOR2X1TR        typical         5.760000  
+U335                      NOR2X1TR        typical         5.760000  
+U336                      AO22X1TR        typical         10.080000 
+U337                      AOI221X1TR      typical         11.520000 
+U338                      AO22X1TR        typical         10.080000 
+U339                      AOI221X1TR      typical         11.520000 
+U340                      OAI22X1TR       typical         8.640000  
+U341                      AO22X1TR        typical         10.080000 
+U342                      AOI221X1TR      typical         11.520000 
+U343                      AO22X1TR        typical         10.080000 
+U344                      AOI221X1TR      typical         11.520000 
+U345                      OAI22X1TR       typical         8.640000  
+binSelected_o_reg_0_      DFFQX1TR        typical         24.480000 n
+binSelected_o_reg_1_      DFFQX1TR        typical         24.480000 n
+binSelected_o_reg_2_      DFFQX1TR        typical         24.480000 n
+binSelected_o_reg_3_      DFFQX1TR        typical         24.480000 n
+binSelected_o_reg_4_      DFFQX1TR        typical         24.480000 n
+binSelected_o_reg_5_      DFFQX1TR        typical         24.480000 n
+binSelected_o_reg_6_      DFFQX1TR        typical         24.480000 n
+binSelected_o_reg_7_      DFFQX1TR        typical         24.480000 n
+bin_buf_reg_0__0_         DFFX1TR         typical         27.360001 n
+bin_buf_reg_0__1_         DFFX1TR         typical         27.360001 n
+bin_buf_reg_0__2_         DFFX1TR         typical         27.360001 n
+bin_buf_reg_0__3_         DFFQX1TR        typical         24.480000 n
+bin_buf_reg_1__0_         DFFX1TR         typical         27.360001 n
+bin_buf_reg_1__1_         DFFX1TR         typical         27.360001 n
+bin_buf_reg_1__2_         DFFX1TR         typical         27.360001 n
+bin_buf_reg_1__3_         DFFQX1TR        typical         24.480000 n
+bin_buf_reg_2__0_         DFFX1TR         typical         27.360001 n
+bin_buf_reg_2__1_         DFFX1TR         typical         27.360001 n
+bin_buf_reg_2__2_         DFFX1TR         typical         27.360001 n
+bin_buf_reg_2__3_         DFFQX1TR        typical         24.480000 n
+bin_buf_reg_3__0_         DFFX1TR         typical         27.360001 n
+bin_buf_reg_3__1_         DFFX1TR         typical         27.360001 n
+bin_buf_reg_3__2_         DFFX1TR         typical         27.360001 n
+bin_buf_reg_3__3_         DFFQX1TR        typical         24.480000 n
+bin_buf_reg_4__0_         DFFX1TR         typical         27.360001 n
+bin_buf_reg_4__1_         DFFX1TR         typical         27.360001 n
+bin_buf_reg_4__2_         DFFX1TR         typical         27.360001 n
+bin_buf_reg_4__3_         DFFQX1TR        typical         24.480000 n
+bin_buf_reg_5__0_         DFFX1TR         typical         27.360001 n
+bin_buf_reg_5__1_         DFFX1TR         typical         27.360001 n
+bin_buf_reg_5__2_         DFFX1TR         typical         27.360001 n
+bin_buf_reg_5__3_         DFFQX1TR        typical         24.480000 n
+bin_buf_reg_6__0_         DFFX1TR         typical         27.360001 n
+bin_buf_reg_6__1_         DFFX1TR         typical         27.360001 n
+bin_buf_reg_6__2_         DFFX1TR         typical         27.360001 n
+bin_buf_reg_6__3_         DFFQX1TR        typical         24.480000 n
+bin_buf_reg_7__0_         DFFX1TR         typical         27.360001 n
+bin_buf_reg_7__1_         DFFX1TR         typical         27.360001 n
+bin_buf_reg_7__2_         DFFX1TR         typical         27.360001 n
+bin_buf_reg_7__3_         DFFQX1TR        typical         24.480000 n
+delaycount_reg_0_         DFFQX1TR        typical         24.480000 n
+delaycount_reg_1_         DFFQX1TR        typical         24.480000 n
+delaycount_reg_2_         DFFQX1TR        typical         24.480000 n
+delaycount_reg_3_         DFFQX1TR        typical         24.480000 n
+grant_ack_reg             DFFQX1TR        typical         24.480000 n
+prebinSelected_reg_0_     DFFQX1TR        typical         24.480000 n
+prebinSelected_reg_1_     DFFQX1TR        typical         24.480000 n
+prebinSelected_reg_2_     DFFQX1TR        typical         24.480000 n
+prebinSelected_reg_3_     DFFQX1TR        typical         24.480000 n
+prebinSelected_reg_4_     DFFQX1TR        typical         24.480000 n
+prebinSelected_reg_5_     DFFQX1TR        typical         24.480000 n
+prebinSelected_reg_6_     DFFQX1TR        typical         24.480000 n
+prebinSelected_reg_7_     DFFQX1TR        typical         24.480000 n
+qs_rr_arbiter             rr_arbiter                      830.880014
+                                                                    h, n, p
+qs_state_reg_0_           DFFQX2TR        typical         25.920000 n
+qs_state_reg_1_           DFFQX1TR        typical         24.480000 n
+qs_state_reg_2_           DFFQX1TR        typical         24.480000 n
+readEn_o_reg              DFFQX1TR        typical         24.480000 n
+reading_bin_reg_0_        DFFQX1TR        typical         24.480000 n
+reading_bin_reg_1_        DFFQX1TR        typical         24.480000 n
+reading_bin_reg_2_        DFFQX1TR        typical         24.480000 n
+--------------------------------------------------------------------------------
+Total 245 cells                                           3896.640048
+1
+ 
+****************************************
+Report : port
+        -verbose
+Design : queue_scheduler
+Version: T-2022.03-SP3
+Date   : Tue Mar 28 15:22:01 2023
+****************************************
+
+
+
+Attributes:
+    d - dont_touch_network
+
+                       Pin      Wire     Max     Max     Connection
+Port           Dir     Load     Load     Trans   Cap     Class      Attrs
+--------------------------------------------------------------------------------
+CUClean_i[0]   in      0.0000   0.0000    1.02    0.17   --         
+CUClean_i[1]   in      0.0000   0.0000    1.02    0.17   --         
+CUClean_i[2]   in      0.0000   0.0000    1.02    0.17   --         
+CUClean_i[3]   in      0.0000   0.0000    1.02    0.17   --         
+CUClean_i[4]   in      0.0000   0.0000    1.02    0.17   --         
+CUClean_i[5]   in      0.0000   0.0000    1.02    0.17   --         
+CUClean_i[6]   in      0.0000   0.0000    1.02    0.17   --         
+CUClean_i[7]   in      0.0000   0.0000    1.02    0.17   --         
+PEready_i[0]   in      0.0000   0.0000    1.02    0.17   --         
+PEready_i[1]   in      0.0000   0.0000    1.02    0.17   --         
+PEready_i[2]   in      0.0000   0.0000    1.02    0.17   --         
+PEready_i[3]   in      0.0000   0.0000    1.02    0.17   --         
+binValid_i[0]  in      0.0000   0.0000    1.02    0.17   --         
+binValid_i[1]  in      0.0000   0.0000    1.02    0.17   --         
+binValid_i[2]  in      0.0000   0.0000    1.02    0.17   --         
+binValid_i[3]  in      0.0000   0.0000    1.02    0.17   --         
+binValid_i[4]  in      0.0000   0.0000    1.02    0.17   --         
+binValid_i[5]  in      0.0000   0.0000    1.02    0.17   --         
+binValid_i[6]  in      0.0000   0.0000    1.02    0.17   --         
+binValid_i[7]  in      0.0000   0.0000    1.02    0.17   --         
+clk_i          in      0.0000   0.0000    1.02    0.17   --         d
+initialFinish_i[0]
+               in      0.0000   0.0000    1.02    0.17   --         
+initialFinish_i[1]
+               in      0.0000   0.0000    1.02    0.17   --         
+initialFinish_i[2]
+               in      0.0000   0.0000    1.02    0.17   --         
+initialFinish_i[3]
+               in      0.0000   0.0000    1.02    0.17   --         
+rst_i          in      0.0000   0.0000    1.02    0.17   --         
+binSelected_o[0]
+               out     0.0100   0.0000   --      --      --         
+binSelected_o[1]
+               out     0.0100   0.0000   --      --      --         
+binSelected_o[2]
+               out     0.0100   0.0000   --      --      --         
+binSelected_o[3]
+               out     0.0100   0.0000   --      --      --         
+binSelected_o[4]
+               out     0.0100   0.0000   --      --      --         
+binSelected_o[5]
+               out     0.0100   0.0000   --      --      --         
+binSelected_o[6]
+               out     0.0100   0.0000   --      --      --         
+binSelected_o[7]
+               out     0.0100   0.0000   --      --      --         
+readEn_o       out     0.0100   0.0000   --      --      --         
+
+
+              External  Max             Min                Min       Min
+              Number    Wireload        Wireload           Pin       Wire
+Port          Points    Model           Model              Load      Load
+--------------------------------------------------------------------------------
+CUClean_i[0]       1      --              --              --        -- 
+CUClean_i[1]       1      --              --              --        -- 
+CUClean_i[2]       1      --              --              --        -- 
+CUClean_i[3]       1      --              --              --        -- 
+CUClean_i[4]       1      --              --              --        -- 
+CUClean_i[5]       1      --              --              --        -- 
+CUClean_i[6]       1      --              --              --        -- 
+CUClean_i[7]       1      --              --              --        -- 
+PEready_i[0]       1      --              --              --        -- 
+PEready_i[1]       1      --              --              --        -- 
+PEready_i[2]       1      --              --              --        -- 
+PEready_i[3]       1      --              --              --        -- 
+binValid_i[0]      1      --              --              --        -- 
+binValid_i[1]      1      --              --              --        -- 
+binValid_i[2]      1      --              --              --        -- 
+binValid_i[3]      1      --              --              --        -- 
+binValid_i[4]      1      --              --              --        -- 
+binValid_i[5]      1      --              --              --        -- 
+binValid_i[6]      1      --              --              --        -- 
+binValid_i[7]      1      --              --              --        -- 
+clk_i              1      --              --              --        -- 
+initialFinish_i[0]
+                   1      --              --              --        -- 
+initialFinish_i[1]
+                   1      --              --              --        -- 
+initialFinish_i[2]
+                   1      --              --              --        -- 
+initialFinish_i[3]
+                   1      --              --              --        -- 
+rst_i              1      --              --              --        -- 
+binSelected_o[0]
+                   1      --              --              --        -- 
+binSelected_o[1]
+                   1      --              --              --        -- 
+binSelected_o[2]
+                   1      --              --              --        -- 
+binSelected_o[3]
+                   1      --              --              --        -- 
+binSelected_o[4]
+                   1      --              --              --        -- 
+binSelected_o[5]
+                   1      --              --              --        -- 
+binSelected_o[6]
+                   1      --              --              --        -- 
+binSelected_o[7]
+                   1      --              --              --        -- 
+readEn_o           1      --              --              --        -- 
+
+                    Input Delay
+                  Min             Max       Related   Max
+Input Port    Rise    Fall    Rise    Fall   Clock  Fanout
+--------------------------------------------------------------------------------
+CUClean_i[0]
+              0.10    0.10    0.10    0.10  clk_i     --    
+CUClean_i[1]
+              0.10    0.10    0.10    0.10  clk_i     --    
+CUClean_i[2]
+              0.10    0.10    0.10    0.10  clk_i     --    
+CUClean_i[3]
+              0.10    0.10    0.10    0.10  clk_i     --    
+CUClean_i[4]
+              0.10    0.10    0.10    0.10  clk_i     --    
+CUClean_i[5]
+              0.10    0.10    0.10    0.10  clk_i     --    
+CUClean_i[6]
+              0.10    0.10    0.10    0.10  clk_i     --    
+CUClean_i[7]
+              0.10    0.10    0.10    0.10  clk_i     --    
+PEready_i[0]
+              0.10    0.10    0.10    0.10  clk_i     --    
+PEready_i[1]
+              0.10    0.10    0.10    0.10  clk_i     --    
+PEready_i[2]
+              0.10    0.10    0.10    0.10  clk_i     --    
+PEready_i[3]
+              0.10    0.10    0.10    0.10  clk_i     --    
+binValid_i[0]
+              0.10    0.10    0.10    0.10  clk_i     --    
+binValid_i[1]
+              0.10    0.10    0.10    0.10  clk_i     --    
+binValid_i[2]
+              0.10    0.10    0.10    0.10  clk_i     --    
+binValid_i[3]
+              0.10    0.10    0.10    0.10  clk_i     --    
+binValid_i[4]
+              0.10    0.10    0.10    0.10  clk_i     --    
+binValid_i[5]
+              0.10    0.10    0.10    0.10  clk_i     --    
+binValid_i[6]
+              0.10    0.10    0.10    0.10  clk_i     --    
+binValid_i[7]
+              0.10    0.10    0.10    0.10  clk_i     --    
+clk_i         --      --      --      --      --      -- 
+initialFinish_i[0]
+              0.10    0.10    0.10    0.10  clk_i     --    
+initialFinish_i[1]
+              0.10    0.10    0.10    0.10  clk_i     --    
+initialFinish_i[2]
+              0.10    0.10    0.10    0.10  clk_i     --    
+initialFinish_i[3]
+              0.10    0.10    0.10    0.10  clk_i     --    
+rst_i         0.10    0.10    0.10    0.10  clk_i     --    
+
+
+                    Driving Cell
+Input Port   Rise(min/max)      Fall(min/max)      Mult(min/max)  Attrs(min/max)
+--------------------------------------------------------------------------------
+CUClean_i[0] INVX2TR            INVX2TR              -- /  --     
+CUClean_i[1] INVX2TR            INVX2TR              -- /  --     
+CUClean_i[2] INVX2TR            INVX2TR              -- /  --     
+CUClean_i[3] INVX2TR            INVX2TR              -- /  --     
+CUClean_i[4] INVX2TR            INVX2TR              -- /  --     
+CUClean_i[5] INVX2TR            INVX2TR              -- /  --     
+CUClean_i[6] INVX2TR            INVX2TR              -- /  --     
+CUClean_i[7] INVX2TR            INVX2TR              -- /  --     
+PEready_i[0] INVX2TR            INVX2TR              -- /  --     
+PEready_i[1] INVX2TR            INVX2TR              -- /  --     
+PEready_i[2] INVX2TR            INVX2TR              -- /  --     
+PEready_i[3] INVX2TR            INVX2TR              -- /  --     
+binValid_i[0]
+             INVX2TR            INVX2TR              -- /  --     
+binValid_i[1]
+             INVX2TR            INVX2TR              -- /  --     
+binValid_i[2]
+             INVX2TR            INVX2TR              -- /  --     
+binValid_i[3]
+             INVX2TR            INVX2TR              -- /  --     
+binValid_i[4]
+             INVX2TR            INVX2TR              -- /  --     
+binValid_i[5]
+             INVX2TR            INVX2TR              -- /  --     
+binValid_i[6]
+             INVX2TR            INVX2TR              -- /  --     
+binValid_i[7]
+             INVX2TR            INVX2TR              -- /  --     
+clk_i        INVX2TR            INVX2TR              -- /  --     
+initialFinish_i[0]
+             INVX2TR            INVX2TR              -- /  --     
+initialFinish_i[1]
+             INVX2TR            INVX2TR              -- /  --     
+initialFinish_i[2]
+             INVX2TR            INVX2TR              -- /  --     
+initialFinish_i[3]
+             INVX2TR            INVX2TR              -- /  --     
+rst_i        INVX2TR            INVX2TR              -- /  --     
+
+
+               Max Drive      Min Drive      Resistance    Min    Min       Cell
+Input Port    Rise    Fall   Rise    Fall   Max     Min    Cap    Fanout    Deg
+--------------------------------------------------------------------------------
+CUClean_i[0]
+              --      --     --      --     --      --     --     --        -- 
+CUClean_i[1]
+              --      --     --      --     --      --     --     --        -- 
+CUClean_i[2]
+              --      --     --      --     --      --     --     --        -- 
+CUClean_i[3]
+              --      --     --      --     --      --     --     --        -- 
+CUClean_i[4]
+              --      --     --      --     --      --     --     --        -- 
+CUClean_i[5]
+              --      --     --      --     --      --     --     --        -- 
+CUClean_i[6]
+              --      --     --      --     --      --     --     --        -- 
+CUClean_i[7]
+              --      --     --      --     --      --     --     --        -- 
+PEready_i[0]
+              --      --     --      --     --      --     --     --        -- 
+PEready_i[1]
+              --      --     --      --     --      --     --     --        -- 
+PEready_i[2]
+              --      --     --      --     --      --     --     --        -- 
+PEready_i[3]
+              --      --     --      --     --      --     --     --        -- 
+binValid_i[0]
+              --      --     --      --     --      --     --     --        -- 
+binValid_i[1]
+              --      --     --      --     --      --     --     --        -- 
+binValid_i[2]
+              --      --     --      --     --      --     --     --        -- 
+binValid_i[3]
+              --      --     --      --     --      --     --     --        -- 
+binValid_i[4]
+              --      --     --      --     --      --     --     --        -- 
+binValid_i[5]
+              --      --     --      --     --      --     --     --        -- 
+binValid_i[6]
+              --      --     --      --     --      --     --     --        -- 
+binValid_i[7]
+              --      --     --      --     --      --     --     --        -- 
+clk_i         --      --     --      --     --      --     --     --        -- 
+initialFinish_i[0]
+              --      --     --      --     --      --     --     --        -- 
+initialFinish_i[1]
+              --      --     --      --     --      --     --     --        -- 
+initialFinish_i[2]
+              --      --     --      --     --      --     --     --        -- 
+initialFinish_i[3]
+              --      --     --      --     --      --     --     --        -- 
+rst_i         --      --     --      --     --      --     --     --        -- 
+
+
+               Max Tran        Min Tran
+Input Port    Rise    Fall    Rise    Fall
+--------------------------------------------------------------------------------
+CUClean_i[0]
+              --      --      --      -- 
+CUClean_i[1]
+              --      --      --      -- 
+CUClean_i[2]
+              --      --      --      -- 
+CUClean_i[3]
+              --      --      --      -- 
+CUClean_i[4]
+              --      --      --      -- 
+CUClean_i[5]
+              --      --      --      -- 
+CUClean_i[6]
+              --      --      --      -- 
+CUClean_i[7]
+              --      --      --      -- 
+PEready_i[0]
+              --      --      --      -- 
+PEready_i[1]
+              --      --      --      -- 
+PEready_i[2]
+              --      --      --      -- 
+PEready_i[3]
+              --      --      --      -- 
+binValid_i[0]
+              --      --      --      -- 
+binValid_i[1]
+              --      --      --      -- 
+binValid_i[2]
+              --      --      --      -- 
+binValid_i[3]
+              --      --      --      -- 
+binValid_i[4]
+              --      --      --      -- 
+binValid_i[5]
+              --      --      --      -- 
+binValid_i[6]
+              --      --      --      -- 
+binValid_i[7]
+              --      --      --      -- 
+clk_i         --      --      --      -- 
+initialFinish_i[0]
+              --      --      --      -- 
+initialFinish_i[1]
+              --      --      --      -- 
+initialFinish_i[2]
+              --      --      --      -- 
+initialFinish_i[3]
+              --      --      --      -- 
+rst_i         --      --      --      -- 
+
+
+                    Output Delay
+                  Min             Max      Related  Fanout
+Output Port   Rise    Fall    Rise    Fall  Clock     Load
+--------------------------------------------------------------------------------
+binSelected_o[0]
+              0.10    0.10    0.10    0.10  clk_i     0.00  
+binSelected_o[1]
+              0.10    0.10    0.10    0.10  clk_i     0.00  
+binSelected_o[2]
+              0.10    0.10    0.10    0.10  clk_i     0.00  
+binSelected_o[3]
+              0.10    0.10    0.10    0.10  clk_i     0.00  
+binSelected_o[4]
+              0.10    0.10    0.10    0.10  clk_i     0.00  
+binSelected_o[5]
+              0.10    0.10    0.10    0.10  clk_i     0.00  
+binSelected_o[6]
+              0.10    0.10    0.10    0.10  clk_i     0.00  
+binSelected_o[7]
+              0.10    0.10    0.10    0.10  clk_i     0.00  
+readEn_o      0.10    0.10    0.10    0.10  clk_i     0.00  
+
+1
+ 
+****************************************
+Report : compile_options
+Design : queue_scheduler
+Version: T-2022.03-SP3
+Date   : Tue Mar 28 15:22:01 2023
+****************************************
+
+Design                                   Compile Option         Value
+--------------------------------------------------------------------------------
+queue_scheduler                          flatten                false
+                                         structure              true
+                                         structure_boolean      false
+                                         structure_timing       true
+                                         isolate_port           disabled
+                                         multibit_options
+                                           optimization_mode    non_timing_driven
+                                           minimum_width        2
+                                           exclude_registers_with_timing_exceptions false
+
+rr_arbiter                               flatten                false
+                                         structure              true
+                                         structure_boolean      false
+                                         structure_timing       true
+
+priority_arbiter_C_REQ_NUM8_C_REQ_IDX_WIDTH3_1 flatten          false
+                                         structure              true
+                                         structure_boolean      false
+                                         structure_timing       true
+
+priority_arbiter_C_REQ_NUM8_C_REQ_IDX_WIDTH3_0 flatten          false
+                                         structure              true
+                                         structure_boolean      false
+                                         structure_timing       true
+--------------------------------------------------------------------------------
+1
+ 
+****************************************
+Report : constraint
+        -all_violators
+        -verbose
+Design : queue_scheduler
+Version: T-2022.03-SP3
+Date   : Tue Mar 28 15:22:01 2023
+****************************************
+
+
+1
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -nworst 100
+        -max_paths 20
+Design : queue_scheduler
+Version: T-2022.03-SP3
+Date   : Tue Mar 28 15:22:01 2023
+****************************************
+
+Operating Conditions: typical   Library: typical
+Wire Load Model Mode: segmented
+
+  Startpoint: reading_bin_reg_0_
+              (rising edge-triggered flip-flop clocked by clk_i)
+  Endpoint: qs_state_reg_0_
+            (rising edge-triggered flip-flop clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  queue_scheduler    ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_i (rise edge)                  0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  reading_bin_reg_0_/CK (DFFQX1TR)         0.00       0.00 r
+  reading_bin_reg_0_/Q (DFFQX1TR)          0.57       0.57 r
+  U216/Y (CLKBUFX2TR)                      0.37       0.94 r
+  U176/Y (CLKINVX2TR)                      0.21       1.15 f
+  U334/Y (NOR2X1TR)                        0.47       1.62 r
+  U338/Y (AO22X1TR)                        0.19       1.81 r
+  U339/Y (AOI221X1TR)                      0.08       1.89 f
+  U340/Y (OAI22X1TR)                       0.33       2.22 r
+  U165/Y (CLKINVX2TR)                      0.17       2.39 f
+  U211/Y (OAI222X1TR)                      0.25       2.64 r
+  U210/Y (NAND2X1TR)                       0.24       2.88 f
+  U175/Y (NAND2X1TR)                       0.25       3.14 r
+  U166/Y (CLKINVX2TR)                      0.14       3.28 f
+  U213/Y (AOI22X1TR)                       0.21       3.49 r
+  U212/Y (OAI21X1TR)                       0.10       3.59 f
+  qs_state_reg_0_/D (DFFQX2TR)             0.00       3.59 f
+  data arrival time                                   3.59
+
+  clock clk_i (rise edge)                100.00     100.00
+  clock network delay (ideal)              0.00     100.00
+  clock uncertainty                       -0.10      99.90
+  qs_state_reg_0_/CK (DFFQX2TR)            0.00      99.90 r
+  library setup time                      -0.10      99.80
+  data required time                                 99.80
+  -----------------------------------------------------------
+  data required time                                 99.80
+  data arrival time                                  -3.59
+  -----------------------------------------------------------
+  slack (MET)                                        96.21
+
+
+  Startpoint: reading_bin_reg_0_
+              (rising edge-triggered flip-flop clocked by clk_i)
+  Endpoint: qs_state_reg_0_
+            (rising edge-triggered flip-flop clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  queue_scheduler    ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_i (rise edge)                  0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  reading_bin_reg_0_/CK (DFFQX1TR)         0.00       0.00 r
+  reading_bin_reg_0_/Q (DFFQX1TR)          0.57       0.57 r
+  U216/Y (CLKBUFX2TR)                      0.37       0.94 r
+  U176/Y (CLKINVX2TR)                      0.21       1.15 f
+  U334/Y (NOR2X1TR)                        0.47       1.62 r
+  U336/Y (AO22X1TR)                        0.19       1.81 r
+  U337/Y (AOI221X1TR)                      0.08       1.89 f
+  U340/Y (OAI22X1TR)                       0.31       2.20 r
+  U165/Y (CLKINVX2TR)                      0.17       2.37 f
+  U211/Y (OAI222X1TR)                      0.25       2.62 r
+  U210/Y (NAND2X1TR)                       0.24       2.86 f
+  U175/Y (NAND2X1TR)                       0.25       3.12 r
+  U166/Y (CLKINVX2TR)                      0.14       3.26 f
+  U213/Y (AOI22X1TR)                       0.21       3.46 r
+  U212/Y (OAI21X1TR)                       0.10       3.57 f
+  qs_state_reg_0_/D (DFFQX2TR)             0.00       3.57 f
+  data arrival time                                   3.57
+
+  clock clk_i (rise edge)                100.00     100.00
+  clock network delay (ideal)              0.00     100.00
+  clock uncertainty                       -0.10      99.90
+  qs_state_reg_0_/CK (DFFQX2TR)            0.00      99.90 r
+  library setup time                      -0.10      99.80
+  data required time                                 99.80
+  -----------------------------------------------------------
+  data required time                                 99.80
+  data arrival time                                  -3.57
+  -----------------------------------------------------------
+  slack (MET)                                        96.23
+
+
+  Startpoint: reading_bin_reg_0_
+              (rising edge-triggered flip-flop clocked by clk_i)
+  Endpoint: qs_state_reg_1_
+            (rising edge-triggered flip-flop clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  queue_scheduler    ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_i (rise edge)                  0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  reading_bin_reg_0_/CK (DFFQX1TR)         0.00       0.00 r
+  reading_bin_reg_0_/Q (DFFQX1TR)          0.57       0.57 r
+  U216/Y (CLKBUFX2TR)                      0.37       0.94 r
+  U176/Y (CLKINVX2TR)                      0.21       1.15 f
+  U334/Y (NOR2X1TR)                        0.47       1.62 r
+  U338/Y (AO22X1TR)                        0.19       1.81 r
+  U339/Y (AOI221X1TR)                      0.08       1.89 f
+  U340/Y (OAI22X1TR)                       0.33       2.22 r
+  U165/Y (CLKINVX2TR)                      0.17       2.39 f
+  U211/Y (OAI222X1TR)                      0.25       2.64 r
+  U210/Y (NAND2X1TR)                       0.24       2.88 f
+  U175/Y (NAND2X1TR)                       0.25       3.14 r
+  U166/Y (CLKINVX2TR)                      0.14       3.28 f
+  U218/Y (NAND4X1TR)                       0.14       3.42 r
+  U217/Y (OAI221X1TR)                      0.11       3.53 f
+  qs_state_reg_1_/D (DFFQX1TR)             0.00       3.53 f
+  data arrival time                                   3.53
+
+  clock clk_i (rise edge)                100.00     100.00
+  clock network delay (ideal)              0.00     100.00
+  clock uncertainty                       -0.10      99.90
+  qs_state_reg_1_/CK (DFFQX1TR)            0.00      99.90 r
+  library setup time                      -0.11      99.79
+  data required time                                 99.79
+  -----------------------------------------------------------
+  data required time                                 99.79
+  data arrival time                                  -3.53
+  -----------------------------------------------------------
+  slack (MET)                                        96.25
+
+
+  Startpoint: reading_bin_reg_1_
+              (rising edge-triggered flip-flop clocked by clk_i)
+  Endpoint: qs_state_reg_0_
+            (rising edge-triggered flip-flop clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  queue_scheduler    ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_i (rise edge)                  0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  reading_bin_reg_1_/CK (DFFQX1TR)         0.00       0.00 r
+  reading_bin_reg_1_/Q (DFFQX1TR)          0.57       0.57 r
+  U219/Y (CLKBUFX2TR)                      0.37       0.94 r
+  U177/Y (CLKINVX2TR)                      0.21       1.15 f
+  U333/Y (NOR2X1TR)                        0.51       1.66 r
+  U339/Y (AOI221X1TR)                      0.16       1.83 f
+  U340/Y (OAI22X1TR)                       0.33       2.16 r
+  U165/Y (CLKINVX2TR)                      0.17       2.32 f
+  U211/Y (OAI222X1TR)                      0.25       2.57 r
+  U210/Y (NAND2X1TR)                       0.24       2.82 f
+  U175/Y (NAND2X1TR)                       0.25       3.07 r
+  U166/Y (CLKINVX2TR)                      0.14       3.21 f
+  U213/Y (AOI22X1TR)                       0.21       3.42 r
+  U212/Y (OAI21X1TR)                       0.10       3.52 f
+  qs_state_reg_0_/D (DFFQX2TR)             0.00       3.52 f
+  data arrival time                                   3.52
+
+  clock clk_i (rise edge)                100.00     100.00
+  clock network delay (ideal)              0.00     100.00
+  clock uncertainty                       -0.10      99.90
+  qs_state_reg_0_/CK (DFFQX2TR)            0.00      99.90 r
+  library setup time                      -0.10      99.80
+  data required time                                 99.80
+  -----------------------------------------------------------
+  data required time                                 99.80
+  data arrival time                                  -3.52
+  -----------------------------------------------------------
+  slack (MET)                                        96.28
+
+
+  Startpoint: reading_bin_reg_0_
+              (rising edge-triggered flip-flop clocked by clk_i)
+  Endpoint: qs_state_reg_1_
+            (rising edge-triggered flip-flop clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  queue_scheduler    ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_i (rise edge)                  0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  reading_bin_reg_0_/CK (DFFQX1TR)         0.00       0.00 r
+  reading_bin_reg_0_/Q (DFFQX1TR)          0.57       0.57 r
+  U216/Y (CLKBUFX2TR)                      0.37       0.94 r
+  U176/Y (CLKINVX2TR)                      0.21       1.15 f
+  U334/Y (NOR2X1TR)                        0.47       1.62 r
+  U336/Y (AO22X1TR)                        0.19       1.81 r
+  U337/Y (AOI221X1TR)                      0.08       1.89 f
+  U340/Y (OAI22X1TR)                       0.31       2.20 r
+  U165/Y (CLKINVX2TR)                      0.17       2.37 f
+  U211/Y (OAI222X1TR)                      0.25       2.62 r
+  U210/Y (NAND2X1TR)                       0.24       2.86 f
+  U175/Y (NAND2X1TR)                       0.25       3.12 r
+  U166/Y (CLKINVX2TR)                      0.14       3.26 f
+  U218/Y (NAND4X1TR)                       0.14       3.40 r
+  U217/Y (OAI221X1TR)                      0.11       3.51 f
+  qs_state_reg_1_/D (DFFQX1TR)             0.00       3.51 f
+  data arrival time                                   3.51
+
+  clock clk_i (rise edge)                100.00     100.00
+  clock network delay (ideal)              0.00     100.00
+  clock uncertainty                       -0.10      99.90
+  qs_state_reg_1_/CK (DFFQX1TR)            0.00      99.90 r
+  library setup time                      -0.11      99.79
+  data required time                                 99.79
+  -----------------------------------------------------------
+  data required time                                 99.79
+  data arrival time                                  -3.51
+  -----------------------------------------------------------
+  slack (MET)                                        96.28
+
+
+  Startpoint: reading_bin_reg_0_
+              (rising edge-triggered flip-flop clocked by clk_i)
+  Endpoint: qs_state_reg_0_
+            (rising edge-triggered flip-flop clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  queue_scheduler    ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_i (rise edge)                  0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  reading_bin_reg_0_/CK (DFFQX1TR)         0.00       0.00 r
+  reading_bin_reg_0_/Q (DFFQX1TR)          0.57       0.57 r
+  U216/Y (CLKBUFX2TR)                      0.37       0.94 r
+  U176/Y (CLKINVX2TR)                      0.21       1.15 f
+  U333/Y (NOR2X1TR)                        0.51       1.66 r
+  U339/Y (AOI221X1TR)                      0.16       1.83 f
+  U340/Y (OAI22X1TR)                       0.33       2.15 r
+  U165/Y (CLKINVX2TR)                      0.17       2.32 f
+  U211/Y (OAI222X1TR)                      0.25       2.57 r
+  U210/Y (NAND2X1TR)                       0.24       2.82 f
+  U175/Y (NAND2X1TR)                       0.25       3.07 r
+  U166/Y (CLKINVX2TR)                      0.14       3.21 f
+  U213/Y (AOI22X1TR)                       0.21       3.42 r
+  U212/Y (OAI21X1TR)                       0.10       3.52 f
+  qs_state_reg_0_/D (DFFQX2TR)             0.00       3.52 f
+  data arrival time                                   3.52
+
+  clock clk_i (rise edge)                100.00     100.00
+  clock network delay (ideal)              0.00     100.00
+  clock uncertainty                       -0.10      99.90
+  qs_state_reg_0_/CK (DFFQX2TR)            0.00      99.90 r
+  library setup time                      -0.10      99.80
+  data required time                                 99.80
+  -----------------------------------------------------------
+  data required time                                 99.80
+  data arrival time                                  -3.52
+  -----------------------------------------------------------
+  slack (MET)                                        96.28
+
+
+  Startpoint: reading_bin_reg_1_
+              (rising edge-triggered flip-flop clocked by clk_i)
+  Endpoint: qs_state_reg_0_
+            (rising edge-triggered flip-flop clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  queue_scheduler    ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_i (rise edge)                  0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  reading_bin_reg_1_/CK (DFFQX1TR)         0.00       0.00 r
+  reading_bin_reg_1_/Q (DFFQX1TR)          0.57       0.57 r
+  U219/Y (CLKBUFX2TR)                      0.37       0.94 r
+  U177/Y (CLKINVX2TR)                      0.21       1.15 f
+  U332/Y (NOR2X1TR)                        0.51       1.66 r
+  U339/Y (AOI221X1TR)                      0.15       1.81 f
+  U340/Y (OAI22X1TR)                       0.33       2.14 r
+  U165/Y (CLKINVX2TR)                      0.17       2.30 f
+  U211/Y (OAI222X1TR)                      0.25       2.56 r
+  U210/Y (NAND2X1TR)                       0.24       2.80 f
+  U175/Y (NAND2X1TR)                       0.25       3.05 r
+  U166/Y (CLKINVX2TR)                      0.14       3.19 f
+  U213/Y (AOI22X1TR)                       0.21       3.40 r
+  U212/Y (OAI21X1TR)                       0.10       3.50 f
+  qs_state_reg_0_/D (DFFQX2TR)             0.00       3.50 f
+  data arrival time                                   3.50
+
+  clock clk_i (rise edge)                100.00     100.00
+  clock network delay (ideal)              0.00     100.00
+  clock uncertainty                       -0.10      99.90
+  qs_state_reg_0_/CK (DFFQX2TR)            0.00      99.90 r
+  library setup time                      -0.10      99.80
+  data required time                                 99.80
+  -----------------------------------------------------------
+  data required time                                 99.80
+  data arrival time                                  -3.50
+  -----------------------------------------------------------
+  slack (MET)                                        96.29
+
+
+  Startpoint: reading_bin_reg_1_
+              (rising edge-triggered flip-flop clocked by clk_i)
+  Endpoint: qs_state_reg_0_
+            (rising edge-triggered flip-flop clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  queue_scheduler    ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_i (rise edge)                  0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  reading_bin_reg_1_/CK (DFFQX1TR)         0.00       0.00 r
+  reading_bin_reg_1_/Q (DFFQX1TR)          0.57       0.57 r
+  U219/Y (CLKBUFX2TR)                      0.37       0.94 r
+  U177/Y (CLKINVX2TR)                      0.21       1.15 f
+  U333/Y (NOR2X1TR)                        0.51       1.66 r
+  U337/Y (AOI221X1TR)                      0.16       1.83 f
+  U340/Y (OAI22X1TR)                       0.31       2.13 r
+  U165/Y (CLKINVX2TR)                      0.17       2.30 f
+  U211/Y (OAI222X1TR)                      0.25       2.55 r
+  U210/Y (NAND2X1TR)                       0.24       2.80 f
+  U175/Y (NAND2X1TR)                       0.25       3.05 r
+  U166/Y (CLKINVX2TR)                      0.14       3.19 f
+  U213/Y (AOI22X1TR)                       0.21       3.40 r
+  U212/Y (OAI21X1TR)                       0.10       3.50 f
+  qs_state_reg_0_/D (DFFQX2TR)             0.00       3.50 f
+  data arrival time                                   3.50
+
+  clock clk_i (rise edge)                100.00     100.00
+  clock network delay (ideal)              0.00     100.00
+  clock uncertainty                       -0.10      99.90
+  qs_state_reg_0_/CK (DFFQX2TR)            0.00      99.90 r
+  library setup time                      -0.10      99.80
+  data required time                                 99.80
+  -----------------------------------------------------------
+  data required time                                 99.80
+  data arrival time                                  -3.50
+  -----------------------------------------------------------
+  slack (MET)                                        96.30
+
+
+  Startpoint: reading_bin_reg_0_
+              (rising edge-triggered flip-flop clocked by clk_i)
+  Endpoint: qs_state_reg_0_
+            (rising edge-triggered flip-flop clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  queue_scheduler    ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_i (rise edge)                  0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  reading_bin_reg_0_/CK (DFFQX1TR)         0.00       0.00 r
+  reading_bin_reg_0_/Q (DFFQX1TR)          0.57       0.57 r
+  U216/Y (CLKBUFX2TR)                      0.37       0.94 r
+  U176/Y (CLKINVX2TR)                      0.21       1.15 f
+  U333/Y (NOR2X1TR)                        0.51       1.66 r
+  U337/Y (AOI221X1TR)                      0.16       1.83 f
+  U340/Y (OAI22X1TR)                       0.31       2.13 r
+  U165/Y (CLKINVX2TR)                      0.17       2.30 f
+  U211/Y (OAI222X1TR)                      0.25       2.55 r
+  U210/Y (NAND2X1TR)                       0.24       2.80 f
+  U175/Y (NAND2X1TR)                       0.25       3.05 r
+  U166/Y (CLKINVX2TR)                      0.14       3.19 f
+  U213/Y (AOI22X1TR)                       0.21       3.40 r
+  U212/Y (OAI21X1TR)                       0.10       3.50 f
+  qs_state_reg_0_/D (DFFQX2TR)             0.00       3.50 f
+  data arrival time                                   3.50
+
+  clock clk_i (rise edge)                100.00     100.00
+  clock network delay (ideal)              0.00     100.00
+  clock uncertainty                       -0.10      99.90
+  qs_state_reg_0_/CK (DFFQX2TR)            0.00      99.90 r
+  library setup time                      -0.10      99.80
+  data required time                                 99.80
+  -----------------------------------------------------------
+  data required time                                 99.80
+  data arrival time                                  -3.50
+  -----------------------------------------------------------
+  slack (MET)                                        96.30
+
+
+  Startpoint: reading_bin_reg_1_
+              (rising edge-triggered flip-flop clocked by clk_i)
+  Endpoint: qs_state_reg_0_
+            (rising edge-triggered flip-flop clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  queue_scheduler    ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_i (rise edge)                  0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  reading_bin_reg_1_/CK (DFFQX1TR)         0.00       0.00 r
+  reading_bin_reg_1_/Q (DFFQX1TR)          0.57       0.57 r
+  U219/Y (CLKBUFX2TR)                      0.37       0.94 r
+  U177/Y (CLKINVX2TR)                      0.21       1.15 f
+  U332/Y (NOR2X1TR)                        0.51       1.66 r
+  U337/Y (AOI221X1TR)                      0.15       1.81 f
+  U340/Y (OAI22X1TR)                       0.31       2.12 r
+  U165/Y (CLKINVX2TR)                      0.17       2.28 f
+  U211/Y (OAI222X1TR)                      0.25       2.54 r
+  U210/Y (NAND2X1TR)                       0.24       2.78 f
+  U175/Y (NAND2X1TR)                       0.25       3.03 r
+  U166/Y (CLKINVX2TR)                      0.14       3.17 f
+  U213/Y (AOI22X1TR)                       0.21       3.38 r
+  U212/Y (OAI21X1TR)                       0.10       3.48 f
+  qs_state_reg_0_/D (DFFQX2TR)             0.00       3.48 f
+  data arrival time                                   3.48
+
+  clock clk_i (rise edge)                100.00     100.00
+  clock network delay (ideal)              0.00     100.00
+  clock uncertainty                       -0.10      99.90
+  qs_state_reg_0_/CK (DFFQX2TR)            0.00      99.90 r
+  library setup time                      -0.10      99.80
+  data required time                                 99.80
+  -----------------------------------------------------------
+  data required time                                 99.80
+  data arrival time                                  -3.48
+  -----------------------------------------------------------
+  slack (MET)                                        96.31
+
+
+  Startpoint: binValid_i[6]
+              (input port clocked by clk_i)
+  Endpoint: prebinSelected_reg_7_
+            (rising edge-triggered flip-flop clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  queue_scheduler    ibm13_wl10            typical
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_i (rise edge)                                 0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    0.10       0.10 r
+  binValid_i[6] (in)                                      0.13       0.23 r
+  qs_rr_arbiter/req_i[6] (rr_arbiter)                     0.00       0.23 r
+  qs_rr_arbiter/U44/Y (NAND2X1TR)                         0.15       0.38 f
+  qs_rr_arbiter/U43/Y (NOR2X1TR)                          0.37       0.74 r
+  qs_rr_arbiter/priority_arbiter_inst_1/req_i[6] (priority_arbiter_C_REQ_NUM8_C_REQ_IDX_WIDTH3_0)
+                                                          0.00       0.74 r
+  qs_rr_arbiter/priority_arbiter_inst_1/U8/Y (NOR2X1TR)
+                                                          0.18       0.92 f
+  qs_rr_arbiter/priority_arbiter_inst_1/U5/Y (NOR3BX1TR)
+                                                          0.21       1.13 f
+  qs_rr_arbiter/priority_arbiter_inst_1/U6/Y (NAND3BX1TR)
+                                                          0.48       1.60 r
+  qs_rr_arbiter/priority_arbiter_inst_1/valid_o (priority_arbiter_C_REQ_NUM8_C_REQ_IDX_WIDTH3_0)
+                                                          0.00       1.60 r
+  qs_rr_arbiter/U12/Y (CLKINVX2TR)                        0.30       1.90 f
+  qs_rr_arbiter/U3/Y (AOI22X1TR)                          0.56       2.46 r
+  qs_rr_arbiter/U15/Y (CLKINVX2TR)                        0.23       2.70 f
+  qs_rr_arbiter/U10/Y (NAND2X1TR)                         0.39       3.09 r
+  qs_rr_arbiter/U38/Y (NOR3X1TR)                          0.16       3.25 f
+  qs_rr_arbiter/grant_onehot_o[7] (rr_arbiter)            0.00       3.25 f
+  U226/Y (AO22X1TR)                                       0.24       3.49 f
+  prebinSelected_reg_7_/D (DFFQX1TR)                      0.00       3.49 f
+  data arrival time                                                  3.49
+
+  clock clk_i (rise edge)                               100.00     100.00
+  clock network delay (ideal)                             0.00     100.00
+  clock uncertainty                                      -0.10      99.90
+  prebinSelected_reg_7_/CK (DFFQX1TR)                     0.00      99.90 r
+  library setup time                                     -0.10      99.80
+  data required time                                                99.80
+  --------------------------------------------------------------------------
+  data required time                                                99.80
+  data arrival time                                                 -3.49
+  --------------------------------------------------------------------------
+  slack (MET)                                                       96.32
+
+
+  Startpoint: binValid_i[6]
+              (input port clocked by clk_i)
+  Endpoint: prebinSelected_reg_6_
+            (rising edge-triggered flip-flop clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  queue_scheduler    ibm13_wl10            typical
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_i (rise edge)                                 0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    0.10       0.10 r
+  binValid_i[6] (in)                                      0.13       0.23 r
+  qs_rr_arbiter/req_i[6] (rr_arbiter)                     0.00       0.23 r
+  qs_rr_arbiter/U44/Y (NAND2X1TR)                         0.15       0.38 f
+  qs_rr_arbiter/U43/Y (NOR2X1TR)                          0.37       0.74 r
+  qs_rr_arbiter/priority_arbiter_inst_1/req_i[6] (priority_arbiter_C_REQ_NUM8_C_REQ_IDX_WIDTH3_0)
+                                                          0.00       0.74 r
+  qs_rr_arbiter/priority_arbiter_inst_1/U8/Y (NOR2X1TR)
+                                                          0.18       0.92 f
+  qs_rr_arbiter/priority_arbiter_inst_1/U5/Y (NOR3BX1TR)
+                                                          0.21       1.13 f
+  qs_rr_arbiter/priority_arbiter_inst_1/U6/Y (NAND3BX1TR)
+                                                          0.48       1.60 r
+  qs_rr_arbiter/priority_arbiter_inst_1/valid_o (priority_arbiter_C_REQ_NUM8_C_REQ_IDX_WIDTH3_0)
+                                                          0.00       1.60 r
+  qs_rr_arbiter/U12/Y (CLKINVX2TR)                        0.30       1.90 f
+  qs_rr_arbiter/U3/Y (AOI22X1TR)                          0.56       2.46 r
+  qs_rr_arbiter/U15/Y (CLKINVX2TR)                        0.23       2.70 f
+  qs_rr_arbiter/U10/Y (NAND2X1TR)                         0.39       3.09 r
+  qs_rr_arbiter/U37/Y (NOR3X1TR)                          0.16       3.25 f
+  qs_rr_arbiter/grant_onehot_o[6] (rr_arbiter)            0.00       3.25 f
+  U225/Y (AO22X1TR)                                       0.24       3.49 f
+  prebinSelected_reg_6_/D (DFFQX1TR)                      0.00       3.49 f
+  data arrival time                                                  3.49
+
+  clock clk_i (rise edge)                               100.00     100.00
+  clock network delay (ideal)                             0.00     100.00
+  clock uncertainty                                      -0.10      99.90
+  prebinSelected_reg_6_/CK (DFFQX1TR)                     0.00      99.90 r
+  library setup time                                     -0.10      99.80
+  data required time                                                99.80
+  --------------------------------------------------------------------------
+  data required time                                                99.80
+  data arrival time                                                 -3.49
+  --------------------------------------------------------------------------
+  slack (MET)                                                       96.32
+
+
+  Startpoint: binValid_i[6]
+              (input port clocked by clk_i)
+  Endpoint: prebinSelected_reg_5_
+            (rising edge-triggered flip-flop clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  queue_scheduler    ibm13_wl10            typical
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_i (rise edge)                                 0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    0.10       0.10 r
+  binValid_i[6] (in)                                      0.13       0.23 r
+  qs_rr_arbiter/req_i[6] (rr_arbiter)                     0.00       0.23 r
+  qs_rr_arbiter/U44/Y (NAND2X1TR)                         0.15       0.38 f
+  qs_rr_arbiter/U43/Y (NOR2X1TR)                          0.37       0.74 r
+  qs_rr_arbiter/priority_arbiter_inst_1/req_i[6] (priority_arbiter_C_REQ_NUM8_C_REQ_IDX_WIDTH3_0)
+                                                          0.00       0.74 r
+  qs_rr_arbiter/priority_arbiter_inst_1/U8/Y (NOR2X1TR)
+                                                          0.18       0.92 f
+  qs_rr_arbiter/priority_arbiter_inst_1/U5/Y (NOR3BX1TR)
+                                                          0.21       1.13 f
+  qs_rr_arbiter/priority_arbiter_inst_1/U6/Y (NAND3BX1TR)
+                                                          0.48       1.60 r
+  qs_rr_arbiter/priority_arbiter_inst_1/valid_o (priority_arbiter_C_REQ_NUM8_C_REQ_IDX_WIDTH3_0)
+                                                          0.00       1.60 r
+  qs_rr_arbiter/U12/Y (CLKINVX2TR)                        0.30       1.90 f
+  qs_rr_arbiter/U3/Y (AOI22X1TR)                          0.56       2.46 r
+  qs_rr_arbiter/U15/Y (CLKINVX2TR)                        0.23       2.70 f
+  qs_rr_arbiter/U10/Y (NAND2X1TR)                         0.39       3.09 r
+  qs_rr_arbiter/U36/Y (NOR3X1TR)                          0.16       3.25 f
+  qs_rr_arbiter/grant_onehot_o[5] (rr_arbiter)            0.00       3.25 f
+  U224/Y (AO22X1TR)                                       0.23       3.48 f
+  prebinSelected_reg_5_/D (DFFQX1TR)                      0.00       3.48 f
+  data arrival time                                                  3.48
+
+  clock clk_i (rise edge)                               100.00     100.00
+  clock network delay (ideal)                             0.00     100.00
+  clock uncertainty                                      -0.10      99.90
+  prebinSelected_reg_5_/CK (DFFQX1TR)                     0.00      99.90 r
+  library setup time                                     -0.10      99.80
+  data required time                                                99.80
+  --------------------------------------------------------------------------
+  data required time                                                99.80
+  data arrival time                                                 -3.48
+  --------------------------------------------------------------------------
+  slack (MET)                                                       96.32
+
+
+  Startpoint: reading_bin_reg_1_
+              (rising edge-triggered flip-flop clocked by clk_i)
+  Endpoint: qs_state_reg_1_
+            (rising edge-triggered flip-flop clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  queue_scheduler    ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_i (rise edge)                  0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  reading_bin_reg_1_/CK (DFFQX1TR)         0.00       0.00 r
+  reading_bin_reg_1_/Q (DFFQX1TR)          0.57       0.57 r
+  U219/Y (CLKBUFX2TR)                      0.37       0.94 r
+  U177/Y (CLKINVX2TR)                      0.21       1.15 f
+  U333/Y (NOR2X1TR)                        0.51       1.66 r
+  U339/Y (AOI221X1TR)                      0.16       1.83 f
+  U340/Y (OAI22X1TR)                       0.33       2.16 r
+  U165/Y (CLKINVX2TR)                      0.17       2.32 f
+  U211/Y (OAI222X1TR)                      0.25       2.57 r
+  U210/Y (NAND2X1TR)                       0.24       2.82 f
+  U175/Y (NAND2X1TR)                       0.25       3.07 r
+  U166/Y (CLKINVX2TR)                      0.14       3.21 f
+  U218/Y (NAND4X1TR)                       0.14       3.35 r
+  U217/Y (OAI221X1TR)                      0.11       3.47 f
+  qs_state_reg_1_/D (DFFQX1TR)             0.00       3.47 f
+  data arrival time                                   3.47
+
+  clock clk_i (rise edge)                100.00     100.00
+  clock network delay (ideal)              0.00     100.00
+  clock uncertainty                       -0.10      99.90
+  qs_state_reg_1_/CK (DFFQX1TR)            0.00      99.90 r
+  library setup time                      -0.11      99.79
+  data required time                                 99.79
+  -----------------------------------------------------------
+  data required time                                 99.79
+  data arrival time                                  -3.47
+  -----------------------------------------------------------
+  slack (MET)                                        96.32
+
+
+  Startpoint: reading_bin_reg_0_
+              (rising edge-triggered flip-flop clocked by clk_i)
+  Endpoint: qs_state_reg_1_
+            (rising edge-triggered flip-flop clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  queue_scheduler    ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_i (rise edge)                  0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  reading_bin_reg_0_/CK (DFFQX1TR)         0.00       0.00 r
+  reading_bin_reg_0_/Q (DFFQX1TR)          0.57       0.57 r
+  U216/Y (CLKBUFX2TR)                      0.37       0.94 r
+  U176/Y (CLKINVX2TR)                      0.21       1.15 f
+  U333/Y (NOR2X1TR)                        0.51       1.66 r
+  U339/Y (AOI221X1TR)                      0.16       1.83 f
+  U340/Y (OAI22X1TR)                       0.33       2.15 r
+  U165/Y (CLKINVX2TR)                      0.17       2.32 f
+  U211/Y (OAI222X1TR)                      0.25       2.57 r
+  U210/Y (NAND2X1TR)                       0.24       2.82 f
+  U175/Y (NAND2X1TR)                       0.25       3.07 r
+  U166/Y (CLKINVX2TR)                      0.14       3.21 f
+  U218/Y (NAND4X1TR)                       0.14       3.35 r
+  U217/Y (OAI221X1TR)                      0.11       3.46 f
+  qs_state_reg_1_/D (DFFQX1TR)             0.00       3.46 f
+  data arrival time                                   3.46
+
+  clock clk_i (rise edge)                100.00     100.00
+  clock network delay (ideal)              0.00     100.00
+  clock uncertainty                       -0.10      99.90
+  qs_state_reg_1_/CK (DFFQX1TR)            0.00      99.90 r
+  library setup time                      -0.11      99.79
+  data required time                                 99.79
+  -----------------------------------------------------------
+  data required time                                 99.79
+  data arrival time                                  -3.46
+  -----------------------------------------------------------
+  slack (MET)                                        96.32
+
+
+  Startpoint: binValid_i[7]
+              (input port clocked by clk_i)
+  Endpoint: prebinSelected_reg_7_
+            (rising edge-triggered flip-flop clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  queue_scheduler    ibm13_wl10            typical
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_i (rise edge)                                 0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    0.10       0.10 r
+  binValid_i[7] (in)                                      0.13       0.23 r
+  qs_rr_arbiter/req_i[7] (rr_arbiter)                     0.00       0.23 r
+  qs_rr_arbiter/U46/Y (NAND2X1TR)                         0.15       0.38 f
+  qs_rr_arbiter/U45/Y (NOR2X1TR)                          0.36       0.74 r
+  qs_rr_arbiter/priority_arbiter_inst_1/req_i[7] (priority_arbiter_C_REQ_NUM8_C_REQ_IDX_WIDTH3_0)
+                                                          0.00       0.74 r
+  qs_rr_arbiter/priority_arbiter_inst_1/U8/Y (NOR2X1TR)
+                                                          0.17       0.91 f
+  qs_rr_arbiter/priority_arbiter_inst_1/U5/Y (NOR3BX1TR)
+                                                          0.21       1.12 f
+  qs_rr_arbiter/priority_arbiter_inst_1/U6/Y (NAND3BX1TR)
+                                                          0.48       1.59 r
+  qs_rr_arbiter/priority_arbiter_inst_1/valid_o (priority_arbiter_C_REQ_NUM8_C_REQ_IDX_WIDTH3_0)
+                                                          0.00       1.59 r
+  qs_rr_arbiter/U12/Y (CLKINVX2TR)                        0.30       1.89 f
+  qs_rr_arbiter/U3/Y (AOI22X1TR)                          0.56       2.45 r
+  qs_rr_arbiter/U15/Y (CLKINVX2TR)                        0.23       2.69 f
+  qs_rr_arbiter/U10/Y (NAND2X1TR)                         0.39       3.08 r
+  qs_rr_arbiter/U38/Y (NOR3X1TR)                          0.16       3.24 f
+  qs_rr_arbiter/grant_onehot_o[7] (rr_arbiter)            0.00       3.24 f
+  U226/Y (AO22X1TR)                                       0.24       3.48 f
+  prebinSelected_reg_7_/D (DFFQX1TR)                      0.00       3.48 f
+  data arrival time                                                  3.48
+
+  clock clk_i (rise edge)                               100.00     100.00
+  clock network delay (ideal)                             0.00     100.00
+  clock uncertainty                                      -0.10      99.90
+  prebinSelected_reg_7_/CK (DFFQX1TR)                     0.00      99.90 r
+  library setup time                                     -0.10      99.80
+  data required time                                                99.80
+  --------------------------------------------------------------------------
+  data required time                                                99.80
+  data arrival time                                                 -3.48
+  --------------------------------------------------------------------------
+  slack (MET)                                                       96.32
+
+
+  Startpoint: binValid_i[7]
+              (input port clocked by clk_i)
+  Endpoint: prebinSelected_reg_6_
+            (rising edge-triggered flip-flop clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  queue_scheduler    ibm13_wl10            typical
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_i (rise edge)                                 0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    0.10       0.10 r
+  binValid_i[7] (in)                                      0.13       0.23 r
+  qs_rr_arbiter/req_i[7] (rr_arbiter)                     0.00       0.23 r
+  qs_rr_arbiter/U46/Y (NAND2X1TR)                         0.15       0.38 f
+  qs_rr_arbiter/U45/Y (NOR2X1TR)                          0.36       0.74 r
+  qs_rr_arbiter/priority_arbiter_inst_1/req_i[7] (priority_arbiter_C_REQ_NUM8_C_REQ_IDX_WIDTH3_0)
+                                                          0.00       0.74 r
+  qs_rr_arbiter/priority_arbiter_inst_1/U8/Y (NOR2X1TR)
+                                                          0.17       0.91 f
+  qs_rr_arbiter/priority_arbiter_inst_1/U5/Y (NOR3BX1TR)
+                                                          0.21       1.12 f
+  qs_rr_arbiter/priority_arbiter_inst_1/U6/Y (NAND3BX1TR)
+                                                          0.48       1.59 r
+  qs_rr_arbiter/priority_arbiter_inst_1/valid_o (priority_arbiter_C_REQ_NUM8_C_REQ_IDX_WIDTH3_0)
+                                                          0.00       1.59 r
+  qs_rr_arbiter/U12/Y (CLKINVX2TR)                        0.30       1.89 f
+  qs_rr_arbiter/U3/Y (AOI22X1TR)                          0.56       2.45 r
+  qs_rr_arbiter/U15/Y (CLKINVX2TR)                        0.23       2.69 f
+  qs_rr_arbiter/U10/Y (NAND2X1TR)                         0.39       3.08 r
+  qs_rr_arbiter/U37/Y (NOR3X1TR)                          0.16       3.24 f
+  qs_rr_arbiter/grant_onehot_o[6] (rr_arbiter)            0.00       3.24 f
+  U225/Y (AO22X1TR)                                       0.24       3.48 f
+  prebinSelected_reg_6_/D (DFFQX1TR)                      0.00       3.48 f
+  data arrival time                                                  3.48
+
+  clock clk_i (rise edge)                               100.00     100.00
+  clock network delay (ideal)                             0.00     100.00
+  clock uncertainty                                      -0.10      99.90
+  prebinSelected_reg_6_/CK (DFFQX1TR)                     0.00      99.90 r
+  library setup time                                     -0.10      99.80
+  data required time                                                99.80
+  --------------------------------------------------------------------------
+  data required time                                                99.80
+  data arrival time                                                 -3.48
+  --------------------------------------------------------------------------
+  slack (MET)                                                       96.32
+
+
+  Startpoint: binValid_i[6]
+              (input port clocked by clk_i)
+  Endpoint: prebinSelected_reg_4_
+            (rising edge-triggered flip-flop clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  queue_scheduler    ibm13_wl10            typical
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_i (rise edge)                                 0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    0.10       0.10 r
+  binValid_i[6] (in)                                      0.13       0.23 r
+  qs_rr_arbiter/req_i[6] (rr_arbiter)                     0.00       0.23 r
+  qs_rr_arbiter/U44/Y (NAND2X1TR)                         0.15       0.38 f
+  qs_rr_arbiter/U43/Y (NOR2X1TR)                          0.37       0.74 r
+  qs_rr_arbiter/priority_arbiter_inst_1/req_i[6] (priority_arbiter_C_REQ_NUM8_C_REQ_IDX_WIDTH3_0)
+                                                          0.00       0.74 r
+  qs_rr_arbiter/priority_arbiter_inst_1/U8/Y (NOR2X1TR)
+                                                          0.18       0.92 f
+  qs_rr_arbiter/priority_arbiter_inst_1/U5/Y (NOR3BX1TR)
+                                                          0.21       1.13 f
+  qs_rr_arbiter/priority_arbiter_inst_1/U6/Y (NAND3BX1TR)
+                                                          0.48       1.60 r
+  qs_rr_arbiter/priority_arbiter_inst_1/valid_o (priority_arbiter_C_REQ_NUM8_C_REQ_IDX_WIDTH3_0)
+                                                          0.00       1.60 r
+  qs_rr_arbiter/U12/Y (CLKINVX2TR)                        0.30       1.90 f
+  qs_rr_arbiter/U3/Y (AOI22X1TR)                          0.56       2.46 r
+  qs_rr_arbiter/U15/Y (CLKINVX2TR)                        0.23       2.70 f
+  qs_rr_arbiter/U10/Y (NAND2X1TR)                         0.39       3.09 r
+  qs_rr_arbiter/U35/Y (NOR2X1TR)                          0.16       3.25 f
+  qs_rr_arbiter/grant_onehot_o[4] (rr_arbiter)            0.00       3.25 f
+  U223/Y (AO22X1TR)                                       0.23       3.48 f
+  prebinSelected_reg_4_/D (DFFQX1TR)                      0.00       3.48 f
+  data arrival time                                                  3.48
+
+  clock clk_i (rise edge)                               100.00     100.00
+  clock network delay (ideal)                             0.00     100.00
+  clock uncertainty                                      -0.10      99.90
+  prebinSelected_reg_4_/CK (DFFQX1TR)                     0.00      99.90 r
+  library setup time                                     -0.10      99.80
+  data required time                                                99.80
+  --------------------------------------------------------------------------
+  data required time                                                99.80
+  data arrival time                                                 -3.48
+  --------------------------------------------------------------------------
+  slack (MET)                                                       96.33
+
+
+  Startpoint: binValid_i[7]
+              (input port clocked by clk_i)
+  Endpoint: prebinSelected_reg_5_
+            (rising edge-triggered flip-flop clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  queue_scheduler    ibm13_wl10            typical
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_i (rise edge)                                 0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    0.10       0.10 r
+  binValid_i[7] (in)                                      0.13       0.23 r
+  qs_rr_arbiter/req_i[7] (rr_arbiter)                     0.00       0.23 r
+  qs_rr_arbiter/U46/Y (NAND2X1TR)                         0.15       0.38 f
+  qs_rr_arbiter/U45/Y (NOR2X1TR)                          0.36       0.74 r
+  qs_rr_arbiter/priority_arbiter_inst_1/req_i[7] (priority_arbiter_C_REQ_NUM8_C_REQ_IDX_WIDTH3_0)
+                                                          0.00       0.74 r
+  qs_rr_arbiter/priority_arbiter_inst_1/U8/Y (NOR2X1TR)
+                                                          0.17       0.91 f
+  qs_rr_arbiter/priority_arbiter_inst_1/U5/Y (NOR3BX1TR)
+                                                          0.21       1.12 f
+  qs_rr_arbiter/priority_arbiter_inst_1/U6/Y (NAND3BX1TR)
+                                                          0.48       1.59 r
+  qs_rr_arbiter/priority_arbiter_inst_1/valid_o (priority_arbiter_C_REQ_NUM8_C_REQ_IDX_WIDTH3_0)
+                                                          0.00       1.59 r
+  qs_rr_arbiter/U12/Y (CLKINVX2TR)                        0.30       1.89 f
+  qs_rr_arbiter/U3/Y (AOI22X1TR)                          0.56       2.45 r
+  qs_rr_arbiter/U15/Y (CLKINVX2TR)                        0.23       2.69 f
+  qs_rr_arbiter/U10/Y (NAND2X1TR)                         0.39       3.08 r
+  qs_rr_arbiter/U36/Y (NOR3X1TR)                          0.16       3.24 f
+  qs_rr_arbiter/grant_onehot_o[5] (rr_arbiter)            0.00       3.24 f
+  U224/Y (AO22X1TR)                                       0.23       3.47 f
+  prebinSelected_reg_5_/D (DFFQX1TR)                      0.00       3.47 f
+  data arrival time                                                  3.47
+
+  clock clk_i (rise edge)                               100.00     100.00
+  clock network delay (ideal)                             0.00     100.00
+  clock uncertainty                                      -0.10      99.90
+  prebinSelected_reg_5_/CK (DFFQX1TR)                     0.00      99.90 r
+  library setup time                                     -0.10      99.80
+  data required time                                                99.80
+  --------------------------------------------------------------------------
+  data required time                                                99.80
+  data arrival time                                                 -3.47
+  --------------------------------------------------------------------------
+  slack (MET)                                                       96.33
+
+
+  Startpoint: binValid_i[7]
+              (input port clocked by clk_i)
+  Endpoint: prebinSelected_reg_4_
+            (rising edge-triggered flip-flop clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  queue_scheduler    ibm13_wl10            typical
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_i (rise edge)                                 0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    0.10       0.10 r
+  binValid_i[7] (in)                                      0.13       0.23 r
+  qs_rr_arbiter/req_i[7] (rr_arbiter)                     0.00       0.23 r
+  qs_rr_arbiter/U46/Y (NAND2X1TR)                         0.15       0.38 f
+  qs_rr_arbiter/U45/Y (NOR2X1TR)                          0.36       0.74 r
+  qs_rr_arbiter/priority_arbiter_inst_1/req_i[7] (priority_arbiter_C_REQ_NUM8_C_REQ_IDX_WIDTH3_0)
+                                                          0.00       0.74 r
+  qs_rr_arbiter/priority_arbiter_inst_1/U8/Y (NOR2X1TR)
+                                                          0.17       0.91 f
+  qs_rr_arbiter/priority_arbiter_inst_1/U5/Y (NOR3BX1TR)
+                                                          0.21       1.12 f
+  qs_rr_arbiter/priority_arbiter_inst_1/U6/Y (NAND3BX1TR)
+                                                          0.48       1.59 r
+  qs_rr_arbiter/priority_arbiter_inst_1/valid_o (priority_arbiter_C_REQ_NUM8_C_REQ_IDX_WIDTH3_0)
+                                                          0.00       1.59 r
+  qs_rr_arbiter/U12/Y (CLKINVX2TR)                        0.30       1.89 f
+  qs_rr_arbiter/U3/Y (AOI22X1TR)                          0.56       2.45 r
+  qs_rr_arbiter/U15/Y (CLKINVX2TR)                        0.23       2.69 f
+  qs_rr_arbiter/U10/Y (NAND2X1TR)                         0.39       3.08 r
+  qs_rr_arbiter/U35/Y (NOR2X1TR)                          0.16       3.24 f
+  qs_rr_arbiter/grant_onehot_o[4] (rr_arbiter)            0.00       3.24 f
+  U223/Y (AO22X1TR)                                       0.23       3.47 f
+  prebinSelected_reg_4_/D (DFFQX1TR)                      0.00       3.47 f
+  data arrival time                                                  3.47
+
+  clock clk_i (rise edge)                               100.00     100.00
+  clock network delay (ideal)                             0.00     100.00
+  clock uncertainty                                      -0.10      99.90
+  prebinSelected_reg_4_/CK (DFFQX1TR)                     0.00      99.90 r
+  library setup time                                     -0.10      99.80
+  data required time                                                99.80
+  --------------------------------------------------------------------------
+  data required time                                                99.80
+  data arrival time                                                 -3.47
+  --------------------------------------------------------------------------
+  slack (MET)                                                       96.33
+
+
+1

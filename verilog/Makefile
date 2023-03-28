@@ -1,6 +1,6 @@
 
 STD_CELLS = /afs/umich.edu/class/eecs627/ibm13/artisan/2005q3v1/aci/sc-x/verilog/ibm13_neg.v
-TESTBENCH = testbench.sv mem.sv
+TESTBENCH = qs_cu_tb.sv
 SIM_FILES = standard.vh graphpulse.v mem.sv
 SIM_FILES += priority_arbiter.sv rr_arbiter.sv 
 SIM_FILES += fp_add.sv fp_div.sv fp_mul.sv fpu.sv mc.sv int16_to_float16.sv pe.sv
@@ -39,5 +39,8 @@ clean:
 sim: $(STD_CELLS) $(SIM_FILES) $(TESTBENCH)
 	$(VV) $(VVOPTS) $(STD_CELLS) $(SIM_FILES) $(TESTBENCH); ./$@
 
-verdi: ./sim
-	./sim -gui=verdi
+sim_synth:
+	$(VV) $(VVOPTS) $(STD_CELLS) $(SIM_SYNTH_FILES) $(TESTBENCH); ./$@
+
+verdi: ./sim_synth
+	./sim_synth -gui=verdi

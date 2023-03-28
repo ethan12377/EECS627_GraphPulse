@@ -1,0 +1,579 @@
+Warning: DC is only available in Tcl and XG mode. The -tcl_mode and -xg_mode options are no longer required.
+
+                           Design Compiler Graphical 
+                                 DC Ultra (TM)
+                                  DFTMAX (TM)
+                              Power Compiler (TM)
+                                 DesignWare (R)
+                                 DC Expert (TM)
+                               Design Vision (TM)
+                               HDL Compiler (TM)
+                               VHDL Compiler (TM)
+                                  DFT Compiler
+                               Design Compiler(R)
+
+               Version T-2022.03-SP3 for linux64 - Jul 12, 2022 
+
+                    Copyright (c) 1988 - 2022 Synopsys, Inc.
+   This software and the associated documentation are proprietary to Synopsys,
+ Inc. This software may only be used in accordance with the terms and conditions
+ of a written license agreement with Synopsys, Inc. All other use, reproduction,
+   or distribution of this software is strictly prohibited.  Licensed Products
+     communicate with Synopsys servers for the purpose of providing software
+    updates, detecting software piracy and verifying that customers are using
+    Licensed Products in conformity with the applicable License Key for such
+  Licensed Products. Synopsys will use information gathered in connection with
+    this process to deliver software updates and pursue software pirates and
+                                   infringers.
+
+ Inclusivity & Diversity - Visit SolvNetPlus to read the "Synopsys Statement on
+            Inclusivity and Diversity" (Refer to article 000036315 at
+                        https://solvnetplus.synopsys.com)
+Initializing...
+# EECS627 Lab 1
+# 8-bit multiplier
+# TCL script for Design Compiler
+# Load common variables, artisan standard cells
+source -verbose "common.syn.tcl"
+/afs/umich.edu/class/eecs627/ibm13/artisan/current/aci/sc-x/synopsys/
+/usr/caen/synopsys-synth-2022.03-SP3
+. /afs/umich.edu/class/eecs627/ibm13/artisan/current/aci/sc-x/synopsys/ /usr/caen/synopsys-synth-2022.03-SP3/libraries/syn
+* typical.db dw_foundation.sldb
+typical.db
+Loading db file '/afs/umich.edu/class/eecs627/ibm13/artisan/current/aci/sc-x/synopsys/typical.db'
+Loading db file '/usr/caen/synopsys-synth-2022.03-SP3/libraries/syn/dw_foundation.sldb'
+1
+1
+# Set top level name
+set top_level "queue_scheduler"
+queue_scheduler
+# Read verilog files
+read_file -f sverilog [list  "../verilog/standard.vh ../verilog/priority_arbiter.sv ../verilog/rr_arbiter.sv ../verilog/queue_scheduler.sv"]
+Loading db file '/usr/caen/synopsys-synth-2022.03-SP3/libraries/syn/gtech.db'
+Loading db file '/usr/caen/synopsys-synth-2022.03-SP3/libraries/syn/standard.sldb'
+  Loading link library 'gtech'
+Loading sverilog files: '/home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/standard.vh' '/home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/priority_arbiter.sv' '/home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/rr_arbiter.sv' '/home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv' 
+Detecting input file type automatically (-rtl or -netlist).
+Reading with Presto HDL Compiler (equivalent to -rtl option).
+Running PRESTO HDLC
+Compiling source file /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/standard.vh
+Compiling source file /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/priority_arbiter.sv
+Compiling source file /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/rr_arbiter.sv
+Module 'priority_arbiter' was not elaborated because it contains the 'template' attribute.  Instead, it has been saved as a template.
+Compiling source file /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv
+Warning:  /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/rr_arbiter.sv:87: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/rr_arbiter.sv:89: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv:113: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv:115: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv:179: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv:180: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv:186: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv:187: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv:190: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv:191: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv:194: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv:195: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv:205: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv:208: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv:210: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv:213: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv:225: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv:226: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv:228: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv:229: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv:231: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv:232: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv:234: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv:235: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv:242: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv:244: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv:246: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv:263: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv:266: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv:268: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv:270: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv:273: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/rr_arbiter.sv:99: signed to unsigned conversion occurs. (VER-318)
+
+Inferred memory devices in process
+	in routine rr_arbiter line 85 in file
+		'/home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/rr_arbiter.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|      mask_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+
+Statistics for case statements in always block at line 119 in file
+	'/home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv'
+===============================================
+|           Line           |  full/ parallel  |
+===============================================
+|           123            |    auto/auto     |
+===============================================
+
+Inferred memory devices in process
+	in routine queue_scheduler line 111 in file
+		'/home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|    qs_state_reg     | Flip-flop |   3   |  Y  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine queue_scheduler line 177 in file
+		'/home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|     PEReady_reg     | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
+|   delaycount_reg    | Flip-flop |   4   |  Y  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine queue_scheduler line 203 in file
+		'/home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|    readEn_o_reg     | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine queue_scheduler line 223 in file
+		'/home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+| prebinSelected_reg  | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|   reading_bin_reg   | Flip-flop |   3   |  Y  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine queue_scheduler line 240 in file
+		'/home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|  binSelected_o_reg  | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine queue_scheduler line 261 in file
+		'/home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|     bin_buf_reg     | Flip-flop |  32   |  Y  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine queue_scheduler line 284 in file
+		'/home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|    grant_ack_reg    | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+Statistics for MUX_OPs
+=========================================================
+|  block name/line    | Inputs | Outputs | # sel inputs |
+=========================================================
+| queue_scheduler/154 |   8    |    2    |      3       |
+=========================================================
+Presto compilation completed successfully.
+Current design is now '/home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/rr_arbiter.db:rr_arbiter'
+Loaded 2 designs.
+Current design is 'rr_arbiter'.
+rr_arbiter queue_scheduler
+list_designs
+queue_scheduler rr_arbiter (*)
+1
+current_design $top_level
+Current design is 'queue_scheduler'.
+{queue_scheduler}
+# Clock period
+set clk_period 100
+100
+set clk_uncertainty 0.1
+0.1
+set clk_transition 0.1
+0.1
+#Create real clock if clock port is found
+if {[sizeof_collection [get_ports clk_i]] > 0} {
+  set clk_name "clk_i"
+  set clk_port "clk_i"
+  #If no waveform is specified, 50% duty cycle is assumed
+  create_clock -name $clk_name -period $clk_period [get_ports $clk_port] 
+  set_drive 0 [get_clocks $clk_name] 
+}
+Information: Building the design 'priority_arbiter' instantiated from design 'rr_arbiter' with
+	the parameters "C_REQ_NUM=8,C_REQ_IDX_WIDTH=3". (HDL-193)
+Presto compilation completed successfully. (priority_arbiter_C_REQ_NUM8_C_REQ_IDX_WIDTH3)
+1
+#If not real clock then create virtual clock
+if {[sizeof_collection [get_ports clk_i]] == 0} {
+  set clk_name "vclk"
+  create_clock -name $clk_name -period $clk_period 
+}
+set_clock_uncertainty $clk_uncertainty [get_clocks $clk_name]
+1
+#Propagated clock used for gated clocks only
+#set_propagated_clock [get_clocks $clk_name]
+set_clock_transition $clk_transition [get_clocks $clk_name]
+1
+set_operating_conditions "typical" -library "typical" 
+Using operating conditions 'typical' found in library 'typical'.
+1
+set_wire_load_model -name "ibm13_wl10" -library "typical" 
+1
+set_wire_load_mode "segmented" 
+1
+set typical_input_delay 0.100
+0.100
+set typical_output_delay 0.100
+0.100
+set typical_wire_load 0.010 
+0.010
+# Link the design
+link
+
+  Linking design 'queue_scheduler'
+  Using the following designs and libraries:
+  --------------------------------------------------------------------------
+  * (3 designs)               /home/ganrunxu/eecs627/EECS627_GraphPulse/verilog/queue_scheduler.db, etc
+  typical (library)           /afs/umich.edu/class/eecs627/ibm13/artisan/current/aci/sc-x/synopsys/typical.db
+  dw_foundation.sldb (library) /usr/caen/synopsys-synth-2022.03-SP3/libraries/syn/dw_foundation.sldb
+
+1
+# Set maximum fanout of gates
+set_max_fanout 16 $top_level 
+1
+# Configure the clock network
+set_fix_hold [all_clocks] 
+1
+set_dont_touch_network $clk_port 
+1
+# Set delays: Input, Output
+set_driving_cell -lib_cell INVX2TR [all_inputs]
+Warning: Design rule attributes from the driving cell will be set on the port 'clk_i'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'rst_i'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'initialFinish_i[3]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'initialFinish_i[2]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'initialFinish_i[1]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'initialFinish_i[0]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'CUClean_i[7]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'CUClean_i[6]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'CUClean_i[5]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'CUClean_i[4]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'CUClean_i[3]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'CUClean_i[2]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'CUClean_i[1]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'CUClean_i[0]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'binValid_i[7]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'binValid_i[6]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'binValid_i[5]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'binValid_i[4]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'binValid_i[3]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'binValid_i[2]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'binValid_i[1]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'binValid_i[0]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'PEready_i[3]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'PEready_i[2]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'PEready_i[1]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'PEready_i[0]'. (UID-401)
+1
+set_input_delay $typical_input_delay [all_inputs] -clock $clk_name 
+1
+remove_input_delay -clock $clk_name [find port $clk_port]
+1
+set_output_delay $typical_output_delay [all_outputs] -clock $clk_name 
+1
+# Set loading of outputs 
+set_load $typical_wire_load [all_outputs] 
+1
+# Verify the design
+check_design
+ 
+****************************************
+check_design summary:
+Version:     T-2022.03-SP3
+Date:        Tue Mar 28 15:21:54 2023
+****************************************
+
+                   Name                                            Total
+--------------------------------------------------------------------------------
+Cells                                                               3
+    Cells do not drive (LINT-1)                                     2
+    Connected to power or ground (LINT-32)                          1
+--------------------------------------------------------------------------------
+
+Warning: In design 'queue_scheduler', cell 'C534' does not drive any nets. (LINT-1)
+Warning: In design 'rr_arbiter', cell 'B_8' does not drive any nets. (LINT-1)
+Warning: In design 'queue_scheduler', a pin on submodule 'qs_rr_arbiter' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'en_i' is connected to logic 1. 
+1
+# Uniquify repeated modules
+uniquify
+Information: Uniquified 2 instances of design 'priority_arbiter_C_REQ_NUM8_C_REQ_IDX_WIDTH3'. (OPT-1056)
+1
+# Synthesize the design
+compile -map_effort medium
+Information: Checking out the license 'DesignWare'. (SEC-104)
+Information: Evaluating DesignWare library utilization. (UISN-27)
+
+============================================================================
+| DesignWare Building Block Library  |         Version         | Available |
+============================================================================
+| Basic DW Building Blocks           | T-2022.03-DWBB_202203.3 |     *     |
+| Licensed DW Building Blocks        | T-2022.03-DWBB_202203.3 |     *     |
+============================================================================
+
+====================================================================================================
+| Flow Information                                                                                 |
+----------------------------------------------------------------------------------------------------
+| Flow         | Design Compiler                                                                   |
+====================================================================================================
+| Design Information                                      | Value                                  |
+====================================================================================================
+| Number of Scenarios                                     | 0                                      |
+| Leaf Cell Count                                         | 372                                    |
+| Number of User Hierarchies                              | 3                                      |
+| Sequential Cell Count                                   | 69                                     |
+| Macro Count                                             | 0                                      |
+| Number of Power Domains                                 | 0                                      |
+| Number of Path Groups                                   | 2                                      |
+| Number of VT Class                                      | 0                                      |
+| Number of Clocks                                        | 1                                      |
+| Number of Dont Touch Cells                              | 116                                    |
+| Number of Dont Touch Nets                               | 2                                      |
+| Number of Size Only Cells                               | 0                                      |
+| Design with UPF Data                                    | false                                  |
+====================================================================================================
+
+Information: There are 3 potential problems in your design. Please run 'check_design' for more information. (LINT-99)
+
+
+
+  Beginning Pass 1 Mapping
+  ------------------------
+  Processing 'priority_arbiter_C_REQ_NUM8_C_REQ_IDX_WIDTH3_0'
+  Processing 'rr_arbiter'
+Information: Added key list 'DesignWare' to design 'rr_arbiter'. (DDB-72)
+  Processing 'queue_scheduler'
+Information: Added key list 'DesignWare' to design 'queue_scheduler'. (DDB-72)
+
+  Updating timing information
+Information: Updating design information... (UID-85)
+
+  Beginning Implementation Selection
+  ----------------------------------
+
+  Beginning Mapping Optimizations  (Medium effort)
+  -------------------------------
+  Mapping Optimization (Phase 1)
+
+                                  TOTAL                                                  
+   ELAPSED            WORST NEG   SETUP    DESIGN                              MIN DELAY 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT             COST    
+  --------- --------- --------- --------- --------- ------------------------- -----------
+    0:00:03    8412.5      0.00       0.0       0.0                                0.00  
+    0:00:03    8412.5      0.00       0.0       0.0                                0.00  
+    0:00:03    8412.5      0.00       0.0       0.0                                0.00  
+    0:00:03    8412.5      0.00       0.0       0.0                                0.00  
+    0:00:03    8412.5      0.00       0.0       0.0                                0.00  
+    0:00:04    4013.3      0.00       0.0       0.0                                0.00  
+    0:00:04    3996.0      0.00       0.0       0.0                                0.00  
+    0:00:04    3996.0      0.00       0.0       0.0                                0.00  
+    0:00:04    3996.0      0.00       0.0       0.0                                0.00  
+    0:00:04    3996.0      0.00       0.0       0.0                                0.00  
+    0:00:04    3996.0      0.00       0.0       0.0                                0.00  
+    0:00:04    3996.0      0.00       0.0       0.0                                0.00  
+    0:00:04    3996.0      0.00       0.0       0.0                                0.00  
+    0:00:04    3996.0      0.00       0.0       0.0                                0.00  
+
+
+
+  Beginning Delay Optimization Phase
+  ----------------------------------
+
+                                  TOTAL                                                  
+   ELAPSED            WORST NEG   SETUP    DESIGN                              MIN DELAY 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT             COST    
+  --------- --------- --------- --------- --------- ------------------------- -----------
+    0:00:04    3996.0      0.00       0.0       0.0                                0.00  
+    0:00:04    3996.0      0.00       0.0       0.0                                0.00  
+    0:00:04    3996.0      0.00       0.0       0.0                                0.00  
+
+
+  Beginning Area-Recovery Phase  (cleanup)
+  -----------------------------
+
+                                  TOTAL                                                  
+   ELAPSED            WORST NEG   SETUP    DESIGN                              MIN DELAY 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT             COST    
+  --------- --------- --------- --------- --------- ------------------------- -----------
+    0:00:04    3996.0      0.00       0.0       0.0                                0.00  
+    0:00:04    3996.0      0.00       0.0       0.0                                0.00  
+    0:00:04    3954.2      0.00       0.0       0.0                                0.00  
+    0:00:04    3919.7      0.00       0.0       0.0                                0.00  
+    0:00:04    3908.2      0.00       0.0       0.0                                0.00  
+    0:00:04    3896.6      0.00       0.0       0.0                                0.00  
+    0:00:04    3896.6      0.00       0.0       0.0                                0.00  
+    0:00:04    3896.6      0.00       0.0       0.0                                0.00  
+    0:00:04    3896.6      0.00       0.0       0.0                                0.00  
+    0:00:04    3896.6      0.00       0.0       0.0                                0.00  
+    0:00:04    3896.6      0.00       0.0       0.0                                0.00  
+    0:00:04    3896.6      0.00       0.0       0.0                                0.00  
+    0:00:04    3896.6      0.00       0.0       0.0                                0.00  
+    0:00:04    3896.6      0.00       0.0       0.0                                0.00  
+    0:00:04    3896.6      0.00       0.0       0.0                                0.00  
+Loading db file '/afs/umich.edu/class/eecs627/ibm13/artisan/current/aci/sc-x/synopsys/typical.db'
+
+
+Note: Symbol # after min delay cost means estimated hold TNS across all active scenarios 
+
+
+  Optimization Complete
+  ---------------------
+1
+# My retiming code
+# set_optimize_registers -sync_transform multiclass -async_transform multiclass
+# compile_ultra -retime
+# compile_ultra -retime -incremental
+# Rename modules, signals according to the naming rules Used for tool exchange
+source -verbose "naming_rules.syn.tcl"
+1
+
+Design          Type    Object                  New Name
+--------------------------------------------------------------------------------
+Warning: The specified replacement character (_) is conflicting with the specified allowed or restricted character.   (UCN-4)
+queue_scheduler cell    binSelected_o_reg[2]    binSelected_o_reg_2_
+queue_scheduler cell    binSelected_o_reg[1]    binSelected_o_reg_1_
+queue_scheduler cell    binSelected_o_reg[0]    binSelected_o_reg_0_
+queue_scheduler cell    binSelected_o_reg[7]    binSelected_o_reg_7_
+queue_scheduler cell    binSelected_o_reg[6]    binSelected_o_reg_6_
+queue_scheduler cell    binSelected_o_reg[5]    binSelected_o_reg_5_
+queue_scheduler cell    binSelected_o_reg[4]    binSelected_o_reg_4_
+queue_scheduler cell    binSelected_o_reg[3]    binSelected_o_reg_3_
+queue_scheduler cell    prebinSelected_reg[2]   prebinSelected_reg_2_
+queue_scheduler cell    prebinSelected_reg[1]   prebinSelected_reg_1_
+queue_scheduler cell    prebinSelected_reg[0]   prebinSelected_reg_0_
+queue_scheduler cell    prebinSelected_reg[7]   prebinSelected_reg_7_
+queue_scheduler cell    prebinSelected_reg[6]   prebinSelected_reg_6_
+queue_scheduler cell    prebinSelected_reg[5]   prebinSelected_reg_5_
+queue_scheduler cell    prebinSelected_reg[4]   prebinSelected_reg_4_
+queue_scheduler cell    prebinSelected_reg[3]   prebinSelected_reg_3_
+queue_scheduler cell    bin_buf_reg[3][3]       bin_buf_reg_3__3_
+queue_scheduler cell    bin_buf_reg[2][3]       bin_buf_reg_2__3_
+queue_scheduler cell    bin_buf_reg[1][3]       bin_buf_reg_1__3_
+queue_scheduler cell    bin_buf_reg[7][3]       bin_buf_reg_7__3_
+queue_scheduler cell    bin_buf_reg[0][3]       bin_buf_reg_0__3_
+queue_scheduler cell    bin_buf_reg[6][3]       bin_buf_reg_6__3_
+queue_scheduler cell    bin_buf_reg[5][3]       bin_buf_reg_5__3_
+queue_scheduler cell    bin_buf_reg[4][3]       bin_buf_reg_4__3_
+queue_scheduler cell    delaycount_reg[3]       delaycount_reg_3_
+queue_scheduler cell    delaycount_reg[2]       delaycount_reg_2_
+queue_scheduler cell    delaycount_reg[0]       delaycount_reg_0_
+queue_scheduler cell    bin_buf_reg[7][0]       bin_buf_reg_7__0_
+queue_scheduler cell    delaycount_reg[1]       delaycount_reg_1_
+queue_scheduler cell    bin_buf_reg[7][1]       bin_buf_reg_7__1_
+queue_scheduler cell    bin_buf_reg[7][2]       bin_buf_reg_7__2_
+queue_scheduler cell    qs_state_reg[2]         qs_state_reg_2_
+queue_scheduler cell    bin_buf_reg[3][0]       bin_buf_reg_3__0_
+queue_scheduler cell    bin_buf_reg[3][1]       bin_buf_reg_3__1_
+queue_scheduler cell    bin_buf_reg[2][0]       bin_buf_reg_2__0_
+queue_scheduler cell    bin_buf_reg[1][0]       bin_buf_reg_1__0_
+queue_scheduler cell    bin_buf_reg[2][1]       bin_buf_reg_2__1_
+queue_scheduler cell    bin_buf_reg[0][0]       bin_buf_reg_0__0_
+queue_scheduler cell    bin_buf_reg[6][0]       bin_buf_reg_6__0_
+queue_scheduler cell    bin_buf_reg[3][2]       bin_buf_reg_3__2_
+queue_scheduler cell    bin_buf_reg[1][1]       bin_buf_reg_1__1_
+queue_scheduler cell    bin_buf_reg[5][0]       bin_buf_reg_5__0_
+queue_scheduler cell    bin_buf_reg[2][2]       bin_buf_reg_2__2_
+queue_scheduler cell    bin_buf_reg[0][1]       bin_buf_reg_0__1_
+queue_scheduler cell    bin_buf_reg[4][0]       bin_buf_reg_4__0_
+queue_scheduler cell    bin_buf_reg[6][1]       bin_buf_reg_6__1_
+queue_scheduler cell    bin_buf_reg[1][2]       bin_buf_reg_1__2_
+queue_scheduler cell    bin_buf_reg[5][1]       bin_buf_reg_5__1_
+queue_scheduler cell    bin_buf_reg[0][2]       bin_buf_reg_0__2_
+queue_scheduler cell    bin_buf_reg[6][2]       bin_buf_reg_6__2_
+queue_scheduler cell    bin_buf_reg[4][1]       bin_buf_reg_4__1_
+queue_scheduler cell    bin_buf_reg[5][2]       bin_buf_reg_5__2_
+queue_scheduler cell    bin_buf_reg[4][2]       bin_buf_reg_4__2_
+queue_scheduler cell    qs_state_reg[0]         qs_state_reg_0_
+queue_scheduler cell    qs_state_reg[1]         qs_state_reg_1_
+queue_scheduler cell    reading_bin_reg[2]      reading_bin_reg_2_
+queue_scheduler cell    reading_bin_reg[1]      reading_bin_reg_1_
+queue_scheduler cell    reading_bin_reg[0]      reading_bin_reg_0_
+queue_scheduler net     *Logic1*                n_Logic1_
+queue_scheduler net     bin_buf[7][3]           bin_buf_7__3_
+queue_scheduler net     bin_buf[6][3]           bin_buf_6__3_
+queue_scheduler net     bin_buf[5][3]           bin_buf_5__3_
+queue_scheduler net     bin_buf[4][3]           bin_buf_4__3_
+queue_scheduler net     bin_buf[3][3]           bin_buf_3__3_
+queue_scheduler net     bin_buf[2][3]           bin_buf_2__3_
+queue_scheduler net     bin_buf[1][3]           bin_buf_1__3_
+queue_scheduler net     bin_buf[0][3]           bin_buf_0__3_
+queue_scheduler net     n71                     n710
+queue_scheduler net     n72                     n720
+queue_scheduler net     n73                     n730
+queue_scheduler net     n79                     n790
+queue_scheduler net     n86                     n860
+queue_scheduler net     n88                     n880
+queue_scheduler net     n94                     n940
+queue_scheduler net     n95                     n950
+queue_scheduler net     n96                     n960
+queue_scheduler net     n97                     n970
+queue_scheduler net     n98                     n980
+queue_scheduler net     n99                     n990
+queue_scheduler net     n100                    n1000
+queue_scheduler net     n101                    n1010
+queue_scheduler net     n102                    n1020
+queue_scheduler net     n103                    n1030
+queue_scheduler net     n104                    n1040
+rr_arbiter      cell    mask_reg[0]             mask_reg_0_
+rr_arbiter      cell    mask_reg[1]             mask_reg_1_
+rr_arbiter      cell    mask_reg[5]             mask_reg_5_
+rr_arbiter      cell    mask_reg[4]             mask_reg_4_
+rr_arbiter      cell    mask_reg[3]             mask_reg_3_
+rr_arbiter      cell    mask_reg[2]             mask_reg_2_
+rr_arbiter      cell    mask_reg[7]             mask_reg_7_
+rr_arbiter      cell    mask_reg[6]             mask_reg_6_
+1
+1
+# Generate structural verilog netlist
+write -hierarchy -format verilog -output "${top_level}.syn.v"
+Writing verilog file '/home/ganrunxu/eecs627/EECS627_GraphPulse/syn/queue_scheduler.syn.v'.
+1
+# Generate Standard Delay Format (SDF) file
+write_sdf -context verilog "${top_level}.syn.sdf"
+Information: Annotated 'cell' delays are assumed to include load delay. (UID-282)
+Information: Writing timing information to file '/home/ganrunxu/eecs627/EECS627_GraphPulse/syn/queue_scheduler.syn.sdf'. (WT-3)
+Information: Updating design information... (UID-85)
+1
+# Generate report file
+set maxpaths 20
+20
+set rpt_file "${top_level}.syn.rpt"
+queue_scheduler.syn.rpt
+check_design > $rpt_file
+report_area  >> ${rpt_file}
+report_power -hier -analysis_effort medium >> ${rpt_file}
+report_design >> ${rpt_file}
+report_cell >> ${rpt_file}
+report_port -verbose >> ${rpt_file}
+report_compile_options >> ${rpt_file}
+report_constraint -all_violators -verbose >> ${rpt_file}
+report_timing -path full -delay max -max_paths $maxpaths -nworst 100 >> ${rpt_file}
+# Exit dc_shell
+#quit
+Warning: Cannot use command line editor for terminal type 'xterm-256color'.  (UI-74)
+dc_shell> 
+Memory usage for this session 159 Mbytes.
+Memory usage for this session including child processes 159 Mbytes.
+CPU usage for this session 7 seconds ( 0.00 hours ).
+Elapsed time for this session 49 seconds ( 0.01 hours ).
+
+Thank you...

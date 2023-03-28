@@ -243,6 +243,12 @@ event_queues  event_queues_inst(
         end
         $fdisplay(fd_w, "initialFinish CUDelta[0] CUIdx[0] CUValid[0] CUDelta[1] CUIdx[1] CUValid[1] CUDelta[2] CUIdx[2] CUValid[2] CUDelta[3] CUIdx[3] CUValid[3] CUDelta[4] CUIdx[4] CUValid[4] CUDelta[5] CUIdx[5] CUValid[5] CUDelta[6] CUIdx[6] CUValid[6] CUDelta[7] CUIdx[7] CUValid[7] rowReady rowValid binIdx rowIdx rowDelta[0] rowDelta[1] rowDelta[2] rowDelta[3] rowDelta[4] rowDelta[5] rowDelta[6] rowDelta[7] CUReady[0] CUReady[1] CUReady[2] CUReady[3] CUReady[4] CUReady[5] CUReady[6] CUReady[7] PEReady[0] PEReady[1] PEReady[2] PEReady[3]");
         rst_i   =   0;
+        initialFinish_i = 0;
+        CUDelta_i       = 0;
+        CUIdx_i         = 0;
+        CUValid_i       = 0;
+        rowReady_i      = 0;
+        PEready_i       = 0;
         #(`VERILOG_CLOCK_PERIOD);
         rst_i   =   1;
         #(`VERILOG_CLOCK_PERIOD);
@@ -290,21 +296,29 @@ event_queues  event_queues_inst(
             // $display("r_en[7]:(%b)", event_queues_inst.r_en[7]);
             // $display("arrayhead[7]:(%h)", event_queues_inst.arrayheadIdx[7]);
 
-            // $display("readEn:(%b)", readEn);
+            $display("queue_scheduler_inst.grant_ack:(%h)", queue_scheduler_inst.grant_ack);
+            $display("queue_scheduler_inst.qs_state:(%h)", queue_scheduler_inst.qs_state);
+            $display("binSelected:(%h)", binSelected);
+            
+            $display("CUClean:(%h %h %h %h %h %h %h %h )", CUClean_o[0],CUClean_o[1],CUClean_o[2],CUClean_o[3],CUClean_o[4],CUClean_o[5],CUClean_o[6],CUClean_o[7]);
+            $display("event_queues_inst.searchValid:(%h %h %h %h %h %h %h %h )", 
+            event_queues_inst.searchValid[0],event_queues_inst.searchValid[1],event_queues_inst.searchValid[2],event_queues_inst.searchValid[3],
+            event_queues_inst.searchValid[4],event_queues_inst.searchValid[5],event_queues_inst.searchValid[6],event_queues_inst.searchValid[7]);
+            // $display("queue_scheduler_inst.next_qs_state:(%h)", queue_scheduler_inst.next_qs_state);
             // $display("CUClean[1]:(%b)", CUClean[1]);
-            $display("qs_state :(%s)", queue_scheduler_inst.qs_state);
-            $display("bin_buf[0][3] && (bin_buf[0][2:0]:(%h %h )", queue_scheduler_inst.bin_buf[0][3], queue_scheduler_inst.bin_buf[0][2:0]);
-            $display("bin_buf[1][3] && (bin_buf[1][2:0]:(%h %h )", queue_scheduler_inst.bin_buf[1][3], queue_scheduler_inst.bin_buf[1][2:0]);
-            $display("bin_buf[2][3] && (bin_buf[2][2:0]:(%h %h )", queue_scheduler_inst.bin_buf[2][3], queue_scheduler_inst.bin_buf[2][2:0]);
-            $display("bin_buf[3][3] && (bin_buf[3][2:0]:(%h %h )", queue_scheduler_inst.bin_buf[3][3], queue_scheduler_inst.bin_buf[3][2:0]);
-            $display("bin_buf[4][3] && (bin_buf[4][2:0]:(%h %h )", queue_scheduler_inst.bin_buf[4][3], queue_scheduler_inst.bin_buf[4][2:0]);
-            $display("bin_buf[5][3] && (bin_buf[5][2:0]:(%h %h )", queue_scheduler_inst.bin_buf[5][3], queue_scheduler_inst.bin_buf[5][2:0]);
-            $display("bin_buf[6][3] && (bin_buf[6][2:0]:(%h %h )", queue_scheduler_inst.bin_buf[6][3], queue_scheduler_inst.bin_buf[6][2:0]);
-            $display("bin_buf[7][3] && (bin_buf[7][2:0]:(%h %h )", queue_scheduler_inst.bin_buf[7][3], queue_scheduler_inst.bin_buf[7][2:0]);
+            // $display("qs_state :(%s)", queue_scheduler_inst.qs_state);
+            // $display("bin_buf[0][3] && (bin_buf[0][2:0]:(%h %h )", queue_scheduler_inst.bin_buf[0][3], queue_scheduler_inst.bin_buf[0][2:0]);
+            // $display("bin_buf[1][3] && (bin_buf[1][2:0]:(%h %h )", queue_scheduler_inst.bin_buf[1][3], queue_scheduler_inst.bin_buf[1][2:0]);
+            // $display("bin_buf[2][3] && (bin_buf[2][2:0]:(%h %h )", queue_scheduler_inst.bin_buf[2][3], queue_scheduler_inst.bin_buf[2][2:0]);
+            // $display("bin_buf[3][3] && (bin_buf[3][2:0]:(%h %h )", queue_scheduler_inst.bin_buf[3][3], queue_scheduler_inst.bin_buf[3][2:0]);
+            // $display("bin_buf[4][3] && (bin_buf[4][2:0]:(%h %h )", queue_scheduler_inst.bin_buf[4][3], queue_scheduler_inst.bin_buf[4][2:0]);
+            // $display("bin_buf[5][3] && (bin_buf[5][2:0]:(%h %h )", queue_scheduler_inst.bin_buf[5][3], queue_scheduler_inst.bin_buf[5][2:0]);
+            // $display("bin_buf[6][3] && (bin_buf[6][2:0]:(%h %h )", queue_scheduler_inst.bin_buf[6][3], queue_scheduler_inst.bin_buf[6][2:0]);
+            // $display("bin_buf[7][3] && (bin_buf[7][2:0]:(%h %h )", queue_scheduler_inst.bin_buf[7][3], queue_scheduler_inst.bin_buf[7][2:0]);
             // $display("datacount[4]:(%h)", event_queues_inst.data_count[4]);
             // $display("ready_o[4]:(%h)", event_queues_inst.CUReady_o[4]);
             // $display("ready_o[4]:(%h)", CUReady_o[4]);
-            // ,CUClean[1],CUClean[2],CUClean[3],CUClean[4],CUClean[5],CUClean[6],CUClean[7]
+            // ,
 
             // $display("rowNotEmpty[bin1]:(%d,%d,%d,%d)", 
             // event_queues_inst.rowNotEmpty[1][0],
@@ -318,7 +332,8 @@ event_queues  event_queues_inst(
         $finish;
     end
 
-
+    initial $sdf_annotate("../syn/event_queues.syn.sdf",event_queues_inst);
+    initial $sdf_annotate("../syn/queue_scheduler.syn.sdf",queue_scheduler_inst);
 // ====================================================================
 // RTL Logic End
 // ====================================================================

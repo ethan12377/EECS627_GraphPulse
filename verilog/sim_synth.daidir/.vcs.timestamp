@@ -1,0 +1,168 @@
+2        
+0 ../syn/event_queues.syn.sdf_c
+0 ../syn/queue_scheduler.syn.sdf_c
+55
++incdir+
++itf+/usr/caen/vcs-2020.12-SP2-1/linux64/lib/vcsdp_lite.tab
++libext+.v+.vlib+.vh
++lint=TFIPC-L
++multisource_int_delays
++neg_tchk
++overlap
++plusarg_save
++v2k
++vc
++vcs+lic+wait
++vcsd1
++vpi
++warn=noSDFCOM_IANE
++warn=noSDFCOM_IWSBA
++warn=noSDFCOM_PONF
++warn=noSDFCOM_UHICD
++warn=noSDFCOM_UHICD,noSDFCOM_IWSBA,noSDFCOM_IANE,noSDFCOM_PONF
+-Mamsrun=
+-Masflags=
+-Mcc=gcc
+-Mcfl= -pipe -fPIC -O -I/usr/caen/vcs-2020.12-SP2-1/include
+-Mcplusplus=g++
+-Mcrt0=
+-Mcrtn=
+-Mcsrc=
+-Mexternalobj=
+-Mldflags= -rdynamic
+-Mobjects= /usr/caen/vcs-2020.12-SP2-1/linux64/lib/libvirsim.so /usr/caen/vcs-2020.12-SP2-1/linux64/lib/liberrorinf.so /usr/caen/vcs-2020.12-SP2-1/linux64/lib/libsnpsmalloc.so /usr/caen/vcs-2020.12-SP2-1/linux64/lib/libvfs.so
+-Mout=sim_synth
+-Msaverestoreobj=/usr/caen/vcs-2020.12-SP2-1/linux64/lib/vcs_save_restore_new.o
+-Msyslibs=/usr/caen/verdi-2020.12-SP2-1/share/PLI/VCS/LINUX64/pli.a -ldl
+-Mvcsaceobjs=
+-Mxcflags= -pipe -fPIC -I/usr/caen/vcs-2020.12-SP2-1/include
+-Mxllcflags=
+-P
+-Xufe=2steps
+-debug_access+r
+-fsdb
+-full64
+-gen_obj
+-kdb
+-o sim_synth
+-picarchive
+-sverilog
+-timescale=1ns/1ps
+-v2k_generate
+/usr/caen/vcs-2020.12-SP2-1/linux64/bin/vcs1
+sim_synth
+/usr/caen/verdi-2020.12-SP2-1/share/PLI/VCS/LINUX64/verdi.tab
+/afs/umich.edu/class/eecs627/ibm13/artisan/2005q3v1/aci/sc-x/verilog/ibm13_neg.v
+standard.vh
+../syn/event_queues.syn.v
+../syn/queue_scheduler.syn.v
+qs_cu_tb.sv
+89
+which_declare=declare -f
+__LMOD_REF_COUNT__LMFILES_=/usr/caen/misc/modules/verdi/2020.12-SP2-1.lua:1;/usr/caen/misc/modules/vcs/2020.12-SP2-1.lua:1
+__LMOD_REF_COUNT_PATH=/usr/caen/vcs-2020.12-SP2-1/bin:1;/usr/caen/verdi-2020.12-SP2-1/bin:1;/usr/local/bin:1;/usr/local/sbin:1;/usr/bin:1;/usr/sbin:1;/usr/um/bin:1;/usr/caen/bin:1
+__LMOD_REF_COUNT_MODULEPATH=/usr/caen/misc/modules:2;/etc/scl/modulefiles:1;/etc/modulefiles:1;/usr/share/modulefiles:1;/afs/umich.edu/class/coe/modules:1;/usr/share/modulefiles/Linux:1;/usr/share/modulefiles/Core:1;/usr/share/lmod/lmod/modulefiles/Core:1
+__LMOD_REF_COUNT_LOADEDMODULES=verdi/2020.12-SP2-1:1;vcs/2020.12-SP2-1:1
+__LMOD_REF_COUNT_LM_LICENSE_FILE=license.dat:1;/usr/caen/FLEXlm/data/license.dat.synopsys:1
+__GL_SHADER_DISK_CACHE=0
+_ModuleTable_Sz_=3
+_ModuleTable003_=ZXM6L2V0Yy9tb2R1bGVmaWxlczovdXNyL3NoYXJlL21vZHVsZWZpbGVzOi91c3IvY2Flbi9taXNjL21vZHVsZXM6L2Fmcy91bWljaC5lZHUvY2xhc3MvY29lL21vZHVsZXM6L3Vzci9zaGFyZS9tb2R1bGVmaWxlcy9MaW51eDovdXNyL3NoYXJlL21vZHVsZWZpbGVzL0NvcmU6L3Vzci9zaGFyZS9sbW9kL2xtb2QvbW9kdWxlZmlsZXMvQ29yZSIsfQ==
+_ModuleTable002_=ciJdPTEscHJvcFQ9e30sWyJyZWZfY291bnQiXT0xLFsic3RhY2tEZXB0aCJdPTEsWyJzdGF0dXMiXT0iYWN0aXZlIixbInVzZXJOYW1lIl09InZlcmRpLzIwMjAuMTItU1AyLTEiLH0sfSxtcGF0aEE9eyIvdXNyL2NhZW4vbWlzYy9tb2R1bGVzIiwiL2V0Yy9zY2wvbW9kdWxlZmlsZXMiLCIvZXRjL21vZHVsZWZpbGVzIiwiL3Vzci9zaGFyZS9tb2R1bGVmaWxlcyIsIi9hZnMvdW1pY2guZWR1L2NsYXNzL2NvZS9tb2R1bGVzIiwiL3Vzci9zaGFyZS9tb2R1bGVmaWxlcy9MaW51eCIsIi91c3Ivc2hhcmUvbW9kdWxlZmlsZXMvQ29yZSIsIi91c3Ivc2hhcmUvbG1vZC9sbW9kL21vZHVsZWZpbGVzL0NvcmUiLH0sWyJzeXN0ZW1CYXNlTVBBVEgiXT0iL2V0Yy9zY2wvbW9kdWxlZmls
+_ModuleTable001_=X01vZHVsZVRhYmxlXz17WyJNVHZlcnNpb24iXT0zLFsiY19yZWJ1aWxkVGltZSJdPWZhbHNlLFsiY19zaG9ydFRpbWUiXT1mYWxzZSxkZXB0aFQ9e30sZmFtaWx5PXt9LG1UPXt2Y3M9e1siZm4iXT0iL3Vzci9jYWVuL21pc2MvbW9kdWxlcy92Y3MvMjAyMC4xMi1TUDItMS5sdWEiLFsiZnVsbE5hbWUiXT0idmNzLzIwMjAuMTItU1AyLTEiLFsibG9hZE9yZGVyIl09Mixwcm9wVD17fSxbInN0YWNrRGVwdGgiXT0wLFsic3RhdHVzIl09ImFjdGl2ZSIsWyJ1c2VyTmFtZSJdPSJ2Y3MiLH0sdmVyZGk9e1siZm4iXT0iL3Vzci9jYWVuL21pc2MvbW9kdWxlcy92ZXJkaS8yMDIwLjEyLVNQMi0xLmx1YSIsWyJmdWxsTmFtZSJdPSJ2ZXJkaS8yMDIwLjEyLVNQMi0xIixbImxvYWRPcmRl
+_LMFILES_=/usr/caen/misc/modules/verdi/2020.12-SP2-1.lua:/usr/caen/misc/modules/vcs/2020.12-SP2-1.lua
+XMODIFIERS=@im=ibus
+XDG_SESSION_TYPE=x11
+XDG_SESSION_ID=10035
+XDG_SESSION_DESKTOP=gnome
+XDG_RUNTIME_DIR=/run/user/114250468
+XDG_MENU_PREFIX=gnome-
+XDG_DATA_DIRS=/home/ganrunxu/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/share:/usr/local/share:/usr/caen/misc/menus
+XDG_CURRENT_DESKTOP=GNOME
+XAUTHORITY=/run/gdm/auth-for-ganrunxu-8G7Q21/database
+VSCODE_GIT_IPC_HANDLE=/run/user/114250468/vscode-git-eb587bde07.sock
+VSCODE_GIT_ASKPASS_NODE=/opt/caen/vscode-1.70.2/code/code
+VSCODE_GIT_ASKPASS_MAIN=/opt/caen/vscode-1.70.2/code/resources/app/extensions/git/dist/askpass-main.js
+VSCODE_GIT_ASKPASS_EXTRA_ARGS=--ms-enable-electron-run-as-node
+VMR_MODE_FLAG=64
+VERDI_HOME=/usr/caen/verdi-2020.12-SP2-1
+VCS_TARGET_ARCH=linux64
+VCS_PATHMAP_PRELOAD_DONE=1
+VCS_MX_HOME_INTERNAL=1
+VCS_MODE_FLAG=64
+VCS_HOME=/usr/caen/vcs-2020.12-SP2-1
+VCS_EXEC_DONE=1
+VCS_DEPTH=0
+VCS_ARG_ADDED_FOR_TMP=1
+VCS_ARCH=linux64
+USERNAME=ganrunxu
+UNAME=/bin/uname
+TOOL_HOME=/usr/caen/vcs-2020.12-SP2-1/linux64
+TERM_PROGRAM_VERSION=1.70.2
+TERM_PROGRAM=vscode
+SNPS_VERDI_INTERNAL_LP_XML_NEW_FLOW=1
+SESSION_MANAGER=local/unix:@/tmp/.ICE-unix/2664959,unix/unix:/tmp/.ICE-unix/2664959
+SCRNAME=vcs
+SCRIPT_NAME=vcs
+QT_IM_MODULE=ibus
+OVA_UUM=0
+ORIGINAL_XDG_CURRENT_DESKTOP=GNOME
+NO_AT_BRIDGE=1
+MSI2LMP_LIBRARY=/usr/share/lammps/frc_files
+MODULESHOME=/usr/share/lmod/lmod
+MODULEPATH_ROOT=/usr/share/modulefiles
+MODULEPATH=/usr/caen/misc/modules:/etc/scl/modulefiles:/etc/modulefiles:/usr/share/modulefiles:/afs/umich.edu/class/coe/modules:/usr/share/modulefiles/Linux:/usr/share/modulefiles/Core:/usr/share/lmod/lmod/modulefiles/Core
+MFLAGS=
+MAKE_TERMERR=/dev/pts/4
+MAKELEVEL=1
+MAKEFLAGS=
+LOADEDMODULES=verdi/2020.12-SP2-1:vcs/2020.12-SP2-1
+LMOD_sys=Linux
+LMOD_VERSION=8.2.7
+LMOD_SETTARG_FULL_SUPPORT=no
+LMOD_ROOT=/usr/share/lmod
+LMOD_PKG=/usr/share/lmod/lmod
+LMOD_DIR=/usr/share/lmod/lmod/libexec
+LMOD_CMD=/usr/share/lmod/lmod/libexec/lmod
+LESSOPEN=||/usr/bin/lesspipe.sh %s
+LC_ALL=C
+LAMMPS_POTENTIALS=/usr/share/lammps/potentials
+KRB5CCNAME=KEYRING:persistent:114250468
+HISTCONTROL=ignoredups
+GNOME_DESKTOP_SESSION_ID=this-is-deprecated
+GJS_DEBUG_TOPICS=JS ERROR;JS LOG
+GJS_DEBUG_OUTPUT=stderr
+GIT_ASKPASS=/opt/caen/vscode-1.70.2/code/resources/app/extensions/git/dist/askpass.sh
+GIO_LAUNCHED_DESKTOP_FILE_PID=2665885
+GIO_LAUNCHED_DESKTOP_FILE=/usr/caen/misc/menus/applications/DEVELOPMENT-VisualStudioCode1.70.2.desktop
+GDM_LANG=en_US.UTF-8
+GDMSESSION=gnome
+GDK_BACKEND=x11
+DESKTOP_SESSION=gnome
+DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-jzudb962Dw,guid=6a9bab7c5fbcfe86d1895a7564232b81
+COLORTERM=truecolor
+CHROME_DESKTOP=code-url-handler.desktop
+BASH_FUNC_which%%=() {  ( alias;_ eval ${which_declare} ) | /usr/bin/which --tty-only --read-alias --read-functions --show-tilde --show-dot $@_}
+BASH_FUNC_scl%%=() {  if [ "$1" = "load" -o "$1" = "unload" ]; then_ eval "module $@";_ else_ /usr/bin/scl "$@";_ fi_}
+BASH_FUNC_module%%=() {  eval $($LMOD_CMD bash "$@") && eval $(${LMOD_SETTARG_CMD:-:} -s sh)_}
+BASH_FUNC_ml%%=() {  eval $($LMOD_DIR/ml_cmd "$@")_}
+BASH_ENV=/usr/share/lmod/lmod/init/bash
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL=true
+0
+0
+9
+1680031320 ../syn/queue_scheduler.syn.sdf
+1680026853 ../syn/event_queues.syn.sdf
+1680031050 qs_cu_tb.sv
+1680031320 ../syn/queue_scheduler.syn.v
+1680026851 ../syn/event_queues.syn.v
+1680026605 standard.vh
+1121399997 /afs/umich.edu/class/eecs627/ibm13/artisan/2005q3v1/aci/sc-x/verilog/ibm13_neg.v
+1626691673 /usr/caen/verdi-2020.12-SP2-1/share/PLI/VCS/LINUX64/verdi.tab
+1626663962 /usr/caen/vcs-2020.12-SP2-1/linux64/lib/vcsdp_lite.tab
+4
+1626665287 /usr/caen/vcs-2020.12-SP2-1/linux64/lib/libvirsim.so
+1626664738 /usr/caen/vcs-2020.12-SP2-1/linux64/lib/liberrorinf.so
+1626664460 /usr/caen/vcs-2020.12-SP2-1/linux64/lib/libsnpsmalloc.so
+1626664734 /usr/caen/vcs-2020.12-SP2-1/linux64/lib/libvfs.so
+1680031422 sim_synth.daidir
+-1 partitionlib

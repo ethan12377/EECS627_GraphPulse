@@ -1,7 +1,7 @@
 #@ # 
 #@ # Running dc_shell Version T-2022.03-SP3 for linux64 -- Jul 12, 2022
-#@ # Date:   Mon Mar 20 13:41:35 2023
-#@ # Run by: ganrunxu@fmcrb3000p04.engin.umich.edu
+#@ # Date:   Tue Mar 28 15:21:50 2023
+#@ # Run by: ganrunxu@caen-vnc-mi16.engin.umich.edu
 #@ 
 
 source /usr/caen/synopsys-synth-2022.03-SP3/admin/setup/.synopsys_dc.setup
@@ -8612,54 +8612,141 @@ source /usr/caen/synopsys-synth-2022.03-SP3/admin/setup/.synopsys_dc.setup
 
 #@ # -- End source /usr/caen/synopsys-synth-2022.03-SP3/admin/setup/.synopsys_dc.setup
 
-read_verilog "../verilog/standard.vh ../verilog/queue_scheduler.sv"
-read_systemverilog "../verilog/standard.vh ../verilog/queue_scheduler.sv"
-# Load common variables, artisan standard cells
-source -verbose "common.syn.tcl"
+source -echo -verbose /home/ganrunxu/eecs627/EECS627_GraphPulse/syn/queue_scheduler.syn.tcl
+#@ # -- Starting source /home/ganrunxu/eecs627/EECS627_GraphPulse/syn/queue_scheduler.syn.tcl
+
+#@ # EECS627 Lab 1
+#@ # 8-bit multiplier
+#@ # TCL script for Design Compiler
+#@ 
+#@ # Load common variables, artisan standard cells
+#@ source -verbose "common.syn.tcl"
 #@ # -- Starting source common.syn.tcl
 
 #@ # common.tcl setup library files
 #@ 
 #@ # 0.13um IBM Artisan Library
 #@ # Set library paths
-#@ 
-#@ set search_path [list "." \
-#@                      "/afs/umich.edu/class/eecs627/ibm13/artisan/current/aci/sc-x/synopsys/" \
-#@                      "./../lib" \
-#@                     ]
-#@ 
-#@ set link_library "* reset_driver.db typical.db dw_foundation.sldb"
+#@ set ARTISAN "/afs/umich.edu/class/eecs627/ibm13/artisan/current/aci/sc-x/synopsys/"
+#@ set SYNOPSYS [get_unix_variable SYNOPSYS]
+#@ set search_path [list "." $ARTISAN ${SYNOPSYS}/libraries/syn]
+#@ set link_library "* typical.db dw_foundation.sldb"
 #@ set target_library "typical.db"
 #@ 
 #@ # set_dont_use any *XL* cell
 #@ set_dont_use { typical/*XLTR }
-#@ 
 #@ # -- End source common.syn.tcl
 
-pwd
-source -verbose "common.syn.tcl"
-#@ # -- Starting source common.syn.tcl
+#@ 
+#@ # Set top level name
+#@ set top_level "queue_scheduler"
+#@ 
+#@ # Read verilog files
+#@ read_file -f sverilog [list  "../verilog/standard.vh ../verilog/priority_arbiter.sv ../verilog/rr_arbiter.sv ../verilog/queue_scheduler.sv"]
+#@ list_designs
+#@ current_design $top_level
+#@ 
+#@ # Clock period
+#@ set clk_period 100
+#@ set clk_uncertainty 0.1
+#@ set clk_transition 0.1
+#@ 
+#@ #Create real clock if clock port is found
+#@ if {[sizeof_collection [get_ports clk_i]] > 0} {
+#@   set clk_name "clk_i"
+#@   set clk_port "clk_i"
+#@   #If no waveform is specified, 50% duty cycle is assumed
+#@   create_clock -name $clk_name -period $clk_period [get_ports $clk_port] 
+#@   set_drive 0 [get_clocks $clk_name] 
+#@ }
+#@ 
+#@ #If not real clock then create virtual clock
+#@ if {[sizeof_collection [get_ports clk_i]] == 0} {
+#@   set clk_name "vclk"
+#@   create_clock -name $clk_name -period $clk_period 
+#@ }
+#@ 
+#@ set_clock_uncertainty $clk_uncertainty [get_clocks $clk_name]
+#@ #Propagated clock used for gated clocks only
+#@ #set_propagated_clock [get_clocks $clk_name]
+#@ set_clock_transition $clk_transition [get_clocks $clk_name]
+#@ 
+#@ set_operating_conditions "typical" -library "typical" 
+#@ set_wire_load_model -name "ibm13_wl10" -library "typical" 
+#@ set_wire_load_mode "segmented" 
+#@ 
+#@ set typical_input_delay 0.100
+#@ set typical_output_delay 0.100
+#@ set typical_wire_load 0.010 
+#@ 
+#@ # Link the design
+#@ link
+#@ 
+#@ # Set maximum fanout of gates
+#@ set_max_fanout 16 $top_level 
+#@ 
+#@ # Configure the clock network
+#@ set_fix_hold [all_clocks] 
+#@ set_dont_touch_network $clk_port 
+#@ 
+#@ # Set delays: Input, Output
+#@ set_driving_cell -lib_cell INVX2TR [all_inputs]
+#@ set_input_delay $typical_input_delay [all_inputs] -clock $clk_name 
+#@ remove_input_delay -clock $clk_name [find port $clk_port]
+#@ set_output_delay $typical_output_delay [all_outputs] -clock $clk_name 
+#@ 
+#@ # Set loading of outputs 
+#@ set_load $typical_wire_load [all_outputs] 
+#@ 
+#@ # Verify the design
+#@ check_design
+#@ 
+#@ # Uniquify repeated modules
+#@ uniquify
+#@ 
+#@ # Synthesize the design
+#@ compile -map_effort medium
+#@ 
+#@ # My retiming code
+#@ # set_optimize_registers -sync_transform multiclass -async_transform multiclass
+#@ # compile_ultra -retime
+#@ # compile_ultra -retime -incremental
+#@ 
+#@ # Rename modules, signals according to the naming rules Used for tool exchange
+#@ source -verbose "naming_rules.syn.tcl"
+#@ # -- Starting source naming_rules.syn.tcl
 
-#@ # common.tcl setup library files
+#@ # Naming rules for consistent tool interface
+#@ # Translation of script: namingrules.dc
 #@ 
-#@ # 0.13um IBM Artisan Library
-#@ # Set library paths
+#@ define_name_rules umich_naming_rules -allowed {a-zA-Z0-9_} -max_length 256 -reserved_words [list "always" "and" "assign" "begin" "buf" "bufif0" "bufif1" "case" "casex" "casez" "cmos" "deassign" "default" "defparam" "disable" "edge" "else" "end" "endcase" "endfunction" "endmodule" "endprimitive" "endspecify" "endtable" "endtask" "event" "for" "force" "forever" "fork" "function" "highz0" "highz1" "if" "initial" "inout" "input" "integer" "join" "large" "macromodule" "medium" "module" "nand" "negedge" "nmos" "nor" "not" "notif0" "notif1" "or" "output" "pmos" "posedge" "primitive" "pull0" "pull1" "pulldown" "pullup" "rcmos" "reg" "release" "repeat" "rnmos" "rpmos" "rtran" "rtranif0" "rtranif1" "scalered" "small" "specify" "specparam" "strong0" "strong1" "supply0" "supply1" "table" "task" "time" "tran" "tranif0" "tranif1" "tri" "tri0" "tri1" "triand" "trior" "vectored" "wait" "wand" "weak0" "weak1" "while" "wire" "wor" "xnor" "xor" "abs" "access" "after" "alias" "all" "and" "architecture" "array" "assert" "attribute" "begin" "block" "body" "buffer" "bus" "case" "component" "configuration" "constant" "disconnect" "downto" "else" "elsif" "end" "entity" "exit" "file" "for" "function" "generate" "generic" "guarded" "if" "in" "inout" "is" "label" "library" "linkage" "loop" "map" "mod" "nand" "new" "next" "nor" "not" "null" "of" "on" "open" "or" "others" "out" "package" "port" "procedure" "process" "range" "record" "register" "rem" "report" "return" "select" "severity" "signal" "subtype" "then" "to" "transport" "type" "units" "until" "use" "variable" "wait" "when" "while" "with" "xor"] -case_insensitive -last_restricted "_" -first_restricted "_" -map {{{"*cell*","U"}, {"*-return","RET"}}} -collapse_name_space -equal_ports_nets -inout_ports_equal_nets
 #@ 
-#@ set search_path [list "." \
-#@                      "/afs/umich.edu/class/eecs627/ibm13/artisan/current/aci/sc-x/synopsys/" \
-#@                      "./../lib" \
-#@                     ]
-#@ 
-#@ set link_library "* reset_driver.db typical.db dw_foundation.sldb"
-#@ set target_library "typical.db"
-#@ 
-#@ # set_dont_use any *XL* cell
-#@ set_dont_use { typical/*XLTR }
-#@ 
-#@ # -- End source common.syn.tcl
+#@ change_names -rules umich_naming_rules -verbose -hierarchy
+#@ # -- End source naming_rules.syn.tcl
 
-set top_level "queue_scheduler"
-read_verilog "../verilog/standard.vh ../verilog/queue_scheduler.sv"
-read_verilog "../verilog/standard.vh ../verilog/queue_scheduler.sv"
-read_verilog "../verilog/standard.vh ../verilog/queue_scheduler.sv"
-read_verilog "../verilog/standard.vh ../verilog/queue_scheduler.sv"
+#@ 
+#@ # Generate structural verilog netlist
+#@ write -hierarchy -format verilog -output "${top_level}.syn.v"
+#@ 
+#@ # Generate Standard Delay Format (SDF) file
+#@ write_sdf -context verilog "${top_level}.syn.sdf"
+#@ 
+#@ # Generate report file
+#@ set maxpaths 20
+#@ set rpt_file "${top_level}.syn.rpt"
+#@ 
+#@ check_design > $rpt_file
+#@ report_area  >> ${rpt_file}
+#@ report_power -hier -analysis_effort medium >> ${rpt_file}
+#@ report_design >> ${rpt_file}
+#@ report_cell >> ${rpt_file}
+#@ report_port -verbose >> ${rpt_file}
+#@ report_compile_options >> ${rpt_file}
+#@ report_constraint -all_violators -verbose >> ${rpt_file}
+#@ report_timing -path full -delay max -max_paths $maxpaths -nworst 100 >> ${rpt_file}
+#@ 
+#@ # Exit dc_shell
+#@ #quit
+#@ # -- End source /home/ganrunxu/eecs627/EECS627_GraphPulse/syn/queue_scheduler.syn.tcl
+
+quit

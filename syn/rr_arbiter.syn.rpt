@@ -1,0 +1,1413 @@
+1
+ 
+****************************************
+Report : area
+Design : rr_arbiter
+Version: T-2022.03-SP3
+Date   : Tue Mar 21 17:47:18 2023
+****************************************
+
+Library(s) Used:
+
+    typical (File: /afs/umich.edu/class/eecs627/ibm13/artisan/current/aci/sc-x/synopsys/typical.db)
+
+Number of ports:                           56
+Number of nets:                           142
+Number of cells:                          100
+Number of combinational cells:             90
+Number of sequential cells:                 8
+Number of macros/black boxes:               0
+Number of buf/inv:                         20
+Number of references:                      18
+
+Combinational area:                612.000010
+Buf/Inv area:                       86.400003
+Noncombinational area:             218.880005
+Macro/Black Box area:                0.000000
+Net Interconnect area:           12786.730774
+
+Total cell area:                   830.880014
+Total area:                      13617.610788
+1
+Loading db file '/afs/umich.edu/class/eecs627/ibm13/artisan/current/aci/sc-x/synopsys/typical.db'
+Information: Propagating switching activity (medium effort zero delay simulation). (PWR-6)
+Warning: Design has unannotated primary inputs. (PWR-414)
+Warning: Design has unannotated sequential cell outputs. (PWR-415)
+ 
+****************************************
+Report : power
+        -hier
+        -analysis_effort medium
+Design : rr_arbiter
+Version: T-2022.03-SP3
+Date   : Tue Mar 21 17:47:18 2023
+****************************************
+
+
+Library(s) Used:
+
+    typical (File: /afs/umich.edu/class/eecs627/ibm13/artisan/current/aci/sc-x/synopsys/typical.db)
+
+
+Operating Conditions: typical   Library: typical
+Wire Load Model Mode: segmented
+
+Design        Wire Load Model            Library
+------------------------------------------------
+rr_arbiter             ibm13_wl10        typical
+
+
+Global Operating Voltage = 1.2  
+Power-specific unit information :
+    Voltage Units = 1V
+    Capacitance Units = 1.000000pf
+    Time Units = 1ns
+    Dynamic Power Units = 1mW    (derived from V,C,T units)
+    Leakage Power Units = 1pW
+
+
+--------------------------------------------------------------------------------
+                                       Switch   Int      Leak     Total
+Hierarchy                              Power    Power    Power    Power    %
+--------------------------------------------------------------------------------
+rr_arbiter                             2.41e-02 1.80e-02 1.98e+04 4.21e-02 100.0
+  priority_arbiter_inst_1 (priority_arbiter_0)
+                                       3.24e-03 9.56e-04 3.30e+03 4.20e-03  10.0
+  priority_arbiter_inst_0 (priority_arbiter_1)
+                                       1.94e-03 5.86e-04 3.07e+03 2.52e-03   6.0
+1
+ 
+****************************************
+Report : design
+Design : rr_arbiter
+Version: T-2022.03-SP3
+Date   : Tue Mar 21 17:47:18 2023
+****************************************
+
+Design allows ideal nets on clock nets.
+
+Library(s) Used:
+
+    typical (File: /afs/umich.edu/class/eecs627/ibm13/artisan/current/aci/sc-x/synopsys/typical.db)
+
+Local Link Library:
+
+    {typical.db}
+
+Flip-Flop Types:
+
+    No flip-flop types specified.
+
+Latch Types:
+
+    No latch types specified.
+
+Operating Conditions:
+
+
+    Operating Condition Name : typical
+    Library : typical
+    Process :   1.00
+    Temperature :  25.00
+    Voltage :   1.20
+    Interconnect Model : balanced_tree
+
+Wire Loading Model:
+
+    Selected manually by the user.
+
+Name           :   ibm13_wl10
+Location       :   typical
+Resistance     :   8.5e-08
+Capacitance    :   0.00015
+Area           :   0.7
+Slope          :   66.667
+Fanout   Length   Points Average Cap Std Deviation
+--------------------------------------------------------------
+     1    66.67
+
+
+
+Wire Loading Model Mode: segmented.
+
+Timing Ranges:
+
+    No timing ranges specified.
+
+Pin Input Delays:
+
+    None specified.
+
+Pin Output Delays:
+
+    None specified.
+
+Disabled Timing Arcs:
+
+    No arcs disabled.
+
+Required Licenses:
+
+    DesignWare
+
+Design Parameters:
+
+    None specified.
+1
+ 
+****************************************
+Report : cell
+Design : rr_arbiter
+Version: T-2022.03-SP3
+Date   : Tue Mar 21 17:47:18 2023
+****************************************
+
+Attributes:
+    b - black box (unknown)
+    h - hierarchical
+    n - noncombinational
+    p - parameterized
+    r - removable
+    u - contains unmapped logic
+
+Cell                      Reference       Library             Area  Attributes
+--------------------------------------------------------------------------------
+U61                       AOI22X2TR       typical         15.840000 
+U62                       AOI22X2TR       typical         15.840000 
+U63                       NAND2X1TR       typical         5.760000  
+U64                       AOI22X1TR       typical         8.640000  
+U65                       NOR2X1TR        typical         5.760000  
+U66                       NOR2X1TR        typical         5.760000  
+U67                       NOR2X1TR        typical         5.760000  
+U68                       NOR2X1TR        typical         5.760000  
+U69                       NOR2X1TR        typical         5.760000  
+U70                       NOR2X1TR        typical         5.760000  
+U71                       NOR2X1TR        typical         5.760000  
+U72                       NOR2X1TR        typical         5.760000  
+U73                       NAND2X1TR       typical         5.760000  
+U74                       CLKINVX2TR      typical         4.320000  
+U75                       CLKINVX2TR      typical         4.320000  
+U76                       CLKINVX2TR      typical         4.320000  
+U77                       NOR3X1TR        typical         7.200000  
+U78                       NOR3X1TR        typical         7.200000  
+U79                       NAND2X1TR       typical         5.760000  
+U80                       NOR3X1TR        typical         7.200000  
+U81                       NOR3X1TR        typical         7.200000  
+U82                       NAND2X1TR       typical         5.760000  
+U83                       CLKAND2X2TR     typical         7.200000  
+U84                       NOR3X1TR        typical         7.200000  
+U85                       CLKINVX2TR      typical         4.320000  
+U86                       NOR3X1TR        typical         7.200000  
+U87                       NAND2BX1TR      typical         7.200000  
+U88                       OA21X2TR        typical         10.080000 
+U89                       AOI21X1TR       typical         7.200000  
+U90                       CLKINVX2TR      typical         4.320000  
+U91                       CLKINVX2TR      typical         4.320000  
+U92                       CLKINVX2TR      typical         4.320000  
+U93                       CLKINVX2TR      typical         4.320000  
+U94                       CLKINVX2TR      typical         4.320000  
+U95                       CLKINVX2TR      typical         4.320000  
+U96                       CLKINVX2TR      typical         4.320000  
+U97                       CLKINVX2TR      typical         4.320000  
+U98                       CLKINVX2TR      typical         4.320000  
+U99                       CLKINVX2TR      typical         4.320000  
+U100                      OAI221X1TR      typical         12.960000 
+U101                      NAND2X1TR       typical         5.760000  
+U102                      NOR2X1TR        typical         5.760000  
+U103                      NAND2X1TR       typical         5.760000  
+U104                      NOR2X1TR        typical         5.760000  
+U105                      OAI21X1TR       typical         7.200000  
+U106                      NAND2X1TR       typical         5.760000  
+U107                      NAND2X1TR       typical         5.760000  
+U108                      NAND2X1TR       typical         5.760000  
+U109                      NAND2X1TR       typical         5.760000  
+U110                      NAND2X1TR       typical         5.760000  
+U111                      OAI222X1TR      typical         14.400000 
+U112                      NAND2X1TR       typical         5.760000  
+U113                      OAI221X1TR      typical         12.960000 
+U114                      OAI221X1TR      typical         12.960000 
+U115                      OAI22X1TR       typical         8.640000  
+U116                      OAI21X1TR       typical         7.200000  
+U117                      NOR2X2TR        typical         7.200000  
+U118                      OAI21X1TR       typical         7.200000  
+mask_reg_0_               DFFX1TR         typical         27.360001 n
+mask_reg_1_               DFFX1TR         typical         27.360001 n
+mask_reg_2_               DFFX1TR         typical         27.360001 n
+mask_reg_3_               DFFX1TR         typical         27.360001 n
+mask_reg_4_               DFFX1TR         typical         27.360001 n
+mask_reg_5_               DFFX1TR         typical         27.360001 n
+mask_reg_6_               DFFX1TR         typical         27.360001 n
+mask_reg_7_               DFFX1TR         typical         27.360001 n
+priority_arbiter_inst_0   priority_arbiter_1              109.440002
+                                                                    h, p
+priority_arbiter_inst_1   priority_arbiter_0              109.440002
+                                                                    h, p
+--------------------------------------------------------------------------------
+Total 68 cells                                            830.880014
+1
+ 
+****************************************
+Report : port
+        -verbose
+Design : rr_arbiter
+Version: T-2022.03-SP3
+Date   : Tue Mar 21 17:47:18 2023
+****************************************
+
+
+
+Attributes:
+    d - dont_touch_network
+
+                       Pin      Wire     Max     Max     Connection
+Port           Dir     Load     Load     Trans   Cap     Class      Attrs
+--------------------------------------------------------------------------------
+ack_i          in      0.0000   0.0000    1.02    0.17   --         
+clk_i          in      0.0000   0.0000    1.02    0.17   --         d
+en_i           in      0.0000   0.0000    1.02    0.17   --         
+req_i[0]       in      0.0000   0.0000    1.02    0.17   --         
+req_i[1]       in      0.0000   0.0000    1.02    0.17   --         
+req_i[2]       in      0.0000   0.0000    1.02    0.17   --         
+req_i[3]       in      0.0000   0.0000    1.02    0.17   --         
+req_i[4]       in      0.0000   0.0000    1.02    0.17   --         
+req_i[5]       in      0.0000   0.0000    1.02    0.17   --         
+req_i[6]       in      0.0000   0.0000    1.02    0.17   --         
+req_i[7]       in      0.0000   0.0000    1.02    0.17   --         
+rst_i          in      0.0000   0.0000    1.02    0.17   --         
+grant_o[0]     out     0.0100   0.0000   --      --      --         
+grant_o[1]     out     0.0100   0.0000   --      --      --         
+grant_o[2]     out     0.0100   0.0000   --      --      --         
+grant_onehot_o[0]
+               out     0.0100   0.0000   --      --      --         
+grant_onehot_o[1]
+               out     0.0100   0.0000   --      --      --         
+grant_onehot_o[2]
+               out     0.0100   0.0000   --      --      --         
+grant_onehot_o[3]
+               out     0.0100   0.0000   --      --      --         
+grant_onehot_o[4]
+               out     0.0100   0.0000   --      --      --         
+grant_onehot_o[5]
+               out     0.0100   0.0000   --      --      --         
+grant_onehot_o[6]
+               out     0.0100   0.0000   --      --      --         
+grant_onehot_o[7]
+               out     0.0100   0.0000   --      --      --         
+mask_o[0]      out     0.0100   0.0000   --      --      --         
+mask_o[1]      out     0.0100   0.0000   --      --      --         
+mask_o[2]      out     0.0100   0.0000   --      --      --         
+mask_o[3]      out     0.0100   0.0000   --      --      --         
+mask_o[4]      out     0.0100   0.0000   --      --      --         
+mask_o[5]      out     0.0100   0.0000   --      --      --         
+mask_o[6]      out     0.0100   0.0000   --      --      --         
+mask_o[7]      out     0.0100   0.0000   --      --      --         
+valid_o        out     0.0100   0.0000   --      --      --         
+
+
+              External  Max             Min                Min       Min
+              Number    Wireload        Wireload           Pin       Wire
+Port          Points    Model           Model              Load      Load
+--------------------------------------------------------------------------------
+ack_i              1      --              --              --        -- 
+clk_i              1      --              --              --        -- 
+en_i               1      --              --              --        -- 
+req_i[0]           1      --              --              --        -- 
+req_i[1]           1      --              --              --        -- 
+req_i[2]           1      --              --              --        -- 
+req_i[3]           1      --              --              --        -- 
+req_i[4]           1      --              --              --        -- 
+req_i[5]           1      --              --              --        -- 
+req_i[6]           1      --              --              --        -- 
+req_i[7]           1      --              --              --        -- 
+rst_i              1      --              --              --        -- 
+grant_o[0]         1      --              --              --        -- 
+grant_o[1]         1      --              --              --        -- 
+grant_o[2]         1      --              --              --        -- 
+grant_onehot_o[0]
+                   1      --              --              --        -- 
+grant_onehot_o[1]
+                   1      --              --              --        -- 
+grant_onehot_o[2]
+                   1      --              --              --        -- 
+grant_onehot_o[3]
+                   1      --              --              --        -- 
+grant_onehot_o[4]
+                   1      --              --              --        -- 
+grant_onehot_o[5]
+                   1      --              --              --        -- 
+grant_onehot_o[6]
+                   1      --              --              --        -- 
+grant_onehot_o[7]
+                   1      --              --              --        -- 
+mask_o[0]          1      --              --              --        -- 
+mask_o[1]          1      --              --              --        -- 
+mask_o[2]          1      --              --              --        -- 
+mask_o[3]          1      --              --              --        -- 
+mask_o[4]          1      --              --              --        -- 
+mask_o[5]          1      --              --              --        -- 
+mask_o[6]          1      --              --              --        -- 
+mask_o[7]          1      --              --              --        -- 
+valid_o            1      --              --              --        -- 
+
+                    Input Delay
+                  Min             Max       Related   Max
+Input Port    Rise    Fall    Rise    Fall   Clock  Fanout
+--------------------------------------------------------------------------------
+ack_i         0.10    0.10    0.10    0.10  clk_i     --    
+clk_i         --      --      --      --      --      -- 
+en_i          0.10    0.10    0.10    0.10  clk_i     --    
+req_i[0]      0.10    0.10    0.10    0.10  clk_i     --    
+req_i[1]      0.10    0.10    0.10    0.10  clk_i     --    
+req_i[2]      0.10    0.10    0.10    0.10  clk_i     --    
+req_i[3]      0.10    0.10    0.10    0.10  clk_i     --    
+req_i[4]      0.10    0.10    0.10    0.10  clk_i     --    
+req_i[5]      0.10    0.10    0.10    0.10  clk_i     --    
+req_i[6]      0.10    0.10    0.10    0.10  clk_i     --    
+req_i[7]      0.10    0.10    0.10    0.10  clk_i     --    
+rst_i         0.10    0.10    0.10    0.10  clk_i     --    
+
+
+                    Driving Cell
+Input Port   Rise(min/max)      Fall(min/max)      Mult(min/max)  Attrs(min/max)
+--------------------------------------------------------------------------------
+ack_i        INVX2TR            INVX2TR              -- /  --     
+clk_i        INVX2TR            INVX2TR              -- /  --     
+en_i         INVX2TR            INVX2TR              -- /  --     
+req_i[0]     INVX2TR            INVX2TR              -- /  --     
+req_i[1]     INVX2TR            INVX2TR              -- /  --     
+req_i[2]     INVX2TR            INVX2TR              -- /  --     
+req_i[3]     INVX2TR            INVX2TR              -- /  --     
+req_i[4]     INVX2TR            INVX2TR              -- /  --     
+req_i[5]     INVX2TR            INVX2TR              -- /  --     
+req_i[6]     INVX2TR            INVX2TR              -- /  --     
+req_i[7]     INVX2TR            INVX2TR              -- /  --     
+rst_i        INVX2TR            INVX2TR              -- /  --     
+
+
+               Max Drive      Min Drive      Resistance    Min    Min       Cell
+Input Port    Rise    Fall   Rise    Fall   Max     Min    Cap    Fanout    Deg
+--------------------------------------------------------------------------------
+ack_i         --      --     --      --     --      --     --     --        -- 
+clk_i         --      --     --      --     --      --     --     --        -- 
+en_i          --      --     --      --     --      --     --     --        -- 
+req_i[0]      --      --     --      --     --      --     --     --        -- 
+req_i[1]      --      --     --      --     --      --     --     --        -- 
+req_i[2]      --      --     --      --     --      --     --     --        -- 
+req_i[3]      --      --     --      --     --      --     --     --        -- 
+req_i[4]      --      --     --      --     --      --     --     --        -- 
+req_i[5]      --      --     --      --     --      --     --     --        -- 
+req_i[6]      --      --     --      --     --      --     --     --        -- 
+req_i[7]      --      --     --      --     --      --     --     --        -- 
+rst_i         --      --     --      --     --      --     --     --        -- 
+
+
+               Max Tran        Min Tran
+Input Port    Rise    Fall    Rise    Fall
+--------------------------------------------------------------------------------
+ack_i         --      --      --      -- 
+clk_i         --      --      --      -- 
+en_i          --      --      --      -- 
+req_i[0]      --      --      --      -- 
+req_i[1]      --      --      --      -- 
+req_i[2]      --      --      --      -- 
+req_i[3]      --      --      --      -- 
+req_i[4]      --      --      --      -- 
+req_i[5]      --      --      --      -- 
+req_i[6]      --      --      --      -- 
+req_i[7]      --      --      --      -- 
+rst_i         --      --      --      -- 
+
+
+                    Output Delay
+                  Min             Max      Related  Fanout
+Output Port   Rise    Fall    Rise    Fall  Clock     Load
+--------------------------------------------------------------------------------
+grant_o[0]    0.10    0.10    0.10    0.10  clk_i     0.00  
+grant_o[1]    0.10    0.10    0.10    0.10  clk_i     0.00  
+grant_o[2]    0.10    0.10    0.10    0.10  clk_i     0.00  
+grant_onehot_o[0]
+              0.10    0.10    0.10    0.10  clk_i     0.00  
+grant_onehot_o[1]
+              0.10    0.10    0.10    0.10  clk_i     0.00  
+grant_onehot_o[2]
+              0.10    0.10    0.10    0.10  clk_i     0.00  
+grant_onehot_o[3]
+              0.10    0.10    0.10    0.10  clk_i     0.00  
+grant_onehot_o[4]
+              0.10    0.10    0.10    0.10  clk_i     0.00  
+grant_onehot_o[5]
+              0.10    0.10    0.10    0.10  clk_i     0.00  
+grant_onehot_o[6]
+              0.10    0.10    0.10    0.10  clk_i     0.00  
+grant_onehot_o[7]
+              0.10    0.10    0.10    0.10  clk_i     0.00  
+mask_o[0]     0.10    0.10    0.10    0.10  clk_i     0.00  
+mask_o[1]     0.10    0.10    0.10    0.10  clk_i     0.00  
+mask_o[2]     0.10    0.10    0.10    0.10  clk_i     0.00  
+mask_o[3]     0.10    0.10    0.10    0.10  clk_i     0.00  
+mask_o[4]     0.10    0.10    0.10    0.10  clk_i     0.00  
+mask_o[5]     0.10    0.10    0.10    0.10  clk_i     0.00  
+mask_o[6]     0.10    0.10    0.10    0.10  clk_i     0.00  
+mask_o[7]     0.10    0.10    0.10    0.10  clk_i     0.00  
+valid_o       0.10    0.10    0.10    0.10  clk_i     0.00  
+
+1
+ 
+****************************************
+Report : compile_options
+Design : rr_arbiter
+Version: T-2022.03-SP3
+Date   : Tue Mar 21 17:47:18 2023
+****************************************
+
+Design                                   Compile Option         Value
+--------------------------------------------------------------------------------
+rr_arbiter                               flatten                false
+                                         structure              true
+                                         structure_boolean      false
+                                         structure_timing       true
+                                         isolate_port           disabled
+                                         multibit_options
+                                           optimization_mode    non_timing_driven
+                                           minimum_width        2
+                                           exclude_registers_with_timing_exceptions false
+
+priority_arbiter_1                       flatten                false
+                                         structure              true
+                                         structure_boolean      false
+                                         structure_timing       true
+
+priority_arbiter_0                       flatten                false
+                                         structure              true
+                                         structure_boolean      false
+                                         structure_timing       true
+--------------------------------------------------------------------------------
+1
+ 
+****************************************
+Report : constraint
+        -all_violators
+        -verbose
+Design : rr_arbiter
+Version: T-2022.03-SP3
+Date   : Tue Mar 21 17:47:18 2023
+****************************************
+
+
+1
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -nworst 100
+        -max_paths 20
+Design : rr_arbiter
+Version: T-2022.03-SP3
+Date   : Tue Mar 21 17:47:18 2023
+****************************************
+
+Operating Conditions: typical   Library: typical
+Wire Load Model Mode: segmented
+
+  Startpoint: en_i (input port clocked by clk_i)
+  Endpoint: grant_onehot_o[4]
+            (output port clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  rr_arbiter         ibm13_wl10            typical
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_i (rise edge)                                 0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    0.10       0.10 r
+  en_i (in)                                               0.26       0.36 r
+  U101/Y (NAND2X1TR)                                      0.17       0.54 f
+  U102/Y (NOR2X1TR)                                       0.37       0.91 r
+  priority_arbiter_inst_1/req_i[6] (priority_arbiter_0)
+                                                          0.00       0.91 r
+  priority_arbiter_inst_1/U8/Y (NOR2X1TR)                 0.18       1.08 f
+  priority_arbiter_inst_1/U5/Y (NOR3BX1TR)                0.21       1.30 f
+  priority_arbiter_inst_1/U6/Y (NAND3BX1TR)               0.48       1.77 r
+  priority_arbiter_inst_1/valid_o (priority_arbiter_0)
+                                                          0.00       1.77 r
+  U75/Y (CLKINVX2TR)                                      0.30       2.07 f
+  U64/Y (AOI22X1TR)                                       0.56       2.63 r
+  U85/Y (CLKINVX2TR)                                      0.23       2.86 f
+  U73/Y (NAND2X1TR)                                       0.39       3.25 r
+  U72/Y (NOR2X1TR)                                        0.16       3.40 f
+  grant_onehot_o[4] (out)                                 0.00       3.40 f
+  data arrival time                                                  3.40
+
+  clock clk_i (rise edge)                                10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.10       9.90
+  output external delay                                  -0.10       9.80
+  data required time                                                 9.80
+  --------------------------------------------------------------------------
+  data required time                                                 9.80
+  data arrival time                                                 -3.40
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.40
+
+
+  Startpoint: en_i (input port clocked by clk_i)
+  Endpoint: grant_onehot_o[7]
+            (output port clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  rr_arbiter         ibm13_wl10            typical
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_i (rise edge)                                 0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    0.10       0.10 r
+  en_i (in)                                               0.26       0.36 r
+  U101/Y (NAND2X1TR)                                      0.17       0.54 f
+  U102/Y (NOR2X1TR)                                       0.37       0.91 r
+  priority_arbiter_inst_1/req_i[6] (priority_arbiter_0)
+                                                          0.00       0.91 r
+  priority_arbiter_inst_1/U8/Y (NOR2X1TR)                 0.18       1.08 f
+  priority_arbiter_inst_1/U5/Y (NOR3BX1TR)                0.21       1.30 f
+  priority_arbiter_inst_1/U6/Y (NAND3BX1TR)               0.48       1.77 r
+  priority_arbiter_inst_1/valid_o (priority_arbiter_0)
+                                                          0.00       1.77 r
+  U75/Y (CLKINVX2TR)                                      0.30       2.07 f
+  U64/Y (AOI22X1TR)                                       0.56       2.63 r
+  U85/Y (CLKINVX2TR)                                      0.23       2.86 f
+  U73/Y (NAND2X1TR)                                       0.39       3.25 r
+  U84/Y (NOR3X1TR)                                        0.16       3.40 f
+  grant_onehot_o[7] (out)                                 0.00       3.40 f
+  data arrival time                                                  3.40
+
+  clock clk_i (rise edge)                                10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.10       9.90
+  output external delay                                  -0.10       9.80
+  data required time                                                 9.80
+  --------------------------------------------------------------------------
+  data required time                                                 9.80
+  data arrival time                                                 -3.40
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.40
+
+
+  Startpoint: en_i (input port clocked by clk_i)
+  Endpoint: grant_onehot_o[6]
+            (output port clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  rr_arbiter         ibm13_wl10            typical
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_i (rise edge)                                 0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    0.10       0.10 r
+  en_i (in)                                               0.26       0.36 r
+  U101/Y (NAND2X1TR)                                      0.17       0.54 f
+  U102/Y (NOR2X1TR)                                       0.37       0.91 r
+  priority_arbiter_inst_1/req_i[6] (priority_arbiter_0)
+                                                          0.00       0.91 r
+  priority_arbiter_inst_1/U8/Y (NOR2X1TR)                 0.18       1.08 f
+  priority_arbiter_inst_1/U5/Y (NOR3BX1TR)                0.21       1.30 f
+  priority_arbiter_inst_1/U6/Y (NAND3BX1TR)               0.48       1.77 r
+  priority_arbiter_inst_1/valid_o (priority_arbiter_0)
+                                                          0.00       1.77 r
+  U75/Y (CLKINVX2TR)                                      0.30       2.07 f
+  U64/Y (AOI22X1TR)                                       0.56       2.63 r
+  U85/Y (CLKINVX2TR)                                      0.23       2.86 f
+  U73/Y (NAND2X1TR)                                       0.39       3.25 r
+  U81/Y (NOR3X1TR)                                        0.16       3.40 f
+  grant_onehot_o[6] (out)                                 0.00       3.40 f
+  data arrival time                                                  3.40
+
+  clock clk_i (rise edge)                                10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.10       9.90
+  output external delay                                  -0.10       9.80
+  data required time                                                 9.80
+  --------------------------------------------------------------------------
+  data required time                                                 9.80
+  data arrival time                                                 -3.40
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.40
+
+
+  Startpoint: en_i (input port clocked by clk_i)
+  Endpoint: grant_onehot_o[5]
+            (output port clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  rr_arbiter         ibm13_wl10            typical
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_i (rise edge)                                 0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    0.10       0.10 r
+  en_i (in)                                               0.26       0.36 r
+  U101/Y (NAND2X1TR)                                      0.17       0.54 f
+  U102/Y (NOR2X1TR)                                       0.37       0.91 r
+  priority_arbiter_inst_1/req_i[6] (priority_arbiter_0)
+                                                          0.00       0.91 r
+  priority_arbiter_inst_1/U8/Y (NOR2X1TR)                 0.18       1.08 f
+  priority_arbiter_inst_1/U5/Y (NOR3BX1TR)                0.21       1.30 f
+  priority_arbiter_inst_1/U6/Y (NAND3BX1TR)               0.48       1.77 r
+  priority_arbiter_inst_1/valid_o (priority_arbiter_0)
+                                                          0.00       1.77 r
+  U75/Y (CLKINVX2TR)                                      0.30       2.07 f
+  U64/Y (AOI22X1TR)                                       0.56       2.63 r
+  U85/Y (CLKINVX2TR)                                      0.23       2.86 f
+  U73/Y (NAND2X1TR)                                       0.39       3.25 r
+  U78/Y (NOR3X1TR)                                        0.16       3.40 f
+  grant_onehot_o[5] (out)                                 0.00       3.40 f
+  data arrival time                                                  3.40
+
+  clock clk_i (rise edge)                                10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.10       9.90
+  output external delay                                  -0.10       9.80
+  data required time                                                 9.80
+  --------------------------------------------------------------------------
+  data required time                                                 9.80
+  data arrival time                                                 -3.40
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.40
+
+
+  Startpoint: en_i (input port clocked by clk_i)
+  Endpoint: grant_onehot_o[4]
+            (output port clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  rr_arbiter         ibm13_wl10            typical
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_i (rise edge)                                 0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    0.10       0.10 r
+  en_i (in)                                               0.26       0.36 r
+  U103/Y (NAND2X1TR)                                      0.17       0.54 f
+  U104/Y (NOR2X1TR)                                       0.37       0.91 r
+  priority_arbiter_inst_1/req_i[7] (priority_arbiter_0)
+                                                          0.00       0.91 r
+  priority_arbiter_inst_1/U8/Y (NOR2X1TR)                 0.17       1.08 f
+  priority_arbiter_inst_1/U5/Y (NOR3BX1TR)                0.21       1.29 f
+  priority_arbiter_inst_1/U6/Y (NAND3BX1TR)               0.48       1.76 r
+  priority_arbiter_inst_1/valid_o (priority_arbiter_0)
+                                                          0.00       1.76 r
+  U75/Y (CLKINVX2TR)                                      0.30       2.06 f
+  U64/Y (AOI22X1TR)                                       0.56       2.62 r
+  U85/Y (CLKINVX2TR)                                      0.23       2.85 f
+  U73/Y (NAND2X1TR)                                       0.39       3.24 r
+  U72/Y (NOR2X1TR)                                        0.16       3.39 f
+  grant_onehot_o[4] (out)                                 0.00       3.39 f
+  data arrival time                                                  3.39
+
+  clock clk_i (rise edge)                                10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.10       9.90
+  output external delay                                  -0.10       9.80
+  data required time                                                 9.80
+  --------------------------------------------------------------------------
+  data required time                                                 9.80
+  data arrival time                                                 -3.39
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.41
+
+
+  Startpoint: en_i (input port clocked by clk_i)
+  Endpoint: grant_onehot_o[7]
+            (output port clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  rr_arbiter         ibm13_wl10            typical
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_i (rise edge)                                 0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    0.10       0.10 r
+  en_i (in)                                               0.26       0.36 r
+  U103/Y (NAND2X1TR)                                      0.17       0.54 f
+  U104/Y (NOR2X1TR)                                       0.37       0.91 r
+  priority_arbiter_inst_1/req_i[7] (priority_arbiter_0)
+                                                          0.00       0.91 r
+  priority_arbiter_inst_1/U8/Y (NOR2X1TR)                 0.17       1.08 f
+  priority_arbiter_inst_1/U5/Y (NOR3BX1TR)                0.21       1.29 f
+  priority_arbiter_inst_1/U6/Y (NAND3BX1TR)               0.48       1.76 r
+  priority_arbiter_inst_1/valid_o (priority_arbiter_0)
+                                                          0.00       1.76 r
+  U75/Y (CLKINVX2TR)                                      0.30       2.06 f
+  U64/Y (AOI22X1TR)                                       0.56       2.62 r
+  U85/Y (CLKINVX2TR)                                      0.23       2.85 f
+  U73/Y (NAND2X1TR)                                       0.39       3.24 r
+  U84/Y (NOR3X1TR)                                        0.16       3.39 f
+  grant_onehot_o[7] (out)                                 0.00       3.39 f
+  data arrival time                                                  3.39
+
+  clock clk_i (rise edge)                                10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.10       9.90
+  output external delay                                  -0.10       9.80
+  data required time                                                 9.80
+  --------------------------------------------------------------------------
+  data required time                                                 9.80
+  data arrival time                                                 -3.39
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.41
+
+
+  Startpoint: en_i (input port clocked by clk_i)
+  Endpoint: grant_onehot_o[6]
+            (output port clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  rr_arbiter         ibm13_wl10            typical
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_i (rise edge)                                 0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    0.10       0.10 r
+  en_i (in)                                               0.26       0.36 r
+  U103/Y (NAND2X1TR)                                      0.17       0.54 f
+  U104/Y (NOR2X1TR)                                       0.37       0.91 r
+  priority_arbiter_inst_1/req_i[7] (priority_arbiter_0)
+                                                          0.00       0.91 r
+  priority_arbiter_inst_1/U8/Y (NOR2X1TR)                 0.17       1.08 f
+  priority_arbiter_inst_1/U5/Y (NOR3BX1TR)                0.21       1.29 f
+  priority_arbiter_inst_1/U6/Y (NAND3BX1TR)               0.48       1.76 r
+  priority_arbiter_inst_1/valid_o (priority_arbiter_0)
+                                                          0.00       1.76 r
+  U75/Y (CLKINVX2TR)                                      0.30       2.06 f
+  U64/Y (AOI22X1TR)                                       0.56       2.62 r
+  U85/Y (CLKINVX2TR)                                      0.23       2.85 f
+  U73/Y (NAND2X1TR)                                       0.39       3.24 r
+  U81/Y (NOR3X1TR)                                        0.16       3.39 f
+  grant_onehot_o[6] (out)                                 0.00       3.39 f
+  data arrival time                                                  3.39
+
+  clock clk_i (rise edge)                                10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.10       9.90
+  output external delay                                  -0.10       9.80
+  data required time                                                 9.80
+  --------------------------------------------------------------------------
+  data required time                                                 9.80
+  data arrival time                                                 -3.39
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.41
+
+
+  Startpoint: en_i (input port clocked by clk_i)
+  Endpoint: grant_onehot_o[5]
+            (output port clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  rr_arbiter         ibm13_wl10            typical
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_i (rise edge)                                 0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    0.10       0.10 r
+  en_i (in)                                               0.26       0.36 r
+  U103/Y (NAND2X1TR)                                      0.17       0.54 f
+  U104/Y (NOR2X1TR)                                       0.37       0.91 r
+  priority_arbiter_inst_1/req_i[7] (priority_arbiter_0)
+                                                          0.00       0.91 r
+  priority_arbiter_inst_1/U8/Y (NOR2X1TR)                 0.17       1.08 f
+  priority_arbiter_inst_1/U5/Y (NOR3BX1TR)                0.21       1.29 f
+  priority_arbiter_inst_1/U6/Y (NAND3BX1TR)               0.48       1.76 r
+  priority_arbiter_inst_1/valid_o (priority_arbiter_0)
+                                                          0.00       1.76 r
+  U75/Y (CLKINVX2TR)                                      0.30       2.06 f
+  U64/Y (AOI22X1TR)                                       0.56       2.62 r
+  U85/Y (CLKINVX2TR)                                      0.23       2.85 f
+  U73/Y (NAND2X1TR)                                       0.39       3.24 r
+  U78/Y (NOR3X1TR)                                        0.16       3.39 f
+  grant_onehot_o[5] (out)                                 0.00       3.39 f
+  data arrival time                                                  3.39
+
+  clock clk_i (rise edge)                                10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.10       9.90
+  output external delay                                  -0.10       9.80
+  data required time                                                 9.80
+  --------------------------------------------------------------------------
+  data required time                                                 9.80
+  data arrival time                                                 -3.39
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.41
+
+
+  Startpoint: en_i (input port clocked by clk_i)
+  Endpoint: mask_reg_7_
+            (rising edge-triggered flip-flop clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  rr_arbiter         ibm13_wl10            typical
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_i (rise edge)                                 0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    0.10       0.10 r
+  en_i (in)                                               0.26       0.36 r
+  U101/Y (NAND2X1TR)                                      0.17       0.54 f
+  U102/Y (NOR2X1TR)                                       0.37       0.91 r
+  priority_arbiter_inst_1/req_i[6] (priority_arbiter_0)
+                                                          0.00       0.91 r
+  priority_arbiter_inst_1/U8/Y (NOR2X1TR)                 0.18       1.08 f
+  priority_arbiter_inst_1/U5/Y (NOR3BX1TR)                0.21       1.30 f
+  priority_arbiter_inst_1/U6/Y (NAND3BX1TR)               0.48       1.77 r
+  priority_arbiter_inst_1/valid_o (priority_arbiter_0)
+                                                          0.00       1.77 r
+  U75/Y (CLKINVX2TR)                                      0.30       2.07 f
+  U64/Y (AOI22X1TR)                                       0.56       2.63 r
+  U82/Y (NAND2X1TR)                                       0.25       2.88 f
+  U83/Y (CLKAND2X2TR)                                     0.23       3.11 f
+  U88/Y (OA21X2TR)                                        0.16       3.27 f
+  U100/Y (OAI221X1TR)                                     0.12       3.38 r
+  mask_reg_7_/D (DFFX1TR)                                 0.00       3.38 r
+  data arrival time                                                  3.38
+
+  clock clk_i (rise edge)                                10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.10       9.90
+  mask_reg_7_/CK (DFFX1TR)                                0.00       9.90 r
+  library setup time                                     -0.08       9.82
+  data required time                                                 9.82
+  --------------------------------------------------------------------------
+  data required time                                                 9.82
+  data arrival time                                                 -3.38
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.43
+
+
+  Startpoint: en_i (input port clocked by clk_i)
+  Endpoint: grant_onehot_o[4]
+            (output port clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  rr_arbiter         ibm13_wl10            typical
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_i (rise edge)                                 0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    0.10       0.10 r
+  en_i (in)                                               0.26       0.36 r
+  U106/Y (NAND2X1TR)                                      0.17       0.54 f
+  U65/Y (NOR2X1TR)                                        0.58       1.11 r
+  priority_arbiter_inst_1/req_i[2] (priority_arbiter_0)
+                                                          0.00       1.11 r
+  priority_arbiter_inst_1/U7/Y (NOR3X1TR)                 0.15       1.26 f
+  priority_arbiter_inst_1/U6/Y (NAND3BX1TR)               0.47       1.73 r
+  priority_arbiter_inst_1/valid_o (priority_arbiter_0)
+                                                          0.00       1.73 r
+  U75/Y (CLKINVX2TR)                                      0.30       2.03 f
+  U64/Y (AOI22X1TR)                                       0.56       2.59 r
+  U85/Y (CLKINVX2TR)                                      0.23       2.82 f
+  U73/Y (NAND2X1TR)                                       0.39       3.21 r
+  U72/Y (NOR2X1TR)                                        0.16       3.36 f
+  grant_onehot_o[4] (out)                                 0.00       3.36 f
+  data arrival time                                                  3.36
+
+  clock clk_i (rise edge)                                10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.10       9.90
+  output external delay                                  -0.10       9.80
+  data required time                                                 9.80
+  --------------------------------------------------------------------------
+  data required time                                                 9.80
+  data arrival time                                                 -3.36
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.44
+
+
+  Startpoint: en_i (input port clocked by clk_i)
+  Endpoint: grant_onehot_o[7]
+            (output port clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  rr_arbiter         ibm13_wl10            typical
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_i (rise edge)                                 0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    0.10       0.10 r
+  en_i (in)                                               0.26       0.36 r
+  U106/Y (NAND2X1TR)                                      0.17       0.54 f
+  U65/Y (NOR2X1TR)                                        0.58       1.11 r
+  priority_arbiter_inst_1/req_i[2] (priority_arbiter_0)
+                                                          0.00       1.11 r
+  priority_arbiter_inst_1/U7/Y (NOR3X1TR)                 0.15       1.26 f
+  priority_arbiter_inst_1/U6/Y (NAND3BX1TR)               0.47       1.73 r
+  priority_arbiter_inst_1/valid_o (priority_arbiter_0)
+                                                          0.00       1.73 r
+  U75/Y (CLKINVX2TR)                                      0.30       2.03 f
+  U64/Y (AOI22X1TR)                                       0.56       2.59 r
+  U85/Y (CLKINVX2TR)                                      0.23       2.82 f
+  U73/Y (NAND2X1TR)                                       0.39       3.21 r
+  U84/Y (NOR3X1TR)                                        0.16       3.36 f
+  grant_onehot_o[7] (out)                                 0.00       3.36 f
+  data arrival time                                                  3.36
+
+  clock clk_i (rise edge)                                10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.10       9.90
+  output external delay                                  -0.10       9.80
+  data required time                                                 9.80
+  --------------------------------------------------------------------------
+  data required time                                                 9.80
+  data arrival time                                                 -3.36
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.44
+
+
+  Startpoint: en_i (input port clocked by clk_i)
+  Endpoint: grant_onehot_o[6]
+            (output port clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  rr_arbiter         ibm13_wl10            typical
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_i (rise edge)                                 0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    0.10       0.10 r
+  en_i (in)                                               0.26       0.36 r
+  U106/Y (NAND2X1TR)                                      0.17       0.54 f
+  U65/Y (NOR2X1TR)                                        0.58       1.11 r
+  priority_arbiter_inst_1/req_i[2] (priority_arbiter_0)
+                                                          0.00       1.11 r
+  priority_arbiter_inst_1/U7/Y (NOR3X1TR)                 0.15       1.26 f
+  priority_arbiter_inst_1/U6/Y (NAND3BX1TR)               0.47       1.73 r
+  priority_arbiter_inst_1/valid_o (priority_arbiter_0)
+                                                          0.00       1.73 r
+  U75/Y (CLKINVX2TR)                                      0.30       2.03 f
+  U64/Y (AOI22X1TR)                                       0.56       2.59 r
+  U85/Y (CLKINVX2TR)                                      0.23       2.82 f
+  U73/Y (NAND2X1TR)                                       0.39       3.21 r
+  U81/Y (NOR3X1TR)                                        0.16       3.36 f
+  grant_onehot_o[6] (out)                                 0.00       3.36 f
+  data arrival time                                                  3.36
+
+  clock clk_i (rise edge)                                10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.10       9.90
+  output external delay                                  -0.10       9.80
+  data required time                                                 9.80
+  --------------------------------------------------------------------------
+  data required time                                                 9.80
+  data arrival time                                                 -3.36
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.44
+
+
+  Startpoint: en_i (input port clocked by clk_i)
+  Endpoint: grant_onehot_o[5]
+            (output port clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  rr_arbiter         ibm13_wl10            typical
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_i (rise edge)                                 0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    0.10       0.10 r
+  en_i (in)                                               0.26       0.36 r
+  U106/Y (NAND2X1TR)                                      0.17       0.54 f
+  U65/Y (NOR2X1TR)                                        0.58       1.11 r
+  priority_arbiter_inst_1/req_i[2] (priority_arbiter_0)
+                                                          0.00       1.11 r
+  priority_arbiter_inst_1/U7/Y (NOR3X1TR)                 0.15       1.26 f
+  priority_arbiter_inst_1/U6/Y (NAND3BX1TR)               0.47       1.73 r
+  priority_arbiter_inst_1/valid_o (priority_arbiter_0)
+                                                          0.00       1.73 r
+  U75/Y (CLKINVX2TR)                                      0.30       2.03 f
+  U64/Y (AOI22X1TR)                                       0.56       2.59 r
+  U85/Y (CLKINVX2TR)                                      0.23       2.82 f
+  U73/Y (NAND2X1TR)                                       0.39       3.21 r
+  U78/Y (NOR3X1TR)                                        0.16       3.36 f
+  grant_onehot_o[5] (out)                                 0.00       3.36 f
+  data arrival time                                                  3.36
+
+  clock clk_i (rise edge)                                10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.10       9.90
+  output external delay                                  -0.10       9.80
+  data required time                                                 9.80
+  --------------------------------------------------------------------------
+  data required time                                                 9.80
+  data arrival time                                                 -3.36
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.44
+
+
+  Startpoint: en_i (input port clocked by clk_i)
+  Endpoint: mask_reg_6_
+            (rising edge-triggered flip-flop clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  rr_arbiter         ibm13_wl10            typical
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_i (rise edge)                                 0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    0.10       0.10 r
+  en_i (in)                                               0.26       0.36 r
+  U101/Y (NAND2X1TR)                                      0.17       0.54 f
+  U102/Y (NOR2X1TR)                                       0.37       0.91 r
+  priority_arbiter_inst_1/req_i[6] (priority_arbiter_0)
+                                                          0.00       0.91 r
+  priority_arbiter_inst_1/U8/Y (NOR2X1TR)                 0.18       1.08 f
+  priority_arbiter_inst_1/U5/Y (NOR3BX1TR)                0.21       1.30 f
+  priority_arbiter_inst_1/U6/Y (NAND3BX1TR)               0.48       1.77 r
+  priority_arbiter_inst_1/valid_o (priority_arbiter_0)
+                                                          0.00       1.77 r
+  U75/Y (CLKINVX2TR)                                      0.30       2.07 f
+  U64/Y (AOI22X1TR)                                       0.56       2.63 r
+  U82/Y (NAND2X1TR)                                       0.25       2.88 f
+  U83/Y (CLKAND2X2TR)                                     0.23       3.11 f
+  U88/Y (OA21X2TR)                                        0.16       3.27 f
+  U105/Y (OAI21X1TR)                                      0.11       3.38 r
+  mask_reg_6_/D (DFFX1TR)                                 0.00       3.38 r
+  data arrival time                                                  3.38
+
+  clock clk_i (rise edge)                                10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.10       9.90
+  mask_reg_6_/CK (DFFX1TR)                                0.00       9.90 r
+  library setup time                                     -0.08       9.82
+  data required time                                                 9.82
+  --------------------------------------------------------------------------
+  data required time                                                 9.82
+  data arrival time                                                 -3.38
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.44
+
+
+  Startpoint: en_i (input port clocked by clk_i)
+  Endpoint: mask_reg_7_
+            (rising edge-triggered flip-flop clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  rr_arbiter         ibm13_wl10            typical
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_i (rise edge)                                 0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    0.10       0.10 r
+  en_i (in)                                               0.26       0.36 r
+  U103/Y (NAND2X1TR)                                      0.17       0.54 f
+  U104/Y (NOR2X1TR)                                       0.37       0.91 r
+  priority_arbiter_inst_1/req_i[7] (priority_arbiter_0)
+                                                          0.00       0.91 r
+  priority_arbiter_inst_1/U8/Y (NOR2X1TR)                 0.17       1.08 f
+  priority_arbiter_inst_1/U5/Y (NOR3BX1TR)                0.21       1.29 f
+  priority_arbiter_inst_1/U6/Y (NAND3BX1TR)               0.48       1.76 r
+  priority_arbiter_inst_1/valid_o (priority_arbiter_0)
+                                                          0.00       1.76 r
+  U75/Y (CLKINVX2TR)                                      0.30       2.06 f
+  U64/Y (AOI22X1TR)                                       0.56       2.62 r
+  U82/Y (NAND2X1TR)                                       0.25       2.87 f
+  U83/Y (CLKAND2X2TR)                                     0.23       3.10 f
+  U88/Y (OA21X2TR)                                        0.16       3.26 f
+  U100/Y (OAI221X1TR)                                     0.12       3.37 r
+  mask_reg_7_/D (DFFX1TR)                                 0.00       3.37 r
+  data arrival time                                                  3.37
+
+  clock clk_i (rise edge)                                10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.10       9.90
+  mask_reg_7_/CK (DFFX1TR)                                0.00       9.90 r
+  library setup time                                     -0.08       9.82
+  data required time                                                 9.82
+  --------------------------------------------------------------------------
+  data required time                                                 9.82
+  data arrival time                                                 -3.37
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.44
+
+
+  Startpoint: en_i (input port clocked by clk_i)
+  Endpoint: grant_onehot_o[4]
+            (output port clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  rr_arbiter         ibm13_wl10            typical
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_i (rise edge)                                 0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    0.10       0.10 r
+  en_i (in)                                               0.26       0.36 r
+  U107/Y (NAND2X1TR)                                      0.17       0.54 f
+  U66/Y (NOR2X1TR)                                        0.57       1.11 r
+  priority_arbiter_inst_1/req_i[3] (priority_arbiter_0)
+                                                          0.00       1.11 r
+  priority_arbiter_inst_1/U7/Y (NOR3X1TR)                 0.14       1.25 f
+  priority_arbiter_inst_1/U6/Y (NAND3BX1TR)               0.47       1.72 r
+  priority_arbiter_inst_1/valid_o (priority_arbiter_0)
+                                                          0.00       1.72 r
+  U75/Y (CLKINVX2TR)                                      0.30       2.02 f
+  U64/Y (AOI22X1TR)                                       0.56       2.58 r
+  U85/Y (CLKINVX2TR)                                      0.23       2.81 f
+  U73/Y (NAND2X1TR)                                       0.39       3.20 r
+  U72/Y (NOR2X1TR)                                        0.16       3.35 f
+  grant_onehot_o[4] (out)                                 0.00       3.35 f
+  data arrival time                                                  3.35
+
+  clock clk_i (rise edge)                                10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.10       9.90
+  output external delay                                  -0.10       9.80
+  data required time                                                 9.80
+  --------------------------------------------------------------------------
+  data required time                                                 9.80
+  data arrival time                                                 -3.35
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.45
+
+
+  Startpoint: en_i (input port clocked by clk_i)
+  Endpoint: grant_onehot_o[7]
+            (output port clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  rr_arbiter         ibm13_wl10            typical
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_i (rise edge)                                 0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    0.10       0.10 r
+  en_i (in)                                               0.26       0.36 r
+  U107/Y (NAND2X1TR)                                      0.17       0.54 f
+  U66/Y (NOR2X1TR)                                        0.57       1.11 r
+  priority_arbiter_inst_1/req_i[3] (priority_arbiter_0)
+                                                          0.00       1.11 r
+  priority_arbiter_inst_1/U7/Y (NOR3X1TR)                 0.14       1.25 f
+  priority_arbiter_inst_1/U6/Y (NAND3BX1TR)               0.47       1.72 r
+  priority_arbiter_inst_1/valid_o (priority_arbiter_0)
+                                                          0.00       1.72 r
+  U75/Y (CLKINVX2TR)                                      0.30       2.02 f
+  U64/Y (AOI22X1TR)                                       0.56       2.58 r
+  U85/Y (CLKINVX2TR)                                      0.23       2.81 f
+  U73/Y (NAND2X1TR)                                       0.39       3.20 r
+  U84/Y (NOR3X1TR)                                        0.16       3.35 f
+  grant_onehot_o[7] (out)                                 0.00       3.35 f
+  data arrival time                                                  3.35
+
+  clock clk_i (rise edge)                                10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.10       9.90
+  output external delay                                  -0.10       9.80
+  data required time                                                 9.80
+  --------------------------------------------------------------------------
+  data required time                                                 9.80
+  data arrival time                                                 -3.35
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.45
+
+
+  Startpoint: en_i (input port clocked by clk_i)
+  Endpoint: grant_onehot_o[6]
+            (output port clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  rr_arbiter         ibm13_wl10            typical
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_i (rise edge)                                 0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    0.10       0.10 r
+  en_i (in)                                               0.26       0.36 r
+  U107/Y (NAND2X1TR)                                      0.17       0.54 f
+  U66/Y (NOR2X1TR)                                        0.57       1.11 r
+  priority_arbiter_inst_1/req_i[3] (priority_arbiter_0)
+                                                          0.00       1.11 r
+  priority_arbiter_inst_1/U7/Y (NOR3X1TR)                 0.14       1.25 f
+  priority_arbiter_inst_1/U6/Y (NAND3BX1TR)               0.47       1.72 r
+  priority_arbiter_inst_1/valid_o (priority_arbiter_0)
+                                                          0.00       1.72 r
+  U75/Y (CLKINVX2TR)                                      0.30       2.02 f
+  U64/Y (AOI22X1TR)                                       0.56       2.58 r
+  U85/Y (CLKINVX2TR)                                      0.23       2.81 f
+  U73/Y (NAND2X1TR)                                       0.39       3.20 r
+  U81/Y (NOR3X1TR)                                        0.16       3.35 f
+  grant_onehot_o[6] (out)                                 0.00       3.35 f
+  data arrival time                                                  3.35
+
+  clock clk_i (rise edge)                                10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.10       9.90
+  output external delay                                  -0.10       9.80
+  data required time                                                 9.80
+  --------------------------------------------------------------------------
+  data required time                                                 9.80
+  data arrival time                                                 -3.35
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.45
+
+
+  Startpoint: en_i (input port clocked by clk_i)
+  Endpoint: grant_onehot_o[5]
+            (output port clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  rr_arbiter         ibm13_wl10            typical
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_i (rise edge)                                 0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    0.10       0.10 r
+  en_i (in)                                               0.26       0.36 r
+  U107/Y (NAND2X1TR)                                      0.17       0.54 f
+  U66/Y (NOR2X1TR)                                        0.57       1.11 r
+  priority_arbiter_inst_1/req_i[3] (priority_arbiter_0)
+                                                          0.00       1.11 r
+  priority_arbiter_inst_1/U7/Y (NOR3X1TR)                 0.14       1.25 f
+  priority_arbiter_inst_1/U6/Y (NAND3BX1TR)               0.47       1.72 r
+  priority_arbiter_inst_1/valid_o (priority_arbiter_0)
+                                                          0.00       1.72 r
+  U75/Y (CLKINVX2TR)                                      0.30       2.02 f
+  U64/Y (AOI22X1TR)                                       0.56       2.58 r
+  U85/Y (CLKINVX2TR)                                      0.23       2.81 f
+  U73/Y (NAND2X1TR)                                       0.39       3.20 r
+  U78/Y (NOR3X1TR)                                        0.16       3.35 f
+  grant_onehot_o[5] (out)                                 0.00       3.35 f
+  data arrival time                                                  3.35
+
+  clock clk_i (rise edge)                                10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.10       9.90
+  output external delay                                  -0.10       9.80
+  data required time                                                 9.80
+  --------------------------------------------------------------------------
+  data required time                                                 9.80
+  data arrival time                                                 -3.35
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.45
+
+
+  Startpoint: en_i (input port clocked by clk_i)
+  Endpoint: mask_reg_6_
+            (rising edge-triggered flip-flop clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  rr_arbiter         ibm13_wl10            typical
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_i (rise edge)                                 0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    0.10       0.10 r
+  en_i (in)                                               0.26       0.36 r
+  U103/Y (NAND2X1TR)                                      0.17       0.54 f
+  U104/Y (NOR2X1TR)                                       0.37       0.91 r
+  priority_arbiter_inst_1/req_i[7] (priority_arbiter_0)
+                                                          0.00       0.91 r
+  priority_arbiter_inst_1/U8/Y (NOR2X1TR)                 0.17       1.08 f
+  priority_arbiter_inst_1/U5/Y (NOR3BX1TR)                0.21       1.29 f
+  priority_arbiter_inst_1/U6/Y (NAND3BX1TR)               0.48       1.76 r
+  priority_arbiter_inst_1/valid_o (priority_arbiter_0)
+                                                          0.00       1.76 r
+  U75/Y (CLKINVX2TR)                                      0.30       2.06 f
+  U64/Y (AOI22X1TR)                                       0.56       2.62 r
+  U82/Y (NAND2X1TR)                                       0.25       2.87 f
+  U83/Y (CLKAND2X2TR)                                     0.23       3.10 f
+  U88/Y (OA21X2TR)                                        0.16       3.26 f
+  U105/Y (OAI21X1TR)                                      0.11       3.37 r
+  mask_reg_6_/D (DFFX1TR)                                 0.00       3.37 r
+  data arrival time                                                  3.37
+
+  clock clk_i (rise edge)                                10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.10       9.90
+  mask_reg_6_/CK (DFFX1TR)                                0.00       9.90 r
+  library setup time                                     -0.08       9.82
+  data required time                                                 9.82
+  --------------------------------------------------------------------------
+  data required time                                                 9.82
+  data arrival time                                                 -3.37
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.45
+
+
+1

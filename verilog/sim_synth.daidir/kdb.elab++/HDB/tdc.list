@@ -1,0 +1,5 @@
+../syn/event_queues.syn.v
+../syn/queue_scheduler.syn.v
+/afs/umich.edu/class/eecs627/ibm13/artisan/2005q3v1/aci/sc-x/verilog/ibm13_neg.v
+qs_cu_tb.sv
+standard.vh

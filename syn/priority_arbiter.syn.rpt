@@ -1,0 +1,1011 @@
+1
+ 
+****************************************
+Report : area
+Design : priority_arbiter
+Version: T-2022.03-SP3
+Date   : Tue Mar 21 17:40:20 2023
+****************************************
+
+Library(s) Used:
+
+    typical (File: /afs/umich.edu/class/eecs627/ibm13/artisan/current/aci/sc-x/synopsys/typical.db)
+
+Number of ports:                           12
+Number of nets:                            24
+Number of cells:                           16
+Number of combinational cells:             16
+Number of sequential cells:                 0
+Number of macros/black boxes:               0
+Number of buf/inv:                          3
+Number of references:                       9
+
+Combinational area:                109.440002
+Buf/Inv area:                       12.960001
+Noncombinational area:               0.000000
+Macro/Black Box area:                0.000000
+Net Interconnect area:            2053.343628
+
+Total cell area:                   109.440002
+Total area:                       2162.783630
+1
+Loading db file '/afs/umich.edu/class/eecs627/ibm13/artisan/current/aci/sc-x/synopsys/typical.db'
+Information: Propagating switching activity (medium effort zero delay simulation). (PWR-6)
+Warning: Design has unannotated primary inputs. (PWR-414)
+ 
+****************************************
+Report : power
+        -hier
+        -analysis_effort medium
+Design : priority_arbiter
+Version: T-2022.03-SP3
+Date   : Tue Mar 21 17:40:20 2023
+****************************************
+
+
+Library(s) Used:
+
+    typical (File: /afs/umich.edu/class/eecs627/ibm13/artisan/current/aci/sc-x/synopsys/typical.db)
+
+
+Operating Conditions: typical   Library: typical
+Wire Load Model Mode: segmented
+
+Design        Wire Load Model            Library
+------------------------------------------------
+priority_arbiter       ibm13_wl10        typical
+
+
+Global Operating Voltage = 1.2  
+Power-specific unit information :
+    Voltage Units = 1V
+    Capacitance Units = 1.000000pf
+    Time Units = 1ns
+    Dynamic Power Units = 1mW    (derived from V,C,T units)
+    Leakage Power Units = 1pW
+
+
+--------------------------------------------------------------------------------
+                                       Switch   Int      Leak     Total
+Hierarchy                              Power    Power    Power    Power    %
+--------------------------------------------------------------------------------
+priority_arbiter                       1.56e-03 4.51e-04 2.12e+03 2.01e-03 100.0
+1
+ 
+****************************************
+Report : design
+Design : priority_arbiter
+Version: T-2022.03-SP3
+Date   : Tue Mar 21 17:40:20 2023
+****************************************
+
+Design allows ideal nets on clock nets.
+
+Library(s) Used:
+
+    typical (File: /afs/umich.edu/class/eecs627/ibm13/artisan/current/aci/sc-x/synopsys/typical.db)
+
+Local Link Library:
+
+    {typical.db}
+
+Flip-Flop Types:
+
+    No flip-flop types specified.
+
+Latch Types:
+
+    No latch types specified.
+
+Operating Conditions:
+
+
+    Operating Condition Name : typical
+    Library : typical
+    Process :   1.00
+    Temperature :  25.00
+    Voltage :   1.20
+    Interconnect Model : balanced_tree
+
+Wire Loading Model:
+
+    Selected manually by the user.
+
+Name           :   ibm13_wl10
+Location       :   typical
+Resistance     :   8.5e-08
+Capacitance    :   0.00015
+Area           :   0.7
+Slope          :   66.667
+Fanout   Length   Points Average Cap Std Deviation
+--------------------------------------------------------------
+     1    66.67
+
+
+
+Wire Loading Model Mode: segmented.
+
+Timing Ranges:
+
+    No timing ranges specified.
+
+Pin Input Delays:
+
+    None specified.
+
+Pin Output Delays:
+
+    None specified.
+
+Disabled Timing Arcs:
+
+    No arcs disabled.
+
+Required Licenses:
+
+    None Required
+
+Design Parameters:
+
+    None specified.
+1
+ 
+****************************************
+Report : cell
+Design : priority_arbiter
+Version: T-2022.03-SP3
+Date   : Tue Mar 21 17:40:20 2023
+****************************************
+
+Attributes:
+    b - black box (unknown)
+    h - hierarchical
+    n - noncombinational
+    r - removable
+    u - contains unmapped logic
+
+Cell                      Reference       Library             Area  Attributes
+--------------------------------------------------------------------------------
+U19                       NOR2X1TR        typical         5.760000  
+U20                       AOI21X1TR       typical         7.200000  
+U21                       CLKINVX2TR      typical         4.320000  
+U22                       OAI21X1TR       typical         7.200000  
+U23                       NOR3BX1TR       typical         8.640000  
+U24                       OAI31X1TR       typical         8.640000  
+U25                       NOR2X1TR        typical         5.760000  
+U26                       NOR3BX1TR       typical         8.640000  
+U27                       NAND3BX1TR      typical         8.640000  
+U28                       NOR3X1TR        typical         7.200000  
+U29                       NOR3X1TR        typical         7.200000  
+U30                       OR3X1TR         typical         8.640000  
+U31                       CLKINVX2TR      typical         4.320000  
+U32                       AOI21X1TR       typical         7.200000  
+U33                       CLKINVX2TR      typical         4.320000  
+U34                       NOR2X1TR        typical         5.760000  
+--------------------------------------------------------------------------------
+Total 16 cells                                            109.440002
+1
+ 
+****************************************
+Report : port
+        -verbose
+Design : priority_arbiter
+Version: T-2022.03-SP3
+Date   : Tue Mar 21 17:40:21 2023
+****************************************
+
+
+                       Pin      Wire     Max     Max     Connection
+Port           Dir     Load     Load     Trans   Cap     Class      Attrs
+--------------------------------------------------------------------------------
+req_i[0]       in      0.0000   0.0000    1.02    0.17   --         
+req_i[1]       in      0.0000   0.0000    1.02    0.17   --         
+req_i[2]       in      0.0000   0.0000    1.02    0.17   --         
+req_i[3]       in      0.0000   0.0000    1.02    0.17   --         
+req_i[4]       in      0.0000   0.0000    1.02    0.17   --         
+req_i[5]       in      0.0000   0.0000    1.02    0.17   --         
+req_i[6]       in      0.0000   0.0000    1.02    0.17   --         
+req_i[7]       in      0.0000   0.0000    1.02    0.17   --         
+grant_o[0]     out     0.0100   0.0000   --      --      --         
+grant_o[1]     out     0.0100   0.0000   --      --      --         
+grant_o[2]     out     0.0100   0.0000   --      --      --         
+valid_o        out     0.0100   0.0000   --      --      --         
+
+
+              External  Max             Min                Min       Min
+              Number    Wireload        Wireload           Pin       Wire
+Port          Points    Model           Model              Load      Load
+--------------------------------------------------------------------------------
+req_i[0]           1      --              --              --        -- 
+req_i[1]           1      --              --              --        -- 
+req_i[2]           1      --              --              --        -- 
+req_i[3]           1      --              --              --        -- 
+req_i[4]           1      --              --              --        -- 
+req_i[5]           1      --              --              --        -- 
+req_i[6]           1      --              --              --        -- 
+req_i[7]           1      --              --              --        -- 
+grant_o[0]         1      --              --              --        -- 
+grant_o[1]         1      --              --              --        -- 
+grant_o[2]         1      --              --              --        -- 
+valid_o            1      --              --              --        -- 
+
+                    Input Delay
+                  Min             Max       Related   Max
+Input Port    Rise    Fall    Rise    Fall   Clock  Fanout
+--------------------------------------------------------------------------------
+req_i[0]      0.10    0.10    0.10    0.10  vclk      --    
+req_i[1]      0.10    0.10    0.10    0.10  vclk      --    
+req_i[2]      0.10    0.10    0.10    0.10  vclk      --    
+req_i[3]      0.10    0.10    0.10    0.10  vclk      --    
+req_i[4]      0.10    0.10    0.10    0.10  vclk      --    
+req_i[5]      0.10    0.10    0.10    0.10  vclk      --    
+req_i[6]      0.10    0.10    0.10    0.10  vclk      --    
+req_i[7]      0.10    0.10    0.10    0.10  vclk      --    
+
+
+                    Driving Cell
+Input Port   Rise(min/max)      Fall(min/max)      Mult(min/max)  Attrs(min/max)
+--------------------------------------------------------------------------------
+req_i[0]     INVX2TR            INVX2TR              -- /  --     
+req_i[1]     INVX2TR            INVX2TR              -- /  --     
+req_i[2]     INVX2TR            INVX2TR              -- /  --     
+req_i[3]     INVX2TR            INVX2TR              -- /  --     
+req_i[4]     INVX2TR            INVX2TR              -- /  --     
+req_i[5]     INVX2TR            INVX2TR              -- /  --     
+req_i[6]     INVX2TR            INVX2TR              -- /  --     
+req_i[7]     INVX2TR            INVX2TR              -- /  --     
+
+
+               Max Drive      Min Drive      Resistance    Min    Min       Cell
+Input Port    Rise    Fall   Rise    Fall   Max     Min    Cap    Fanout    Deg
+--------------------------------------------------------------------------------
+req_i[0]      --      --     --      --     --      --     --     --        -- 
+req_i[1]      --      --     --      --     --      --     --     --        -- 
+req_i[2]      --      --     --      --     --      --     --     --        -- 
+req_i[3]      --      --     --      --     --      --     --     --        -- 
+req_i[4]      --      --     --      --     --      --     --     --        -- 
+req_i[5]      --      --     --      --     --      --     --     --        -- 
+req_i[6]      --      --     --      --     --      --     --     --        -- 
+req_i[7]      --      --     --      --     --      --     --     --        -- 
+
+
+               Max Tran        Min Tran
+Input Port    Rise    Fall    Rise    Fall
+--------------------------------------------------------------------------------
+req_i[0]      --      --      --      -- 
+req_i[1]      --      --      --      -- 
+req_i[2]      --      --      --      -- 
+req_i[3]      --      --      --      -- 
+req_i[4]      --      --      --      -- 
+req_i[5]      --      --      --      -- 
+req_i[6]      --      --      --      -- 
+req_i[7]      --      --      --      -- 
+
+
+                    Output Delay
+                  Min             Max      Related  Fanout
+Output Port   Rise    Fall    Rise    Fall  Clock     Load
+--------------------------------------------------------------------------------
+grant_o[0]    0.10    0.10    0.10    0.10  vclk      0.00  
+grant_o[1]    0.10    0.10    0.10    0.10  vclk      0.00  
+grant_o[2]    0.10    0.10    0.10    0.10  vclk      0.00  
+valid_o       0.10    0.10    0.10    0.10  vclk      0.00  
+
+1
+ 
+****************************************
+Report : compile_options
+Design : priority_arbiter
+Version: T-2022.03-SP3
+Date   : Tue Mar 21 17:40:21 2023
+****************************************
+
+Design                                   Compile Option         Value
+--------------------------------------------------------------------------------
+priority_arbiter                         flatten                false
+                                         structure              true
+                                         structure_boolean      false
+                                         structure_timing       true
+                                         isolate_port           disabled
+                                         multibit_options
+                                           optimization_mode    non_timing_driven
+                                           minimum_width        2
+                                           exclude_registers_with_timing_exceptions false
+--------------------------------------------------------------------------------
+1
+ 
+****************************************
+Report : constraint
+        -all_violators
+        -verbose
+Design : priority_arbiter
+Version: T-2022.03-SP3
+Date   : Tue Mar 21 17:40:21 2023
+****************************************
+
+This design has no violated constraints.
+
+1
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -nworst 100
+        -max_paths 20
+Design : priority_arbiter
+Version: T-2022.03-SP3
+Date   : Tue Mar 21 17:40:21 2023
+****************************************
+
+Operating Conditions: typical   Library: typical
+Wire Load Model Mode: segmented
+
+  Startpoint: req_i[6] (input port clocked by vclk)
+  Endpoint: valid_o (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  priority_arbiter   ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock vclk (rise edge)                   0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.10       0.10 f
+  req_i[6] (in)                            0.03       0.13 f
+  U34/Y (NOR2X1TR)                         0.25       0.38 r
+  U26/Y (NOR3BX1TR)                        0.35       0.73 r
+  U27/Y (NAND3BX1TR)                       0.17       0.91 f
+  valid_o (out)                            0.00       0.91 f
+  data arrival time                                   0.91
+
+  clock vclk (rise edge)                  10.00      10.00
+  clock network delay (ideal)              0.00      10.00
+  clock uncertainty                       -0.10       9.90
+  output external delay                   -0.10       9.80
+  data required time                                  9.80
+  -----------------------------------------------------------
+  data required time                                  9.80
+  data arrival time                                  -0.91
+  -----------------------------------------------------------
+  slack (MET)                                         8.89
+
+
+  Startpoint: req_i[6] (input port clocked by vclk)
+  Endpoint: grant_o[2] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  priority_arbiter   ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock vclk (rise edge)                   0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.10       0.10 f
+  req_i[6] (in)                            0.03       0.13 f
+  U34/Y (NOR2X1TR)                         0.25       0.38 r
+  U26/Y (NOR3BX1TR)                        0.35       0.73 r
+  U29/Y (NOR3X1TR)                         0.17       0.90 f
+  grant_o[2] (out)                         0.00       0.90 f
+  data arrival time                                   0.90
+
+  clock vclk (rise edge)                  10.00      10.00
+  clock network delay (ideal)              0.00      10.00
+  clock uncertainty                       -0.10       9.90
+  output external delay                   -0.10       9.80
+  data required time                                  9.80
+  -----------------------------------------------------------
+  data required time                                  9.80
+  data arrival time                                  -0.90
+  -----------------------------------------------------------
+  slack (MET)                                         8.90
+
+
+  Startpoint: req_i[7] (input port clocked by vclk)
+  Endpoint: valid_o (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  priority_arbiter   ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock vclk (rise edge)                   0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.10       0.10 f
+  req_i[7] (in)                            0.03       0.13 f
+  U34/Y (NOR2X1TR)                         0.25       0.37 r
+  U26/Y (NOR3BX1TR)                        0.35       0.73 r
+  U27/Y (NAND3BX1TR)                       0.17       0.90 f
+  valid_o (out)                            0.00       0.90 f
+  data arrival time                                   0.90
+
+  clock vclk (rise edge)                  10.00      10.00
+  clock network delay (ideal)              0.00      10.00
+  clock uncertainty                       -0.10       9.90
+  output external delay                   -0.10       9.80
+  data required time                                  9.80
+  -----------------------------------------------------------
+  data required time                                  9.80
+  data arrival time                                  -0.90
+  -----------------------------------------------------------
+  slack (MET)                                         8.90
+
+
+  Startpoint: req_i[7] (input port clocked by vclk)
+  Endpoint: grant_o[2] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  priority_arbiter   ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock vclk (rise edge)                   0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.10       0.10 f
+  req_i[7] (in)                            0.03       0.13 f
+  U34/Y (NOR2X1TR)                         0.25       0.37 r
+  U26/Y (NOR3BX1TR)                        0.35       0.73 r
+  U29/Y (NOR3X1TR)                         0.17       0.89 f
+  grant_o[2] (out)                         0.00       0.89 f
+  data arrival time                                   0.89
+
+  clock vclk (rise edge)                  10.00      10.00
+  clock network delay (ideal)              0.00      10.00
+  clock uncertainty                       -0.10       9.90
+  output external delay                   -0.10       9.80
+  data required time                                  9.80
+  -----------------------------------------------------------
+  data required time                                  9.80
+  data arrival time                                  -0.89
+  -----------------------------------------------------------
+  slack (MET)                                         8.91
+
+
+  Startpoint: req_i[6] (input port clocked by vclk)
+  Endpoint: grant_o[0] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  priority_arbiter   ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock vclk (rise edge)                   0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.10       0.10 r
+  req_i[6] (in)                            0.07       0.17 r
+  U33/Y (CLKINVX2TR)                       0.07       0.24 f
+  U32/Y (AOI21X1TR)                        0.18       0.42 r
+  U22/Y (OAI21X1TR)                        0.10       0.52 f
+  U20/Y (AOI21X1TR)                        0.17       0.69 r
+  U19/Y (NOR2X1TR)                         0.12       0.81 f
+  grant_o[0] (out)                         0.00       0.81 f
+  data arrival time                                   0.81
+
+  clock vclk (rise edge)                  10.00      10.00
+  clock network delay (ideal)              0.00      10.00
+  clock uncertainty                       -0.10       9.90
+  output external delay                   -0.10       9.80
+  data required time                                  9.80
+  -----------------------------------------------------------
+  data required time                                  9.80
+  data arrival time                                  -0.81
+  -----------------------------------------------------------
+  slack (MET)                                         8.99
+
+
+  Startpoint: req_i[5] (input port clocked by vclk)
+  Endpoint: grant_o[0] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  priority_arbiter   ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock vclk (rise edge)                   0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.10       0.10 r
+  req_i[5] (in)                            0.10       0.20 r
+  U32/Y (AOI21X1TR)                        0.08       0.28 f
+  U22/Y (OAI21X1TR)                        0.18       0.47 r
+  U20/Y (AOI21X1TR)                        0.11       0.57 f
+  U19/Y (NOR2X1TR)                         0.23       0.80 r
+  grant_o[0] (out)                         0.00       0.80 r
+  data arrival time                                   0.80
+
+  clock vclk (rise edge)                  10.00      10.00
+  clock network delay (ideal)              0.00      10.00
+  clock uncertainty                       -0.10       9.90
+  output external delay                   -0.10       9.80
+  data required time                                  9.80
+  -----------------------------------------------------------
+  data required time                                  9.80
+  data arrival time                                  -0.80
+  -----------------------------------------------------------
+  slack (MET)                                         9.00
+
+
+  Startpoint: req_i[6] (input port clocked by vclk)
+  Endpoint: grant_o[1] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  priority_arbiter   ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock vclk (rise edge)                   0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.10       0.10 r
+  req_i[6] (in)                            0.07       0.17 r
+  U34/Y (NOR2X1TR)                         0.11       0.28 f
+  U24/Y (OAI31X1TR)                        0.22       0.50 r
+  U23/Y (NOR3BX1TR)                        0.30       0.80 r
+  grant_o[1] (out)                         0.00       0.80 r
+  data arrival time                                   0.80
+
+  clock vclk (rise edge)                  10.00      10.00
+  clock network delay (ideal)              0.00      10.00
+  clock uncertainty                       -0.10       9.90
+  output external delay                   -0.10       9.80
+  data required time                                  9.80
+  -----------------------------------------------------------
+  data required time                                  9.80
+  data arrival time                                  -0.80
+  -----------------------------------------------------------
+  slack (MET)                                         9.00
+
+
+  Startpoint: req_i[7] (input port clocked by vclk)
+  Endpoint: grant_o[1] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  priority_arbiter   ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock vclk (rise edge)                   0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.10       0.10 r
+  req_i[7] (in)                            0.07       0.17 r
+  U34/Y (NOR2X1TR)                         0.10       0.27 f
+  U24/Y (OAI31X1TR)                        0.22       0.50 r
+  U23/Y (NOR3BX1TR)                        0.30       0.80 r
+  grant_o[1] (out)                         0.00       0.80 r
+  data arrival time                                   0.80
+
+  clock vclk (rise edge)                  10.00      10.00
+  clock network delay (ideal)              0.00      10.00
+  clock uncertainty                       -0.10       9.90
+  output external delay                   -0.10       9.80
+  data required time                                  9.80
+  -----------------------------------------------------------
+  data required time                                  9.80
+  data arrival time                                  -0.80
+  -----------------------------------------------------------
+  slack (MET)                                         9.00
+
+
+  Startpoint: req_i[6] (input port clocked by vclk)
+  Endpoint: grant_o[0] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  priority_arbiter   ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock vclk (rise edge)                   0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.10       0.10 f
+  req_i[6] (in)                            0.03       0.13 f
+  U33/Y (CLKINVX2TR)                       0.06       0.19 r
+  U32/Y (AOI21X1TR)                        0.08       0.27 f
+  U22/Y (OAI21X1TR)                        0.18       0.45 r
+  U20/Y (AOI21X1TR)                        0.11       0.55 f
+  U19/Y (NOR2X1TR)                         0.23       0.78 r
+  grant_o[0] (out)                         0.00       0.78 r
+  data arrival time                                   0.78
+
+  clock vclk (rise edge)                  10.00      10.00
+  clock network delay (ideal)              0.00      10.00
+  clock uncertainty                       -0.10       9.90
+  output external delay                   -0.10       9.80
+  data required time                                  9.80
+  -----------------------------------------------------------
+  data required time                                  9.80
+  data arrival time                                  -0.78
+  -----------------------------------------------------------
+  slack (MET)                                         9.02
+
+
+  Startpoint: req_i[3] (input port clocked by vclk)
+  Endpoint: grant_o[0] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  priority_arbiter   ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock vclk (rise edge)                   0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.10       0.10 r
+  req_i[3] (in)                            0.13       0.23 r
+  U31/Y (CLKINVX2TR)                       0.09       0.32 f
+  U22/Y (OAI21X1TR)                        0.12       0.44 r
+  U20/Y (AOI21X1TR)                        0.11       0.55 f
+  U19/Y (NOR2X1TR)                         0.23       0.78 r
+  grant_o[0] (out)                         0.00       0.78 r
+  data arrival time                                   0.78
+
+  clock vclk (rise edge)                  10.00      10.00
+  clock network delay (ideal)              0.00      10.00
+  clock uncertainty                       -0.10       9.90
+  output external delay                   -0.10       9.80
+  data required time                                  9.80
+  -----------------------------------------------------------
+  data required time                                  9.80
+  data arrival time                                  -0.78
+  -----------------------------------------------------------
+  slack (MET)                                         9.02
+
+
+  Startpoint: req_i[7] (input port clocked by vclk)
+  Endpoint: grant_o[0] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  priority_arbiter   ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock vclk (rise edge)                   0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.10       0.10 r
+  req_i[7] (in)                            0.07       0.17 r
+  U32/Y (AOI21X1TR)                        0.09       0.26 f
+  U22/Y (OAI21X1TR)                        0.18       0.44 r
+  U20/Y (AOI21X1TR)                        0.11       0.55 f
+  U19/Y (NOR2X1TR)                         0.23       0.78 r
+  grant_o[0] (out)                         0.00       0.78 r
+  data arrival time                                   0.78
+
+  clock vclk (rise edge)                  10.00      10.00
+  clock network delay (ideal)              0.00      10.00
+  clock uncertainty                       -0.10       9.90
+  output external delay                   -0.10       9.80
+  data required time                                  9.80
+  -----------------------------------------------------------
+  data required time                                  9.80
+  data arrival time                                  -0.78
+  -----------------------------------------------------------
+  slack (MET)                                         9.02
+
+
+  Startpoint: req_i[6] (input port clocked by vclk)
+  Endpoint: grant_o[2] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  priority_arbiter   ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock vclk (rise edge)                   0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.10       0.10 r
+  req_i[6] (in)                            0.07       0.17 r
+  U34/Y (NOR2X1TR)                         0.11       0.28 f
+  U26/Y (NOR3BX1TR)                        0.18       0.46 f
+  U29/Y (NOR3X1TR)                         0.30       0.75 r
+  grant_o[2] (out)                         0.00       0.75 r
+  data arrival time                                   0.75
+
+  clock vclk (rise edge)                  10.00      10.00
+  clock network delay (ideal)              0.00      10.00
+  clock uncertainty                       -0.10       9.90
+  output external delay                   -0.10       9.80
+  data required time                                  9.80
+  -----------------------------------------------------------
+  data required time                                  9.80
+  data arrival time                                  -0.75
+  -----------------------------------------------------------
+  slack (MET)                                         9.05
+
+
+  Startpoint: req_i[7] (input port clocked by vclk)
+  Endpoint: grant_o[2] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  priority_arbiter   ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock vclk (rise edge)                   0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.10       0.10 r
+  req_i[7] (in)                            0.07       0.17 r
+  U34/Y (NOR2X1TR)                         0.10       0.27 f
+  U26/Y (NOR3BX1TR)                        0.18       0.45 f
+  U29/Y (NOR3X1TR)                         0.30       0.75 r
+  grant_o[2] (out)                         0.00       0.75 r
+  data arrival time                                   0.75
+
+  clock vclk (rise edge)                  10.00      10.00
+  clock network delay (ideal)              0.00      10.00
+  clock uncertainty                       -0.10       9.90
+  output external delay                   -0.10       9.80
+  data required time                                  9.80
+  -----------------------------------------------------------
+  data required time                                  9.80
+  data arrival time                                  -0.75
+  -----------------------------------------------------------
+  slack (MET)                                         9.05
+
+
+  Startpoint: req_i[3] (input port clocked by vclk)
+  Endpoint: grant_o[1] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  priority_arbiter   ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock vclk (rise edge)                   0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.10       0.10 r
+  req_i[3] (in)                            0.13       0.23 r
+  U25/Y (NOR2X1TR)                         0.09       0.33 f
+  U24/Y (OAI31X1TR)                        0.12       0.44 r
+  U23/Y (NOR3BX1TR)                        0.30       0.75 r
+  grant_o[1] (out)                         0.00       0.75 r
+  data arrival time                                   0.75
+
+  clock vclk (rise edge)                  10.00      10.00
+  clock network delay (ideal)              0.00      10.00
+  clock uncertainty                       -0.10       9.90
+  output external delay                   -0.10       9.80
+  data required time                                  9.80
+  -----------------------------------------------------------
+  data required time                                  9.80
+  data arrival time                                  -0.75
+  -----------------------------------------------------------
+  slack (MET)                                         9.05
+
+
+  Startpoint: req_i[2] (input port clocked by vclk)
+  Endpoint: grant_o[1] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  priority_arbiter   ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock vclk (rise edge)                   0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.10       0.10 r
+  req_i[2] (in)                            0.13       0.23 r
+  U25/Y (NOR2X1TR)                         0.09       0.32 f
+  U24/Y (OAI31X1TR)                        0.12       0.44 r
+  U23/Y (NOR3BX1TR)                        0.30       0.74 r
+  grant_o[1] (out)                         0.00       0.74 r
+  data arrival time                                   0.74
+
+  clock vclk (rise edge)                  10.00      10.00
+  clock network delay (ideal)              0.00      10.00
+  clock uncertainty                       -0.10       9.90
+  output external delay                   -0.10       9.80
+  data required time                                  9.80
+  -----------------------------------------------------------
+  data required time                                  9.80
+  data arrival time                                  -0.74
+  -----------------------------------------------------------
+  slack (MET)                                         9.06
+
+
+  Startpoint: req_i[5] (input port clocked by vclk)
+  Endpoint: grant_o[0] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  priority_arbiter   ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock vclk (rise edge)                   0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.10       0.10 f
+  req_i[5] (in)                            0.05       0.15 f
+  U32/Y (AOI21X1TR)                        0.16       0.31 r
+  U22/Y (OAI21X1TR)                        0.10       0.41 f
+  U20/Y (AOI21X1TR)                        0.17       0.58 r
+  U19/Y (NOR2X1TR)                         0.12       0.70 f
+  grant_o[0] (out)                         0.00       0.70 f
+  data arrival time                                   0.70
+
+  clock vclk (rise edge)                  10.00      10.00
+  clock network delay (ideal)              0.00      10.00
+  clock uncertainty                       -0.10       9.90
+  output external delay                   -0.10       9.80
+  data required time                                  9.80
+  -----------------------------------------------------------
+  data required time                                  9.80
+  data arrival time                                  -0.70
+  -----------------------------------------------------------
+  slack (MET)                                         9.10
+
+
+  Startpoint: req_i[7] (input port clocked by vclk)
+  Endpoint: grant_o[0] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  priority_arbiter   ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock vclk (rise edge)                   0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.10       0.10 f
+  req_i[7] (in)                            0.03       0.13 f
+  U32/Y (AOI21X1TR)                        0.16       0.29 r
+  U22/Y (OAI21X1TR)                        0.10       0.40 f
+  U20/Y (AOI21X1TR)                        0.17       0.57 r
+  U19/Y (NOR2X1TR)                         0.12       0.69 f
+  grant_o[0] (out)                         0.00       0.69 f
+  data arrival time                                   0.69
+
+  clock vclk (rise edge)                  10.00      10.00
+  clock network delay (ideal)              0.00      10.00
+  clock uncertainty                       -0.10       9.90
+  output external delay                   -0.10       9.80
+  data required time                                  9.80
+  -----------------------------------------------------------
+  data required time                                  9.80
+  data arrival time                                  -0.69
+  -----------------------------------------------------------
+  slack (MET)                                         9.11
+
+
+  Startpoint: req_i[3] (input port clocked by vclk)
+  Endpoint: grant_o[2] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  priority_arbiter   ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock vclk (rise edge)                   0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.10       0.10 f
+  req_i[3] (in)                            0.06       0.16 f
+  U30/Y (OR3X1TR)                          0.25       0.41 f
+  U29/Y (NOR3X1TR)                         0.27       0.68 r
+  grant_o[2] (out)                         0.00       0.68 r
+  data arrival time                                   0.68
+
+  clock vclk (rise edge)                  10.00      10.00
+  clock network delay (ideal)              0.00      10.00
+  clock uncertainty                       -0.10       9.90
+  output external delay                   -0.10       9.80
+  data required time                                  9.80
+  -----------------------------------------------------------
+  data required time                                  9.80
+  data arrival time                                  -0.68
+  -----------------------------------------------------------
+  slack (MET)                                         9.12
+
+
+  Startpoint: req_i[6] (input port clocked by vclk)
+  Endpoint: grant_o[1] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  priority_arbiter   ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock vclk (rise edge)                   0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.10       0.10 f
+  req_i[6] (in)                            0.03       0.13 f
+  U34/Y (NOR2X1TR)                         0.25       0.38 r
+  U24/Y (OAI31X1TR)                        0.12       0.50 f
+  U23/Y (NOR3BX1TR)                        0.17       0.67 f
+  grant_o[1] (out)                         0.00       0.67 f
+  data arrival time                                   0.67
+
+  clock vclk (rise edge)                  10.00      10.00
+  clock network delay (ideal)              0.00      10.00
+  clock uncertainty                       -0.10       9.90
+  output external delay                   -0.10       9.80
+  data required time                                  9.80
+  -----------------------------------------------------------
+  data required time                                  9.80
+  data arrival time                                  -0.67
+  -----------------------------------------------------------
+  slack (MET)                                         9.13
+
+
+  Startpoint: req_i[2] (input port clocked by vclk)
+  Endpoint: grant_o[2] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  priority_arbiter   ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock vclk (rise edge)                   0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.10       0.10 f
+  req_i[2] (in)                            0.06       0.16 f
+  U30/Y (OR3X1TR)                          0.24       0.40 f
+  U29/Y (NOR3X1TR)                         0.27       0.67 r
+  grant_o[2] (out)                         0.00       0.67 r
+  data arrival time                                   0.67
+
+  clock vclk (rise edge)                  10.00      10.00
+  clock network delay (ideal)              0.00      10.00
+  clock uncertainty                       -0.10       9.90
+  output external delay                   -0.10       9.80
+  data required time                                  9.80
+  -----------------------------------------------------------
+  data required time                                  9.80
+  data arrival time                                  -0.67
+  -----------------------------------------------------------
+  slack (MET)                                         9.13
+
+
+1

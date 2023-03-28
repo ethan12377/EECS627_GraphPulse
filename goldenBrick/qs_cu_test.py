@@ -10,9 +10,14 @@ set_PEReady = 0
 
 def Xbar_PEToQ_input():
     for i in range(8):
-        io_port.CUDelta_n[i] = np.random.rand()
-        io_port.CUIdx_n[i] = np.uint8(np.random.randint(4) * 64 + i * 8 + np.random.randint(8))
-        io_port.CUValid_n[i] = np.uint8(np.random.randint(2))
+        # if i < 2:
+            io_port.CUDelta_n[i] = np.random.rand()
+            io_port.CUIdx_n[i] = np.uint8(np.random.randint(4) * 64 + i * 8 + np.random.randint(8))
+            io_port.CUValid_n[i] = np.uint8(np.random.randint(2))
+        # else:
+        #     io_port.CUDelta_n[i]  = np.zeros(1, dtype=np.float16)
+        #     io_port.CUIdx_n[i]  = np.zeros(1, dtype=np.uint8)
+        #     io_port.CUValid_n[i]  = np.zeros(1, dtype=np.uint8)
 
 def OB_input():
     io_port.rowReady_n = np.uint8(np.random.randint(2))

@@ -282,7 +282,10 @@ module queue_scheduler #(
 // Acknowledge the grant and shift priority
 // --------------------------------------------------------------------
     always_ff @(posedge clk_i) begin
-        if (qs_state == BinSelect) begin
+        if (rst_i) begin
+            grant_ack   <=  'b0;
+        end
+        else if (qs_state == BinSelect) begin
             grant_ack   <=  'b1;
         end else begin
             grant_ack   <=  'b0;
