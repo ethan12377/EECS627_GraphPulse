@@ -7,8 +7,9 @@ set top_level "pe"
 
 # Read verilog files
 # read_verilog "../verilog/standard.vh ../verilog/mult.v"
-read_verilog "../verilog/fpu.syn.v"
+# read_verilog "../verilog/fpu.syn.v"
 read_file -f sverilog [list "../verilog/standard.vh ../verilog/int16_to_float16.sv ../verilog/pe.sv"]
+# read_file -f sverilog [list "../verilog/standard.vh ../verilog/fp_add.sv ../verilog/fp_div.sv ../verilog/fp_mul.sv ../verilog/fpu.sv ../verilog/int16_to_float16.sv ../verilog/pe.sv"]
 # read_file -f sverilog [list "../verilog/fp_add.sv"]
 # read_systemverilog "../verilog/fp_add.sv"
 list_designs
@@ -32,8 +33,8 @@ set_operating_conditions "typical" -library "typical"
 set_wire_load_model -name "ibm13_wl10" -library "typical" 
 set_wire_load_mode "segmented" 
 
-set typical_input_delay 0.100
-set typical_output_delay 0.100
+set typical_input_delay 0.15
+set typical_output_delay 0.15
 set typical_wire_load 0.010 
 
 # Link the design
@@ -45,9 +46,6 @@ set_max_fanout 16 $top_level
 # Configure the clock network
 set_fix_hold [all_clocks] 
 set_dont_touch_network $clk_port
-
-# to save some time - do not resize fpu
-# set_dont_touch fpu
 
 # Set delays: Input, Output
 set_driving_cell -lib_cell INVX2TR [all_inputs]
@@ -65,8 +63,10 @@ check_design
 uniquify
 
 # Synthesize the design
-compile_ultra -retime
-optimize_registers
+# set_optimize_registers -sync_transform multiclass -async_transform multiclass
+# compile_ultra -retime
+# compile_ultra -retime -incremental
+compile_ultra
 # compile -map_effort medium
 # set_optimize_registers -sync_transform multiclass -async_transform multiclass
 # compile_ultra -retime
