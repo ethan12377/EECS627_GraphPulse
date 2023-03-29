@@ -1,40 +1,10 @@
-Warning: Design 'mc' has '1' unresolved references. For more detailed information, use the "link" command. (UID-341)
- 
-****************************************
-check_design summary:
-Version:     T-2022.03-SP3
-Date:        Wed Mar 22 21:59:41 2023
-****************************************
-
-                   Name                                            Total
---------------------------------------------------------------------------------
-Inputs/Outputs                                                      6
-    Multiply driven inputs (LINT-6)                                 6
-
-Nets                                                                1
-    Multiply driven net with constant driver (LINT-54)              1
-
-Tristate                                                            2
-    A tristate bus has a non tri-state driver (LINT-34)             2
---------------------------------------------------------------------------------
-
-Warning: In design 'mc', input port 'clk_i' drives wired logic; the port direction may have been specified incorrectly. (LINT-6)
-Warning: In design 'mc', input port 'rst_i' drives wired logic; the port direction may have been specified incorrectly. (LINT-6)
-Warning: In design 'mc', input port 'pe2mem_reqValid_i[3]' drives wired logic; the port direction may have been specified incorrectly. (LINT-6)
-Warning: In design 'mc', input port 'pe2mem_reqValid_i[2]' drives wired logic; the port direction may have been specified incorrectly. (LINT-6)
-Warning: In design 'mc', input port 'pe2mem_reqValid_i[1]' drives wired logic; the port direction may have been specified incorrectly. (LINT-6)
-Warning: In design 'mc', input port 'pe2mem_reqValid_i[0]' drives wired logic; the port direction may have been specified incorrectly. (LINT-6)
-Warning: In design 'mc', three-state bus 'n284' has non three-state driver 'U456/**logic_1**'. (LINT-34)
-Warning: In design 'mc', three-state bus 'n_1_net_' has non three-state driver 'U259/Y'. (LINT-34)
-Warning: In design 'mc', multiply-driven net 'n284' is driven by constant 1. (LINT-54)
 1
-Warning: Design 'mc' has '1' unresolved references. For more detailed information, use the "link" command. (UID-341)
  
 ****************************************
 Report : area
 Design : mc
 Version: T-2022.03-SP3
-Date   : Wed Mar 22 21:59:41 2023
+Date   : Tue Mar 28 22:35:33 2023
 ****************************************
 
 Library(s) Used:
@@ -42,28 +12,26 @@ Library(s) Used:
     typical (File: /afs/umich.edu/class/eecs627/ibm13/artisan/current/aci/sc-x/synopsys/typical.db)
 
 Number of ports:                          416
-Number of nets:                           618
-Number of cells:                          284
-Number of combinational cells:            282
-Number of sequential cells:                 1
+Number of nets:                           634
+Number of cells:                          304
+Number of combinational cells:            300
+Number of sequential cells:                 4
 Number of macros/black boxes:               0
-Number of buf/inv:                         30
-Number of references:                      14
+Number of buf/inv:                         31
+Number of references:                      21
 
-Combinational area:               2109.600082
-Buf/Inv area:                      159.840006
-Noncombinational area:               0.000000
+Combinational area:               2246.400080
+Buf/Inv area:                      181.440001
+Noncombinational area:             167.039993
 Macro/Black Box area:                0.000000
-Net Interconnect area:           44800.223602
+Net Interconnect area:           47366.902435
 
-Total cell area:                  2109.600082
-Total area:                      46909.823684
-
-Information: This design contains black box (unknown) components. (RPT-8)
+Total cell area:                  2413.440073
+Total area:                      49780.342508
 1
 Information: Propagating switching activity (medium effort zero delay simulation). (PWR-6)
 Warning: Design has unannotated primary inputs. (PWR-414)
-Warning: Design has unannotated black box outputs. (PWR-428)
+Warning: Design has unannotated sequential cell outputs. (PWR-415)
  
 ****************************************
 Report : power
@@ -71,7 +39,7 @@ Report : power
         -analysis_effort medium
 Design : mc
 Version: T-2022.03-SP3
-Date   : Wed Mar 22 21:59:41 2023
+Date   : Tue Mar 28 22:35:34 2023
 ****************************************
 
 
@@ -101,15 +69,14 @@ Power-specific unit information :
                                        Switch   Int      Leak     Total
 Hierarchy                              Power    Power    Power    Power    %
 --------------------------------------------------------------------------------
-mc                                     6.66e-02 1.33e-02 4.51e+04 8.00e-02 100.0
+mc                                        0.177 5.59e-02 5.43e+04    0.233 100.0
 1
-Warning: Design 'mc' has '1' unresolved references. For more detailed information, use the "link" command. (UID-341)
  
 ****************************************
 Report : design
 Design : mc
 Version: T-2022.03-SP3
-Date   : Wed Mar 22 21:59:41 2023
+Date   : Tue Mar 28 22:35:34 2023
 ****************************************
 
 Design allows ideal nets on clock nets.
@@ -176,328 +143,343 @@ Disabled Timing Arcs:
 
 Required Licenses:
 
-    None Required
+    DesignWare
 
 Design Parameters:
 
     None specified.
-
-Information: This design contains black box (unknown) components. (RPT-8)
 1
-Warning: Design 'mc' has '1' unresolved references. For more detailed information, use the "link" command. (UID-341)
  
 ****************************************
 Report : cell
 Design : mc
 Version: T-2022.03-SP3
-Date   : Wed Mar 22 21:59:41 2023
+Date   : Tue Mar 28 22:35:34 2023
 ****************************************
 
 Attributes:
     b - black box (unknown)
     h - hierarchical
     n - noncombinational
-    p - parameterized
     r - removable
-   so - sizing only
     u - contains unmapped logic
 
 Cell                      Reference       Library             Area  Attributes
 --------------------------------------------------------------------------------
-U3                        NOR3X1TR        typical         7.200000  
-U4                        NAND2X1TR       typical         5.760000  
-U6                        AOI22X1TR       typical         8.640000  
-U9                        NAND2X1TR       typical         5.760000  
-U19                       AOI22X1TR       typical         8.640000  
-U22                       AOI22X1TR       typical         8.640000  
-U25                       AOI22X1TR       typical         8.640000  
-U28                       AOI22X1TR       typical         8.640000  
-U31                       AOI22X1TR       typical         8.640000  
-U34                       AOI22X1TR       typical         8.640000  
-U37                       AOI22X1TR       typical         8.640000  
-U40                       AOI22X1TR       typical         8.640000  
-U43                       AOI22X1TR       typical         8.640000  
-U46                       AOI22X1TR       typical         8.640000  
-U49                       AOI22X1TR       typical         8.640000  
-U52                       AOI22X1TR       typical         8.640000  
-U55                       AOI22X1TR       typical         8.640000  
-U58                       AOI22X1TR       typical         8.640000  
-U61                       AOI22X1TR       typical         8.640000  
-U64                       AOI22X1TR       typical         8.640000  
-U67                       AOI22X1TR       typical         8.640000  
-U70                       AOI22X1TR       typical         8.640000  
-U73                       AOI22X1TR       typical         8.640000  
-U76                       AOI22X1TR       typical         8.640000  
-U79                       AOI22X1TR       typical         8.640000  
-U82                       AOI22X1TR       typical         8.640000  
-U85                       AOI22X1TR       typical         8.640000  
-U88                       AOI22X1TR       typical         8.640000  
-U91                       AOI22X1TR       typical         8.640000  
-U94                       AOI22X1TR       typical         8.640000  
-U97                       AOI22X1TR       typical         8.640000  
-U100                      AOI22X1TR       typical         8.640000  
-U103                      AOI22X1TR       typical         8.640000  
-U106                      AOI22X1TR       typical         8.640000  
-U109                      AOI22X1TR       typical         8.640000  
-U112                      AOI22X1TR       typical         8.640000  
-U115                      AOI22X1TR       typical         8.640000  
-U118                      AOI22X1TR       typical         8.640000  
-U121                      AOI22X1TR       typical         8.640000  
-U124                      AOI22X1TR       typical         8.640000  
-U127                      AOI22X1TR       typical         8.640000  
-U130                      AOI22X1TR       typical         8.640000  
-U133                      AOI22X1TR       typical         8.640000  
-U136                      AOI22X1TR       typical         8.640000  
-U139                      AOI22X1TR       typical         8.640000  
-U142                      AOI22X1TR       typical         8.640000  
-U145                      AOI22X1TR       typical         8.640000  
-U148                      AOI22X1TR       typical         8.640000  
-U151                      AOI22X1TR       typical         8.640000  
-U154                      AOI22X1TR       typical         8.640000  
-U157                      AOI22X1TR       typical         8.640000  
-U160                      AOI22X1TR       typical         8.640000  
-U163                      AOI22X1TR       typical         8.640000  
-U166                      AOI22X1TR       typical         8.640000  
-U169                      AOI22X1TR       typical         8.640000  
-U172                      AOI22X1TR       typical         8.640000  
-U175                      AOI22X1TR       typical         8.640000  
-U178                      AOI22X1TR       typical         8.640000  
-U181                      AOI22X1TR       typical         8.640000  
-U184                      AOI22X1TR       typical         8.640000  
-U187                      AOI22X1TR       typical         8.640000  
-U190                      AOI22X1TR       typical         8.640000  
-U193                      AOI22X1TR       typical         8.640000  
-U196                      AOI22X1TR       typical         8.640000  
-U199                      AOI22X1TR       typical         8.640000  
-U202                      AOI22X1TR       typical         8.640000  
-U205                      AOI22X1TR       typical         8.640000  
-U208                      AOI22X1TR       typical         8.640000  
-U211                      AOI22X1TR       typical         8.640000  
-U214                      AOI22X1TR       typical         8.640000  
-U217                      AOI22X1TR       typical         8.640000  
-U220                      AOI22X1TR       typical         8.640000  
-U223                      AOI22X1TR       typical         8.640000  
-U226                      AOI22X1TR       typical         8.640000  
-U229                      AOI22X1TR       typical         8.640000  
-U232                      AOI22X1TR       typical         8.640000  
-U235                      AOI22X1TR       typical         8.640000  
-U238                      AOI22X1TR       typical         8.640000  
-U241                      AOI22X1TR       typical         8.640000  
-U244                      AOI22X1TR       typical         8.640000  
-U247                      AOI22X1TR       typical         8.640000  
-U250                      AOI22X1TR       typical         8.640000  
-U253                      AOI22X1TR       typical         8.640000  
-U256                      AOI22X1TR       typical         8.640000  
-U258                      OR3X1TR         typical         8.640000  
-U259                      OR2X1TR         typical         7.200000  so
-U260                      INVX1TR         typical         4.320000  
-U261                      INVX1TR         typical         4.320000  
-U262                      CLKINVX3TR      typical         5.760000  
-U263                      CLKINVX3TR      typical         5.760000  
-U264                      CLKINVX3TR      typical         5.760000  
-U265                      CLKINVX3TR      typical         5.760000  
-U266                      CLKINVX2TR      typical         4.320000  
-U267                      CLKINVX2TR      typical         4.320000  
-U268                      CLKINVX3TR      typical         5.760000  
-U269                      CLKINVX3TR      typical         5.760000  
-U270                      CLKINVX3TR      typical         5.760000  
-U271                      CLKINVX3TR      typical         5.760000  
-U272                      NOR3BX4TR       typical         21.600000 
-U273                      INVX1TR         typical         4.320000  
-U274                      INVX1TR         typical         4.320000  
-U275                      INVX1TR         typical         4.320000  
-U276                      CLKBUFX2TR      typical         5.760000  
-U277                      CLKBUFX2TR      typical         5.760000  
-U278                      CLKBUFX2TR      typical         5.760000  
-U279                      AOI22X1TR       typical         8.640000  
-U280                      NAND2X1TR       typical         5.760000  
-U281                      AOI22X1TR       typical         8.640000  
-U282                      NAND2X1TR       typical         5.760000  
-U283                      AOI22X1TR       typical         8.640000  
 U284                      NAND2X1TR       typical         5.760000  
-U285                      CLKBUFX2TR      typical         5.760000  
-U286                      AOI22X1TR       typical         8.640000  
-U287                      NAND2X1TR       typical         5.760000  
-U288                      AOI22X1TR       typical         8.640000  
-U289                      NAND2X1TR       typical         5.760000  
-U290                      CLKBUFX2TR      typical         5.760000  
-U291                      AOI22X1TR       typical         8.640000  
-U292                      NAND2X1TR       typical         5.760000  
-U293                      AOI22X1TR       typical         8.640000  
-U294                      NAND2X1TR       typical         5.760000  
-U295                      AOI22X1TR       typical         8.640000  
-U296                      NAND2X1TR       typical         5.760000  
-U297                      AOI22X1TR       typical         8.640000  
+U285                      NAND2X1TR       typical         5.760000  
+U286                      OAI22X1TR       typical         8.640000  
+U287                      NOR2X1TR        typical         5.760000  
+U288                      AOI211X1TR      typical         8.640000  
+U289                      AOI22X1TR       typical         8.640000  
+U290                      NAND2X1TR       typical         5.760000  
+U291                      CLKINVX1TR      typical         4.320000  
+U292                      OAI32X1TR       typical         10.080000 
+U293                      OAI22X1TR       typical         8.640000  
+U294                      CLKINVX1TR      typical         4.320000  
+U295                      CLKINVX2TR      typical         4.320000  
+U296                      CLKINVX1TR      typical         4.320000  
+U297                      CLKBUFX3TR      typical         7.200000  
 U298                      NAND2X1TR       typical         5.760000  
-U299                      AOI22X1TR       typical         8.640000  
+U299                      CLKINVX2TR      typical         4.320000  
 U300                      NAND2X1TR       typical         5.760000  
-U301                      AOI22X1TR       typical         8.640000  
+U301                      NAND2X1TR       typical         5.760000  
 U302                      NAND2X1TR       typical         5.760000  
-U303                      AOI22X1TR       typical         8.640000  
+U303                      NAND2X1TR       typical         5.760000  
 U304                      NAND2X1TR       typical         5.760000  
-U305                      AOI22X1TR       typical         8.640000  
+U305                      NAND2X1TR       typical         5.760000  
 U306                      NAND2X1TR       typical         5.760000  
-U307                      AOI22X1TR       typical         8.640000  
+U307                      NAND2X1TR       typical         5.760000  
 U308                      NAND2X1TR       typical         5.760000  
-U309                      AOI22X1TR       typical         8.640000  
+U309                      NAND2X1TR       typical         5.760000  
 U310                      NAND2X1TR       typical         5.760000  
-U311                      CLKBUFX2TR      typical         5.760000  
-U312                      AOI22X1TR       typical         8.640000  
+U311                      NAND2X1TR       typical         5.760000  
+U312                      NAND2X1TR       typical         5.760000  
 U313                      NAND2X1TR       typical         5.760000  
-U314                      AOI22X1TR       typical         8.640000  
+U314                      NAND2X1TR       typical         5.760000  
 U315                      NAND2X1TR       typical         5.760000  
-U316                      AOI22X1TR       typical         8.640000  
+U316                      NAND2X1TR       typical         5.760000  
 U317                      NAND2X1TR       typical         5.760000  
-U318                      AOI22X1TR       typical         8.640000  
+U318                      NAND2X1TR       typical         5.760000  
 U319                      NAND2X1TR       typical         5.760000  
-U320                      AOI22X1TR       typical         8.640000  
+U320                      NAND2X1TR       typical         5.760000  
 U321                      NAND2X1TR       typical         5.760000  
-U322                      AOI22X1TR       typical         8.640000  
+U322                      NAND2X1TR       typical         5.760000  
 U323                      NAND2X1TR       typical         5.760000  
-U324                      AOI22X1TR       typical         8.640000  
+U324                      NAND2X1TR       typical         5.760000  
 U325                      NAND2X1TR       typical         5.760000  
-U326                      AOI22X1TR       typical         8.640000  
+U326                      NAND2X1TR       typical         5.760000  
 U327                      NAND2X1TR       typical         5.760000  
-U328                      AOI22X1TR       typical         8.640000  
+U328                      NAND2X1TR       typical         5.760000  
 U329                      NAND2X1TR       typical         5.760000  
-U330                      AOI22X1TR       typical         8.640000  
+U330                      NAND2X1TR       typical         5.760000  
 U331                      NAND2X1TR       typical         5.760000  
-U332                      AOI22X1TR       typical         8.640000  
+U332                      NAND2X1TR       typical         5.760000  
 U333                      NAND2X1TR       typical         5.760000  
-U334                      AOI22X1TR       typical         8.640000  
+U334                      NAND2X1TR       typical         5.760000  
 U335                      NAND2X1TR       typical         5.760000  
-U336                      AOI22X1TR       typical         8.640000  
+U336                      NAND2X1TR       typical         5.760000  
 U337                      NAND2X1TR       typical         5.760000  
-U338                      AOI22X1TR       typical         8.640000  
+U338                      NAND2X1TR       typical         5.760000  
 U339                      NAND2X1TR       typical         5.760000  
-U340                      AOI22X1TR       typical         8.640000  
+U340                      NAND2X1TR       typical         5.760000  
 U341                      NAND2X1TR       typical         5.760000  
-U342                      AOI22X1TR       typical         8.640000  
+U342                      NAND2X1TR       typical         5.760000  
 U343                      NAND2X1TR       typical         5.760000  
-U344                      AOI22X1TR       typical         8.640000  
+U344                      NAND2X1TR       typical         5.760000  
 U345                      NAND2X1TR       typical         5.760000  
-U346                      AOI22X1TR       typical         8.640000  
+U346                      NAND2X1TR       typical         5.760000  
 U347                      NAND2X1TR       typical         5.760000  
-U348                      AOI22X1TR       typical         8.640000  
+U348                      NAND2X1TR       typical         5.760000  
 U349                      NAND2X1TR       typical         5.760000  
-U350                      AOI22X1TR       typical         8.640000  
+U350                      NAND2X1TR       typical         5.760000  
 U351                      NAND2X1TR       typical         5.760000  
-U352                      AOI22X1TR       typical         8.640000  
+U352                      NAND2X1TR       typical         5.760000  
 U353                      NAND2X1TR       typical         5.760000  
-U354                      AOI22X1TR       typical         8.640000  
+U354                      NAND2X1TR       typical         5.760000  
 U355                      NAND2X1TR       typical         5.760000  
-U356                      AOI22X1TR       typical         8.640000  
+U356                      NAND2X1TR       typical         5.760000  
 U357                      NAND2X1TR       typical         5.760000  
-U358                      AOI22X1TR       typical         8.640000  
+U358                      NAND2X1TR       typical         5.760000  
 U359                      NAND2X1TR       typical         5.760000  
-U360                      AOI22X1TR       typical         8.640000  
+U360                      NAND2X1TR       typical         5.760000  
 U361                      NAND2X1TR       typical         5.760000  
-U362                      AOI22X1TR       typical         8.640000  
+U362                      NAND2X1TR       typical         5.760000  
 U363                      NAND2X1TR       typical         5.760000  
-U364                      AOI22X1TR       typical         8.640000  
+U364                      NAND2X1TR       typical         5.760000  
 U365                      NAND2X1TR       typical         5.760000  
-U366                      CLKINVX2TR      typical         4.320000  
-U367                      AOI22X1TR       typical         8.640000  
+U366                      NAND2X1TR       typical         5.760000  
+U367                      NAND2X1TR       typical         5.760000  
 U368                      NAND2X1TR       typical         5.760000  
-U369                      CLKBUFX2TR      typical         5.760000  
+U369                      NAND2X1TR       typical         5.760000  
 U370                      AOI22X1TR       typical         8.640000  
-U371                      NAND2X1TR       typical         5.760000  
-U372                      AOI22X1TR       typical         8.640000  
-U373                      NAND2X1TR       typical         5.760000  
+U371                      AOI22X1TR       typical         8.640000  
+U372                      NAND2X1TR       typical         5.760000  
+U373                      AOI22X1TR       typical         8.640000  
 U374                      AOI22X1TR       typical         8.640000  
-U375                      NAND2X1TR       typical         5.760000  
-U376                      AOI22X1TR       typical         8.640000  
-U377                      NAND2X1TR       typical         5.760000  
+U375                      AOI22X1TR       typical         8.640000  
+U376                      NAND2X1TR       typical         5.760000  
+U377                      AOI22X1TR       typical         8.640000  
 U378                      AOI22X1TR       typical         8.640000  
-U379                      NAND2X1TR       typical         5.760000  
+U379                      AOI22X1TR       typical         8.640000  
 U380                      AOI22X1TR       typical         8.640000  
-U381                      NAND2X1TR       typical         5.760000  
-U382                      AOI22X1TR       typical         8.640000  
-U383                      NAND2X1TR       typical         5.760000  
+U381                      AOI22X1TR       typical         8.640000  
+U382                      NAND2X1TR       typical         5.760000  
+U383                      AOI22X1TR       typical         8.640000  
 U384                      AOI22X1TR       typical         8.640000  
-U385                      NAND2X1TR       typical         5.760000  
-U386                      AOI22X1TR       typical         8.640000  
+U385                      AOI22X1TR       typical         8.640000  
+U386                      NAND2X1TR       typical         5.760000  
 U387                      NAND2X1TR       typical         5.760000  
-U388                      CLKINVX2TR      typical         4.320000  
-U389                      CLKBUFX2TR      typical         5.760000  
+U388                      NAND2X1TR       typical         5.760000  
+U389                      AOI22X1TR       typical         8.640000  
 U390                      AOI22X1TR       typical         8.640000  
 U391                      NAND2X1TR       typical         5.760000  
 U392                      AOI22X1TR       typical         8.640000  
-U393                      NAND2X1TR       typical         5.760000  
+U393                      AOI22X1TR       typical         8.640000  
 U394                      AOI22X1TR       typical         8.640000  
-U395                      NAND2X1TR       typical         5.760000  
-U396                      AOI22X1TR       typical         8.640000  
-U397                      NAND2X1TR       typical         5.760000  
+U395                      AOI22X1TR       typical         8.640000  
+U396                      NAND2X1TR       typical         5.760000  
+U397                      AOI22X1TR       typical         8.640000  
 U398                      AOI22X1TR       typical         8.640000  
-U399                      NAND2X1TR       typical         5.760000  
+U399                      AOI22X1TR       typical         8.640000  
 U400                      AOI22X1TR       typical         8.640000  
-U401                      NAND2X1TR       typical         5.760000  
+U401                      AOI22X1TR       typical         8.640000  
 U402                      AOI22X1TR       typical         8.640000  
-U403                      NAND2X1TR       typical         5.760000  
+U403                      AOI22X1TR       typical         8.640000  
 U404                      AOI22X1TR       typical         8.640000  
-U405                      NAND2X1TR       typical         5.760000  
-U406                      CLKBUFX2TR      typical         5.760000  
+U405                      AOI22X1TR       typical         8.640000  
+U406                      AOI22X1TR       typical         8.640000  
 U407                      AOI22X1TR       typical         8.640000  
-U408                      NAND2X1TR       typical         5.760000  
-U409                      AOI22X1TR       typical         8.640000  
-U410                      NAND2X1TR       typical         5.760000  
+U408                      AOI22X1TR       typical         8.640000  
+U409                      NAND2X1TR       typical         5.760000  
+U410                      AOI22X1TR       typical         8.640000  
 U411                      AOI22X1TR       typical         8.640000  
-U412                      NAND2X1TR       typical         5.760000  
+U412                      AOI22X1TR       typical         8.640000  
 U413                      AOI22X1TR       typical         8.640000  
-U414                      NAND2X1TR       typical         5.760000  
+U414                      AOI22X1TR       typical         8.640000  
 U415                      AOI22X1TR       typical         8.640000  
-U416                      NAND2X1TR       typical         5.760000  
+U416                      AOI22X1TR       typical         8.640000  
 U417                      AOI22X1TR       typical         8.640000  
-U418                      NAND2X1TR       typical         5.760000  
+U418                      AOI22X1TR       typical         8.640000  
 U419                      AOI22X1TR       typical         8.640000  
-U420                      NAND2X1TR       typical         5.760000  
+U420                      AOI22X1TR       typical         8.640000  
 U421                      AOI22X1TR       typical         8.640000  
-U422                      NAND2X1TR       typical         5.760000  
+U422                      AOI22X1TR       typical         8.640000  
 U423                      AOI22X1TR       typical         8.640000  
-U424                      NAND2X1TR       typical         5.760000  
-U425                      CLKBUFX2TR      typical         5.760000  
+U424                      AOI22X1TR       typical         8.640000  
+U425                      AOI22X1TR       typical         8.640000  
 U426                      AOI22X1TR       typical         8.640000  
-U427                      NAND2X1TR       typical         5.760000  
+U427                      AOI22X1TR       typical         8.640000  
 U428                      AOI22X1TR       typical         8.640000  
-U429                      NAND2X1TR       typical         5.760000  
+U429                      AOI22X1TR       typical         8.640000  
 U430                      AOI22X1TR       typical         8.640000  
-U431                      NAND2X1TR       typical         5.760000  
+U431                      AOI22X1TR       typical         8.640000  
 U432                      AOI22X1TR       typical         8.640000  
-U433                      NAND2X1TR       typical         5.760000  
+U433                      AOI22X1TR       typical         8.640000  
 U434                      AOI22X1TR       typical         8.640000  
-U435                      NAND2X1TR       typical         5.760000  
+U435                      AOI22X1TR       typical         8.640000  
 U436                      AOI22X1TR       typical         8.640000  
-U437                      NAND2X1TR       typical         5.760000  
-U438                      CLKBUFX2TR      typical         5.760000  
+U437                      AOI22X1TR       typical         8.640000  
+U438                      NAND2X1TR       typical         5.760000  
 U439                      AOI22X1TR       typical         8.640000  
-U440                      NAND2X1TR       typical         5.760000  
+U440                      AOI22X1TR       typical         8.640000  
 U441                      AOI22X1TR       typical         8.640000  
 U442                      NAND2X1TR       typical         5.760000  
 U443                      AOI22X1TR       typical         8.640000  
-U444                      NAND2X1TR       typical         5.760000  
+U444                      AOI22X1TR       typical         8.640000  
 U445                      AOI22X1TR       typical         8.640000  
-U446                      NAND2X1TR       typical         5.760000  
-U447                      AOI22X1TR       typical         8.640000  
-U448                      NAND2X1TR       typical         5.760000  
-U449                      CLKBUFX2TR      typical         5.760000  
-U450                      CLKBUFX2TR      typical         5.760000  
-U451                      OAI22X1TR       typical         8.640000  
-U452                      OAI22X1TR       typical         8.640000  
-U453                      AOI2BB1X1TR     typical         8.640000  
+U446                      CLKBUFX3TR      typical         7.200000  
+U447                      CLKBUFX2TR      typical         5.760000  
+U448                      AOI22X1TR       typical         8.640000  
+U449                      AOI22X1TR       typical         8.640000  
+U450                      AOI22X1TR       typical         8.640000  
+U451                      AOI22X1TR       typical         8.640000  
+U452                      CLKBUFX3TR      typical         7.200000  
+U453                      CLKBUFX2TR      typical         5.760000  
 U454                      AOI22X1TR       typical         8.640000  
-U455                      AOI21X1TR       typical         7.200000  
-mc_rr_arbiter             rr_arbiter                      0.000000  b, p, so
+U455                      AOI22X1TR       typical         8.640000  
+U456                      AOI22X1TR       typical         8.640000  
+U457                      CLKBUFX3TR      typical         7.200000  
+U458                      AOI22X1TR       typical         8.640000  
+U459                      AOI22X1TR       typical         8.640000  
+U460                      BUFX3TR         typical         7.200000  
+U461                      CLKBUFX2TR      typical         5.760000  
+U462                      CLKBUFX2TR      typical         5.760000  
+U463                      AOI22X1TR       typical         8.640000  
+U464                      AOI22X1TR       typical         8.640000  
+U465                      AOI22X1TR       typical         8.640000  
+U466                      AOI22X1TR       typical         8.640000  
+U467                      AOI22X1TR       typical         8.640000  
+U468                      AOI22X1TR       typical         8.640000  
+U469                      AOI22X1TR       typical         8.640000  
+U470                      AOI22X1TR       typical         8.640000  
+U471                      BUFX3TR         typical         7.200000  
+U472                      AOI21X1TR       typical         7.200000  
+U473                      CLKBUFX3TR      typical         7.200000  
+U474                      CLKBUFX2TR      typical         5.760000  
+U475                      CLKBUFX3TR      typical         7.200000  
+U476                      CLKBUFX3TR      typical         7.200000  
+U477                      BUFX3TR         typical         7.200000  
+U478                      CLKBUFX3TR      typical         7.200000  
+U479                      CLKBUFX2TR      typical         5.760000  
+U480                      CLKBUFX2TR      typical         5.760000  
+U481                      CLKBUFX3TR      typical         7.200000  
+U482                      CLKBUFX2TR      typical         5.760000  
+U483                      CLKINVX2TR      typical         4.320000  
+U484                      CLKBUFX2TR      typical         5.760000  
+U485                      OAI31X1TR       typical         8.640000  
+U486                      NOR2X1TR        typical         5.760000  
+U487                      INVX1TR         typical         4.320000  
+U488                      INVX1TR         typical         4.320000  
+U489                      INVX1TR         typical         4.320000  
+U490                      INVX1TR         typical         4.320000  
+U491                      NOR3BX2TR       typical         11.520000 
+U492                      NAND2X1TR       typical         5.760000  
+U493                      NAND3X1TR       typical         7.200000  
+U494                      AOI22X1TR       typical         8.640000  
+U495                      OAI21X1TR       typical         7.200000  
+U496                      AO21X1TR        typical         8.640000  
+U497                      AOI22X1TR       typical         8.640000  
+U498                      AOI22X1TR       typical         8.640000  
+U499                      AOI22X1TR       typical         8.640000  
+U500                      AOI22X1TR       typical         8.640000  
+U501                      AOI22X1TR       typical         8.640000  
+U502                      AOI22X1TR       typical         8.640000  
+U503                      AOI22X1TR       typical         8.640000  
+U504                      AOI22X1TR       typical         8.640000  
+U505                      AOI22X1TR       typical         8.640000  
+U506                      AOI22X1TR       typical         8.640000  
+U507                      AOI22X1TR       typical         8.640000  
+U508                      AOI22X1TR       typical         8.640000  
+U509                      AOI22X1TR       typical         8.640000  
+U510                      AOI22X1TR       typical         8.640000  
+U511                      AOI22X1TR       typical         8.640000  
+U512                      AOI22X1TR       typical         8.640000  
+U513                      AOI22X1TR       typical         8.640000  
+U514                      AOI22X1TR       typical         8.640000  
+U515                      AOI22X1TR       typical         8.640000  
+U516                      AOI22X1TR       typical         8.640000  
+U517                      AOI22X1TR       typical         8.640000  
+U518                      AOI22X1TR       typical         8.640000  
+U519                      AOI22X1TR       typical         8.640000  
+U520                      NOR3BX1TR       typical         8.640000  
+U521                      AOI22X1TR       typical         8.640000  
+U522                      AOI22X1TR       typical         8.640000  
+U523                      AOI22X1TR       typical         8.640000  
+U524                      AOI22X1TR       typical         8.640000  
+U525                      AOI22X1TR       typical         8.640000  
+U526                      AOI22X1TR       typical         8.640000  
+U527                      AOI22X1TR       typical         8.640000  
+U528                      AOI22X1TR       typical         8.640000  
+U529                      AOI22X1TR       typical         8.640000  
+U530                      AOI22X1TR       typical         8.640000  
+U531                      AOI22X1TR       typical         8.640000  
+U532                      AOI22X1TR       typical         8.640000  
+U533                      AOI22X1TR       typical         8.640000  
+U534                      AOI22X1TR       typical         8.640000  
+U535                      AOI22X1TR       typical         8.640000  
+U536                      AOI22X1TR       typical         8.640000  
+U537                      AOI22X1TR       typical         8.640000  
+U538                      AOI22X1TR       typical         8.640000  
+U539                      AOI22X1TR       typical         8.640000  
+U540                      AOI22X1TR       typical         8.640000  
+U541                      AOI22X1TR       typical         8.640000  
+U542                      AOI22X1TR       typical         8.640000  
+U543                      AOI22X1TR       typical         8.640000  
+U544                      AOI22X1TR       typical         8.640000  
+U545                      AOI22X1TR       typical         8.640000  
+U546                      AOI22X1TR       typical         8.640000  
+U547                      AOI22X1TR       typical         8.640000  
+U548                      AOI22X1TR       typical         8.640000  
+U549                      AOI22X1TR       typical         8.640000  
+U550                      AOI22X1TR       typical         8.640000  
+U551                      AOI22X1TR       typical         8.640000  
+U552                      AOI22X1TR       typical         8.640000  
+U553                      AOI22X1TR       typical         8.640000  
+U554                      AOI22X1TR       typical         8.640000  
+U555                      AOI22X1TR       typical         8.640000  
+U556                      AOI22X1TR       typical         8.640000  
+U557                      AOI22X1TR       typical         8.640000  
+U558                      AOI22X1TR       typical         8.640000  
+U559                      AOI22X1TR       typical         8.640000  
+U560                      AOI22X1TR       typical         8.640000  
+U561                      AOI22X1TR       typical         8.640000  
+U562                      AOI22X1TR       typical         8.640000  
+U563                      AOI22X1TR       typical         8.640000  
+U564                      AOI22X1TR       typical         8.640000  
+U565                      AOI22X1TR       typical         8.640000  
+U566                      AOI22X1TR       typical         8.640000  
+U567                      AOI22X1TR       typical         8.640000  
+U568                      AOI22X1TR       typical         8.640000  
+U569                      AOI22X1TR       typical         8.640000  
+U570                      AOI22X1TR       typical         8.640000  
+U571                      AOI22X1TR       typical         8.640000  
+U572                      AOI22X1TR       typical         8.640000  
+U573                      AOI22X1TR       typical         8.640000  
+U574                      AOI22X1TR       typical         8.640000  
+U575                      AOI22X1TR       typical         8.640000  
+U576                      AOI22X1TR       typical         8.640000  
+U577                      AOI22X1TR       typical         8.640000  
+U578                      OAI22X1TR       typical         8.640000  
+U579                      OAI21X1TR       typical         7.200000  
+U580                      OAI2BB1X1TR     typical         8.640000  
+U581                      AOI21X1TR       typical         7.200000  
+U582                      OAI21X1TR       typical         7.200000  
+U583                      AOI21X1TR       typical         7.200000  
+mc_rr_arbiter_mask_reg_0_ DFFHQX4TR       typical         41.759998 n
+mc_rr_arbiter_mask_reg_1_ DFFHQX4TR       typical         41.759998 n
+mc_rr_arbiter_mask_reg_2_ DFFHQX4TR       typical         41.759998 n
+mc_rr_arbiter_mask_reg_3_ DFFHQX4TR       typical         41.759998 n
 --------------------------------------------------------------------------------
-Total 283 cells                                           2109.600082
+Total 304 cells                                           2413.440073
 1
-Warning: Design 'mc' has '1' unresolved references. For more detailed information, use the "link" command. (UID-341)
  
 ****************************************
 Report : port
         -verbose
 Design : mc
 Version: T-2022.03-SP3
-Date   : Wed Mar 22 21:59:41 2023
+Date   : Tue Mar 28 22:35:34 2023
 ****************************************
 
 
@@ -2181,662 +2163,662 @@ Input Port    Rise    Fall    Rise    Fall   Clock  Fanout
 --------------------------------------------------------------------------------
 clk_i         --      --      --      --      --      -- 
 pe2mem_reqAddr_i[0]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[1]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[2]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[3]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[4]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[5]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[6]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[7]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[8]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[9]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[10]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[11]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[12]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[13]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[14]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[15]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[16]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[17]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[18]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[19]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[20]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[21]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[22]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[23]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[24]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[25]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[26]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[27]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[28]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[29]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[30]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[31]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[32]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[33]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[34]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[35]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[36]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[37]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[38]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[39]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[40]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[41]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[42]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[43]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[44]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[45]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[46]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[47]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[48]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[49]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[50]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[51]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[52]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[53]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[54]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[55]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[56]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[57]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[58]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[59]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[60]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[61]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[62]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqAddr_i[63]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqValid_i[0]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqValid_i[1]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqValid_i[2]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_reqValid_i[3]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[0]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[1]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[2]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[3]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[4]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[5]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[6]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[7]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[8]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[9]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[10]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[11]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[12]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[13]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[14]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[15]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[16]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[17]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[18]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[19]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[20]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[21]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[22]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[23]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[24]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[25]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[26]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[27]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[28]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[29]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[30]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[31]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[32]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[33]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[34]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[35]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[36]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[37]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[38]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[39]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[40]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[41]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[42]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[43]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[44]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[45]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[46]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[47]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[48]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[49]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[50]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[51]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[52]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[53]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[54]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[55]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[56]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[57]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[58]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[59]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[60]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[61]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[62]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[63]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[64]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[65]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[66]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[67]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[68]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[69]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[70]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[71]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[72]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[73]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[74]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[75]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[76]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[77]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[78]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[79]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[80]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[81]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[82]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[83]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[84]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[85]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[86]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[87]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[88]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[89]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[90]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[91]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[92]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[93]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[94]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[95]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[96]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[97]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[98]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[99]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[100]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[101]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[102]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[103]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[104]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[105]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[106]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[107]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[108]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[109]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[110]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[111]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[112]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[113]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[114]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[115]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[116]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[117]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[118]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[119]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[120]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[121]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[122]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[123]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[124]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[125]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[126]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[127]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[128]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[129]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[130]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[131]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[132]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[133]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[134]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[135]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[136]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[137]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[138]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[139]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[140]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[141]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[142]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[143]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[144]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[145]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[146]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[147]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[148]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[149]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[150]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[151]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[152]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[153]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[154]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[155]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[156]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[157]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[158]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[159]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[160]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[161]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[162]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[163]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[164]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[165]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[166]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[167]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[168]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[169]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[170]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[171]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[172]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[173]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[174]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[175]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[176]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[177]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[178]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[179]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[180]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[181]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[182]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[183]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[184]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[185]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[186]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[187]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[188]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[189]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[190]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[191]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[192]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[193]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[194]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[195]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[196]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[197]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[198]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[199]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[200]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[201]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[202]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[203]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[204]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[205]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[206]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[207]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[208]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[209]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[210]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[211]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[212]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[213]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[214]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[215]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[216]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[217]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[218]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[219]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[220]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[221]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[222]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[223]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[224]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[225]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[226]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[227]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[228]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[229]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[230]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[231]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[232]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[233]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[234]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[235]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[236]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[237]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[238]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[239]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[240]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[241]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[242]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[243]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[244]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[245]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[246]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[247]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[248]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[249]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[250]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[251]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[252]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[253]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[254]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrData_i[255]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrEn_i[0]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrEn_i[1]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrEn_i[2]
-              0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
 pe2mem_wrEn_i[3]
-              0.10    0.10    0.10    0.10  clk_i     --    
-rst_i         0.10    0.10    0.10    0.10  clk_i     --    
+              0.15    0.15    0.15    0.15  clk_i     --    
+rst_i         0.15    0.15    0.15    0.15  clk_i     --    
 
 
                     Driving Cell
@@ -4833,186 +4815,185 @@ rst_i         --      --      --      --
 Output Port   Rise    Fall    Rise    Fall  Clock     Load
 --------------------------------------------------------------------------------
 mc2mem_addr_o[0]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_addr_o[1]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_addr_o[2]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_addr_o[3]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_addr_o[4]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_addr_o[5]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_addr_o[6]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_addr_o[7]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_addr_o[8]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_addr_o[9]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_addr_o[10]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_addr_o[11]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_addr_o[12]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_addr_o[13]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_addr_o[14]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_addr_o[15]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_command_o[0]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_command_o[1]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[0]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[1]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[2]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[3]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[4]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[5]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[6]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[7]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[8]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[9]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[10]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[11]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[12]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[13]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[14]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[15]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[16]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[17]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[18]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[19]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[20]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[21]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[22]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[23]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[24]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[25]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[26]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[27]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[28]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[29]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[30]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[31]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[32]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[33]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[34]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[35]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[36]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[37]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[38]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[39]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[40]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[41]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[42]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[43]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[44]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[45]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[46]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[47]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[48]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[49]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[50]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[51]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[52]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[53]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[54]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[55]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[56]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[57]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[58]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[59]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[60]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[61]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[62]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2mem_data_o[63]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2pe_grant_onehot_o[0]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2pe_grant_onehot_o[1]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2pe_grant_onehot_o[2]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 mc2pe_grant_onehot_o[3]
-              0.10    0.10    0.10    0.10  clk_i     0.00  
+              0.15    0.15    0.15    0.15  clk_i     0.00  
 
 1
-Warning: Design 'mc' has '1' unresolved references. For more detailed information, use the "link" command. (UID-341)
  
 ****************************************
 Report : compile_options
 Design : mc
 Version: T-2022.03-SP3
-Date   : Wed Mar 22 21:59:41 2023
+Date   : Tue Mar 28 22:35:34 2023
 ****************************************
 
 Design                                   Compile Option         Value
@@ -5028,7 +5009,6 @@ mc                                       flatten                false
                                            exclude_registers_with_timing_exceptions false
 --------------------------------------------------------------------------------
 1
-Warning: Design 'mc' has '1' unresolved references. For more detailed information, use the "link" command. (UID-341)
  
 ****************************************
 Report : constraint
@@ -5036,13 +5016,11 @@ Report : constraint
         -verbose
 Design : mc
 Version: T-2022.03-SP3
-Date   : Wed Mar 22 21:59:41 2023
+Date   : Tue Mar 28 22:35:34 2023
 ****************************************
 
-This design has no violated constraints.
 
 1
-Warning: Design 'mc' has '1' unresolved references. For more detailed information, use the "link" command. (UID-341)
  
 ****************************************
 Report : timing
@@ -5052,15 +5030,15 @@ Report : timing
         -max_paths 20
 Design : mc
 Version: T-2022.03-SP3
-Date   : Wed Mar 22 21:59:41 2023
+Date   : Tue Mar 28 22:35:34 2023
 ****************************************
 
 Operating Conditions: typical   Library: typical
 Wire Load Model Mode: segmented
 
-  Startpoint: pe2mem_wrEn_i[0]
+  Startpoint: pe2mem_reqValid_i[1]
               (input port clocked by clk_i)
-  Endpoint: mc2mem_command_o[0]
+  Endpoint: mc2mem_addr_o[15]
             (output port clocked by clk_i)
   Path Group: clk_i
   Path Type: max
@@ -5073,128 +5051,35 @@ Wire Load Model Mode: segmented
   -----------------------------------------------------------
   clock clk_i (rise edge)                  0.00       0.00
   clock network delay (ideal)              0.00       0.00
-  input external delay                     0.10       0.10 f
-  pe2mem_wrEn_i[0] (in)                    0.03       0.13 f
-  U452/Y (OAI22X1TR)                       0.18       0.31 r
-  U453/Y (AOI2BB1X1TR)                     0.27       0.58 r
-  mc2mem_command_o[0] (out)                0.00       0.58 r
-  data arrival time                                   0.58
+  input external delay                     0.15       0.15 f
+  pe2mem_reqValid_i[1] (in)                0.06       0.21 f
+  U290/Y (NAND2X1TR)                       0.19       0.40 r
+  U294/Y (CLKINVX1TR)                      0.13       0.53 f
+  U288/Y (AOI211X1TR)                      0.60       1.13 r
+  U293/Y (OAI22X1TR)                       0.24       1.37 f
+  U488/Y (INVX1TR)                         0.32       1.69 r
+  U298/Y (NAND2X1TR)                       0.21       1.90 f
+  U299/Y (CLKINVX2TR)                      0.55       2.44 r
+  U480/Y (CLKBUFX2TR)                      0.53       2.97 r
+  U461/Y (CLKBUFX2TR)                      0.54       3.51 r
+  U528/Y (AOI22X1TR)                       0.13       3.65 f
+  U326/Y (NAND2X1TR)                       0.21       3.86 r
+  mc2mem_addr_o[15] (out)                  0.00       3.86 r
+  data arrival time                                   3.86
 
   clock clk_i (rise edge)                 10.00      10.00
   clock network delay (ideal)              0.00      10.00
   clock uncertainty                       -0.10       9.90
-  output external delay                   -0.10       9.80
-  data required time                                  9.80
+  output external delay                   -0.15       9.75
+  data required time                                  9.75
   -----------------------------------------------------------
-  data required time                                  9.80
-  data arrival time                                  -0.58
+  data required time                                  9.75
+  data arrival time                                  -3.86
   -----------------------------------------------------------
-  slack (MET)                                         9.22
+  slack (MET)                                         5.89
 
 
-  Startpoint: pe2mem_wrEn_i[1]
-              (input port clocked by clk_i)
-  Endpoint: mc2mem_command_o[0]
-            (output port clocked by clk_i)
-  Path Group: clk_i
-  Path Type: max
-
-  Des/Clust/Port     Wire Load Model       Library
-  ------------------------------------------------
-  mc                 ibm13_wl10            typical
-
-  Point                                    Incr       Path
-  -----------------------------------------------------------
-  clock clk_i (rise edge)                  0.00       0.00
-  clock network delay (ideal)              0.00       0.00
-  input external delay                     0.10       0.10 f
-  pe2mem_wrEn_i[1] (in)                    0.03       0.13 f
-  U451/Y (OAI22X1TR)                       0.17       0.30 r
-  U453/Y (AOI2BB1X1TR)                     0.27       0.57 r
-  mc2mem_command_o[0] (out)                0.00       0.57 r
-  data arrival time                                   0.57
-
-  clock clk_i (rise edge)                 10.00      10.00
-  clock network delay (ideal)              0.00      10.00
-  clock uncertainty                       -0.10       9.90
-  output external delay                   -0.10       9.80
-  data required time                                  9.80
-  -----------------------------------------------------------
-  data required time                                  9.80
-  data arrival time                                  -0.57
-  -----------------------------------------------------------
-  slack (MET)                                         9.23
-
-
-  Startpoint: pe2mem_wrEn_i[3]
-              (input port clocked by clk_i)
-  Endpoint: mc2mem_command_o[0]
-            (output port clocked by clk_i)
-  Path Group: clk_i
-  Path Type: max
-
-  Des/Clust/Port     Wire Load Model       Library
-  ------------------------------------------------
-  mc                 ibm13_wl10            typical
-
-  Point                                    Incr       Path
-  -----------------------------------------------------------
-  clock clk_i (rise edge)                  0.00       0.00
-  clock network delay (ideal)              0.00       0.00
-  input external delay                     0.10       0.10 f
-  pe2mem_wrEn_i[3] (in)                    0.03       0.13 f
-  U452/Y (OAI22X1TR)                       0.16       0.29 r
-  U453/Y (AOI2BB1X1TR)                     0.27       0.56 r
-  mc2mem_command_o[0] (out)                0.00       0.56 r
-  data arrival time                                   0.56
-
-  clock clk_i (rise edge)                 10.00      10.00
-  clock network delay (ideal)              0.00      10.00
-  clock uncertainty                       -0.10       9.90
-  output external delay                   -0.10       9.80
-  data required time                                  9.80
-  -----------------------------------------------------------
-  data required time                                  9.80
-  data arrival time                                  -0.56
-  -----------------------------------------------------------
-  slack (MET)                                         9.24
-
-
-  Startpoint: pe2mem_wrEn_i[2]
-              (input port clocked by clk_i)
-  Endpoint: mc2mem_command_o[0]
-            (output port clocked by clk_i)
-  Path Group: clk_i
-  Path Type: max
-
-  Des/Clust/Port     Wire Load Model       Library
-  ------------------------------------------------
-  mc                 ibm13_wl10            typical
-
-  Point                                    Incr       Path
-  -----------------------------------------------------------
-  clock clk_i (rise edge)                  0.00       0.00
-  clock network delay (ideal)              0.00       0.00
-  input external delay                     0.10       0.10 f
-  pe2mem_wrEn_i[2] (in)                    0.03       0.13 f
-  U451/Y (OAI22X1TR)                       0.16       0.29 r
-  U453/Y (AOI2BB1X1TR)                     0.27       0.55 r
-  mc2mem_command_o[0] (out)                0.00       0.55 r
-  data arrival time                                   0.55
-
-  clock clk_i (rise edge)                 10.00      10.00
-  clock network delay (ideal)              0.00      10.00
-  clock uncertainty                       -0.10       9.90
-  output external delay                   -0.10       9.80
-  data required time                                  9.80
-  -----------------------------------------------------------
-  data required time                                  9.80
-  data arrival time                                  -0.55
-  -----------------------------------------------------------
-  slack (MET)                                         9.25
-
-
-  Startpoint: pe2mem_wrEn_i[2]
+  Startpoint: pe2mem_reqValid_i[1]
               (input port clocked by clk_i)
   Endpoint: mc2mem_command_o[1]
             (output port clocked by clk_i)
@@ -5209,28 +5094,37 @@ Wire Load Model Mode: segmented
   -----------------------------------------------------------
   clock clk_i (rise edge)                  0.00       0.00
   clock network delay (ideal)              0.00       0.00
-  input external delay                     0.10       0.10 r
-  pe2mem_wrEn_i[2] (in)                    0.07       0.17 r
-  U454/Y (AOI22X1TR)                       0.10       0.27 f
-  U455/Y (AOI21X1TR)                       0.27       0.53 r
-  mc2mem_command_o[1] (out)                0.00       0.53 r
-  data arrival time                                   0.53
+  input external delay                     0.15       0.15 f
+  pe2mem_reqValid_i[1] (in)                0.06       0.21 f
+  U290/Y (NAND2X1TR)                       0.19       0.40 r
+  U294/Y (CLKINVX1TR)                      0.13       0.53 f
+  U288/Y (AOI211X1TR)                      0.60       1.13 r
+  U293/Y (OAI22X1TR)                       0.24       1.37 f
+  U488/Y (INVX1TR)                         0.32       1.69 r
+  U298/Y (NAND2X1TR)                       0.21       1.90 f
+  U299/Y (CLKINVX2TR)                      0.55       2.44 r
+  U480/Y (CLKBUFX2TR)                      0.53       2.97 r
+  U447/Y (CLKBUFX2TR)                      0.54       3.51 r
+  U521/Y (AOI22X1TR)                       0.13       3.65 f
+  U348/Y (NAND2X1TR)                       0.21       3.86 r
+  mc2mem_command_o[1] (out)                0.00       3.86 r
+  data arrival time                                   3.86
 
   clock clk_i (rise edge)                 10.00      10.00
   clock network delay (ideal)              0.00      10.00
   clock uncertainty                       -0.10       9.90
-  output external delay                   -0.10       9.80
-  data required time                                  9.80
+  output external delay                   -0.15       9.75
+  data required time                                  9.75
   -----------------------------------------------------------
-  data required time                                  9.80
-  data arrival time                                  -0.53
+  data required time                                  9.75
+  data arrival time                                  -3.86
   -----------------------------------------------------------
-  slack (MET)                                         9.27
+  slack (MET)                                         5.89
 
 
-  Startpoint: pe2mem_wrEn_i[0]
+  Startpoint: pe2mem_reqValid_i[1]
               (input port clocked by clk_i)
-  Endpoint: mc2mem_command_o[1]
+  Endpoint: mc2mem_addr_o[12]
             (output port clocked by clk_i)
   Path Group: clk_i
   Path Type: max
@@ -5243,28 +5137,37 @@ Wire Load Model Mode: segmented
   -----------------------------------------------------------
   clock clk_i (rise edge)                  0.00       0.00
   clock network delay (ideal)              0.00       0.00
-  input external delay                     0.10       0.10 r
-  pe2mem_wrEn_i[0] (in)                    0.07       0.17 r
-  U6/Y (AOI22X1TR)                         0.10       0.26 f
-  U455/Y (AOI21X1TR)                       0.26       0.53 r
-  mc2mem_command_o[1] (out)                0.00       0.53 r
-  data arrival time                                   0.53
+  input external delay                     0.15       0.15 f
+  pe2mem_reqValid_i[1] (in)                0.06       0.21 f
+  U290/Y (NAND2X1TR)                       0.19       0.40 r
+  U294/Y (CLKINVX1TR)                      0.13       0.53 f
+  U288/Y (AOI211X1TR)                      0.60       1.13 r
+  U293/Y (OAI22X1TR)                       0.24       1.37 f
+  U488/Y (INVX1TR)                         0.32       1.69 r
+  U298/Y (NAND2X1TR)                       0.21       1.90 f
+  U299/Y (CLKINVX2TR)                      0.55       2.44 r
+  U480/Y (CLKBUFX2TR)                      0.53       2.97 r
+  U461/Y (CLKBUFX2TR)                      0.54       3.51 r
+  U536/Y (AOI22X1TR)                       0.13       3.65 f
+  U345/Y (NAND2X1TR)                       0.21       3.85 r
+  mc2mem_addr_o[12] (out)                  0.00       3.85 r
+  data arrival time                                   3.85
 
   clock clk_i (rise edge)                 10.00      10.00
   clock network delay (ideal)              0.00      10.00
   clock uncertainty                       -0.10       9.90
-  output external delay                   -0.10       9.80
-  data required time                                  9.80
+  output external delay                   -0.15       9.75
+  data required time                                  9.75
   -----------------------------------------------------------
-  data required time                                  9.80
-  data arrival time                                  -0.53
+  data required time                                  9.75
+  data arrival time                                  -3.85
   -----------------------------------------------------------
-  slack (MET)                                         9.27
+  slack (MET)                                         5.90
 
 
-  Startpoint: pe2mem_wrEn_i[1]
+  Startpoint: pe2mem_reqValid_i[1]
               (input port clocked by clk_i)
-  Endpoint: mc2mem_command_o[1]
+  Endpoint: mc2mem_addr_o[11]
             (output port clocked by clk_i)
   Path Group: clk_i
   Path Type: max
@@ -5277,400 +5180,35 @@ Wire Load Model Mode: segmented
   -----------------------------------------------------------
   clock clk_i (rise edge)                  0.00       0.00
   clock network delay (ideal)              0.00       0.00
-  input external delay                     0.10       0.10 r
-  pe2mem_wrEn_i[1] (in)                    0.07       0.17 r
-  U454/Y (AOI22X1TR)                       0.09       0.25 f
-  U455/Y (AOI21X1TR)                       0.27       0.52 r
-  mc2mem_command_o[1] (out)                0.00       0.52 r
-  data arrival time                                   0.52
+  input external delay                     0.15       0.15 f
+  pe2mem_reqValid_i[1] (in)                0.06       0.21 f
+  U290/Y (NAND2X1TR)                       0.19       0.40 r
+  U294/Y (CLKINVX1TR)                      0.13       0.53 f
+  U288/Y (AOI211X1TR)                      0.60       1.13 r
+  U293/Y (OAI22X1TR)                       0.24       1.37 f
+  U488/Y (INVX1TR)                         0.32       1.69 r
+  U298/Y (NAND2X1TR)                       0.21       1.90 f
+  U299/Y (CLKINVX2TR)                      0.55       2.44 r
+  U480/Y (CLKBUFX2TR)                      0.53       2.97 r
+  U453/Y (CLKBUFX2TR)                      0.54       3.51 r
+  U535/Y (AOI22X1TR)                       0.13       3.65 f
+  U367/Y (NAND2X1TR)                       0.21       3.85 r
+  mc2mem_addr_o[11] (out)                  0.00       3.85 r
+  data arrival time                                   3.85
 
   clock clk_i (rise edge)                 10.00      10.00
   clock network delay (ideal)              0.00      10.00
   clock uncertainty                       -0.10       9.90
-  output external delay                   -0.10       9.80
-  data required time                                  9.80
+  output external delay                   -0.15       9.75
+  data required time                                  9.75
   -----------------------------------------------------------
-  data required time                                  9.80
-  data arrival time                                  -0.52
+  data required time                                  9.75
+  data arrival time                                  -3.85
   -----------------------------------------------------------
-  slack (MET)                                         9.28
+  slack (MET)                                         5.90
 
 
-  Startpoint: pe2mem_wrEn_i[3]
-              (input port clocked by clk_i)
-  Endpoint: mc2mem_command_o[1]
-            (output port clocked by clk_i)
-  Path Group: clk_i
-  Path Type: max
-
-  Des/Clust/Port     Wire Load Model       Library
-  ------------------------------------------------
-  mc                 ibm13_wl10            typical
-
-  Point                                    Incr       Path
-  -----------------------------------------------------------
-  clock clk_i (rise edge)                  0.00       0.00
-  clock network delay (ideal)              0.00       0.00
-  input external delay                     0.10       0.10 r
-  pe2mem_wrEn_i[3] (in)                    0.07       0.17 r
-  U6/Y (AOI22X1TR)                         0.08       0.25 f
-  U455/Y (AOI21X1TR)                       0.26       0.51 r
-  mc2mem_command_o[1] (out)                0.00       0.51 r
-  data arrival time                                   0.51
-
-  clock clk_i (rise edge)                 10.00      10.00
-  clock network delay (ideal)              0.00      10.00
-  clock uncertainty                       -0.10       9.90
-  output external delay                   -0.10       9.80
-  data required time                                  9.80
-  -----------------------------------------------------------
-  data required time                                  9.80
-  data arrival time                                  -0.51
-  -----------------------------------------------------------
-  slack (MET)                                         9.29
-
-
-  Startpoint: pe2mem_wrEn_i[0]
-              (input port clocked by clk_i)
-  Endpoint: mc2mem_command_o[0]
-            (output port clocked by clk_i)
-  Path Group: clk_i
-  Path Type: max
-
-  Des/Clust/Port     Wire Load Model       Library
-  ------------------------------------------------
-  mc                 ibm13_wl10            typical
-
-  Point                                    Incr       Path
-  -----------------------------------------------------------
-  clock clk_i (rise edge)                  0.00       0.00
-  clock network delay (ideal)              0.00       0.00
-  input external delay                     0.10       0.10 r
-  pe2mem_wrEn_i[0] (in)                    0.07       0.17 r
-  U452/Y (OAI22X1TR)                       0.09       0.26 f
-  U453/Y (AOI2BB1X1TR)                     0.23       0.49 f
-  mc2mem_command_o[0] (out)                0.00       0.49 f
-  data arrival time                                   0.49
-
-  clock clk_i (rise edge)                 10.00      10.00
-  clock network delay (ideal)              0.00      10.00
-  clock uncertainty                       -0.10       9.90
-  output external delay                   -0.10       9.80
-  data required time                                  9.80
-  -----------------------------------------------------------
-  data required time                                  9.80
-  data arrival time                                  -0.49
-  -----------------------------------------------------------
-  slack (MET)                                         9.31
-
-
-  Startpoint: pe2mem_wrEn_i[2]
-              (input port clocked by clk_i)
-  Endpoint: mc2mem_command_o[0]
-            (output port clocked by clk_i)
-  Path Group: clk_i
-  Path Type: max
-
-  Des/Clust/Port     Wire Load Model       Library
-  ------------------------------------------------
-  mc                 ibm13_wl10            typical
-
-  Point                                    Incr       Path
-  -----------------------------------------------------------
-  clock clk_i (rise edge)                  0.00       0.00
-  clock network delay (ideal)              0.00       0.00
-  input external delay                     0.10       0.10 r
-  pe2mem_wrEn_i[2] (in)                    0.07       0.17 r
-  U451/Y (OAI22X1TR)                       0.09       0.26 f
-  U453/Y (AOI2BB1X1TR)                     0.23       0.49 f
-  mc2mem_command_o[0] (out)                0.00       0.49 f
-  data arrival time                                   0.49
-
-  clock clk_i (rise edge)                 10.00      10.00
-  clock network delay (ideal)              0.00      10.00
-  clock uncertainty                       -0.10       9.90
-  output external delay                   -0.10       9.80
-  data required time                                  9.80
-  -----------------------------------------------------------
-  data required time                                  9.80
-  data arrival time                                  -0.49
-  -----------------------------------------------------------
-  slack (MET)                                         9.31
-
-
-  Startpoint: pe2mem_wrEn_i[1]
-              (input port clocked by clk_i)
-  Endpoint: mc2mem_command_o[0]
-            (output port clocked by clk_i)
-  Path Group: clk_i
-  Path Type: max
-
-  Des/Clust/Port     Wire Load Model       Library
-  ------------------------------------------------
-  mc                 ibm13_wl10            typical
-
-  Point                                    Incr       Path
-  -----------------------------------------------------------
-  clock clk_i (rise edge)                  0.00       0.00
-  clock network delay (ideal)              0.00       0.00
-  input external delay                     0.10       0.10 r
-  pe2mem_wrEn_i[1] (in)                    0.07       0.17 r
-  U451/Y (OAI22X1TR)                       0.09       0.26 f
-  U453/Y (AOI2BB1X1TR)                     0.23       0.49 f
-  mc2mem_command_o[0] (out)                0.00       0.49 f
-  data arrival time                                   0.49
-
-  clock clk_i (rise edge)                 10.00      10.00
-  clock network delay (ideal)              0.00      10.00
-  clock uncertainty                       -0.10       9.90
-  output external delay                   -0.10       9.80
-  data required time                                  9.80
-  -----------------------------------------------------------
-  data required time                                  9.80
-  data arrival time                                  -0.49
-  -----------------------------------------------------------
-  slack (MET)                                         9.31
-
-
-  Startpoint: pe2mem_wrEn_i[3]
-              (input port clocked by clk_i)
-  Endpoint: mc2mem_command_o[0]
-            (output port clocked by clk_i)
-  Path Group: clk_i
-  Path Type: max
-
-  Des/Clust/Port     Wire Load Model       Library
-  ------------------------------------------------
-  mc                 ibm13_wl10            typical
-
-  Point                                    Incr       Path
-  -----------------------------------------------------------
-  clock clk_i (rise edge)                  0.00       0.00
-  clock network delay (ideal)              0.00       0.00
-  input external delay                     0.10       0.10 r
-  pe2mem_wrEn_i[3] (in)                    0.07       0.17 r
-  U452/Y (OAI22X1TR)                       0.09       0.26 f
-  U453/Y (AOI2BB1X1TR)                     0.23       0.49 f
-  mc2mem_command_o[0] (out)                0.00       0.49 f
-  data arrival time                                   0.49
-
-  clock clk_i (rise edge)                 10.00      10.00
-  clock network delay (ideal)              0.00      10.00
-  clock uncertainty                       -0.10       9.90
-  output external delay                   -0.10       9.80
-  data required time                                  9.80
-  -----------------------------------------------------------
-  data required time                                  9.80
-  data arrival time                                  -0.49
-  -----------------------------------------------------------
-  slack (MET)                                         9.31
-
-
-  Startpoint: pe2mem_wrEn_i[0]
-              (input port clocked by clk_i)
-  Endpoint: mc2mem_command_o[1]
-            (output port clocked by clk_i)
-  Path Group: clk_i
-  Path Type: max
-
-  Des/Clust/Port     Wire Load Model       Library
-  ------------------------------------------------
-  mc                 ibm13_wl10            typical
-
-  Point                                    Incr       Path
-  -----------------------------------------------------------
-  clock clk_i (rise edge)                  0.00       0.00
-  clock network delay (ideal)              0.00       0.00
-  input external delay                     0.10       0.10 f
-  pe2mem_wrEn_i[0] (in)                    0.03       0.13 f
-  U6/Y (AOI22X1TR)                         0.19       0.32 r
-  U455/Y (AOI21X1TR)                       0.15       0.46 f
-  mc2mem_command_o[1] (out)                0.00       0.46 f
-  data arrival time                                   0.46
-
-  clock clk_i (rise edge)                 10.00      10.00
-  clock network delay (ideal)              0.00      10.00
-  clock uncertainty                       -0.10       9.90
-  output external delay                   -0.10       9.80
-  data required time                                  9.80
-  -----------------------------------------------------------
-  data required time                                  9.80
-  data arrival time                                  -0.46
-  -----------------------------------------------------------
-  slack (MET)                                         9.34
-
-
-  Startpoint: pe2mem_wrEn_i[2]
-              (input port clocked by clk_i)
-  Endpoint: mc2mem_command_o[1]
-            (output port clocked by clk_i)
-  Path Group: clk_i
-  Path Type: max
-
-  Des/Clust/Port     Wire Load Model       Library
-  ------------------------------------------------
-  mc                 ibm13_wl10            typical
-
-  Point                                    Incr       Path
-  -----------------------------------------------------------
-  clock clk_i (rise edge)                  0.00       0.00
-  clock network delay (ideal)              0.00       0.00
-  input external delay                     0.10       0.10 f
-  pe2mem_wrEn_i[2] (in)                    0.03       0.13 f
-  U454/Y (AOI22X1TR)                       0.19       0.32 r
-  U455/Y (AOI21X1TR)                       0.14       0.46 f
-  mc2mem_command_o[1] (out)                0.00       0.46 f
-  data arrival time                                   0.46
-
-  clock clk_i (rise edge)                 10.00      10.00
-  clock network delay (ideal)              0.00      10.00
-  clock uncertainty                       -0.10       9.90
-  output external delay                   -0.10       9.80
-  data required time                                  9.80
-  -----------------------------------------------------------
-  data required time                                  9.80
-  data arrival time                                  -0.46
-  -----------------------------------------------------------
-  slack (MET)                                         9.34
-
-
-  Startpoint: pe2mem_wrEn_i[3]
-              (input port clocked by clk_i)
-  Endpoint: mc2mem_command_o[1]
-            (output port clocked by clk_i)
-  Path Group: clk_i
-  Path Type: max
-
-  Des/Clust/Port     Wire Load Model       Library
-  ------------------------------------------------
-  mc                 ibm13_wl10            typical
-
-  Point                                    Incr       Path
-  -----------------------------------------------------------
-  clock clk_i (rise edge)                  0.00       0.00
-  clock network delay (ideal)              0.00       0.00
-  input external delay                     0.10       0.10 f
-  pe2mem_wrEn_i[3] (in)                    0.03       0.13 f
-  U6/Y (AOI22X1TR)                         0.17       0.30 r
-  U455/Y (AOI21X1TR)                       0.15       0.45 f
-  mc2mem_command_o[1] (out)                0.00       0.45 f
-  data arrival time                                   0.45
-
-  clock clk_i (rise edge)                 10.00      10.00
-  clock network delay (ideal)              0.00      10.00
-  clock uncertainty                       -0.10       9.90
-  output external delay                   -0.10       9.80
-  data required time                                  9.80
-  -----------------------------------------------------------
-  data required time                                  9.80
-  data arrival time                                  -0.45
-  -----------------------------------------------------------
-  slack (MET)                                         9.35
-
-
-  Startpoint: pe2mem_reqAddr_i[5]
-              (input port clocked by clk_i)
-  Endpoint: mc2mem_addr_o[5]
-            (output port clocked by clk_i)
-  Path Group: clk_i
-  Path Type: max
-
-  Des/Clust/Port     Wire Load Model       Library
-  ------------------------------------------------
-  mc                 ibm13_wl10            typical
-
-  Point                                    Incr       Path
-  -----------------------------------------------------------
-  clock clk_i (rise edge)                  0.00       0.00
-  clock network delay (ideal)              0.00       0.00
-  input external delay                     0.10       0.10 r
-  pe2mem_reqAddr_i[5] (in)                 0.03       0.13 r
-  U378/Y (AOI22X1TR)                       0.08       0.22 f
-  U379/Y (NAND2X1TR)                       0.22       0.44 r
-  mc2mem_addr_o[5] (out)                   0.00       0.44 r
-  data arrival time                                   0.44
-
-  clock clk_i (rise edge)                 10.00      10.00
-  clock network delay (ideal)              0.00      10.00
-  clock uncertainty                       -0.10       9.90
-  output external delay                   -0.10       9.80
-  data required time                                  9.80
-  -----------------------------------------------------------
-  data required time                                  9.80
-  data arrival time                                  -0.44
-  -----------------------------------------------------------
-  slack (MET)                                         9.36
-
-
-  Startpoint: pe2mem_reqAddr_i[3]
-              (input port clocked by clk_i)
-  Endpoint: mc2mem_addr_o[3]
-            (output port clocked by clk_i)
-  Path Group: clk_i
-  Path Type: max
-
-  Des/Clust/Port     Wire Load Model       Library
-  ------------------------------------------------
-  mc                 ibm13_wl10            typical
-
-  Point                                    Incr       Path
-  -----------------------------------------------------------
-  clock clk_i (rise edge)                  0.00       0.00
-  clock network delay (ideal)              0.00       0.00
-  input external delay                     0.10       0.10 r
-  pe2mem_reqAddr_i[3] (in)                 0.03       0.13 r
-  U364/Y (AOI22X1TR)                       0.08       0.22 f
-  U365/Y (NAND2X1TR)                       0.22       0.44 r
-  mc2mem_addr_o[3] (out)                   0.00       0.44 r
-  data arrival time                                   0.44
-
-  clock clk_i (rise edge)                 10.00      10.00
-  clock network delay (ideal)              0.00      10.00
-  clock uncertainty                       -0.10       9.90
-  output external delay                   -0.10       9.80
-  data required time                                  9.80
-  -----------------------------------------------------------
-  data required time                                  9.80
-  data arrival time                                  -0.44
-  -----------------------------------------------------------
-  slack (MET)                                         9.36
-
-
-  Startpoint: pe2mem_reqAddr_i[46]
-              (input port clocked by clk_i)
-  Endpoint: mc2mem_addr_o[14]
-            (output port clocked by clk_i)
-  Path Group: clk_i
-  Path Type: max
-
-  Des/Clust/Port     Wire Load Model       Library
-  ------------------------------------------------
-  mc                 ibm13_wl10            typical
-
-  Point                                    Incr       Path
-  -----------------------------------------------------------
-  clock clk_i (rise edge)                  0.00       0.00
-  clock network delay (ideal)              0.00       0.00
-  input external delay                     0.10       0.10 f
-  pe2mem_reqAddr_i[46] (in)                0.01       0.11 f
-  U22/Y (AOI22X1TR)                        0.19       0.30 r
-  U391/Y (NAND2X1TR)                       0.14       0.44 f
-  mc2mem_addr_o[14] (out)                  0.00       0.44 f
-  data arrival time                                   0.44
-
-  clock clk_i (rise edge)                 10.00      10.00
-  clock network delay (ideal)              0.00      10.00
-  clock uncertainty                       -0.10       9.90
-  output external delay                   -0.10       9.80
-  data required time                                  9.80
-  -----------------------------------------------------------
-  data required time                                  9.80
-  data arrival time                                  -0.44
-  -----------------------------------------------------------
-  slack (MET)                                         9.36
-
-
-  Startpoint: pe2mem_reqAddr_i[42]
+  Startpoint: pe2mem_reqValid_i[1]
               (input port clocked by clk_i)
   Endpoint: mc2mem_addr_o[10]
             (output port clocked by clk_i)
@@ -5685,26 +5223,164 @@ Wire Load Model Mode: segmented
   -----------------------------------------------------------
   clock clk_i (rise edge)                  0.00       0.00
   clock network delay (ideal)              0.00       0.00
-  input external delay                     0.10       0.10 f
-  pe2mem_reqAddr_i[42] (in)                0.01       0.11 f
-  U34/Y (AOI22X1TR)                        0.19       0.30 r
-  U381/Y (NAND2X1TR)                       0.14       0.44 f
-  mc2mem_addr_o[10] (out)                  0.00       0.44 f
-  data arrival time                                   0.44
+  input external delay                     0.15       0.15 f
+  pe2mem_reqValid_i[1] (in)                0.06       0.21 f
+  U290/Y (NAND2X1TR)                       0.19       0.40 r
+  U294/Y (CLKINVX1TR)                      0.13       0.53 f
+  U288/Y (AOI211X1TR)                      0.60       1.13 r
+  U293/Y (OAI22X1TR)                       0.24       1.37 f
+  U488/Y (INVX1TR)                         0.32       1.69 r
+  U298/Y (NAND2X1TR)                       0.21       1.90 f
+  U299/Y (CLKINVX2TR)                      0.55       2.44 r
+  U480/Y (CLKBUFX2TR)                      0.53       2.97 r
+  U447/Y (CLKBUFX2TR)                      0.54       3.51 r
+  U541/Y (AOI22X1TR)                       0.13       3.65 f
+  U323/Y (NAND2X1TR)                       0.21       3.85 r
+  mc2mem_addr_o[10] (out)                  0.00       3.85 r
+  data arrival time                                   3.85
 
   clock clk_i (rise edge)                 10.00      10.00
   clock network delay (ideal)              0.00      10.00
   clock uncertainty                       -0.10       9.90
-  output external delay                   -0.10       9.80
-  data required time                                  9.80
+  output external delay                   -0.15       9.75
+  data required time                                  9.75
   -----------------------------------------------------------
-  data required time                                  9.80
-  data arrival time                                  -0.44
+  data required time                                  9.75
+  data arrival time                                  -3.85
   -----------------------------------------------------------
-  slack (MET)                                         9.36
+  slack (MET)                                         5.90
 
 
-  Startpoint: pe2mem_reqAddr_i[34]
+  Startpoint: pe2mem_reqValid_i[1]
+              (input port clocked by clk_i)
+  Endpoint: mc2mem_addr_o[9]
+            (output port clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  mc                 ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_i (rise edge)                  0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.15       0.15 f
+  pe2mem_reqValid_i[1] (in)                0.06       0.21 f
+  U290/Y (NAND2X1TR)                       0.19       0.40 r
+  U294/Y (CLKINVX1TR)                      0.13       0.53 f
+  U288/Y (AOI211X1TR)                      0.60       1.13 r
+  U293/Y (OAI22X1TR)                       0.24       1.37 f
+  U488/Y (INVX1TR)                         0.32       1.69 r
+  U298/Y (NAND2X1TR)                       0.21       1.90 f
+  U299/Y (CLKINVX2TR)                      0.55       2.44 r
+  U480/Y (CLKBUFX2TR)                      0.53       2.97 r
+  U461/Y (CLKBUFX2TR)                      0.54       3.51 r
+  U542/Y (AOI22X1TR)                       0.13       3.65 f
+  U301/Y (NAND2X1TR)                       0.21       3.85 r
+  mc2mem_addr_o[9] (out)                   0.00       3.85 r
+  data arrival time                                   3.85
+
+  clock clk_i (rise edge)                 10.00      10.00
+  clock network delay (ideal)              0.00      10.00
+  clock uncertainty                       -0.10       9.90
+  output external delay                   -0.15       9.75
+  data required time                                  9.75
+  -----------------------------------------------------------
+  data required time                                  9.75
+  data arrival time                                  -3.85
+  -----------------------------------------------------------
+  slack (MET)                                         5.90
+
+
+  Startpoint: pe2mem_reqValid_i[1]
+              (input port clocked by clk_i)
+  Endpoint: mc2mem_addr_o[5]
+            (output port clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  mc                 ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_i (rise edge)                  0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.15       0.15 f
+  pe2mem_reqValid_i[1] (in)                0.06       0.21 f
+  U290/Y (NAND2X1TR)                       0.19       0.40 r
+  U294/Y (CLKINVX1TR)                      0.13       0.53 f
+  U288/Y (AOI211X1TR)                      0.60       1.13 r
+  U293/Y (OAI22X1TR)                       0.24       1.37 f
+  U488/Y (INVX1TR)                         0.32       1.69 r
+  U298/Y (NAND2X1TR)                       0.21       1.90 f
+  U299/Y (CLKINVX2TR)                      0.55       2.44 r
+  U480/Y (CLKBUFX2TR)                      0.53       2.97 r
+  U453/Y (CLKBUFX2TR)                      0.54       3.51 r
+  U540/Y (AOI22X1TR)                       0.13       3.65 f
+  U338/Y (NAND2X1TR)                       0.21       3.85 r
+  mc2mem_addr_o[5] (out)                   0.00       3.85 r
+  data arrival time                                   3.85
+
+  clock clk_i (rise edge)                 10.00      10.00
+  clock network delay (ideal)              0.00      10.00
+  clock uncertainty                       -0.10       9.90
+  output external delay                   -0.15       9.75
+  data required time                                  9.75
+  -----------------------------------------------------------
+  data required time                                  9.75
+  data arrival time                                  -3.85
+  -----------------------------------------------------------
+  slack (MET)                                         5.90
+
+
+  Startpoint: pe2mem_reqValid_i[1]
+              (input port clocked by clk_i)
+  Endpoint: mc2mem_addr_o[4]
+            (output port clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  mc                 ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_i (rise edge)                  0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.15       0.15 f
+  pe2mem_reqValid_i[1] (in)                0.06       0.21 f
+  U290/Y (NAND2X1TR)                       0.19       0.40 r
+  U294/Y (CLKINVX1TR)                      0.13       0.53 f
+  U288/Y (AOI211X1TR)                      0.60       1.13 r
+  U293/Y (OAI22X1TR)                       0.24       1.37 f
+  U488/Y (INVX1TR)                         0.32       1.69 r
+  U298/Y (NAND2X1TR)                       0.21       1.90 f
+  U299/Y (CLKINVX2TR)                      0.55       2.44 r
+  U480/Y (CLKBUFX2TR)                      0.53       2.97 r
+  U461/Y (CLKBUFX2TR)                      0.54       3.51 r
+  U534/Y (AOI22X1TR)                       0.13       3.65 f
+  U349/Y (NAND2X1TR)                       0.21       3.85 r
+  mc2mem_addr_o[4] (out)                   0.00       3.85 r
+  data arrival time                                   3.85
+
+  clock clk_i (rise edge)                 10.00      10.00
+  clock network delay (ideal)              0.00      10.00
+  clock uncertainty                       -0.10       9.90
+  output external delay                   -0.15       9.75
+  data required time                                  9.75
+  -----------------------------------------------------------
+  data required time                                  9.75
+  data arrival time                                  -3.85
+  -----------------------------------------------------------
+  slack (MET)                                         5.90
+
+
+  Startpoint: pe2mem_reqValid_i[1]
               (input port clocked by clk_i)
   Endpoint: mc2mem_addr_o[2]
             (output port clocked by clk_i)
@@ -5719,23 +5395,505 @@ Wire Load Model Mode: segmented
   -----------------------------------------------------------
   clock clk_i (rise edge)                  0.00       0.00
   clock network delay (ideal)              0.00       0.00
-  input external delay                     0.10       0.10 f
-  pe2mem_reqAddr_i[34] (in)                0.01       0.11 f
-  U58/Y (AOI22X1TR)                        0.19       0.30 r
-  U304/Y (NAND2X1TR)                       0.14       0.44 f
-  mc2mem_addr_o[2] (out)                   0.00       0.44 f
-  data arrival time                                   0.44
+  input external delay                     0.15       0.15 f
+  pe2mem_reqValid_i[1] (in)                0.06       0.21 f
+  U290/Y (NAND2X1TR)                       0.19       0.40 r
+  U294/Y (CLKINVX1TR)                      0.13       0.53 f
+  U288/Y (AOI211X1TR)                      0.60       1.13 r
+  U293/Y (OAI22X1TR)                       0.24       1.37 f
+  U488/Y (INVX1TR)                         0.32       1.69 r
+  U298/Y (NAND2X1TR)                       0.21       1.90 f
+  U299/Y (CLKINVX2TR)                      0.55       2.44 r
+  U480/Y (CLKBUFX2TR)                      0.53       2.97 r
+  U447/Y (CLKBUFX2TR)                      0.54       3.51 r
+  U524/Y (AOI22X1TR)                       0.13       3.65 f
+  U351/Y (NAND2X1TR)                       0.21       3.85 r
+  mc2mem_addr_o[2] (out)                   0.00       3.85 r
+  data arrival time                                   3.85
 
   clock clk_i (rise edge)                 10.00      10.00
   clock network delay (ideal)              0.00      10.00
   clock uncertainty                       -0.10       9.90
-  output external delay                   -0.10       9.80
-  data required time                                  9.80
+  output external delay                   -0.15       9.75
+  data required time                                  9.75
   -----------------------------------------------------------
-  data required time                                  9.80
-  data arrival time                                  -0.44
+  data required time                                  9.75
+  data arrival time                                  -3.85
   -----------------------------------------------------------
-  slack (MET)                                         9.36
+  slack (MET)                                         5.90
+
+
+  Startpoint: pe2mem_reqValid_i[1]
+              (input port clocked by clk_i)
+  Endpoint: mc2mem_addr_o[1]
+            (output port clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  mc                 ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_i (rise edge)                  0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.15       0.15 f
+  pe2mem_reqValid_i[1] (in)                0.06       0.21 f
+  U290/Y (NAND2X1TR)                       0.19       0.40 r
+  U294/Y (CLKINVX1TR)                      0.13       0.53 f
+  U288/Y (AOI211X1TR)                      0.60       1.13 r
+  U293/Y (OAI22X1TR)                       0.24       1.37 f
+  U488/Y (INVX1TR)                         0.32       1.69 r
+  U298/Y (NAND2X1TR)                       0.21       1.90 f
+  U299/Y (CLKINVX2TR)                      0.55       2.44 r
+  U480/Y (CLKBUFX2TR)                      0.53       2.97 r
+  U453/Y (CLKBUFX2TR)                      0.54       3.51 r
+  U526/Y (AOI22X1TR)                       0.13       3.65 f
+  U330/Y (NAND2X1TR)                       0.21       3.85 r
+  mc2mem_addr_o[1] (out)                   0.00       3.85 r
+  data arrival time                                   3.85
+
+  clock clk_i (rise edge)                 10.00      10.00
+  clock network delay (ideal)              0.00      10.00
+  clock uncertainty                       -0.10       9.90
+  output external delay                   -0.15       9.75
+  data required time                                  9.75
+  -----------------------------------------------------------
+  data required time                                  9.75
+  data arrival time                                  -3.85
+  -----------------------------------------------------------
+  slack (MET)                                         5.90
+
+
+  Startpoint: pe2mem_reqValid_i[1]
+              (input port clocked by clk_i)
+  Endpoint: mc2mem_addr_o[0]
+            (output port clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  mc                 ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_i (rise edge)                  0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.15       0.15 f
+  pe2mem_reqValid_i[1] (in)                0.06       0.21 f
+  U290/Y (NAND2X1TR)                       0.19       0.40 r
+  U294/Y (CLKINVX1TR)                      0.13       0.53 f
+  U288/Y (AOI211X1TR)                      0.60       1.13 r
+  U293/Y (OAI22X1TR)                       0.24       1.37 f
+  U488/Y (INVX1TR)                         0.32       1.69 r
+  U298/Y (NAND2X1TR)                       0.21       1.90 f
+  U299/Y (CLKINVX2TR)                      0.55       2.44 r
+  U480/Y (CLKBUFX2TR)                      0.53       2.97 r
+  U461/Y (CLKBUFX2TR)                      0.54       3.51 r
+  U395/Y (AOI22X1TR)                       0.13       3.65 f
+  U303/Y (NAND2X1TR)                       0.21       3.85 r
+  mc2mem_addr_o[0] (out)                   0.00       3.85 r
+  data arrival time                                   3.85
+
+  clock clk_i (rise edge)                 10.00      10.00
+  clock network delay (ideal)              0.00      10.00
+  clock uncertainty                       -0.10       9.90
+  output external delay                   -0.15       9.75
+  data required time                                  9.75
+  -----------------------------------------------------------
+  data required time                                  9.75
+  data arrival time                                  -3.85
+  -----------------------------------------------------------
+  slack (MET)                                         5.90
+
+
+  Startpoint: pe2mem_reqValid_i[1]
+              (input port clocked by clk_i)
+  Endpoint: mc2mem_data_o[16]
+            (output port clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  mc                 ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_i (rise edge)                  0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.15       0.15 f
+  pe2mem_reqValid_i[1] (in)                0.06       0.21 f
+  U290/Y (NAND2X1TR)                       0.19       0.40 r
+  U294/Y (CLKINVX1TR)                      0.13       0.53 f
+  U288/Y (AOI211X1TR)                      0.60       1.13 r
+  U293/Y (OAI22X1TR)                       0.24       1.37 f
+  U488/Y (INVX1TR)                         0.32       1.69 r
+  U298/Y (NAND2X1TR)                       0.21       1.90 f
+  U299/Y (CLKINVX2TR)                      0.55       2.44 r
+  U480/Y (CLKBUFX2TR)                      0.53       2.97 r
+  U461/Y (CLKBUFX2TR)                      0.54       3.51 r
+  U425/Y (AOI22X1TR)                       0.13       3.65 f
+  U361/Y (NAND2X1TR)                       0.21       3.85 r
+  mc2mem_data_o[16] (out)                  0.00       3.85 r
+  data arrival time                                   3.85
+
+  clock clk_i (rise edge)                 10.00      10.00
+  clock network delay (ideal)              0.00      10.00
+  clock uncertainty                       -0.10       9.90
+  output external delay                   -0.15       9.75
+  data required time                                  9.75
+  -----------------------------------------------------------
+  data required time                                  9.75
+  data arrival time                                  -3.85
+  -----------------------------------------------------------
+  slack (MET)                                         5.90
+
+
+  Startpoint: pe2mem_reqValid_i[1]
+              (input port clocked by clk_i)
+  Endpoint: mc2mem_data_o[14]
+            (output port clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  mc                 ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_i (rise edge)                  0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.15       0.15 f
+  pe2mem_reqValid_i[1] (in)                0.06       0.21 f
+  U290/Y (NAND2X1TR)                       0.19       0.40 r
+  U294/Y (CLKINVX1TR)                      0.13       0.53 f
+  U288/Y (AOI211X1TR)                      0.60       1.13 r
+  U293/Y (OAI22X1TR)                       0.24       1.37 f
+  U488/Y (INVX1TR)                         0.32       1.69 r
+  U298/Y (NAND2X1TR)                       0.21       1.90 f
+  U299/Y (CLKINVX2TR)                      0.55       2.44 r
+  U480/Y (CLKBUFX2TR)                      0.53       2.97 r
+  U453/Y (CLKBUFX2TR)                      0.54       3.51 r
+  U440/Y (AOI22X1TR)                       0.13       3.65 f
+  U337/Y (NAND2X1TR)                       0.21       3.85 r
+  mc2mem_data_o[14] (out)                  0.00       3.85 r
+  data arrival time                                   3.85
+
+  clock clk_i (rise edge)                 10.00      10.00
+  clock network delay (ideal)              0.00      10.00
+  clock uncertainty                       -0.10       9.90
+  output external delay                   -0.15       9.75
+  data required time                                  9.75
+  -----------------------------------------------------------
+  data required time                                  9.75
+  data arrival time                                  -3.85
+  -----------------------------------------------------------
+  slack (MET)                                         5.90
+
+
+  Startpoint: pe2mem_reqValid_i[1]
+              (input port clocked by clk_i)
+  Endpoint: mc2mem_data_o[13]
+            (output port clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  mc                 ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_i (rise edge)                  0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.15       0.15 f
+  pe2mem_reqValid_i[1] (in)                0.06       0.21 f
+  U290/Y (NAND2X1TR)                       0.19       0.40 r
+  U294/Y (CLKINVX1TR)                      0.13       0.53 f
+  U288/Y (AOI211X1TR)                      0.60       1.13 r
+  U293/Y (OAI22X1TR)                       0.24       1.37 f
+  U488/Y (INVX1TR)                         0.32       1.69 r
+  U298/Y (NAND2X1TR)                       0.21       1.90 f
+  U299/Y (CLKINVX2TR)                      0.55       2.44 r
+  U480/Y (CLKBUFX2TR)                      0.53       2.97 r
+  U447/Y (CLKBUFX2TR)                      0.54       3.51 r
+  U424/Y (AOI22X1TR)                       0.13       3.65 f
+  U322/Y (NAND2X1TR)                       0.21       3.85 r
+  mc2mem_data_o[13] (out)                  0.00       3.85 r
+  data arrival time                                   3.85
+
+  clock clk_i (rise edge)                 10.00      10.00
+  clock network delay (ideal)              0.00      10.00
+  clock uncertainty                       -0.10       9.90
+  output external delay                   -0.15       9.75
+  data required time                                  9.75
+  -----------------------------------------------------------
+  data required time                                  9.75
+  data arrival time                                  -3.85
+  -----------------------------------------------------------
+  slack (MET)                                         5.90
+
+
+  Startpoint: pe2mem_reqValid_i[1]
+              (input port clocked by clk_i)
+  Endpoint: mc2mem_data_o[11]
+            (output port clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  mc                 ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_i (rise edge)                  0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.15       0.15 f
+  pe2mem_reqValid_i[1] (in)                0.06       0.21 f
+  U290/Y (NAND2X1TR)                       0.19       0.40 r
+  U294/Y (CLKINVX1TR)                      0.13       0.53 f
+  U288/Y (AOI211X1TR)                      0.60       1.13 r
+  U293/Y (OAI22X1TR)                       0.24       1.37 f
+  U488/Y (INVX1TR)                         0.32       1.69 r
+  U298/Y (NAND2X1TR)                       0.21       1.90 f
+  U299/Y (CLKINVX2TR)                      0.55       2.44 r
+  U480/Y (CLKBUFX2TR)                      0.53       2.97 r
+  U447/Y (CLKBUFX2TR)                      0.54       3.51 r
+  U430/Y (AOI22X1TR)                       0.13       3.65 f
+  U305/Y (NAND2X1TR)                       0.21       3.85 r
+  mc2mem_data_o[11] (out)                  0.00       3.85 r
+  data arrival time                                   3.85
+
+  clock clk_i (rise edge)                 10.00      10.00
+  clock network delay (ideal)              0.00      10.00
+  clock uncertainty                       -0.10       9.90
+  output external delay                   -0.15       9.75
+  data required time                                  9.75
+  -----------------------------------------------------------
+  data required time                                  9.75
+  data arrival time                                  -3.85
+  -----------------------------------------------------------
+  slack (MET)                                         5.90
+
+
+  Startpoint: pe2mem_reqValid_i[1]
+              (input port clocked by clk_i)
+  Endpoint: mc2mem_data_o[10]
+            (output port clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  mc                 ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_i (rise edge)                  0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.15       0.15 f
+  pe2mem_reqValid_i[1] (in)                0.06       0.21 f
+  U290/Y (NAND2X1TR)                       0.19       0.40 r
+  U294/Y (CLKINVX1TR)                      0.13       0.53 f
+  U288/Y (AOI211X1TR)                      0.60       1.13 r
+  U293/Y (OAI22X1TR)                       0.24       1.37 f
+  U488/Y (INVX1TR)                         0.32       1.69 r
+  U298/Y (NAND2X1TR)                       0.21       1.90 f
+  U299/Y (CLKINVX2TR)                      0.55       2.44 r
+  U480/Y (CLKBUFX2TR)                      0.53       2.97 r
+  U461/Y (CLKBUFX2TR)                      0.54       3.51 r
+  U435/Y (AOI22X1TR)                       0.13       3.65 f
+  U304/Y (NAND2X1TR)                       0.21       3.85 r
+  mc2mem_data_o[10] (out)                  0.00       3.85 r
+  data arrival time                                   3.85
+
+  clock clk_i (rise edge)                 10.00      10.00
+  clock network delay (ideal)              0.00      10.00
+  clock uncertainty                       -0.10       9.90
+  output external delay                   -0.15       9.75
+  data required time                                  9.75
+  -----------------------------------------------------------
+  data required time                                  9.75
+  data arrival time                                  -3.85
+  -----------------------------------------------------------
+  slack (MET)                                         5.90
+
+
+  Startpoint: pe2mem_reqValid_i[1]
+              (input port clocked by clk_i)
+  Endpoint: mc2mem_data_o[9]
+            (output port clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  mc                 ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_i (rise edge)                  0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.15       0.15 f
+  pe2mem_reqValid_i[1] (in)                0.06       0.21 f
+  U290/Y (NAND2X1TR)                       0.19       0.40 r
+  U294/Y (CLKINVX1TR)                      0.13       0.53 f
+  U288/Y (AOI211X1TR)                      0.60       1.13 r
+  U293/Y (OAI22X1TR)                       0.24       1.37 f
+  U488/Y (INVX1TR)                         0.32       1.69 r
+  U298/Y (NAND2X1TR)                       0.21       1.90 f
+  U299/Y (CLKINVX2TR)                      0.55       2.44 r
+  U480/Y (CLKBUFX2TR)                      0.53       2.97 r
+  U461/Y (CLKBUFX2TR)                      0.54       3.51 r
+  U436/Y (AOI22X1TR)                       0.13       3.65 f
+  U333/Y (NAND2X1TR)                       0.21       3.85 r
+  mc2mem_data_o[9] (out)                   0.00       3.85 r
+  data arrival time                                   3.85
+
+  clock clk_i (rise edge)                 10.00      10.00
+  clock network delay (ideal)              0.00      10.00
+  clock uncertainty                       -0.10       9.90
+  output external delay                   -0.15       9.75
+  data required time                                  9.75
+  -----------------------------------------------------------
+  data required time                                  9.75
+  data arrival time                                  -3.85
+  -----------------------------------------------------------
+  slack (MET)                                         5.90
+
+
+  Startpoint: pe2mem_reqValid_i[1]
+              (input port clocked by clk_i)
+  Endpoint: mc2mem_data_o[4]
+            (output port clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  mc                 ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_i (rise edge)                  0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.15       0.15 f
+  pe2mem_reqValid_i[1] (in)                0.06       0.21 f
+  U290/Y (NAND2X1TR)                       0.19       0.40 r
+  U294/Y (CLKINVX1TR)                      0.13       0.53 f
+  U288/Y (AOI211X1TR)                      0.60       1.13 r
+  U293/Y (OAI22X1TR)                       0.24       1.37 f
+  U488/Y (INVX1TR)                         0.32       1.69 r
+  U298/Y (NAND2X1TR)                       0.21       1.90 f
+  U299/Y (CLKINVX2TR)                      0.55       2.44 r
+  U480/Y (CLKBUFX2TR)                      0.53       2.97 r
+  U447/Y (CLKBUFX2TR)                      0.54       3.51 r
+  U421/Y (AOI22X1TR)                       0.13       3.65 f
+  U340/Y (NAND2X1TR)                       0.21       3.85 r
+  mc2mem_data_o[4] (out)                   0.00       3.85 r
+  data arrival time                                   3.85
+
+  clock clk_i (rise edge)                 10.00      10.00
+  clock network delay (ideal)              0.00      10.00
+  clock uncertainty                       -0.10       9.90
+  output external delay                   -0.15       9.75
+  data required time                                  9.75
+  -----------------------------------------------------------
+  data required time                                  9.75
+  data arrival time                                  -3.85
+  -----------------------------------------------------------
+  slack (MET)                                         5.90
+
+
+  Startpoint: pe2mem_reqValid_i[1]
+              (input port clocked by clk_i)
+  Endpoint: mc2mem_data_o[3]
+            (output port clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  mc                 ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_i (rise edge)                  0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.15       0.15 f
+  pe2mem_reqValid_i[1] (in)                0.06       0.21 f
+  U290/Y (NAND2X1TR)                       0.19       0.40 r
+  U294/Y (CLKINVX1TR)                      0.13       0.53 f
+  U288/Y (AOI211X1TR)                      0.60       1.13 r
+  U293/Y (OAI22X1TR)                       0.24       1.37 f
+  U488/Y (INVX1TR)                         0.32       1.69 r
+  U298/Y (NAND2X1TR)                       0.21       1.90 f
+  U299/Y (CLKINVX2TR)                      0.55       2.44 r
+  U480/Y (CLKBUFX2TR)                      0.53       2.97 r
+  U447/Y (CLKBUFX2TR)                      0.54       3.51 r
+  U432/Y (AOI22X1TR)                       0.13       3.65 f
+  U369/Y (NAND2X1TR)                       0.21       3.85 r
+  mc2mem_data_o[3] (out)                   0.00       3.85 r
+  data arrival time                                   3.85
+
+  clock clk_i (rise edge)                 10.00      10.00
+  clock network delay (ideal)              0.00      10.00
+  clock uncertainty                       -0.10       9.90
+  output external delay                   -0.15       9.75
+  data required time                                  9.75
+  -----------------------------------------------------------
+  data required time                                  9.75
+  data arrival time                                  -3.85
+  -----------------------------------------------------------
+  slack (MET)                                         5.90
+
+
+  Startpoint: pe2mem_reqValid_i[1]
+              (input port clocked by clk_i)
+  Endpoint: mc2mem_data_o[1]
+            (output port clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  mc                 ibm13_wl10            typical
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_i (rise edge)                  0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.15       0.15 f
+  pe2mem_reqValid_i[1] (in)                0.06       0.21 f
+  U290/Y (NAND2X1TR)                       0.19       0.40 r
+  U294/Y (CLKINVX1TR)                      0.13       0.53 f
+  U288/Y (AOI211X1TR)                      0.60       1.13 r
+  U293/Y (OAI22X1TR)                       0.24       1.37 f
+  U488/Y (INVX1TR)                         0.32       1.69 r
+  U298/Y (NAND2X1TR)                       0.21       1.90 f
+  U299/Y (CLKINVX2TR)                      0.55       2.44 r
+  U480/Y (CLKBUFX2TR)                      0.53       2.97 r
+  U453/Y (CLKBUFX2TR)                      0.54       3.51 r
+  U433/Y (AOI22X1TR)                       0.13       3.65 f
+  U364/Y (NAND2X1TR)                       0.21       3.85 r
+  mc2mem_data_o[1] (out)                   0.00       3.85 r
+  data arrival time                                   3.85
+
+  clock clk_i (rise edge)                 10.00      10.00
+  clock network delay (ideal)              0.00      10.00
+  clock uncertainty                       -0.10       9.90
+  output external delay                   -0.15       9.75
+  data required time                                  9.75
+  -----------------------------------------------------------
+  data required time                                  9.75
+  data arrival time                                  -3.85
+  -----------------------------------------------------------
+  slack (MET)                                         5.90
 
 
 1

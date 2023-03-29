@@ -28,8 +28,8 @@ set_operating_conditions "typical" -library "typical"
 set_wire_load_model -name "ibm13_wl10" -library "typical" 
 set_wire_load_mode "segmented" 
 
-set typical_input_delay 0.100
-set typical_output_delay 0.100
+set typical_input_delay 0.15
+set typical_output_delay 0.15
 set typical_wire_load 0.010 
 
 # Link the design
