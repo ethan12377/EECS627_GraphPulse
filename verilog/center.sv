@@ -63,7 +63,7 @@ module center #(
     output  logic                                         readEn_o          ,
     output  logic                                         initialFinish_o   ,
 
-    input   logic [`PE_NUM_OF_CORES*`XLEN-1 : 0]        pe2vm_reqAddr_i,
+    input   logic [`PE_NUM_OF_CORES*8-1 : 0]        pe2vm_reqAddr_i,
     input   logic [`PE_NUM_OF_CORES*64-1 : 0]           pe2vm_wrData_i,
     input   logic [`PE_NUM_OF_CORES-1:0]                pe2vm_reqValid_i,
     input   logic [`PE_NUM_OF_CORES-1:0]                pe2vm_wrEn_i,
@@ -72,7 +72,7 @@ module center #(
     output  BUS_COMMAND                                 mc2vm_command_o,
     output  logic [`PE_NUM_OF_CORES-1:0]                vm2pe_grant_onehot_o,
 
-    input   logic [`PE_NUM_OF_CORES*`XLEN-1 : 0]        pe2em_reqAddr_i,
+    input   logic [`PE_NUM_OF_CORES*14-1 : 0]        pe2em_reqAddr_i,
     input   logic [`PE_NUM_OF_CORES-1:0]                pe2em_reqValid_i,
     output  logic [`XLEN-1:0]                           mc2em_addr_o,
     output  logic [63:0]                                mc2em_data_o,
@@ -118,25 +118,6 @@ module center #(
     logic   [C_OUTPUT_NUM-1:0]                             IssValid_o      ;
     logic   [C_OUTPUT_NUM-1:0]                             IssReady_i      ;
 
-    // to vertex mem controller
-    logic [`PE_NUM_OF_CORES-1:0][`XLEN-1:0]                  pe_vertex_reqAddr;
-    logic [`PE_NUM_OF_CORES-1:0]                             pe_vertex_reqValid;
-    logic [`PE_NUM_OF_CORES-1:0][`DELTA_WIDTH-1:0]           pe_wrData;
-    logic [`PE_NUM_OF_CORES-1:0]                             pe_wrEn;
-    // to edge mem controller
-    logic [`PE_NUM_OF_CORES-1:0][`XLEN-1:0]                  pe_edge_reqAddr;
-    logic [`PE_NUM_OF_CORES-1:0]                             pe_edge_reqValid;
-    // flattened 2d arrays for MC
-    logic [`PE_NUM_OF_CORES*`XLEN-1 : 0] pe2vm_reqAddr_1d, pe2em_reqAddr_1d;
-    logic [`PE_NUM_OF_CORES*64-1 : 0]    pe2vm_wrData_1d;
-    generate
-        for (genvar i = 0; i < `PE_NUM_OF_CORES; i = i + 1)
-        begin
-            assign pe2vm_reqAddr_1d[`XLEN*(i+1)-1 : `XLEN*i] = pe_vertex_reqAddr[i];
-            assign pe2em_reqAddr_1d[`XLEN*(i+1)-1 : `XLEN*i] = pe_edge_reqAddr[i];
-            assign pe2vm_wrData_1d[64*(i+1)-1 : 64*i] = {48'd0, pe_wrData[i]};
-        end
-    endgenerate
     logic [`PE_NUM_OF_CORES-1:0] vm2pe_grant_onehot, em2pe_grant_onehot;
 
 // ====================================================================
@@ -224,10 +205,17 @@ module center #(
 // Module name  :   mc_vm
 // Description  :   vertexmem controller
 // --------------------------------------------------------------------
+    logic [`PE_NUM_OF_CORES*`XLEN-1 : 0]        pe2vm_reqAddr_padded;
+    generate
+        for (genvar i = 0; i < `PE_NUM_OF_CORES; i = i + 1)
+        begin
+            assign pe2vm_reqAddr_padded[`XLEN*(i+1)-1 : `XLEN*i] = {8'b0, pe2vm_reqAddr_i[8*(i+1)-1 : 8*i]};
+        end
+    endgenerate
     mc mc_vm (
         .clk_i                  (clk_i),
         .rst_i                  (rst_i),
-        .pe2mem_reqAddr_i       (pe2vm_reqAddr_i),
+        .pe2mem_reqAddr_i       (pe2vm_reqAddr_padded),
         .pe2mem_wrData_i        (pe2vm_wrData_i),
         .pe2mem_reqValid_i      (pe2vm_reqValid_i),
         .pe2mem_wrEn_i          (pe2vm_wrEn_i),
@@ -242,10 +230,17 @@ module center #(
 // Module name  :   mc_em
 // Description  :   edgemem controller
 // --------------------------------------------------------------------
+    logic [`PE_NUM_OF_CORES*`XLEN-1 : 0]        pe2em_reqAddr_padded;
+    generate
+        for (genvar i = 0; i < `PE_NUM_OF_CORES; i = i + 1)
+        begin
+            assign pe2em_reqAddr_padded[`XLEN*(i+1)-1 : `XLEN*i] = {2'b0, pe2em_reqAddr_i[14*(i+1)-1 : 14*i]};
+        end
+    endgenerate
     mc mc_em (
         .clk_i                  (clk_i),
         .rst_i                  (rst_i),
-        .pe2mem_reqAddr_i       (pe2em_reqAddr_i),
+        .pe2mem_reqAddr_i       (pe2em_reqAddr_padded),
         .pe2mem_wrData_i        ('x), // read only
         .pe2mem_reqValid_i      (pe2em_reqValid_i),
         .pe2mem_wrEn_i          ('0), // read only

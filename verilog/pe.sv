@@ -46,12 +46,12 @@ module pe #(
     output  logic [`VERTEX_IDX_WIDTH-1:0]           ProIdx1_o,
     output  logic                                   ProValid1_o,
     // to vertex mem controller
-    output  logic [`XLEN-1:0]                       pe_vertex_reqAddr_o,
+    output  logic [7:0]                             pe_vertex_reqAddr_o,
     output  logic                                   pe_vertex_reqValid_o,
     output  logic [`DELTA_WIDTH-1:0]                pe_wrData_o,
     output  logic                                   pe_wrEn_o,
     // to edge mem controller
-    output logic [`XLEN-1:0]                        pe_edge_reqAddr_o,
+    output logic [13:0]                             pe_edge_reqAddr_o,
     output logic                                    pe_edge_reqValid_o
 );
 
@@ -134,9 +134,9 @@ module pe #(
     logic [1:0]                             ProValid_n;
     logic [1:0][`DELTA_WIDTH-1:0]           ProDelta_n;
     logic [1:0][`VERTEX_IDX_WIDTH-1:0]      ProIdx_n;
-    logic [`XLEN-1:0]                       pe_vertex_reqAddr_n;
+    logic [7:0]                             pe_vertex_reqAddr_n;
     logic [`DELTA_WIDTH-1:0]                pe_wrData_n;
-    logic [`XLEN-1:0]                       pe_edge_reqAddr_n;
+    logic [13:0]                       pe_edge_reqAddr_n;
     
 // ====================================================================
 // Signal Declarations End
@@ -471,7 +471,7 @@ module pe #(
                     if (curr_delta_n > C_THRESHOLD)
                     begin
                         // request start index from edgemem
-                        pe_edge_reqAddr_n = {2'b00, 1'b1, 7'b0, curr_idx_n[7:2]};
+                        pe_edge_reqAddr_n = {1'b1, 7'b0, curr_idx_n[7:2]};
                         pe_edge_reqValid_n = 1'b1;
                         em_req_status_n = EM_START;
                         // calculate d * delta to prepare for propagate calculation
@@ -543,7 +543,7 @@ module pe #(
                         end
                         else // start and end are not in the same word, send edgemem request for end
                         begin
-                            pe_edge_reqAddr_n = {2'b00, 1'b1, 7'b0, curr_idx_n[7:2]} + 1;
+                            pe_edge_reqAddr_n = {1'b1, 7'b0, curr_idx_n[7:2]} + 1;
                             pe_edge_reqValid_n = 1'b1;
                             em_req_status_n = EM_END;
                         end

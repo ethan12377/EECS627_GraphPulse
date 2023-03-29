@@ -64,21 +64,22 @@ module GraphPulse (
 
     ///// PE <---> MC /////
     // to vertex mem controller
-    logic [`PE_NUM_OF_CORES-1:0][`XLEN-1:0]                  pe_vertex_reqAddr;
+    logic [`PE_NUM_OF_CORES-1:0][7:0]                        pe_vertex_reqAddr;
     logic [`PE_NUM_OF_CORES-1:0]                             pe_vertex_reqValid;
     logic [`PE_NUM_OF_CORES-1:0][`DELTA_WIDTH-1:0]           pe_wrData;
     logic [`PE_NUM_OF_CORES-1:0]                             pe_wrEn;
     // to edge mem controller
-    logic [`PE_NUM_OF_CORES-1:0][`XLEN-1:0]                  pe_edge_reqAddr;
+    logic [`PE_NUM_OF_CORES-1:0][13:0]                       pe_edge_reqAddr;
     logic [`PE_NUM_OF_CORES-1:0]                             pe_edge_reqValid;
     // flattened 2d arrays for MC
-    logic [`PE_NUM_OF_CORES*`XLEN-1 : 0] pe2vm_reqAddr_1d, pe2em_reqAddr_1d;
+    logic [`PE_NUM_OF_CORES*8-1 : 0] pe2vm_reqAddr_1d;
+    logic [`PE_NUM_OF_CORES*14-1 : 0] pe2em_reqAddr_1d;
     logic [`PE_NUM_OF_CORES*64-1 : 0]    pe2vm_wrData_1d;
     generate
         for (genvar i = 0; i < `PE_NUM_OF_CORES; i = i + 1)
         begin
-            assign pe2vm_reqAddr_1d[`XLEN*(i+1)-1 : `XLEN*i] = pe_vertex_reqAddr[i];
-            assign pe2em_reqAddr_1d[`XLEN*(i+1)-1 : `XLEN*i] = pe_edge_reqAddr[i];
+            assign pe2vm_reqAddr_1d[8*(i+1)-1 : 8*i] = pe_vertex_reqAddr[i];
+            assign pe2em_reqAddr_1d[14*(i+1)-1 : 14*i] = pe_edge_reqAddr[i];
             assign pe2vm_wrData_1d[64*(i+1)-1 : 64*i] = {48'd0, pe_wrData[i]};
         end
     endgenerate
