@@ -32,11 +32,11 @@ module center #(
     // input   logic   [C_INPUT_NUM*C_DELTA_WIDTH-1:0]             IssDelta_i  ,
     // input   logic   [C_INPUT_NUM*C_VERTEX_IDX_WIDTH-1:0]        IssIdx_i    ,
     input   logic   [C_ROW_IDX_WIDTH-1:0]                       rowIdx_up_i    ,
-    input   logic   [C_BIN_IDX_WIDTH-1:0]                       binIdx_up_i    ,
+    input   logic   [C_BIN_IDX_WIDTH-2:0]                       binIdx_up_i    ,
     input   logic   [C_INPUT_NUM*C_DELTA_WIDTH-1:0]             rowDelta_up_i  ,
     input   logic                                               rowValid_up_i  ,
     input   logic   [C_ROW_IDX_WIDTH-1:0]                       rowIdx_down_i    ,
-    input   logic   [C_BIN_IDX_WIDTH-1:0]                       binIdx_down_i    ,
+    input   logic   [C_BIN_IDX_WIDTH-2:0]                       binIdx_down_i    ,
     input   logic   [C_INPUT_NUM*C_DELTA_WIDTH-1:0]             rowDelta_down_i  ,
     input   logic                                               rowValid_down_i  ,
     output  logic                                               rowReady_o  ,
@@ -93,7 +93,7 @@ module center #(
 // Signal Declarations Start
 // ====================================================================
     logic   [C_ROW_IDX_WIDTH-1:0]                          rowIdx_i        ;
-    logic   [C_BIN_IDX_WIDTH-1:0]                          binIdx_i        ;
+    logic   [C_BIN_IDX_WIDTH-2:0]                          binIdx_i        ;
     logic   [C_INPUT_NUM*C_DELTA_WIDTH-1:0]                rowDelta_i      ;
     logic                                                  rowValid_i      ;
 

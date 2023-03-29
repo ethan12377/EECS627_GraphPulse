@@ -51,7 +51,7 @@ module GraphPulse (
 
     ///// Q <---> OB /////
     logic   [`ROW_IDX_WIDTH-1:0]                    rowIdx, rowIdx_up, rowIdx_down;
-    logic   [`BIN_IDX_WIDTH-1:0]                    binIdx, binIdx_up, binIdx_down;
+    logic   [`BIN_IDX_WIDTH-2:0]                    binIdx, binIdx_up, binIdx_down;
     logic   [`COL_NUM*`DELTA_WIDTH-1:0]             rowDelta, rowDelta_up, rowDelta_down;
     logic                                           rowValid, rowValid_up, rowValid_down;
     logic                                           rowReady    ;

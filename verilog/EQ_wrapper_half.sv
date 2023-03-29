@@ -37,7 +37,7 @@ module EQ_wrapper_half #(
 
     // Interface with output_buffer
     output  logic   [C_ROW_IDX_WIDTH-1:0]                   rowIdx_o        ,
-    output  logic   [C_BIN_IDX_WIDTH-1:0]                   binIdx_o        ,
+    output  logic   [C_BIN_IDX_WIDTH-2:0]                   binIdx_o        ,
     output  logic   [C_COL_NUM*C_DELTA_WIDTH-1:0]           rowDelta_o      ,
     output  logic                                           rowValid_o      ,
     input   logic                                           rowReady_i

@@ -21,7 +21,7 @@ module output_buffer #(
     input   logic                                               rst_i           ,   //  Reset
     
     input   logic   [C_ROW_IDX_WIDTH-1:0]                       rowIdx_i        ,
-    input   logic   [C_BIN_IDX_WIDTH-1:0]                       binIdx_i        ,
+    input   logic   [C_BIN_IDX_WIDTH-2:0]                       binIdx_i        ,
     input   logic   [C_INPUT_NUM-1:0][C_DELTA_WIDTH-1:0]        rowDelta_i      ,
     input   logic                                               rowValid_i      ,
     output  logic                                               rowReady_o      ,
