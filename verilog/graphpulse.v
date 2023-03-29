@@ -247,6 +247,8 @@ module GraphPulse (
                 ////////// INPUTS //////////
                 .clk_i                      (clock),
                 .rst_i                      (reset),
+                // PE ID
+                .pe_id_i                    (i),
                 // num of vertices
                 .num_of_vertices_float16_i  (num_of_vertices_float16),
                 .num_of_vertices_int8_i     (num_of_vertices_int8),
