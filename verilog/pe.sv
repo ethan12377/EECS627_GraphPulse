@@ -92,8 +92,8 @@ module pe (
     logic [`DELTA_WIDTH-1:0] fpu_opA, fpu_opB, fpu_result;
     logic [`DELTA_WIDTH-1:0] fpu_opA_n, fpu_opB_n;
     logic [1:0] fpu_op, fpu_status_i, fpu_status_o;
-    logic [1:0] fpu_op_n, fpu_status_i_n;
-    logic fpu_empty, fpu_clear;
+    logic [1:0] fpu_op_n, fpu_status_i_n; 
+    logic fpu_empty, fpu_clear, fpu_occupied; // 1-bit occupied logic to avoid conflict in RUW state between "update" and prodelta calculation
 
     // converter
     logic [15:0] converter_int16, converter_float16;
@@ -198,12 +198,12 @@ module pe (
     assign em_acked_n                   = (em_req_status_n == EM_IDLE) ? 1'b0 :              // default while em is idle
                                           (edgemem_ack_i) ? 1'b1 :                           // capture ack while em ack_i
                                           (edgemem_tag_i == curr_em_tag) ? 1'b0 : em_acked; // clear em_acked when previous req fulfilled
-    assign curr_vm_tag_n                = (vm_req_status_n == VM_IDLE) ? 'x : 
+    assign curr_vm_tag_n                = (vm_req_status_n == VM_IDLE) ? '0 : 
                                           (vertexmem_ack_i) ? vertexmem_resp_i : 
-                                          (vertexmem_tag_i == curr_vm_tag) ? 'x : curr_vm_tag;
-    assign curr_em_tag_n                = (em_req_status_n == EM_IDLE) ? 'x : 
+                                          (vertexmem_tag_i == curr_vm_tag) ? '0 : curr_vm_tag;
+    assign curr_em_tag_n                = (em_req_status_n == EM_IDLE) ? '0 : 
                                           (edgemem_ack_i) ? edgemem_resp_i :
-                                          (edgemem_tag_i == curr_em_tag) ? 'x : curr_em_tag;
+                                          (edgemem_tag_i == curr_em_tag) ? '0 : curr_em_tag;
 
     // ----------------------------------------------------------------
     // Status Registers
@@ -240,8 +240,8 @@ module pe (
             // mem req status registers
             em_req_status                   <= EM_IDLE;
             vm_req_status                   <= VM_IDLE;
-            curr_vm_tag                     <= 'x;
-            curr_em_tag                     <= 'x;
+            curr_vm_tag                     <= '0;
+            curr_em_tag                     <= '0;
             vm_acked                        <= 1'b0;
             em_acked                        <= 1'b0;
             // evgen registers
@@ -431,8 +431,11 @@ module pe (
         fpu_opB_n                           = '0;
         fpu_op_n                            = `FPU_ADD;
         fpu_status_i_n                      = '0;
+        fpu_occupied                        = 1'b0;
         ////////// converter input //////////
         converter_int16                     = '0;
+        // state
+        next_state = curr_state;
               
         // FSM output behavior definition
         case(curr_state)
@@ -515,7 +518,7 @@ module pe (
             S_RUW: begin
 
                 // check vertexmem request
-                if (vertexmem_tag_i == curr_vm_tag)
+                if ((vertexmem_tag_i == curr_vm_tag) && (vertexmem_tag_i != 0))
                 begin
                     if (vm_req_status_n == VM_READ) // read fulfilled
                     begin
@@ -525,6 +528,7 @@ module pe (
                         fpu_opB_n = curr_delta;
                         fpu_op_n = `FPU_ADD;
                         fpu_status_i_n = 2'd1;
+                        fpu_occupied = 1'b1;
                     end
                     else if (vm_req_status_n == VM_WRITE) // write fulfilled
                     begin
@@ -541,7 +545,7 @@ module pe (
                 end
 
                 // check edge mem request
-                if (edgemem_tag_i == curr_em_tag)
+                if ((edgemem_tag_i == curr_em_tag) && (edgemem_tag_i != 0))
                 begin
                     if (em_req_status_n == EM_START) // read start fulfilled
                     begin
@@ -624,7 +628,7 @@ module pe (
                 end
 
                 // check if ready to calculate prodelta denominator
-                if (adj_list_start_ready_n && adj_list_end_ready_n && ~curr_prodelta_denom_ready_n)
+                if (adj_list_start_ready_n && adj_list_end_ready_n && ~curr_prodelta_denom_ready)
                 begin
                     if (adj_list_start_n == adj_list_end_n) // sink detected, distribute pagerank among all other vertices
                     begin
@@ -642,7 +646,8 @@ module pe (
                 end
 
                 // check if ready to calculate prodelta
-                if (curr_prodelta_denom_ready_n && curr_prodelta_numerator_ready_n && fpu_status_i_n == 2'd0) // need to make sure prodelta does not overwrite other calculations
+                // if (curr_prodelta_denom_ready_n && curr_prodelta_numerator_ready_n && fpu_status_i_n == 2'd0) // need to make sure prodelta does not overwrite other calculations
+                if (curr_prodelta_denom_ready_n && curr_prodelta_numerator_ready_n && ~fpu_occupied)
                 begin
                     fpu_opA_n = curr_prodelta_numerator_n;
                     fpu_opB_n = curr_prodelta_denom_n;
@@ -669,7 +674,7 @@ module pe (
                 // hold write request to vertexmem when ruw is not completed
                 if (~ruw_complete)
                 begin
-                    if (vertexmem_tag_i == curr_vm_tag) // write request completed by vertexmem
+                    if ((vertexmem_tag_i == curr_vm_tag) && (vertexmem_tag_i != 0)) // write request completed by vertexmem
                     begin
                         vm_req_status_n = VM_IDLE;
                         ruw_complete_n = 1;
@@ -692,7 +697,7 @@ module pe (
                 end
 
                 // check edgemem request
-                if (edgemem_tag_i == curr_em_tag)
+                if ((edgemem_tag_i == curr_em_tag) && (edgemem_tag_i != 0))
                 begin
                     if (em_req_status_n == EM_WORD) // col index word read fulfilled
                     begin
