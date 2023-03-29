@@ -5,6 +5,7 @@
 //  Description :  unit testbench for pe module                        // 
 //                                                                     //
 /////////////////////////////////////////////////////////////////////////
+`define SYN
 
 module pe_tb ();
 
@@ -145,6 +146,10 @@ module pe_tb ();
                 .pe_edge_reqAddr_o          (pe_edge_reqAddr[i]),
                 .pe_edge_reqValid_o         (pe_edge_reqValid[i])
             );
+            `ifdef SYN
+                initial $sdf_annotate("../syn/pe.syn.sdf", dut);
+                initial $sdf_annotate("../syn/fpu.syn.sdf", dut.pe_fpu);
+            `endif
         end
     endgenerate
 
@@ -258,7 +263,7 @@ module pe_tb ();
     integer cycle_num, timeout_cycle_num;
     initial begin
         cycle_num = 0;
-        timeout_cycle_num = 10000;
+        timeout_cycle_num = 30000;
         // clock generation
         clk_i = 1'b0;
         // initialize memory content

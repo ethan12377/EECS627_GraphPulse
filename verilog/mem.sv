@@ -45,7 +45,8 @@ module mem (
 	always @(negedge clk) begin
 		next_mem2proc_tag      = 4'b0;
 		next_mem2proc_response = 4'b0;
-		next_mem2proc_data     = 64'bx;
+		next_mem2proc_data     = 64'b0;
+		// next_mem2proc_data     = 64'bx;
 		bus_filled             = 1'b0;
 		acquire_tag            = ((proc2mem_command == BUS_LOAD) ||
 		                          (proc2mem_command == BUS_STORE)) && valid_address;
@@ -92,7 +93,8 @@ module mem (
 		for(int i=0; i<`MEM_64BIT_LINES; i=i+1) begin
 			unified_memory[i] = 64'h0;
 		end
-		mem2proc_data=64'bx;
+		// mem2proc_data=64'bx;
+		mem2proc_data=64'b0;
 		mem2proc_tag=4'd0;
 		mem2proc_response=4'd0;
 		for(int i=1;i<=`NUM_MEM_TAGS;i=i+1) begin

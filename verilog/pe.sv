@@ -520,7 +520,7 @@ module pe (
                 // check vertexmem request
                 if ((vertexmem_tag_i == curr_vm_tag) && (vertexmem_tag_i != 0))
                 begin
-                    if (vm_req_status_n == VM_READ) // read fulfilled
+                    if (vm_req_status == VM_READ) // read fulfilled
                     begin
                         vm_req_status_n = VM_IDLE;
                         // send data into fpu
@@ -530,7 +530,7 @@ module pe (
                         fpu_status_i_n = 2'd1;
                         fpu_occupied = 1'b1;
                     end
-                    else if (vm_req_status_n == VM_WRITE) // write fulfilled
+                    else if (vm_req_status == VM_WRITE) // write fulfilled
                     begin
                         vm_req_status_n = VM_IDLE;
                         ruw_complete_n = 1'b1;
@@ -547,7 +547,7 @@ module pe (
                 // check edge mem request
                 if ((edgemem_tag_i == curr_em_tag) && (edgemem_tag_i != 0))
                 begin
-                    if (em_req_status_n == EM_START) // read start fulfilled
+                    if (em_req_status == EM_START) // read start fulfilled
                     begin
                         // store start
                         adj_list_start_n = (curr_idx[1:0] == 2'd0) ? edgemem_data_i[15:0] : 
@@ -579,7 +579,7 @@ module pe (
                             em_req_status_n = EM_END;
                         end
                     end
-                    else if (em_req_status_n == EM_END) // read end fulfilled
+                    else if (em_req_status == EM_END) // read end fulfilled
                     begin
                         adj_list_end_n = edgemem_data_i[15:0];
                         adj_list_end_ready_n = 1'b1;
@@ -593,7 +593,7 @@ module pe (
                         end
                         else em_req_status_n = EM_IDLE;
                     end
-                    else if (em_req_status_n == EM_WORD) // read col index word fulfilled
+                    else if (em_req_status == EM_WORD) // read col index word fulfilled
                     begin
                         curr_col_idx_word_n = edgemem_data_i;
                         curr_col_idx_word_valid_n = 1'b1;
@@ -628,7 +628,7 @@ module pe (
                 end
 
                 // check if ready to calculate prodelta denominator
-                if (adj_list_start_ready_n && adj_list_end_ready_n && ~curr_prodelta_denom_ready)
+                if (adj_list_start_ready && adj_list_end_ready && ~curr_prodelta_denom_ready)
                 begin
                     if (adj_list_start_n == adj_list_end_n) // sink detected, distribute pagerank among all other vertices
                     begin
@@ -647,7 +647,7 @@ module pe (
 
                 // check if ready to calculate prodelta
                 // if (curr_prodelta_denom_ready_n && curr_prodelta_numerator_ready_n && fpu_status_i_n == 2'd0) // need to make sure prodelta does not overwrite other calculations
-                if (curr_prodelta_denom_ready_n && curr_prodelta_numerator_ready_n && ~fpu_occupied)
+                if (curr_prodelta_denom_ready && curr_prodelta_numerator_ready && ~fpu_occupied)
                 begin
                     fpu_opA_n = curr_prodelta_numerator_n;
                     fpu_opB_n = curr_prodelta_denom_n;
@@ -679,7 +679,7 @@ module pe (
                         vm_req_status_n = VM_IDLE;
                         ruw_complete_n = 1;
                     end
-                    else if (vm_req_status_n == VM_WRITE && ~(vm_acked || vertexmem_ack_i)) // waiting for vertexmem write, hold request
+                    else if (vm_req_status == VM_WRITE && ~(vm_acked || vertexmem_ack_i)) // waiting for vertexmem write, hold request
                     begin
                         pe_vertex_reqAddr_n = pe_vertex_reqAddr_o;
                         pe_vertex_reqValid_n = pe_vertex_reqValid_o;
@@ -699,7 +699,7 @@ module pe (
                 // check edgemem request
                 if ((edgemem_tag_i == curr_em_tag) && (edgemem_tag_i != 0))
                 begin
-                    if (em_req_status_n == EM_WORD) // col index word read fulfilled
+                    if (em_req_status == EM_WORD) // col index word read fulfilled
                     begin
                         curr_col_idx_word_n = edgemem_data_i;
                         curr_col_idx_word_valid_n = 1'b1;
@@ -726,7 +726,7 @@ module pe (
                             ProValid_n[0] = 1'b1;
                             curr_evgen_idx_n = curr_evgen_idx_n + C_NUM_OF_CORES;
                         end
-                        else if (curr_col_idx_word_valid_n && curr_col_idx_word_tag_n == curr_evgen_idx_n[15:3]) // curr index in curr valid word
+                        else if (curr_col_idx_word_valid && curr_col_idx_word_tag_n == curr_evgen_idx_n[15:3]) // curr index in curr valid word
                         begin
                             ProDelta_n[0] = curr_prodelta;
                             ProIdx_n[0] = (curr_evgen_idx_n[2:0] == 3'd0) ? curr_col_idx_word_n[7:0] :

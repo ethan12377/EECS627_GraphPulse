@@ -170,8 +170,8 @@ module evqueue_sim
             waiting_for_pe  <= 1'b1;
             curr_scan_idx   <= 0;
             // outputs
-            PEDelta_o       <= 'x;
-            PEIdx_o         <= 'x;
+            PEDelta_o       <= '0;
+            PEIdx_o         <= '0;
             PEValid_o       <= '0;
         end
         else
