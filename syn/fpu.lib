@@ -1,0 +1,404 @@
+
+library("fpu") {
+
+  technology (cmos) ;
+  delay_model : table_lookup ;
+  library_features ( report_delay_calculation ) ;
+  date : "Tue Mar 28 17:00:19 2023" ;
+  revision : "T-2022.03-SP3" ;
+  nom_process : 1.0000 ;
+  nom_voltage : 1.2000 ;
+  nom_temperature : 25.0000 ;
+  operating_conditions( "typical"  ) {
+      process : 1.0000 ;
+      voltage : 1.2000 ;
+      temperature : 25.0000 ;
+   } /* current design opcond */
+  default_operating_conditions : "typical" ;
+  voltage_unit : "1V" ;
+  time_unit : "1ns" ;
+  capacitive_load_unit (1.000000, pf);
+  slew_derate_from_library : 0.5000 ;
+  slew_lower_threshold_pct_rise : 30.0000 ;
+  slew_lower_threshold_pct_fall : 30.0000 ;
+  slew_upper_threshold_pct_rise : 70.0000 ;
+  slew_upper_threshold_pct_fall : 70.0000 ;
+  input_threshold_pct_rise : 50.0000 ;
+  input_threshold_pct_fall : 50.0000 ;
+  output_threshold_pct_rise : 50.0000 ;
+  output_threshold_pct_fall : 50.0000 ;
+  k_process_cell_rise : 0.000000;
+  k_process_cell_fall : 0.000000;
+  k_volt_cell_rise : 0.000000;
+  k_volt_cell_fall : 0.000000;
+  k_temp_cell_rise : 0.000000;
+  k_temp_cell_fall : 0.000000;
+  k_process_rise_transition : 0.000000;
+  k_process_fall_transition : 0.000000;
+  k_volt_rise_transition : 0.000000;
+  k_volt_fall_transition : 0.000000;
+  k_temp_rise_transition : 0.000000;
+  k_temp_fall_transition : 0.000000;
+  default_fanout_load : 1.0;
+  default_inout_pin_cap : 1.0;
+  default_input_pin_cap : 1.0;
+  default_output_pin_cap : 0.0;
+  current_unit : 1mA;
+  pulling_resistance_unit : "1kohm";
+  comment : "PrimeTime qtm Model." ;
+ 
+  define(min_delay_flag, timing, boolean);
+  define(internal_noise_width_above_low, pin, float);
+  define(internal_noise_height_below_high, pin, float);
+  define(original_pin, pin, string);
+  define(max_noise_immunity_low, pin, float);
+  define(is_unconstrained, pin, boolean);
+  define(internal_noise_width_below_high, pin, float);
+  define(internal_noise_peak_time_below_high, pin, float);
+  define(internal_noise_height_above_low, pin, float);
+  define(max_noise_immunity_high, pin, float);
+  define(internal_noise_peak_time_above_low, pin, float);
+
+
+type ( BUS16_type0 ) {
+	base_type : array ;
+	data_type : bit ;
+	bit_width : 16 ;
+	bit_from : 15 ;
+	bit_to : 0 ;
+	downto : true ;
+} /* end of type */
+type ( BUS2_type1 ) {
+	base_type : array ;
+	data_type : bit ;
+	bit_width : 2 ;
+	bit_from : 1 ;
+	bit_to : 0 ;
+	downto : true ;
+} /* end of type */
+
+cell( fpu ) {
+  dont_use : true ;
+  dont_touch : true ;
+  interface_timing : true;
+  timing_model_type : "qtm";
+bus ( opA ) {
+
+	bus_type  : BUS16_type0 ;
+	direction : input ;
+
+pin("opA[15]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin opA[15] */
+
+pin("opA[14]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin opA[14] */
+
+pin("opA[13]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin opA[13] */
+
+pin("opA[12]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin opA[12] */
+
+pin("opA[11]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin opA[11] */
+
+pin("opA[10]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin opA[10] */
+
+pin("opA[9]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin opA[9] */
+
+pin("opA[8]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin opA[8] */
+
+pin("opA[7]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin opA[7] */
+
+pin("opA[6]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin opA[6] */
+
+pin("opA[5]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin opA[5] */
+
+pin("opA[4]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin opA[4] */
+
+pin("opA[3]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin opA[3] */
+
+pin("opA[2]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin opA[2] */
+
+pin("opA[1]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin opA[1] */
+
+pin("opA[0]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin opA[0] */
+} /* end of bus opA */
+bus ( opB ) {
+
+	bus_type  : BUS16_type0 ;
+	direction : input ;
+
+pin("opB[15]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin opB[15] */
+
+pin("opB[14]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin opB[14] */
+
+pin("opB[13]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin opB[13] */
+
+pin("opB[12]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin opB[12] */
+
+pin("opB[11]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin opB[11] */
+
+pin("opB[10]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin opB[10] */
+
+pin("opB[9]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin opB[9] */
+
+pin("opB[8]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin opB[8] */
+
+pin("opB[7]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin opB[7] */
+
+pin("opB[6]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin opB[6] */
+
+pin("opB[5]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin opB[5] */
+
+pin("opB[4]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin opB[4] */
+
+pin("opB[3]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin opB[3] */
+
+pin("opB[2]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin opB[2] */
+
+pin("opB[1]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin opB[1] */
+
+pin("opB[0]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin opB[0] */
+} /* end of bus opB */
+bus ( op ) {
+
+	bus_type  : BUS2_type1 ;
+	direction : input ;
+
+pin("op[1]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin op[1] */
+
+pin("op[0]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin op[0] */
+} /* end of bus op */
+bus ( status_i ) {
+
+	bus_type  : BUS2_type1 ;
+	direction : input ;
+
+pin("status_i[1]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin status_i[1] */
+
+pin("status_i[0]") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin status_i[0] */
+} /* end of bus status_i */
+
+pin("clk") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin clk */
+
+pin("reset") {
+	direction : input ;
+	capacitance : 0.010000 ;
+} /* end of pin reset */
+bus ( result ) {
+
+	bus_type  : BUS16_type0 ;
+	direction : output ;
+
+pin("result[15]") {
+	direction : output ;
+	capacitance : 0.0 ;
+} /* end of pin result[15] */
+
+pin("result[14]") {
+	direction : output ;
+	capacitance : 0.0 ;
+} /* end of pin result[14] */
+
+pin("result[13]") {
+	direction : output ;
+	capacitance : 0.0 ;
+} /* end of pin result[13] */
+
+pin("result[12]") {
+	direction : output ;
+	capacitance : 0.0 ;
+} /* end of pin result[12] */
+
+pin("result[11]") {
+	direction : output ;
+	capacitance : 0.0 ;
+} /* end of pin result[11] */
+
+pin("result[10]") {
+	direction : output ;
+	capacitance : 0.0 ;
+} /* end of pin result[10] */
+
+pin("result[9]") {
+	direction : output ;
+	capacitance : 0.0 ;
+} /* end of pin result[9] */
+
+pin("result[8]") {
+	direction : output ;
+	capacitance : 0.0 ;
+} /* end of pin result[8] */
+
+pin("result[7]") {
+	direction : output ;
+	capacitance : 0.0 ;
+} /* end of pin result[7] */
+
+pin("result[6]") {
+	direction : output ;
+	capacitance : 0.0 ;
+} /* end of pin result[6] */
+
+pin("result[5]") {
+	direction : output ;
+	capacitance : 0.0 ;
+} /* end of pin result[5] */
+
+pin("result[4]") {
+	direction : output ;
+	capacitance : 0.0 ;
+} /* end of pin result[4] */
+
+pin("result[3]") {
+	direction : output ;
+	capacitance : 0.0 ;
+} /* end of pin result[3] */
+
+pin("result[2]") {
+	direction : output ;
+	capacitance : 0.0 ;
+} /* end of pin result[2] */
+
+pin("result[1]") {
+	direction : output ;
+	capacitance : 0.0 ;
+} /* end of pin result[1] */
+
+pin("result[0]") {
+	direction : output ;
+	capacitance : 0.0 ;
+} /* end of pin result[0] */
+} /* end of bus result */
+bus ( status_o ) {
+
+	bus_type  : BUS2_type1 ;
+	direction : output ;
+
+pin("status_o[1]") {
+	direction : output ;
+	capacitance : 0.0 ;
+} /* end of pin status_o[1] */
+
+pin("status_o[0]") {
+	direction : output ;
+	capacitance : 0.0 ;
+} /* end of pin status_o[0] */
+} /* end of bus status_o */
+
+pin("empty_o") {
+	direction : output ;
+	capacitance : 0.0 ;
+} /* end of pin empty_o */
+
+} /* end of cell */
+
+} /* end of library */
+
