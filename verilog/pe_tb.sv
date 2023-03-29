@@ -210,6 +210,11 @@ module pe_tb ();
         .mc2pe_grant_onehot_o   (em2pe_grant_onehot)
     );
 
+    `ifdef SYN
+        initial $sdf_annotate("../syn/mc.syn.sdf", mc_vm);
+        initial $sdf_annotate("../syn/mc.syn.sdf", mc_em);
+    `endif
+
 // --------------------------------------------------------------------
 
 // --------------------------------------------------------------------
