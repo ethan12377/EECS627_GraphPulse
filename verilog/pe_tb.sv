@@ -148,7 +148,7 @@ module pe_tb ();
             );
             `ifdef SYN
                 initial $sdf_annotate("../syn/pe.syn.sdf", dut);
-                initial $sdf_annotate("../syn/fpu.syn.sdf", dut.pe_fpu);
+                // initial $sdf_annotate("../syn/fpu.syn.sdf", dut.pe_fpu);
             `endif
         end
     endgenerate
