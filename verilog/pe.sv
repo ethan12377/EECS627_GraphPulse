@@ -715,28 +715,28 @@ module pe (
                 end
 
                 // generate proport 0
-                if (curr_evgen_idx_n < adj_list_end) // ongoing event generation
+                if (curr_evgen_idx < adj_list_end) // ongoing event generation
                 begin
                     if (~ProValid0_o || ProReady_i[0]) // ready to generate or receive new event
                     begin
                         if (initializing) // initialization event, use initialization value
                         begin
                             ProDelta_n[0] = init_value;
-                            ProIdx_n[0] = curr_evgen_idx_n[7:0];
+                            ProIdx_n[0] = curr_evgen_idx[7:0];
                             ProValid_n[0] = 1'b1;
                             curr_evgen_idx_n = curr_evgen_idx_n + C_NUM_OF_CORES;
                         end
-                        else if (curr_col_idx_word_valid && curr_col_idx_word_tag_n == curr_evgen_idx_n[15:3]) // curr index in curr valid word
+                        else if (curr_col_idx_word_valid && curr_col_idx_word_tag == curr_evgen_idx[15:3]) // curr index in curr valid word
                         begin
                             ProDelta_n[0] = curr_prodelta;
-                            ProIdx_n[0] = (curr_evgen_idx_n[2:0] == 3'd0) ? curr_col_idx_word_n[7:0] :
-                                          (curr_evgen_idx_n[2:0] == 3'd1) ? curr_col_idx_word_n[15:8] :
-                                          (curr_evgen_idx_n[2:0] == 3'd2) ? curr_col_idx_word_n[23:16] :
-                                          (curr_evgen_idx_n[2:0] == 3'd3) ? curr_col_idx_word_n[31:24] :
-                                          (curr_evgen_idx_n[2:0] == 3'd4) ? curr_col_idx_word_n[39:32] :
-                                          (curr_evgen_idx_n[2:0] == 3'd5) ? curr_col_idx_word_n[47:40] :
-                                          (curr_evgen_idx_n[2:0] == 3'd6) ? curr_col_idx_word_n[55:48] :
-                                          (curr_evgen_idx_n[2:0] == 3'd7) ? curr_col_idx_word_n[63:56] : 'x;
+                            ProIdx_n[0] = (curr_evgen_idx[2:0] == 3'd0) ? curr_col_idx_word[7:0] :
+                                          (curr_evgen_idx[2:0] == 3'd1) ? curr_col_idx_word[15:8] :
+                                          (curr_evgen_idx[2:0] == 3'd2) ? curr_col_idx_word[23:16] :
+                                          (curr_evgen_idx[2:0] == 3'd3) ? curr_col_idx_word[31:24] :
+                                          (curr_evgen_idx[2:0] == 3'd4) ? curr_col_idx_word[39:32] :
+                                          (curr_evgen_idx[2:0] == 3'd5) ? curr_col_idx_word[47:40] :
+                                          (curr_evgen_idx[2:0] == 3'd6) ? curr_col_idx_word[55:48] :
+                                          (curr_evgen_idx[2:0] == 3'd7) ? curr_col_idx_word[63:56] : 'x;
                             ProValid_n[0] = 1'b1;
                             curr_evgen_idx_n = curr_evgen_idx_n + 1;
                         end
@@ -744,8 +744,8 @@ module pe (
                         begin
                             curr_col_idx_word_valid_n = 1'b0;
                             // request a new word from edgemem
-                            pe_edge_reqAddr_n = curr_evgen_idx_n >> 3;
-                            curr_col_idx_word_tag_n = curr_evgen_idx_n[15:3];
+                            pe_edge_reqAddr_n = curr_evgen_idx >> 3;
+                            curr_col_idx_word_tag_n = curr_evgen_idx[15:3];
                             em_req_status_n = EM_WORD;
                         end
                     end
@@ -779,17 +779,17 @@ module pe (
                             ProValid_n[1] = 1'b1;
                             curr_evgen_idx_n = curr_evgen_idx_n + C_NUM_OF_CORES;
                         end
-                        else if (curr_col_idx_word_valid_n && curr_col_idx_word_tag_n == curr_evgen_idx_n[15:3]) // curr index in curr valid word
+                        else if (curr_col_idx_word_valid && curr_col_idx_word_tag == curr_evgen_idx_n[15:3]) // curr index in curr valid word
                         begin
                             ProDelta_n[1] = curr_prodelta;
-                            ProIdx_n[1] = (curr_evgen_idx_n[2:0] == 3'd0) ? curr_col_idx_word_n[7:0] :
-                                          (curr_evgen_idx_n[2:0] == 3'd1) ? curr_col_idx_word_n[15:8] :
-                                          (curr_evgen_idx_n[2:0] == 3'd2) ? curr_col_idx_word_n[23:16] :
-                                          (curr_evgen_idx_n[2:0] == 3'd3) ? curr_col_idx_word_n[31:24] :
-                                          (curr_evgen_idx_n[2:0] == 3'd4) ? curr_col_idx_word_n[39:32] :
-                                          (curr_evgen_idx_n[2:0] == 3'd5) ? curr_col_idx_word_n[47:40] :
-                                          (curr_evgen_idx_n[2:0] == 3'd6) ? curr_col_idx_word_n[55:48] :
-                                          (curr_evgen_idx_n[2:0] == 3'd7) ? curr_col_idx_word_n[63:56] : 'x;
+                            ProIdx_n[1] = (curr_evgen_idx_n[2:0] == 3'd0) ? curr_col_idx_word[7:0] :
+                                          (curr_evgen_idx_n[2:0] == 3'd1) ? curr_col_idx_word[15:8] :
+                                          (curr_evgen_idx_n[2:0] == 3'd2) ? curr_col_idx_word[23:16] :
+                                          (curr_evgen_idx_n[2:0] == 3'd3) ? curr_col_idx_word[31:24] :
+                                          (curr_evgen_idx_n[2:0] == 3'd4) ? curr_col_idx_word[39:32] :
+                                          (curr_evgen_idx_n[2:0] == 3'd5) ? curr_col_idx_word[47:40] :
+                                          (curr_evgen_idx_n[2:0] == 3'd6) ? curr_col_idx_word[55:48] :
+                                          (curr_evgen_idx_n[2:0] == 3'd7) ? curr_col_idx_word[63:56] : 'x;
                             ProValid_n[1] = 1'b1;
                             curr_evgen_idx_n = curr_evgen_idx_n + 1;
                         end

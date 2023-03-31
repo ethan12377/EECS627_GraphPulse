@@ -8,8 +8,8 @@ set top_level "pe"
 # Read verilog files
 # read_verilog "../verilog/standard.vh ../verilog/mult.v"
 # read_verilog "../verilog/fpu.syn.v"
-read_file -f sverilog [list "../verilog/standard.vh ../verilog/int16_to_float16.sv ../verilog/pe.sv"]
-# read_file -f sverilog [list "../verilog/standard.vh ../verilog/fp_add.sv ../verilog/fp_div.sv ../verilog/fp_mul.sv ../verilog/fpu.sv ../verilog/int16_to_float16.sv ../verilog/pe.sv"]
+# read_file -f sverilog [list "../verilog/standard.vh ../verilog/int16_to_float16.sv ../verilog/pe.sv"]
+read_file -f sverilog [list "../verilog/standard.vh ../verilog/fp_add.sv ../verilog/fp_div.sv ../verilog/fp_mul.sv ../verilog/fpu.sv ../verilog/int16_to_float16.sv ../verilog/pe.sv"]
 # read_file -f sverilog [list "../verilog/fp_add.sv"]
 # read_systemverilog "../verilog/fp_add.sv"
 list_designs
@@ -66,7 +66,8 @@ uniquify
 # set_optimize_registers -sync_transform multiclass -async_transform multiclass
 # compile_ultra -retime
 # compile_ultra -retime -incremental
-compile_ultra
+compile_ultra -retime
+optimize_registers
 # compile -map_effort medium
 # set_optimize_registers -sync_transform multiclass -async_transform multiclass
 # compile_ultra -retime
@@ -80,6 +81,9 @@ write -hierarchy -format verilog -output "${top_level}.syn.v"
 
 # Generate Standard Delay Format (SDF) file
 write_sdf -context verilog "${top_level}.syn.sdf"
+
+# Generate timing constraints file
+write_sdc "${top_level}.syn.sdc"
 
 # Generate report file
 set maxpaths 20
