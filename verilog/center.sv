@@ -67,7 +67,7 @@ module center #(
     input   logic [`PE_NUM_OF_CORES*64-1 : 0]           pe2vm_wrData_i,
     input   logic [`PE_NUM_OF_CORES-1:0]                pe2vm_reqValid_i,
     input   logic [`PE_NUM_OF_CORES-1:0]                pe2vm_wrEn_i,
-    output  logic [`XLEN-1:0]                           mc2vm_addr_o,
+    output  logic [7:0]                           mc2vm_addr_o,
     output  logic [63:0]                                mc2vm_data_o,
     output  BUS_COMMAND                                 mc2vm_command_o,
     output  logic [`PE_NUM_OF_CORES-1:0]                vm2pe_grant_onehot_o,
@@ -75,7 +75,7 @@ module center #(
     input   logic [`PE_NUM_OF_CORES*14-1 : 0]        pe2em_reqAddr_i,
     input   logic [`PE_NUM_OF_CORES-1:0]                pe2em_reqValid_i,
     output  logic [`XLEN-1:0]                           mc2em_addr_o,
-    output  logic [63:0]                                mc2em_data_o,
+    output  logic [21:0]                                mc2em_data_o,
     output  BUS_COMMAND                                 mc2em_command_o,
     output  logic [`PE_NUM_OF_CORES-1:0]                em2pe_grant_onehot_o
 
@@ -212,6 +212,8 @@ module center #(
             assign pe2vm_reqAddr_padded[`XLEN*(i+1)-1 : `XLEN*i] = {8'b0, pe2vm_reqAddr_i[8*(i+1)-1 : 8*i]};
         end
     endgenerate
+    logic [`XLEN-1:0]   mc2vm_addr_padded;
+    assign mc2vm_addr_o = mc2vm_addr_padded[7:0];
     mc mc_vm (
         .clk_i                  (clk_i),
         .rst_i                  (rst_i),
@@ -219,7 +221,7 @@ module center #(
         .pe2mem_wrData_i        (pe2vm_wrData_i),
         .pe2mem_reqValid_i      (pe2vm_reqValid_i),
         .pe2mem_wrEn_i          (pe2vm_wrEn_i),
-        .mc2mem_addr_o          (mc2vm_addr_o),
+        .mc2mem_addr_o          (mc2vm_addr_padded),
         .mc2mem_data_o          (mc2vm_data_o),
         .mc2mem_command_o       (mc2vm_command_o),
         .mc2pe_grant_onehot_o   (vm2pe_grant_onehot_o)
@@ -237,6 +239,8 @@ module center #(
             assign pe2em_reqAddr_padded[`XLEN*(i+1)-1 : `XLEN*i] = {2'b0, pe2em_reqAddr_i[14*(i+1)-1 : 14*i]};
         end
     endgenerate
+    logic [63:0]   mc2em_data_padded;
+    assign mc2em_data_o = mc2em_data_padded[21:0];
     mc mc_em (
         .clk_i                  (clk_i),
         .rst_i                  (rst_i),
@@ -245,7 +249,7 @@ module center #(
         .pe2mem_reqValid_i      (pe2em_reqValid_i),
         .pe2mem_wrEn_i          ('0), // read only
         .mc2mem_addr_o          (mc2em_addr_o),
-        .mc2mem_data_o          (mc2em_data_o),
+        .mc2mem_data_o          (mc2em_data_padded),
         .mc2mem_command_o       (mc2em_command_o),
         .mc2pe_grant_onehot_o   (em2pe_grant_onehot_o)
     );

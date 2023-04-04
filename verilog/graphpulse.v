@@ -86,17 +86,19 @@ module GraphPulse (
     logic [`PE_NUM_OF_CORES-1:0] vm2pe_grant_onehot, em2pe_grant_onehot;
     
     //// MC <---> mem /////
-    logic [`XLEN-1:0] mc2vm_addr, mc2em_addr;   // address for current command
-    logic [63:0] mc2vm_data, mc2em_data;
+    logic [7:0] mc2vm_addr;
+    logic [`XLEN-1:0] mc2em_addr;   // address for current command
+    logic [63:0] mc2vm_data;
+    logic [21:0] mc2em_data;
     BUS_COMMAND mc2vm_command, mc2em_command;
     logic  [3:0] vm_response, em_response; // 0 = can't accept, other=tag of transaction
     logic [63:0] vm_rdData, em_rdData;         // data resulting from a load
     logic  [3:0] vm_tag, em_tag;           // 0 = no value, other=tag of transaction
     assign edgemem_command = mc2em_command;
     assign edgemem_addr = mc2em_addr;
-    assign edgemem_st_data = mc2em_data;
+    assign edgemem_st_data = {42'b0, mc2em_data};
     assign vertexmem_command = mc2vm_command;
-    assign vertexmem_addr = mc2vm_addr;
+    assign vertexmem_addr = {8'b0, mc2vm_addr};
     assign vertexmem_st_data = mc2vm_data;
     assign em_response = edgemem_response;
     assign em_rdData = edgemem_ld_data;
@@ -241,14 +243,12 @@ module GraphPulse (
     generate
         for (genvar i = 0; i < `PE_NUM_OF_CORES; i = i + 1)
         begin
-            pe #(
-                .C_PEID(i)
-            ) pes (
+            pe pes (
                 ////////// INPUTS //////////
                 .clk_i                      (clock),
                 .rst_i                      (reset),
                 // PE ID
-                .pe_id_i                    (i),
+                .pe_id_i                    (i[1:0]),
                 // num of vertices
                 .num_of_vertices_float16_i  (num_of_vertices_float16),
                 .num_of_vertices_int8_i     (num_of_vertices_int8),
