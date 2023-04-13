@@ -166,23 +166,79 @@ module GraphPulse (
         .binValid_i             (binValid),
         .binSelected_o          (binSelected),    
         .readEn_o               (readEn),
-        .initialFinish_o        (initialFinish),
+        .initialFinish_o        (initialFinish)
 
-        .pe2vm_reqAddr_i       (pe2vm_reqAddr_1d),
-        .pe2vm_wrData_i        (pe2vm_wrData_1d),
-        .pe2vm_reqValid_i      (pe_vertex_reqValid),
-        .pe2vm_wrEn_i          (pe_wrEn),
-        .mc2vm_addr_o          (mc2vm_addr),
-        .mc2vm_data_o          (mc2vm_data),
-        .mc2vm_command_o       (mc2vm_command),
-        .vm2pe_grant_onehot_o   (vm2pe_grant_onehot),
+        // .pe2vm_reqAddr_i       (pe2vm_reqAddr_1d),
+        // .pe2vm_wrData_i        (pe2vm_wrData_1d),
+        // .pe2vm_reqValid_i      (pe_vertex_reqValid),
+        // .pe2vm_wrEn_i          (pe_wrEn),
+        // .mc2vm_addr_o          (mc2vm_addr),
+        // .mc2vm_data_o          (mc2vm_data),
+        // .mc2vm_command_o       (mc2vm_command),
+        // .vm2pe_grant_onehot_o   (vm2pe_grant_onehot),
 
-        .pe2em_reqAddr_i       (pe2em_reqAddr_1d),
-        .pe2em_reqValid_i      (pe_edge_reqValid),
-        .mc2em_addr_o          (mc2em_addr),
-        .mc2em_data_o          (mc2em_data),
-        .mc2em_command_o       (mc2em_command),
-        .em2pe_grant_onehot_o   (em2pe_grant_onehot)
+        // .pe2em_reqAddr_i       (pe2em_reqAddr_1d),
+        // .pe2em_reqValid_i      (pe_edge_reqValid),
+        // .mc2em_addr_o          (mc2em_addr),
+        // .mc2em_data_o          (mc2em_data),
+        // .mc2em_command_o       (mc2em_command),
+        // .em2pe_grant_onehot_o   (em2pe_grant_onehot)
+    );
+// --------------------------------------------------------------------
+
+// --------------------------------------------------------------------
+
+// --------------------------------------------------------------------
+// Module name  :   mc_vm
+// Description  :   vertexmem controller
+// --------------------------------------------------------------------
+    logic [`PE_NUM_OF_CORES*`XLEN-1 : 0]        pe2vm_reqAddr_padded;
+    generate
+        for (genvar i = 0; i < `PE_NUM_OF_CORES; i = i + 1)
+        begin
+            assign pe2vm_reqAddr_padded[`XLEN*(i+1)-1 : `XLEN*i] = {8'b0, pe2vm_reqAddr_1d[8*(i+1)-1 : 8*i]};
+        end
+    endgenerate
+    logic [`XLEN-1:0]   mc2vm_addr_padded;
+    assign mc2vm_addr = mc2vm_addr_padded[7:0];
+    mc mc_vm (
+        .clk_i                  (clock),
+        .rst_i                  (reset),
+        .pe2mem_reqAddr_i       (pe2vm_reqAddr_padded),
+        .pe2mem_wrData_i        (pe2vm_wrData_1d),
+        .pe2mem_reqValid_i      (pe_vertex_reqValid),
+        .pe2mem_wrEn_i          (pe_wrEn),
+        .mc2mem_addr_o          (mc2vm_addr_padded),
+        .mc2mem_data_o          (mc2vm_data),
+        .mc2mem_command_o       (mc2vm_command),
+        .mc2pe_grant_onehot_o   (vm2pe_grant_onehot)
+    );
+// --------------------------------------------------------------------
+
+// --------------------------------------------------------------------
+// Module name  :   mc_em
+// Description  :   edgemem controller
+// --------------------------------------------------------------------
+    logic [`PE_NUM_OF_CORES*`XLEN-1 : 0]        pe2em_reqAddr_padded;
+    generate
+        for (genvar i = 0; i < `PE_NUM_OF_CORES; i = i + 1)
+        begin
+            assign pe2em_reqAddr_padded[`XLEN*(i+1)-1 : `XLEN*i] = {2'b0, pe2em_reqAddr_1d[14*(i+1)-1 : 14*i]};
+        end
+    endgenerate
+    logic [63:0]   mc2em_data_padded;
+    assign mc2em_data = mc2em_data_padded[21:0];
+    mc mc_em (
+        .clk_i                  (clock),
+        .rst_i                  (reset),
+        .pe2mem_reqAddr_i       (pe2em_reqAddr_padded),
+        .pe2mem_wrData_i        ('x), // read only
+        .pe2mem_reqValid_i      (pe_edge_reqValid),
+        .pe2mem_wrEn_i          ('0), // read only
+        .mc2mem_addr_o          (mc2em_addr),
+        .mc2mem_data_o          (mc2em_data_padded),
+        .mc2mem_command_o       (mc2em_command),
+        .mc2pe_grant_onehot_o   (em2pe_grant_onehot)
     );
 // --------------------------------------------------------------------
 
