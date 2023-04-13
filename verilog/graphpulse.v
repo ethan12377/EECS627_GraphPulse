@@ -201,7 +201,7 @@ module GraphPulse (
     endgenerate
     logic [`XLEN-1:0]   mc2vm_addr_padded;
     assign mc2vm_addr = mc2vm_addr_padded[7:0];
-    mc mc_vm (
+    mc_vm mc_vm (
         .clk_i                  (clock),
         .rst_i                  (reset),
         .pe2mem_reqAddr_i       (pe2vm_reqAddr_padded),
@@ -228,7 +228,7 @@ module GraphPulse (
     endgenerate
     logic [63:0]   mc2em_data_padded;
     assign mc2em_data = mc2em_data_padded[21:0];
-    mc mc_em (
+    mc_em mc_em (
         .clk_i                  (clock),
         .rst_i                  (reset),
         .pe2mem_reqAddr_i       (pe2em_reqAddr_padded),
