@@ -2,10 +2,10 @@
 STD_CELLS = /afs/umich.edu/class/eecs627/ibm13/artisan/2005q3v1/aci/sc-x/verilog/ibm13_neg.v
 TESTBENCH = testbench.sv mem.sv
 SIM_FILES = standard.vh graphpulse.v mem.sv
-SIM_FILES += center.sv EQ_wrapper_half.sv
+SIM_FILES += threein1.sv EQ_wrapper_half.sv
 SIM_FILES += priority_arbiter.sv rr_arbiter.sv 
 SIM_FILES += fp_add.sv fp_div.sv fp_mul.sv fpu.sv mc_vm.sv mc_em.sv int16_to_float16.sv pe.sv
-SIM_FILES += Xbar_SchedToPE.sv PE_Freelist.sv Xbar_PEToQ.sv
+SIM_FILES += Xbar_SchedToPE.sv PE_Freelist.sv Xbar_PEToQ_wrapper.sv Xbar_PEToQ.sv
 SIM_FILES += output_buffer.sv OB_bubble_squeezer.sv OB_fifo.sv
 SIM_FILES += coalescing_unit.sv bin_func.sv event_queues_half.sv queue_scheduler.sv CU_fifo.sv
 

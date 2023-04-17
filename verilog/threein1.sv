@@ -28,10 +28,14 @@ module threein1 #(
     
     // input   logic   [C_INPUT_NUM*C_DELTA_WIDTH-1:0]             IssDelta_i  ,
     // input   logic   [C_INPUT_NUM*C_VERTEX_IDX_WIDTH-1:0]        IssIdx_i    ,
-    input   logic   [C_ROW_IDX_WIDTH-1:0]                       rowIdx_i    ,
-    input   logic   [C_BIN_IDX_WIDTH-1:0]                       binIdx_i    ,
-    input   logic   [C_INPUT_NUM*C_DELTA_WIDTH-1:0]             rowDelta_i  ,
-    input   logic                                               rowValid_i  ,
+    input   logic   [C_ROW_IDX_WIDTH-1:0]                       rowIdx_up_i    ,
+    input   logic   [C_BIN_IDX_WIDTH-2:0]                       binIdx_up_i    ,
+    input   logic   [C_INPUT_NUM*C_DELTA_WIDTH-1:0]             rowDelta_up_i  ,
+    input   logic                                               rowValid_up_i  ,
+    input   logic   [C_ROW_IDX_WIDTH-1:0]                       rowIdx_down_i    ,
+    input   logic   [C_BIN_IDX_WIDTH-2:0]                       binIdx_down_i    ,
+    input   logic   [C_INPUT_NUM*C_DELTA_WIDTH-1:0]             rowDelta_down_i  ,
+    input   logic                                               rowValid_down_i  ,
     output  logic                                               rowReady_o  ,
 
     output  logic   [C_OUTPUT_NUM*C_DELTA_WIDTH-1:0]            PEDelta_o   ,
@@ -43,7 +47,8 @@ module threein1 #(
     input   logic   [C_BIN_NUM-1:0]                       CUClean_i         ,
     input   logic   [C_BIN_NUM-1:0]                       binValid_i        ,
     output  logic   [C_BIN_NUM-1:0]                       binSelected_o     ,
-    output  logic                                         readEn_o    
+    output  logic                                         readEn_o          ,
+    output  logic                                         initialFinish_o
 );
 
 // ====================================================================
@@ -57,6 +62,13 @@ module threein1 #(
 // ====================================================================
 // Signal Declarations Start
 // ====================================================================
+    logic   [C_ROW_IDX_WIDTH-1:0]                          rowIdx_i        ;
+    logic   [C_BIN_IDX_WIDTH-2:0]                          binIdx_i        ;
+    logic   [C_INPUT_NUM*C_DELTA_WIDTH-1:0]                rowDelta_i      ;
+    logic                                                  rowValid_i      ;
+
+    logic                                                  upQ_selected  ;
+
     logic   [C_INPUT_NUM-1:0][C_DELTA_WIDTH-1:0]           int_rowDelta_i  ;
     // logic   [C_GEN_NUM-1:0][C_VERTEX_IDX_WIDTH-1:0]     int_proIdx_i    ;
     logic   [C_OUTPUT_NUM-1:0][C_DELTA_WIDTH-1:0]          int_PEDelta_o   ;
@@ -124,7 +136,7 @@ module threein1 #(
     queue_scheduler queue_scheduler_inst(
         .clk_i            (clk_i          ),   //  Clock
         .rst_i            (rst_i          ),   //  Reset
-        .initialFinish_i  (initialFinish_i),   
+        .initialFinish_i  (initialFinish_o),   
         .CUClean_i        (CUClean_i      ),
         .binValid_i       (binValid_i     ),
         .binSelected_o    (binSelected_o  ),   
@@ -146,6 +158,14 @@ assign IssDelta_i     = IssDelta_o ;
 assign IssIdx_i       = IssIdx_o   ;
 assign IssValid_i     = IssValid_o     ;
 assign IssReady_i     = IssReady_o     ;
+
+assign initialFinish_o  = &initialFinish_i;
+
+assign upQ_selected = |binSelected_o[C_BIN_NUM-1:C_BIN_NUM/2];
+assign rowIdx_i = upQ_selected ? rowIdx_up_i : rowIdx_down_i;
+assign binIdx_i = upQ_selected ? binIdx_up_i : binIdx_down_i;
+assign rowDelta_i = upQ_selected ? rowDelta_up_i : rowDelta_down_i;
+assign rowValid_i = upQ_selected ? rowValid_up_i : rowValid_down_i;
 
 // --------------------------------------------------------------------
 // Convert 2D to 1D

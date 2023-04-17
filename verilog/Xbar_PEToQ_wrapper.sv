@@ -14,7 +14,8 @@ module Xbar_PEToQ_wrapper #(
     parameter   C_VERTEX_IDX_WIDTH  =   `VERTEX_IDX_WIDTH   ,
     parameter   C_PE_IDX_WIDTH      =   `PE_IDX_WIDTH       ,
     parameter   C_BIN_IDX_WIDTH     =   `BIN_IDX_WIDTH      ,
-    parameter   C_BIN_IDX_LSB       =   `BIN_IDX_LSB        
+    parameter   C_BIN_IDX_LSB       =   `BIN_IDX_LSB        ,
+    parameter   C_COL_IDX_WIDTH     =   `COL_IDX_WIDTH      
 ) (
     input   logic                                               clk_i       ,   //  Clock
     input   logic                                               rst_i       ,   //  Reset
@@ -25,7 +26,7 @@ module Xbar_PEToQ_wrapper #(
     output  logic   [C_GEN_NUM-1:0]                             proReady_o  ,
 
     output  logic   [C_BIN_NUM*C_DELTA_WIDTH-1:0]               CUDelta_o   ,
-    output  logic   [C_BIN_NUM*C_VERTEX_IDX_WIDTH-1:0]          CUIdx_o     ,
+    output  logic   [C_BIN_NUM*(C_VERTEX_IDX_WIDTH-C_BIN_IDX_WIDTH)-1:0]          CUIdx_o     ,
     output  logic   [C_BIN_NUM-1:0]                             CUValid_o   ,
     input   logic   [C_BIN_NUM-1:0]                             CUReady_i   
 );
@@ -107,8 +108,12 @@ generate
     end
 
     for (i = 0; i < C_BIN_NUM; i++) begin
-        for (j = 0; j < C_VERTEX_IDX_WIDTH; j++) begin
-            assign  CUIdx_o[i*C_VERTEX_IDX_WIDTH+j] = int_CUIdx_o[i][j];
+        for (j = 0; j < (C_VERTEX_IDX_WIDTH - C_BIN_IDX_WIDTH); j++) begin
+            if (j < C_COL_IDX_WIDTH) begin
+                assign  CUIdx_o[i*(C_VERTEX_IDX_WIDTH - C_BIN_IDX_WIDTH)+j] = int_CUIdx_o[i][j];
+            end else begin
+                assign  CUIdx_o[i*(C_VERTEX_IDX_WIDTH - C_BIN_IDX_WIDTH)+j] = int_CUIdx_o[i][j+C_BIN_IDX_WIDTH];
+            end
         end
     end
 

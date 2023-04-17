@@ -115,7 +115,8 @@ module GraphPulse (
 
     ///// Xbar2 <---> Q /////
     logic   [`BIN_NUM*`DELTA_WIDTH-1:0]             CUDelta   ;
-    logic   [`BIN_NUM*`VERTEX_IDX_WIDTH-1:0]        CUIdx     ;
+    logic   [`BIN_NUM*`VERTEX_IDX_WIDTH-1:0]        CUIdx_padded     ;
+    logic   [`BIN_NUM*(`VERTEX_IDX_WIDTH-`BIN_IDX_WIDTH)-1:0]        CUIdx;
     logic   [`BIN_NUM-1:0]                          CUValid   ;
     logic   [`BIN_NUM-1:0]                          CUReady   ;
 
@@ -137,7 +138,7 @@ module GraphPulse (
 // Description  :   Crossbar from Scheds to PE with output_buffer 
 //                  and queue_scheduler
 // --------------------------------------------------------------------
-    center center_inst(
+    threein1 threein1_inst(
         .clk_i                  (clock),   //  Clock
         .rst_i                  (reset),   //  Reset
         .rowIdx_up_i            (rowIdx_up  ),
@@ -153,36 +154,12 @@ module GraphPulse (
         .PEIdx_o                (PEIdx      ),
         .PEValid_o              (PEValid    ),
         .PEReady_i              (PEReady    ),
-        .proDelta_i             (proDelta   ),
-        .proIdx_i               (proIdx     ),
-        .proValid_i             (proValid   ),
-        .proReady_o             (proReady   ),
-        .CUDelta_o              (CUDelta    ),
-        .CUIdx_o                (CUIdx      ),
-        .CUValid_o              (CUValid    ),
-        .CUReady_i              (CUReady    ),
         .initialFinish_i        (initialFinish_pe),   
         .CUClean_i              (CUClean),
         .binValid_i             (binValid),
         .binSelected_o          (binSelected),    
         .readEn_o               (readEn),
         .initialFinish_o        (initialFinish)
-
-        // .pe2vm_reqAddr_i       (pe2vm_reqAddr_1d),
-        // .pe2vm_wrData_i        (pe2vm_wrData_1d),
-        // .pe2vm_reqValid_i      (pe_vertex_reqValid),
-        // .pe2vm_wrEn_i          (pe_wrEn),
-        // .mc2vm_addr_o          (mc2vm_addr),
-        // .mc2vm_data_o          (mc2vm_data),
-        // .mc2vm_command_o       (mc2vm_command),
-        // .vm2pe_grant_onehot_o   (vm2pe_grant_onehot),
-
-        // .pe2em_reqAddr_i       (pe2em_reqAddr_1d),
-        // .pe2em_reqValid_i      (pe_edge_reqValid),
-        // .mc2em_addr_o          (mc2em_addr),
-        // .mc2em_data_o          (mc2em_data),
-        // .mc2em_command_o       (mc2em_command),
-        // .em2pe_grant_onehot_o   (em2pe_grant_onehot)
     );
 // --------------------------------------------------------------------
 
@@ -251,7 +228,7 @@ module GraphPulse (
         .rst_i                  (reset),   //  Reset
         .initialFinish_i        (initialFinish),
         .CUDelta_i              (CUDelta[`BIN_NUM*`DELTA_WIDTH-1:`BIN_NUM*`DELTA_WIDTH/2]),     
-        .CUIdx_i                (CUIdx[`BIN_NUM*`VERTEX_IDX_WIDTH-1:`BIN_NUM*`VERTEX_IDX_WIDTH/2]),
+        .CUIdx_i                (CUIdx_padded[`BIN_NUM*`VERTEX_IDX_WIDTH-1:`BIN_NUM*`VERTEX_IDX_WIDTH/2]),
         .CUValid_i              (CUValid[`BIN_NUM-1:`BIN_NUM/2]),
         .CUReady_o              (CUReady[`BIN_NUM-1:`BIN_NUM/2]),
         .CUClean_o              (CUClean[`BIN_NUM-1:`BIN_NUM/2]),
@@ -276,7 +253,7 @@ module GraphPulse (
         .rst_i                  (reset),   //  Reset
         .initialFinish_i        (initialFinish),
         .CUDelta_i              (CUDelta[`BIN_NUM*`DELTA_WIDTH/2-1:0]),
-        .CUIdx_i                (CUIdx[`BIN_NUM*`VERTEX_IDX_WIDTH/2-1:0]),
+        .CUIdx_i                (CUIdx_padded[`BIN_NUM*`VERTEX_IDX_WIDTH/2-1:0]),
         .CUValid_i              (CUValid[`BIN_NUM/2-1:0]),
         .CUReady_o              (CUReady[`BIN_NUM/2-1:0]),
         .CUClean_o              (CUClean[`BIN_NUM/2-1:0]),
@@ -350,6 +327,28 @@ module GraphPulse (
     endgenerate
 // --------------------------------------------------------------------
 
-
+// --------------------------------------------------------------------
+// Module name  :   Xbar_PEToQ_wrapper
+// Description  :   Crossbar from PEs to Event Queues
+// --------------------------------------------------------------------
+    generate
+        for (genvar i = 0; i < `BIN_NUM; i = i + 1)
+        begin
+            assign CUIdx_padded[8*(i+1)-1 : 8*i] = {3'b0, CUIdx[5*(i+1)-1 : 5*i]};
+        end
+    endgenerate
+    Xbar_PEToQ_wrapper Xbar_PEToQ_wrapper_inst(
+        .clk_i      (clock      ),   //  Clock
+        .rst_i      (reset      ),   //  Reset
+        .proDelta_i (proDelta   ),
+        .proIdx_i   (proIdx     ),
+        .proValid_i (proValid   ),
+        .proReady_o (proReady   ),
+        .CUDelta_o  (CUDelta    ),
+        .CUIdx_o    (CUIdx      ),
+        .CUValid_o  (CUValid    ),
+        .CUReady_i  (CUReady    )
+    );
+// --------------------------------------------------------------------
 
 endmodule // GraphPulse
