@@ -15,16 +15,16 @@ module GraphPulse (
     input [63:0]    edgemem_ld_data,
     input  [3:0]    edgemem_tag,
     input  [3:0]    vertexmem_response,
-    input [63:0]    vertexmem_ld_data,
+    input [15:0]    vertexmem_ld_data,
     input  [3:0]    vertexmem_tag,
 
     //output          converge,
     output [1:0]    edgemem_command,
-    output [`XLEN-1:0] edgemem_addr,
-    output [63:0]   edgemem_st_data,
+    output [13:0]   edgemem_addr,
+    // output [63:0]   edgemem_st_data,
     output [1:0]    vertexmem_command,
-    output [`XLEN-1:0] vertexmem_addr,
-    output [63:0]   vertexmem_st_data
+    output [7:0]    vertexmem_addr,
+    output [15:0]   vertexmem_st_data
 );
 
 // ====================================================================
@@ -74,31 +74,32 @@ module GraphPulse (
     // flattened 2d arrays for MC
     logic [`PE_NUM_OF_CORES*8-1 : 0] pe2vm_reqAddr_1d;
     logic [`PE_NUM_OF_CORES*14-1 : 0] pe2em_reqAddr_1d;
-    logic [`PE_NUM_OF_CORES*64-1 : 0]    pe2vm_wrData_1d;
+    logic [`PE_NUM_OF_CORES*16-1 : 0]    pe2vm_wrData_1d;
     generate
         for (genvar i = 0; i < `PE_NUM_OF_CORES; i = i + 1)
         begin
             assign pe2vm_reqAddr_1d[8*(i+1)-1 : 8*i] = pe_vertex_reqAddr[i];
             assign pe2em_reqAddr_1d[14*(i+1)-1 : 14*i] = pe_edge_reqAddr[i];
-            assign pe2vm_wrData_1d[64*(i+1)-1 : 64*i] = {48'd0, pe_wrData[i]};
+            assign pe2vm_wrData_1d[16*(i+1)-1 : 16*i] = pe_wrData[i];
         end
     endgenerate
     logic [`PE_NUM_OF_CORES-1:0] vm2pe_grant_onehot, em2pe_grant_onehot;
     
     //// MC <---> mem /////
     logic [7:0] mc2vm_addr;
-    logic [`XLEN-1:0] mc2em_addr;   // address for current command
-    logic [63:0] mc2vm_data;
+    logic [13:0] mc2em_addr;   // address for current command
+    logic [15:0] mc2vm_data;
     logic [21:0] mc2em_data;
     BUS_COMMAND mc2vm_command, mc2em_command;
     logic  [3:0] vm_response, em_response; // 0 = can't accept, other=tag of transaction
-    logic [63:0] vm_rdData, em_rdData;         // data resulting from a load
+    logic [15:0] vm_rdData; 
+    logic [63:0] em_rdData;         // data resulting from a load
     logic  [3:0] vm_tag, em_tag;           // 0 = no value, other=tag of transaction
     assign edgemem_command = mc2em_command;
     assign edgemem_addr = mc2em_addr;
-    assign edgemem_st_data = {42'b0, mc2em_data};
+    // assign edgemem_st_data = {42'b0, mc2em_data};
     assign vertexmem_command = mc2vm_command;
-    assign vertexmem_addr = {8'b0, mc2vm_addr};
+    assign vertexmem_addr = mc2vm_addr;
     assign vertexmem_st_data = mc2vm_data;
     assign em_response = edgemem_response;
     assign em_rdData = edgemem_ld_data;
@@ -169,23 +170,22 @@ module GraphPulse (
 // Module name  :   mc_vm
 // Description  :   vertexmem controller
 // --------------------------------------------------------------------
-    logic [`PE_NUM_OF_CORES*`XLEN-1 : 0]        pe2vm_reqAddr_padded;
-    generate
-        for (genvar i = 0; i < `PE_NUM_OF_CORES; i = i + 1)
-        begin
-            assign pe2vm_reqAddr_padded[`XLEN*(i+1)-1 : `XLEN*i] = {8'b0, pe2vm_reqAddr_1d[8*(i+1)-1 : 8*i]};
-        end
-    endgenerate
-    logic [`XLEN-1:0]   mc2vm_addr_padded;
-    assign mc2vm_addr = mc2vm_addr_padded[7:0];
+    // logic [`PE_NUM_OF_CORES*`XLEN-1 : 0]        pe2vm_reqAddr_padded;
+    // generate
+    //     for (genvar i = 0; i < `PE_NUM_OF_CORES; i = i + 1)
+    //     begin
+    //         assign pe2vm_reqAddr_padded[`XLEN*(i+1)-1 : `XLEN*i] = {8'b0, pe2vm_reqAddr_1d[8*(i+1)-1 : 8*i]};
+    //     end
+    // endgenerate
+
     mc_vm mc_vm (
         .clk_i                  (clock),
         .rst_i                  (reset),
-        .pe2mem_reqAddr_i       (pe2vm_reqAddr_padded),
+        .pe2mem_reqAddr_i       (pe2vm_reqAddr_1d),
         .pe2mem_wrData_i        (pe2vm_wrData_1d),
         .pe2mem_reqValid_i      (pe_vertex_reqValid),
         .pe2mem_wrEn_i          (pe_wrEn),
-        .mc2mem_addr_o          (mc2vm_addr_padded),
+        .mc2mem_addr_o          (mc2vm_addr),
         .mc2mem_data_o          (mc2vm_data),
         .mc2mem_command_o       (mc2vm_command),
         .mc2pe_grant_onehot_o   (vm2pe_grant_onehot)
@@ -196,24 +196,25 @@ module GraphPulse (
 // Module name  :   mc_em
 // Description  :   edgemem controller
 // --------------------------------------------------------------------
-    logic [`PE_NUM_OF_CORES*`XLEN-1 : 0]        pe2em_reqAddr_padded;
-    generate
-        for (genvar i = 0; i < `PE_NUM_OF_CORES; i = i + 1)
-        begin
-            assign pe2em_reqAddr_padded[`XLEN*(i+1)-1 : `XLEN*i] = {2'b0, pe2em_reqAddr_1d[14*(i+1)-1 : 14*i]};
-        end
-    endgenerate
-    logic [63:0]   mc2em_data_padded;
-    assign mc2em_data = mc2em_data_padded[21:0];
+    // logic [`PE_NUM_OF_CORES*`XLEN-1 : 0]        pe2em_reqAddr_padded;
+    // generate
+    //     for (genvar i = 0; i < `PE_NUM_OF_CORES; i = i + 1)
+    //     begin
+    //         assign pe2em_reqAddr_padded[`XLEN*(i+1)-1 : `XLEN*i] = {2'b0, pe2em_reqAddr_1d[14*(i+1)-1 : 14*i]};
+    //     end
+    // endgenerate
+    // logic [63:0]   mc2em_data_padded;
+    // assign mc2em_data = mc2em_data_padded[21:0];
     mc_em mc_em (
         .clk_i                  (clock),
         .rst_i                  (reset),
-        .pe2mem_reqAddr_i       (pe2em_reqAddr_padded),
-        .pe2mem_wrData_i        ('x), // read only
+        // .pe2mem_reqAddr_i       (pe2em_reqAddr_padded),
+        .pe2mem_reqAddr_i       (pe2em_reqAddr_1d),
+        // .pe2mem_wrData_i        ('x), // read only
         .pe2mem_reqValid_i      (pe_edge_reqValid),
         .pe2mem_wrEn_i          ('0), // read only
         .mc2mem_addr_o          (mc2em_addr),
-        .mc2mem_data_o          (mc2em_data_padded),
+        // .mc2mem_data_o          (mc2em_data_padded),
         .mc2mem_command_o       (mc2em_command),
         .mc2pe_grant_onehot_o   (em2pe_grant_onehot)
     );

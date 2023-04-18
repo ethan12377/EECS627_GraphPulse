@@ -27,7 +27,7 @@ module pe (
     // from mem
     input   logic [3:0]                             vertexmem_resp_i,
     input   logic [3:0]                             vertexmem_tag_i,
-    input   logic [63:0]                            vertexmem_data_i,
+    input   logic [`DELTA_WIDTH-1:0]                vertexmem_data_i,
     input   logic [3:0]                             edgemem_resp_i,
     input   logic [3:0]                             edgemem_tag_i,
     input   logic [63:0]                            edgemem_data_i,

@@ -10,13 +10,13 @@ module mc_em (
     input   logic                                       clk_i           ,   //  Clock
     input   logic                                       rst_i           ,   //  Reset
     ////////// INPUTS //////////
-    input   logic [`PE_NUM_OF_CORES*`XLEN-1 : 0]        pe2mem_reqAddr_i,
-    input   logic [`PE_NUM_OF_CORES*64-1 : 0]           pe2mem_wrData_i,
+    input   logic [`PE_NUM_OF_CORES*14-1 : 0]           pe2mem_reqAddr_i,
+    // input   logic [`PE_NUM_OF_CORES*64-1 : 0]           pe2mem_wrData_i,
     input   logic [`PE_NUM_OF_CORES-1:0]                pe2mem_reqValid_i,
     input   logic [`PE_NUM_OF_CORES-1:0]                pe2mem_wrEn_i,
     ////////// OUTPUTS //////////
-    output  logic [`XLEN-1:0]                           mc2mem_addr_o,
-    output  logic [63:0]                                mc2mem_data_o,
+    output  logic [14-1:0]                           mc2mem_addr_o,
+    // output  logic [63:0]                                mc2mem_data_o,
     output  BUS_COMMAND                                 mc2mem_command_o,
     output  logic [`PE_NUM_OF_CORES-1:0]                mc2pe_grant_onehot_o
 );
@@ -33,13 +33,13 @@ module mc_em (
 // Signal Declarations Start
 // ====================================================================
     // internal 2d arrays for inputs
-    logic [`PE_NUM_OF_CORES-1:0][`XLEN-1:0]  pe2mem_reqAddr;
-    logic [`PE_NUM_OF_CORES-1:0][63:0]       pe2mem_wrData;
+    logic [`PE_NUM_OF_CORES-1:0][14-1:0]  pe2mem_reqAddr;
+    // logic [`PE_NUM_OF_CORES-1:0][63:0]       pe2mem_wrData;
     // rr arbiter
     logic [`PE_NUM_OF_CORES-1:0]    rra_grant_onehot;
     logic                           rra_valid;
     // outputs
-    logic [`XLEN-1:0]   mc2mem_addr_n;
+    logic [14-1:0]   mc2mem_addr_n;
     logic [63:0]        mc2mem_data_n;
     logic [1:0]         mc2mem_command_n; 
 // ====================================================================
@@ -82,8 +82,8 @@ module mc_em (
     generate
         for (genvar i = 0; i < `PE_NUM_OF_CORES; i = i + 1)
         begin
-            assign pe2mem_reqAddr[i] = pe2mem_reqAddr_i[`XLEN*(i+1)-1 : `XLEN*i];
-            assign pe2mem_wrData[i] = pe2mem_wrData_i[64*(i+1)-1 : 64*i];
+            assign pe2mem_reqAddr[i] = pe2mem_reqAddr_i[14*(i+1)-1 : 14*i];
+            // assign pe2mem_wrData[i] = pe2mem_wrData_i[64*(i+1)-1 : 64*i];
         end
     endgenerate
     // --------------------------------------------------------------------
@@ -94,7 +94,7 @@ module mc_em (
         // default to invalid outputs
         mc2mem_addr_o = 'x;
         mc2mem_command_o = BUS_NONE;
-        mc2mem_data_o = 'x;
+        // mc2mem_data_o = 'x;
         // check current grant
         if (rra_valid)
         begin
@@ -104,7 +104,7 @@ module mc_em (
                 begin
                     mc2mem_addr_o = pe2mem_reqAddr[i];
                     mc2mem_command_o = pe2mem_wrEn_i[i] ? BUS_STORE : BUS_LOAD;
-                    mc2mem_data_o = pe2mem_wrData[i];
+                    // mc2mem_data_o = pe2mem_wrData[i];
                 end
             end
         end
