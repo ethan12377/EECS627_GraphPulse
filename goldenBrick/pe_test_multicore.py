@@ -58,9 +58,9 @@ def print_pe_status(pe_id):
     print('end = \t' + str(PE_cores[pe_id].end))
     print('curr_evgen_idx = \t' + str(PE_cores[pe_id].curr_evgen_idx))
     print('curr_col_idx_word = \t' + str(PE_cores[pe_id].curr_col_idx_word))
-    print('proIdx = \t' + str(io_port.proIdx[2*pe_id : 2*pe_id+1]))
-    print('proValid = \t' + str(io_port.proValid[2*pe_id : 2*pe_id+1]))
-    print('proDelta = \t' + str(io_port.proDelta[2*pe_id : 2*pe_id+1]))
+    print('proIdx = \t' + str(io_port.proIdx[2*pe_id : 2*pe_id+2]))
+    print('proValid = \t' + str(io_port.proValid[2*pe_id : 2*pe_id+2]))
+    print('proDelta = \t' + str(io_port.proDelta[2*pe_id : 2*pe_id+2]))
     print()
 
 def print_cc_status():
@@ -128,7 +128,7 @@ if __name__ == "__main__":
     curr_cycle = 0
     timeout_cycle_num = 5000
     # print_range = [0, 50]
-    print_range = [4995, 5000]
+    print_range = [-1, -1] # no printing
 
     # run until convergence
     while EVQ0.empty != 1 or not all(v == 1 for v in io_port.PEReady):
@@ -144,8 +144,8 @@ if __name__ == "__main__":
         VC0.one_clock()
         EVQ0.one_clock()
         update()
-        # if curr_cycle >= print_range[0] and curr_cycle <= print_range[1]:
-        print_system_status(curr_cycle)
+        if curr_cycle >= print_range[0] and curr_cycle <= print_range[1]:
+            print_system_status(curr_cycle)
         curr_cycle += 1
     
     print()
