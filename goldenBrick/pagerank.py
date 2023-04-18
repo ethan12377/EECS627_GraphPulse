@@ -1,4 +1,5 @@
 import numpy as np
+import random
 from scipy.sparse import csr_matrix
 
 # Source: wikipedia, chatgpt, some slight modifications by Peter Zhong
@@ -80,7 +81,6 @@ if __name__ == '__main__':
     adj_matrix = np.array([[0, 1, 0],
                            [0, 0, 1],
                            [1, 0, 0]])
-    '''
     adj_matrix = np.array([[0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
                            [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
                            [0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
@@ -90,8 +90,20 @@ if __name__ == '__main__':
                            [0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
                            [0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-                           [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],])
-    matrix_to_csr(adj_matrix, 'csr.txt')
+                           [1, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
+    '''
+    no_gen = True # set to true when we want to run pagerank on current existing csr file instead of generating a new random one
+    if not no_gen:
+        # generate a random sized all-zero matrix
+        num_of_vertices = random.randint(3, 20)  # lower and upper bound to num of vertices on the graph
+        adj_matrix = np.zeros((num_of_vertices, num_of_vertices), dtype=int)
+        # generate some random edges
+        num_of_edges = random.randint(1, adj_matrix.size)
+        random_indices = np.random.choice(adj_matrix.size, size=num_of_edges, replace=False)
+        adj_matrix.flat[random_indices] = 1
+        # print(adj_matrix)
+        # output matrix in the csr format
+        matrix_to_csr(adj_matrix, 'csr.txt')
     M = csr_to_matrix('csr.txt')
     v = pagerank(M, 100, 0.85)
     print(str(v))
