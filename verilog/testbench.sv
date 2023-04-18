@@ -26,14 +26,14 @@ module gp_testbench;
     // int             cache_fileno;
     
     logic [1:0]  edgemem_command;
-    logic [`XLEN-1:0] edgemem_addr;
+    logic [13:0] edgemem_addr;
     logic [63:0] edgemem_st_data;
     logic  [3:0] edgemem_response;
     logic [63:0] edgemem_ld_data;
     logic  [3:0] edgemem_tag;
     logic [1:0]  vertexmem_command;
-    logic [`XLEN-1:0] vertexmem_addr;
-    logic [63:0] vertexmem_st_data;
+    logic [7:0] vertexmem_addr;
+    logic [15:0] vertexmem_st_data;
     logic  [3:0] vertexmem_response;
     logic [63:0] vertexmem_ld_data;
     logic  [3:0] vertexmem_tag;
@@ -58,14 +58,14 @@ module gp_testbench;
         .edgemem_ld_data    (edgemem_ld_data),
         .edgemem_tag        (edgemem_tag),
         .vertexmem_response (vertexmem_response),
-        .vertexmem_ld_data  (vertexmem_ld_data),
+        .vertexmem_ld_data  (vertexmem_ld_data[15:0]),
         .vertexmem_tag      (vertexmem_tag),
 
         // Outputs
         //.converge           (converge),
         .edgemem_command    (edgemem_command),
         .edgemem_addr       (edgemem_addr),
-        .edgemem_st_data    (edgemem_st_data),
+        //.edgemem_st_data    (edgemem_st_data),
         .vertexmem_command  (vertexmem_command),
         .vertexmem_addr     (vertexmem_addr),
         .vertexmem_st_data  (vertexmem_st_data)
@@ -80,7 +80,7 @@ module gp_testbench;
         // Inputs
         .clk               (clock),
         .proc2mem_command  (edgemem_command),
-        .proc2mem_addr     (edgemem_addr),
+        .proc2mem_addr     ({2'b0, edgemem_addr}),
         .proc2mem_data     (edgemem_st_data),
 
         // Outputs
@@ -98,8 +98,8 @@ module gp_testbench;
         // Inputs
         .clk               (clock),
         .proc2mem_command  (vertexmem_command),
-        .proc2mem_addr     (vertexmem_addr),
-        .proc2mem_data     (vertexmem_st_data),
+        .proc2mem_addr     ({8'b0, vertexmem_addr}),
+        .proc2mem_data     ({48'b0, vertexmem_st_data}),
 
         // Outputs
         .mem2proc_response (vertexmem_response),

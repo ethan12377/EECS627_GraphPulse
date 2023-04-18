@@ -63,7 +63,7 @@ module threein1 #(
 // Signal Declarations Start
 // ====================================================================
     logic   [C_ROW_IDX_WIDTH-1:0]                          rowIdx_i        ;
-    logic   [C_BIN_IDX_WIDTH-2:0]                          binIdx_i        ;
+    logic   [C_BIN_IDX_WIDTH-1:0]                          binIdx_i        ;
     logic   [C_INPUT_NUM*C_DELTA_WIDTH-1:0]                rowDelta_i      ;
     logic                                                  rowValid_i      ;
 
@@ -163,7 +163,7 @@ assign initialFinish_o  = &initialFinish_i;
 
 assign upQ_selected = |binSelected_o[C_BIN_NUM-1:C_BIN_NUM/2];
 assign rowIdx_i = upQ_selected ? rowIdx_up_i : rowIdx_down_i;
-assign binIdx_i = upQ_selected ? binIdx_up_i : binIdx_down_i;
+assign binIdx_i = upQ_selected ? {1'b1, binIdx_up_i} : {1'b0, binIdx_down_i};
 assign rowDelta_i = upQ_selected ? rowDelta_up_i : rowDelta_down_i;
 assign rowValid_i = upQ_selected ? rowValid_up_i : rowValid_down_i;
 

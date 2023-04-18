@@ -10,13 +10,13 @@ module mc_vm (
     input   logic                                       clk_i           ,   //  Clock
     input   logic                                       rst_i           ,   //  Reset
     ////////// INPUTS //////////
-    input   logic [`PE_NUM_OF_CORES*`XLEN-1 : 0]        pe2mem_reqAddr_i,
-    input   logic [`PE_NUM_OF_CORES*64-1 : 0]           pe2mem_wrData_i,
+    input   logic [`PE_NUM_OF_CORES*8-1 : 0]            pe2mem_reqAddr_i,
+    input   logic [`PE_NUM_OF_CORES*16-1 : 0]           pe2mem_wrData_i,
     input   logic [`PE_NUM_OF_CORES-1:0]                pe2mem_reqValid_i,
     input   logic [`PE_NUM_OF_CORES-1:0]                pe2mem_wrEn_i,
     ////////// OUTPUTS //////////
-    output  logic [`XLEN-1:0]                           mc2mem_addr_o,
-    output  logic [63:0]                                mc2mem_data_o,
+    output  logic [7:0]                                 mc2mem_addr_o,
+    output  logic [15:0]                                mc2mem_data_o,
     output  BUS_COMMAND                                 mc2mem_command_o,
     output  logic [`PE_NUM_OF_CORES-1:0]                mc2pe_grant_onehot_o
 );
@@ -33,13 +33,13 @@ module mc_vm (
 // Signal Declarations Start
 // ====================================================================
     // internal 2d arrays for inputs
-    logic [`PE_NUM_OF_CORES-1:0][`XLEN-1:0]  pe2mem_reqAddr;
-    logic [`PE_NUM_OF_CORES-1:0][63:0]       pe2mem_wrData;
+    logic [`PE_NUM_OF_CORES-1:0][7:0]  pe2mem_reqAddr;
+    logic [`PE_NUM_OF_CORES-1:0][15:0]       pe2mem_wrData;
     // rr arbiter
     logic [`PE_NUM_OF_CORES-1:0]    rra_grant_onehot;
     logic                           rra_valid;
     // outputs
-    logic [`XLEN-1:0]   mc2mem_addr_n;
+    logic [8-1:0]   mc2mem_addr_n;
     logic [63:0]        mc2mem_data_n;
     logic [1:0]         mc2mem_command_n; 
 // ====================================================================
@@ -82,8 +82,8 @@ module mc_vm (
     generate
         for (genvar i = 0; i < `PE_NUM_OF_CORES; i = i + 1)
         begin
-            assign pe2mem_reqAddr[i] = pe2mem_reqAddr_i[`XLEN*(i+1)-1 : `XLEN*i];
-            assign pe2mem_wrData[i] = pe2mem_wrData_i[64*(i+1)-1 : 64*i];
+            assign pe2mem_reqAddr[i] = pe2mem_reqAddr_i[8*(i+1)-1 : 8*i];
+            assign pe2mem_wrData[i] = pe2mem_wrData_i[16*(i+1)-1 : 16*i];
         end
     endgenerate
     // --------------------------------------------------------------------
