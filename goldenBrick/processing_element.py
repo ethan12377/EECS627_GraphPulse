@@ -115,6 +115,7 @@ class PE:
                     self.curr_col_idx_word_valid = 0
                     # request a row word from the memory
                     io_port.pe_ec_reqAddr_n[self.pe_id] = self.curr_evgen_idx // 8
+                    io_port.pe_ec_reqValid_n[self.pe_id] = 1
                     self.curr_col_idx_word_tag = self.curr_evgen_idx // 8
                     self.ec_req_status = 3
             else: # not ready to receive new event, hold current event
