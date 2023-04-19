@@ -17,6 +17,7 @@ module EQ_wrapper_half #(
     parameter   C_BIN_IDX_LSB       =   `BIN_IDX_LSB        ,
     parameter   C_COL_NUM           =   `COL_NUM            ,
     parameter   C_ROW_IDX_WIDTH     =   `ROW_IDX_WIDTH      ,
+    parameter   C_COL_IDX_WIDTH     =   `COL_IDX_WIDTH      ,
     parameter   C_PE_NUM_OF_CORES   =   `PE_NUM_OF_CORES    
 ) (
     input   logic                                               clk_i       ,   //  Clock
@@ -25,7 +26,7 @@ module EQ_wrapper_half #(
 
     // Interface with corssbar
     input   logic   [C_BIN_HALF*C_DELTA_WIDTH-1:0]               CUDelta_i   ,
-    input   logic   [C_BIN_HALF*C_VERTEX_IDX_WIDTH-1:0]          CUIdx_i     ,
+    input   logic   [C_BIN_HALF*(C_VERTEX_IDX_WIDTH-C_BIN_IDX_WIDTH)-1:0]          CUIdx_i     ,
     input   logic   [C_BIN_HALF-1:0]                             CUValid_i   ,
     output  logic   [C_BIN_HALF-1:0]                             CUReady_o   ,
 
@@ -130,7 +131,13 @@ generate
 
     for (i = 0; i < C_BIN_HALF; i++) begin
         for (j = 0; j < C_VERTEX_IDX_WIDTH; j++) begin
-            assign  int_CUIdx_i[i][j] = CUIdx_i[i*C_VERTEX_IDX_WIDTH+j];
+            if (j < C_COL_IDX_WIDTH) begin
+                assign  int_CUIdx_i[i][j] = CUIdx_i[i*(C_VERTEX_IDX_WIDTH-C_BIN_IDX_WIDTH)+j];
+            end else if (j >= (C_VERTEX_IDX_WIDTH - C_ROW_IDX_WIDTH)) begin
+                assign  int_CUIdx_i[i][j] = CUIdx_i[i*(C_VERTEX_IDX_WIDTH-C_BIN_IDX_WIDTH)+j-C_BIN_IDX_WIDTH];
+            end else begin
+                assign  int_CUIdx_i[i][j] = 1'b0;
+            end
         end
     end
 

@@ -13,7 +13,7 @@ module mc_em (
     input   logic [`PE_NUM_OF_CORES*14-1 : 0]           pe2mem_reqAddr_i,
     // input   logic [`PE_NUM_OF_CORES*64-1 : 0]           pe2mem_wrData_i,
     input   logic [`PE_NUM_OF_CORES-1:0]                pe2mem_reqValid_i,
-    input   logic [`PE_NUM_OF_CORES-1:0]                pe2mem_wrEn_i,
+    // input   logic [`PE_NUM_OF_CORES-1:0]                pe2mem_wrEn_i,
     ////////// OUTPUTS //////////
     output  logic [14-1:0]                           mc2mem_addr_o,
     // output  logic [63:0]                                mc2mem_data_o,
@@ -92,7 +92,7 @@ module mc_em (
     always_comb
     begin
         // default to invalid outputs
-        mc2mem_addr_o = 'x;
+        mc2mem_addr_o = 'd0;
         mc2mem_command_o = BUS_NONE;
         // mc2mem_data_o = 'x;
         // check current grant
@@ -103,7 +103,8 @@ module mc_em (
                 if (rra_grant_onehot[i])
                 begin
                     mc2mem_addr_o = pe2mem_reqAddr[i];
-                    mc2mem_command_o = pe2mem_wrEn_i[i] ? BUS_STORE : BUS_LOAD;
+                    // mc2mem_command_o = pe2mem_wrEn_i[i] ? BUS_STORE : BUS_LOAD;
+                    mc2mem_command_o = BUS_LOAD;
                     // mc2mem_data_o = pe2mem_wrData[i];
                 end
             end

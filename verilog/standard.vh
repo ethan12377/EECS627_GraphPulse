@@ -7,8 +7,8 @@
 //                                                                     //
 /////////////////////////////////////////////////////////////////////////
 
-`define VERILOG_CLOCK_PERIOD   10.0
-`define SYNTH_CLOCK_PERIOD     10.0 // Clock period for synth and memory latency
+`define VERILOG_CLOCK_PERIOD   50.0
+`define SYNTH_CLOCK_PERIOD     50.0 // Clock period for synth and memory latency
 `define SD #1
 `define XLEN 16
 

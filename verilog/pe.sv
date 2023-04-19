@@ -226,15 +226,15 @@ module pe (
             initializing                    <= 1'b1;
             // init registers
             init_value_ready                <= 1'b0;
-            init_value                      <= 'x;
+            init_value                      <= '0;
             init_value_denom_ready          <= 1'b0;
-            init_value_denom                <= 'x;
+            init_value_denom                <= '0;
             // curr event registers
-            curr_delta                      <= 'x;
-            curr_idx                        <= 'x;
+            curr_delta                      <= '0;
+            curr_idx                        <= '0;
             // adjacency list registers
-            adj_list_start                  <= 'x;
-            adj_list_end                    <= 'x;
+            adj_list_start                  <= '0;
+            adj_list_end                    <= '0;
             adj_list_start_ready            <= 1'b0;
             adj_list_end_ready              <= 1'b0;
             // mem req status registers
@@ -245,12 +245,12 @@ module pe (
             vm_acked                        <= 1'b0;
             em_acked                        <= 1'b0;
             // evgen registers
-            curr_evgen_idx                  <= 'x;
-            curr_col_idx_word_tag           <= 'x;
-            curr_prodelta_numerator         <= 'x;
-            curr_prodelta_denom             <= 'x;
-            curr_prodelta                   <= 'x;
-            curr_col_idx_word               <= 'x;
+            curr_evgen_idx                  <= '0;
+            curr_col_idx_word_tag           <= '0;
+            curr_prodelta_numerator         <= '0;
+            curr_prodelta_denom             <= '0;
+            curr_prodelta                   <= '0;
+            curr_col_idx_word               <= '0;
             curr_prodelta_numerator_ready   <= 1'b0;
             curr_prodelta_denom_ready       <= 1'b0;
             curr_prodelta_ready             <= 1'b0;
@@ -332,19 +332,19 @@ module pe (
             // to crossbar 1
             PEReady_o               <= 1'b0;
             // to crossbar 2
-            ProDelta0_o             <= 'x;
-            ProIdx0_o               <= 'x;
+            ProDelta0_o             <= '0;
+            ProIdx0_o               <= '0;
             ProValid0_o             <= 1'b0;
-            ProDelta1_o             <= 'x;
-            ProIdx1_o               <= 'x;
+            ProDelta1_o             <= '0;
+            ProIdx1_o               <= '0;
             ProValid1_o             <= 1'b0;
             // to vertex mem controller
-            pe_vertex_reqAddr_o     <= 'x;
+            pe_vertex_reqAddr_o     <= '0;
             pe_vertex_reqValid_o    <= 1'b0;
-            pe_wrData_o             <= 'x;
+            pe_wrData_o             <= '0;
             pe_wrEn_o               <= 1'b0;
             // to edge mem controller
-            pe_edge_reqAddr_o       <= 'x;
+            pe_edge_reqAddr_o       <= '0;
             pe_edge_reqValid_o      <= 1'b0;
         end
         else
@@ -412,19 +412,19 @@ module pe (
         // to scheduler
         initialFinish_n                     = initialFinish_o;
         // to crossbar 2
-        ProDelta_n[0]                       = 'x;
-        ProIdx_n[0]                         = 'x;
+        ProDelta_n[0]                       = '0;
+        ProIdx_n[0]                         = '0;
         ProValid_n[0]                       = 1'b0;
-        ProDelta_n[1]                       = 'x;
-        ProIdx_n[1]                         = 'x;
+        ProDelta_n[1]                       = '0;
+        ProIdx_n[1]                         = '0;
         ProValid_n[1]                       = 1'b0;
         // to vertex mem controller
-        pe_vertex_reqAddr_n                 = 'x;
+        pe_vertex_reqAddr_n                 = '0;
         pe_vertex_reqValid_n                = 1'b0;
-        pe_wrData_n                         = 'x;
+        pe_wrData_n                         = '0;
         pe_wrEn_n                           = 1'b0;
         // to edge mem controller
-        pe_edge_reqAddr_n                   = 'x;
+        pe_edge_reqAddr_n                   = '0;
         pe_edge_reqValid_n                  = 1'b0;
         ////////// fpu inputs //////////
         fpu_opA_n                           = '0;
@@ -553,14 +553,14 @@ module pe (
                         adj_list_start_n = (curr_idx[1:0] == 2'd0) ? edgemem_data_i[15:0] : 
                                            (curr_idx[1:0] == 2'd1) ? edgemem_data_i[31:16] : 
                                            (curr_idx[1:0] == 2'd2) ? edgemem_data_i[47:32] : 
-                                           (curr_idx[1:0] == 2'd3) ? edgemem_data_i[63:48] : 'x;
+                                           (curr_idx[1:0] == 2'd3) ? edgemem_data_i[63:48] : '0;
                         adj_list_start_ready_n = 1'b1;
                         // check if start and end are in the same word
                         if (curr_idx[1:0] != 2'd3) // start and end are in the same word
                         begin
                             adj_list_end_n = (curr_idx[1:0] == 2'd0) ? edgemem_data_i[31:16] : 
                                              (curr_idx[1:0] == 2'd1) ? edgemem_data_i[47:32] : 
-                                             (curr_idx[1:0] == 2'd2) ? edgemem_data_i[63:48] : 'x;
+                                             (curr_idx[1:0] == 2'd2) ? edgemem_data_i[63:48] : '0;
                             adj_list_end_ready_n = 1'b1;
                             if (adj_list_end_n != adj_list_start_n)
                             begin
@@ -736,7 +736,7 @@ module pe (
                                           (curr_evgen_idx[2:0] == 3'd4) ? curr_col_idx_word[39:32] :
                                           (curr_evgen_idx[2:0] == 3'd5) ? curr_col_idx_word[47:40] :
                                           (curr_evgen_idx[2:0] == 3'd6) ? curr_col_idx_word[55:48] :
-                                          (curr_evgen_idx[2:0] == 3'd7) ? curr_col_idx_word[63:56] : 'x;
+                                          (curr_evgen_idx[2:0] == 3'd7) ? curr_col_idx_word[63:56] : '0;
                             ProValid_n[0] = 1'b1;
                             curr_evgen_idx_n = curr_evgen_idx_n + 1;
                         end
@@ -789,7 +789,7 @@ module pe (
                                           (curr_evgen_idx_n[2:0] == 3'd4) ? curr_col_idx_word[39:32] :
                                           (curr_evgen_idx_n[2:0] == 3'd5) ? curr_col_idx_word[47:40] :
                                           (curr_evgen_idx_n[2:0] == 3'd6) ? curr_col_idx_word[55:48] :
-                                          (curr_evgen_idx_n[2:0] == 3'd7) ? curr_col_idx_word[63:56] : 'x;
+                                          (curr_evgen_idx_n[2:0] == 3'd7) ? curr_col_idx_word[63:56] : '0;
                             ProValid_n[1] = 1'b1;
                             curr_evgen_idx_n = curr_evgen_idx_n + 1;
                         end

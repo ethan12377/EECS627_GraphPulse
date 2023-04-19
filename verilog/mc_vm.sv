@@ -92,9 +92,9 @@ module mc_vm (
     always_comb
     begin
         // default to invalid outputs
-        mc2mem_addr_o = 'x;
+        mc2mem_addr_o = '0;
         mc2mem_command_o = BUS_NONE;
-        mc2mem_data_o = 'x;
+        mc2mem_data_o = '0;
         // check current grant
         if (rra_valid)
         begin
